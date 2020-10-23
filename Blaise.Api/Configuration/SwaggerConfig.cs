@@ -1,11 +1,11 @@
 using System.Web.Http;
-using Blaise.Api.Framework;
+using Blaise.Api.Configuration;
 using Swashbuckle.Application;
 using WebActivatorEx;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
-namespace Blaise.Api.Framework
+namespace Blaise.Api.Configuration
 {
     public class SwaggerConfig
     {

@@ -4,7 +4,7 @@ using Blaise.Nuget.Api;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Unity;
 
-namespace Blaise.Api.Framework
+namespace Blaise.Api.Configuration
 {
     public static class UnityConfig
     {
@@ -13,7 +13,7 @@ namespace Blaise.Api.Framework
 			var container = new UnityContainer();
 
             container.RegisterType<IFluentBlaiseApi, FluentBlaiseApi>();
-            container.RegisterType<IParkService, ParkService>();
+            container.RegisterType<IServerParkService, ServerParkService>();
 
             return container;
         }

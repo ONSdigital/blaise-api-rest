@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
+using Blaise.Api.Providers;
 using Microsoft.Owin.Hosting;
 
 namespace Blaise.Api
@@ -7,12 +9,12 @@ namespace Blaise.Api
     {
         private static void Main()
         {
-            var baseAddress = "http://*:80/";
-            //var baseAddress = "http://localhost:5000/";
+            var baseUrl = ConfigurationProvider.BaseUrl;
 
             // Start OWIN host 
-            using (WebApp.Start<Startup>(url: baseAddress))
+            using (WebApp.Start<Startup>(url: baseUrl))
             {
+                Console.WriteLine($"Starting Blaise RESTful API service on '{baseUrl}'");
                 Thread.Sleep(Timeout.Infinite);
             }
         }

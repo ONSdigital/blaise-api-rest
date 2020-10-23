@@ -1,10 +1,9 @@
 ﻿using System.Net.Http.Headers;
 using System.Web.Http;
-using Blaise.Api.Framework;
+using Blaise.Api.Configuration;
 using Microsoft.Owin.Extensions;
 using Newtonsoft.Json.Serialization;
 using Owin;
-using Swashbuckle.Application;
 using Unity.WebApi;
 
 namespace Blaise.Api
