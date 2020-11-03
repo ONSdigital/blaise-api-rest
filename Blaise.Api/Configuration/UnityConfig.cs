@@ -12,7 +12,7 @@ namespace Blaise.Api.Configuration
         {
 			var container = new UnityContainer();
 
-            container.RegisterType<IFluentBlaiseApi, FluentBlaiseApi>();
+            container.RegisterType<IBlaiseApi, BlaiseApi>();
             container.RegisterType<IServerParkService, ServerParkService>();
 
             return container;
