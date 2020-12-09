@@ -1,6 +1,7 @@
 using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Core.Services;
 using Blaise.Nuget.Api;
+using Blaise.Nuget.Api.Api;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Unity;
 
@@ -12,7 +13,7 @@ namespace Blaise.Api.Configuration
         {
 			var container = new UnityContainer();
 
-            container.RegisterType<IBlaiseApi, BlaiseApi>();
+            container.RegisterType<IBlaiseServerParkApi, BlaiseServerParkApi>();
             container.RegisterType<IServerParkService, ServerParkService>();
 
             return container;

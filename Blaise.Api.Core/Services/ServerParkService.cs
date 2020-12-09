@@ -7,11 +7,11 @@ namespace Blaise.Api.Core.Services
 {
     public class ServerParkService : IServerParkService
     {
-        private readonly IBlaiseApi _blaiseApi;
+        private readonly IBlaiseServerParkApi _blaiseApi;
         private readonly IServerParkDtoMapper _mapper;
 
         public ServerParkService(
-            IBlaiseApi blaiseApi,
+            IBlaiseServerParkApi blaiseApi,
             IServerParkDtoMapper mapper)
         {
             _blaiseApi = blaiseApi;
@@ -20,30 +20,26 @@ namespace Blaise.Api.Core.Services
 
         public IEnumerable<string> GetServerParkNames()
         {
-            return _blaiseApi.GetServerParkNames(_blaiseApi.GetDefaultConnectionModel());
+            return _blaiseApi.GetNamesOfServerParks();
         }
 
         public IEnumerable<ServerParkDto> GetServerParks()
         {
-            var serverParks = _blaiseApi.GetServerParks(_blaiseApi.GetDefaultConnectionModel());
+            var serverParks = _blaiseApi.GetServerParks();
 
             return _mapper.MapToDto(serverParks);
         }
 
         public ServerParkDto GetServerPark(string serverParkName)
         {
-            var serverPark = _blaiseApi.GetServerPark(
-                _blaiseApi.GetDefaultConnectionModel(), 
-                serverParkName);
+            var serverPark = _blaiseApi.GetServerPark(serverParkName);
 
             return _mapper.MapToDto(serverPark);
         }
 
         public bool ServerParkExists(string serverParkName)
         {
-            return _blaiseApi.ServerParkExists(
-                    _blaiseApi.GetDefaultConnectionModel(),
-                    serverParkName);
+            return _blaiseApi.ServerParkExists(serverParkName);
         }
     }
 }

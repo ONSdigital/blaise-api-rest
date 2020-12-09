@@ -9,17 +9,17 @@ using Blaise.Api.Core.Interfaces;
 namespace Blaise.Api.Controllers
 {
     [RoutePrefix("api/v1")]
-    public class ParkController : ApiController
+    public class ServerParkController : ApiController
     {
         private readonly IServerParkService _serverParkService;
 
-        public ParkController(IServerParkService parkService)
+        public ServerParkController(IServerParkService parkService)
         {
             _serverParkService = parkService;
         }
 
         [HttpGet]
-        [Route("parks/names")]
+        [Route("serverparks/names")]
         [ResponseType(typeof(IEnumerable<string>))]
         public IHttpActionResult GetServerParkNames()
         {
@@ -27,11 +27,11 @@ namespace Blaise.Api.Controllers
             {
                 Console.WriteLine("Obtaining a list of server parks");
 
-                var parkNames = _serverParkService.GetServerParkNames().ToList();
+                var serverParkNames = _serverParkService.GetServerParkNames().ToList();
 
-                Console.WriteLine($"Successfully received a list of server park names '{string.Join(", ", parkNames)}'");
+                Console.WriteLine($"Successfully received a list of server park names '{string.Join(", ", serverParkNames)}'");
 
-                return Ok(parkNames);
+                return Ok(serverParkNames);
             }
             catch (Exception e)
             {
@@ -41,7 +41,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("parks")]
+        [Route("serverparks")]
         [ResponseType(typeof(IEnumerable<ServerParkDto>))]
         public IHttpActionResult GetServerParks()
         {
@@ -63,15 +63,15 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("parks/{name}")]
+        [Route("serverparks/{serverParkName}")]
         [ResponseType(typeof(ServerParkDto))]
-        public IHttpActionResult GetServerPark(string name)
+        public IHttpActionResult GetServerPark(string serverParkName)
         {
             try
             {
-                var park = _serverParkService.GetServerPark(name);
+                var park = _serverParkService.GetServerPark(serverParkName);
 
-                Console.WriteLine($"Successfully received server park '{name}'");
+                Console.WriteLine($"Successfully received server park '{serverParkName}'");
 
                 return Ok(park);
             }
@@ -83,15 +83,15 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("parks/{name}/exists")]
+        [Route("serverparks/{serverParkName}/exists")]
         [ResponseType(typeof(bool))]
-        public IHttpActionResult ServerParkExists(string name)
+        public IHttpActionResult ServerParkExists(string serverParkName)
         {
             try
             {
-                var exists = _serverParkService.ServerParkExists(name);
+                var exists = _serverParkService.ServerParkExists(serverParkName);
 
-                Console.WriteLine($"Successfully found server park '{name}'");
+                Console.WriteLine($"Successfully found server park '{serverParkName}'");
 
                 return Ok(exists);
             }
