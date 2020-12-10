@@ -23,7 +23,8 @@ namespace Blaise.Api.Core.Mappers
         {
             return new InstrumentDto
             {
-                Name = instrument.Name
+                Name = instrument.Name,
+                ServerParkName = instrument.ServerPark
             };
         }
     }

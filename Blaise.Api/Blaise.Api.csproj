@@ -180,6 +180,7 @@
     <Compile Include="Configuration\SwaggerConfig.cs" />
     <Compile Include="Configuration\UnityConfig.cs" />
     <Compile Include="Controllers\HealthController.cs" />
+    <Compile Include="Controllers\InstrumentParkController.cs" />
     <Compile Include="Controllers\ServerParkController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

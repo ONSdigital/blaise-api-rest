@@ -53,8 +53,10 @@ namespace Blaise.Api.Tests.Unit.Core.Mappers
         {
             //arrange
             var instrumentName = "OPN2010A";
+            var serverParkName = "ServerParkA";
             var surveyMock = new Mock<ISurvey>();
             surveyMock.Setup(s => s.Name).Returns(instrumentName);
+            surveyMock.Setup(s => s.ServerPark).Returns(serverParkName);
 
             //act
             var result = _sut.MapToDto(surveyMock.Object);
@@ -63,6 +65,7 @@ namespace Blaise.Api.Tests.Unit.Core.Mappers
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<InstrumentDto>(result);
             Assert.AreEqual(instrumentName,result.Name);
+            Assert.AreEqual(serverParkName,result.ServerParkName);
         }
     }
 }

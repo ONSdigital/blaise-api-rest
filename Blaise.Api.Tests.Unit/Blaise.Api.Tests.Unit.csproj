@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Core\Mappers\InstrumentDtoMapperTests.cs" />
     <Compile Include="Core\Mappers\ServerParkDtoMapperTests.cs" />
+    <Compile Include="Core\Services\InstrumentServiceTests.cs" />
     <Compile Include="Core\Services\ServerParkServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
