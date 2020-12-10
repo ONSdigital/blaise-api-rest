@@ -5,6 +5,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Interfaces;
+using Blaise.Nuget.Api.Contracts.Exceptions;
 
 namespace Blaise.Api.Controllers
 {
@@ -54,6 +55,10 @@ namespace Blaise.Api.Controllers
                 Console.WriteLine($"Successfully received a list of instruments '{string.Join(", ", instruments)}'");
 
                 return Ok(instruments);
+            }
+            catch (DataNotFoundException)
+            {
+                return NotFound();
             }
             catch (Exception e)
             {
