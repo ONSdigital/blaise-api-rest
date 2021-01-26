@@ -51,6 +51,22 @@ namespace Blaise.Api.Tests.Helpers.RestApi
             await _httpClient.PostAsync(url, stringContent);
         }
 
+
+        public async Task<string> DeliverInstrumentWithData(string url, string bucketPath, string instrumentPackage)
+        {
+            var model = new InstrumentPackageDto
+            {
+                BucketPath = bucketPath,
+                InstrumentFile = instrumentPackage,
+                InstrumentName = Path.GetFileNameWithoutExtension(instrumentPackage)
+            };
+
+            var stringContent = new StringContent(JsonConvert.SerializeObject(model));
+            var response = await _httpClient.PostAsync(url, stringContent);
+
+            return response.Headers.Location.AbsoluteUri;
+        }
+
         private static async Task<List<T>> GetListOfObjectsASync<T>(string url)
         {
             var response = await _httpClient.GetAsync(url);

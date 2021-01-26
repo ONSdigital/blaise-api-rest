@@ -184,11 +184,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Case\CaseHelper.cs" />
     <Compile Include="Cloud\CloudStorageHelper.cs" />
     <Compile Include="Configuration\BlaiseConfigurationHelper.cs" />
     <Compile Include="Configuration\RestApiConfigurationHelper.cs" />
     <Compile Include="Extensions\ConfigurationExtensions.cs" />
     <Compile Include="Extensions\ParameterValidationExtensions.cs" />
+    <Compile Include="Extensions\FileExtensions.cs" />
     <Compile Include="Instrument\InstrumentHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestApi\RestApiHelper.cs" />
@@ -207,6 +209,7 @@
       <Name>Blaise.Api.Tests.Models</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

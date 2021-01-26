@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Configuration;
 using Blaise.Api.Tests.Helpers.Instrument;
 using Blaise.Api.Tests.Helpers.RestApi;
@@ -47,7 +48,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         }
 
         [When(@"the API is queried to return all active questionnaires")]
-        public async System.Threading.Tasks.Task WhenTheApiIsQueriedToReturnAllActiveQuestionnairesAsync()
+        public async Task WhenTheApiIsQueriedToReturnAllActiveQuestionnairesAsync()
         {
             var listOfActiveQuestionnaires =  await RestApiHelper.GetInstance().GetAllActiveQuestionnaires();
             _scenarioContext.Set(listOfActiveQuestionnaires, ApiResponse);

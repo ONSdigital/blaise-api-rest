@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Cloud;
 using Blaise.Api.Tests.Helpers.Configuration;
 using Blaise.Api.Tests.Helpers.Instrument;
@@ -10,21 +11,15 @@ namespace Blaise.Api.Tests.Behaviour.Steps
     [Binding]
     public sealed class DeployQuestionnaireSteps
     {
-        private readonly ScenarioContext _scenarioContext;
-
-        public DeployQuestionnaireSteps(ScenarioContext scenarioContext)
-        {
-            _scenarioContext = scenarioContext;
-        }
-
         [Given(@"there is a questionnaire available in a bucket")]
-        public void GivenThereIsAnQuestionnaireAvailableInABucket()
+        public async Task GivenThereIsAnQuestionnaireAvailableInABucket()
         {
-            CloudStorageHelper.GetInstance().UploadToBucket(
+            await CloudStorageHelper.GetInstance().UploadToBucketAsync(
                 BlaiseConfigurationHelper.InstrumentBucketPath,
                 BlaiseConfigurationHelper.InstrumentPackage);
         }
 
+        [Given(@"the API is called to deploy the questionnaire")]
         [When(@"the API is called to deploy the questionnaire")]
         public async Task WhenTheApiIsCalledToDeployTheQuestionnaire()
         {
@@ -36,13 +31,15 @@ namespace Blaise.Api.Tests.Behaviour.Steps
 
 
         [AfterScenario("deploy")]
-        public void CleanUpScenario()
+        public async Task CleanUpScenario()
         {
             InstrumentHelper.GetInstance().UninstallSurvey();
-
-            CloudStorageHelper.GetInstance().DeleteFromBucket(
+            
+            var fileName = Path.GetFileName(BlaiseConfigurationHelper.InstrumentPackage);
+            
+            await CloudStorageHelper.GetInstance().DeleteFromBucketAsync(
                 BlaiseConfigurationHelper.InstrumentBucketPath,
-                BlaiseConfigurationHelper.InstrumentPackage);
+                fileName);
         }
     }
 }

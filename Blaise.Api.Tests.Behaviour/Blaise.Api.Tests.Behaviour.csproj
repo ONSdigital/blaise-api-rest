@@ -137,11 +137,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Steps\DeliverQuestionnaireWithDataSteps.cs" />
     <Compile Include="Steps\DeployQuestionnaireSteps.cs" />
     <Compile Include="Steps\GetQuestionnaireDetailsSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Features\DeliverQuestionnaireWithData.feature" />
     <None Include="Features\DeployQuestionnaire.feature" />
     <None Include="Features\GetQuestionnaireDetails.feature" />
     <None Include="packages.config" />

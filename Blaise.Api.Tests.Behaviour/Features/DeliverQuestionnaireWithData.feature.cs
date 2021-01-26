@@ -20,26 +20,26 @@ namespace Blaise.Api.Tests.Behaviour.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.5.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("Deploy Questionnaire")]
-    [NUnit.Framework.CategoryAttribute("deploy")]
-    public partial class DeployQuestionnaireFeature
+    [NUnit.Framework.DescriptionAttribute("Deliver Instrument With Data")]
+    [NUnit.Framework.CategoryAttribute("deliver")]
+    public partial class DeliverInstrumentWithDataFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "deploy"};
+                "deliver"};
         
-#line 1 "DeployQuestionnaire.feature"
+#line 1 "DeliverQuestionnaireWithData.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Deploy Questionnaire", "\tAs a stakeholder\r\n\tI want to be able to deploy a questionnaire to Blaise\r\n\tSo th" +
-                    "at we can capture respondents data", ProgrammingLanguage.CSharp, new string[] {
-                        "deploy"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Deliver Instrument With Data", "\tAs a Survey Manager\r\n\tI want raw respondent date delivered (Blaise files)\r\n\tSo t" +
+                    "hat my team can use the data for further processing", ProgrammingLanguage.CSharp, new string[] {
+                        "deliver"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -77,16 +77,34 @@ namespace Blaise.Api.Tests.Behaviour.Features
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 7
+#line hidden
+#line 8
+ testRunner.Given("there is a questionnaire available in a bucket", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 9
+ testRunner.When("the API is called to deploy the questionnaire", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 10
+ testRunner.Then("the questionnaire is available to use in the Blaise environment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 11
+ testRunner.And("the questionnaire does not contain any correspondent data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+        }
+        
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Deploy a questionnaire from a file held in a bucket")]
+        [NUnit.Framework.DescriptionAttribute("Deliver an instrument with all correspondent data that has been captured so far")]
         [NUnit.Framework.CategoryAttribute("smoke")]
-        public virtual void DeployAQuestionnaireFromAFileHeldInABucket()
+        public virtual void DeliverAnInstrumentWithAllCorrespondentDataThatHasBeenCapturedSoFar()
         {
             string[] tagsOfScenario = new string[] {
                     "smoke"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy a questionnaire from a file held in a bucket", null, tagsOfScenario, argumentsOfScenario);
-#line 8
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deliver an instrument with all correspondent data that has been captured so far", null, tagsOfScenario, argumentsOfScenario);
+#line 14
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -106,14 +124,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
- testRunner.Given("there is a questionnaire available in a bucket", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 7
+this.FeatureBackground();
 #line hidden
-#line 10
- testRunner.When("the API is called to deploy the questionnaire", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 15
+ testRunner.Given("we have captured correspondent data for the questionnaire", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 11
- testRunner.Then("the questionnaire is available to use in the Blaise environment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 16
+ testRunner.When("the API is called to deliver the questionnaire with data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 17
+ testRunner.Then("the questionnaire package is delivered to the bucket", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 18
+ testRunner.And("the questionnaire is package uses the agreed file name format", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 19
+ testRunner.And("the questionnaire package contains the captured correspondent data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

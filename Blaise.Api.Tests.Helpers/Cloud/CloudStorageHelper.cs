@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Google.Cloud.Storage.V1;
 
 namespace Blaise.Api.Tests.Helpers.Cloud
@@ -13,19 +16,39 @@ namespace Blaise.Api.Tests.Helpers.Cloud
             return _currentInstance ?? (_currentInstance = new CloudStorageHelper());
         }
 
-        public void UploadToBucket(string bucketPath, string filePath)
+        public async Task UploadToBucketAsync(string bucketPath, string filePath)
         {
             var storageClient = GetStorageClient();
             using (var fileStream = File.OpenRead(filePath))
             {
-                storageClient.UploadObject(bucketPath, Path.GetFileName(filePath), null, fileStream);
+                await storageClient.UploadObjectAsync(bucketPath, Path.GetFileName(filePath), null, fileStream);
             }
         }
-
-        public void DeleteFromBucket(string bucketPath, string filePath)
+        
+        public async Task<string> DownloadFromBucketAsync(string bucketPath, string fileName, string destinationFilePath)
         {
             var storageClient = GetStorageClient();
-            storageClient.DeleteObject(bucketPath, Path.GetFileName(filePath));
+
+            using (var fileStream = File.OpenRead(destinationFilePath))
+            {
+                await storageClient.DownloadObjectAsync(bucketPath, fileName, fileStream);
+            }
+
+            return destinationFilePath;
+        }
+
+        public async Task DeleteFromBucketAsync(string bucketPath, string fileName)
+        {
+            var storageClient = GetStorageClient();
+            await storageClient.DeleteObjectAsync(bucketPath, fileName);
+        }
+
+        public bool FileExists(string bucketPath, string fileName)
+        {
+            var storageClient = GetStorageClient();
+            var storageObjects = storageClient.ListObjects(bucketPath);
+            return storageObjects.Any(
+                s => s.Name.Equals(fileName, StringComparison.CurrentCultureIgnoreCase));
         }
 
         private StorageClient GetStorageClient()
