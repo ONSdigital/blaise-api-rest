@@ -39,7 +39,8 @@ namespace Blaise.Api.Tests.Unit.Storage
             const string localFileName = "DD_OPN1234.zip";
             const string tempPath = @"d:\temp";
             var filePath = $@"{tempPath}\{Guid.NewGuid()}";
-    
+
+            _fileSystemMock.Setup(f => f.Directory.Exists(tempPath)).Returns(true);
             _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>()))
                 .Returns(filePath);
 
@@ -67,10 +68,11 @@ namespace Blaise.Api.Tests.Unit.Storage
             var filePath = $"{tempPath}";
             var instrumentFilePath = $@"{tempPath}\{localFileName}";
 
-            _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>()))
+            _fileSystemMock.Setup(f => f.Directory.Exists(tempPath)).Returns(true);
+            _fileSystemMock.Setup(f => f.Path.Combine(tempPath, It.IsAny<string>()))
                 .Returns(filePath);
             
-            _fileSystemMock.Setup(s => s.Path.Combine(filePath, localFileName))
+            _fileSystemMock.Setup(f => f.Path.Combine(filePath, localFileName))
                 .Returns(instrumentFilePath);
 
             _configurationProviderMock.Setup(c => c.TempPath).Returns(tempPath);
@@ -83,6 +85,36 @@ namespace Blaise.Api.Tests.Unit.Storage
 
             //arrange
             Assert.AreEqual(instrumentFilePath, result);
+        }
+
+        [Test]
+        public async Task Given_Temp_Path_Is_Not_There_When_I_Call_DownloadFromBucket_Then_The_Temp_Path_Is_Created()
+        {
+            //arrange
+            const string bucketPath = "OPN";
+            const string instrumentFileName = "OPN1234.zip";
+            const string localFileName = "DD_OPN1234.zip";
+            const string tempPath = @"d:\temp";
+            var filePath = $"{tempPath}";
+            var instrumentFilePath = $@"{tempPath}\{localFileName}";
+
+            _fileSystemMock.Setup(f => f.Directory.Exists(tempPath)).Returns(false);
+            _fileSystemMock.Setup(f => f.Path.Combine(tempPath, It.IsAny<string>()))
+                .Returns(filePath);
+
+            _fileSystemMock.Setup(f => f.Path.Combine(filePath, localFileName))
+                .Returns(instrumentFilePath);
+
+            _configurationProviderMock.Setup(c => c.TempPath).Returns(tempPath);
+            _storageProviderMock.Setup(s => s.DownloadAsync(bucketPath, instrumentFileName,
+                It.IsAny<string>()));
+            _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
+
+            //act
+            await _sut.DownloadFromBucketAsync(bucketPath, instrumentFileName, localFileName);
+
+            //arrange
+            _fileSystemMock.Verify(v => v.Directory.CreateDirectory(tempPath), Times.Once);
         }
     }
 }

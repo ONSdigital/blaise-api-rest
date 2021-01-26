@@ -23,6 +23,11 @@ namespace Blaise.Api.Storage.Services
 
         public async Task<string> DownloadFromBucketAsync(string bucketPath, string bucketFileName, string localFileName)
         {
+            if (!_fileSystem.Directory.Exists(_configurationProvider.TempPath))
+            {
+                _fileSystem.Directory.CreateDirectory(_configurationProvider.TempPath);
+            }
+
             var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempPath, localFileName);
             await _cloudStorageClient.DownloadAsync(bucketPath, bucketFileName, destinationFilePath);
 
