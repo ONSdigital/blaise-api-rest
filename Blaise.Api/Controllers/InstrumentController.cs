@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
-using Blaise.Api.Contracts.Models.Instrument;
+﻿using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Logging.Services;
 using Blaise.Nuget.Api.Contracts.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace Blaise.Api.Controllers
 {
@@ -15,17 +14,10 @@ namespace Blaise.Api.Controllers
     public class InstrumentController : BaseController
     {
         private readonly IInstrumentService _instrumentService;
-        private readonly IInstrumentInstallerService _installInstrumentService;
-        private readonly IInstrumentUninstallerService _uninstallInstrumentService;
 
-        public InstrumentController(
-            IInstrumentService instrumentService,
-            IInstrumentInstallerService installInstrumentService, 
-            IInstrumentUninstallerService uninstallInstrumentService)
+        public InstrumentController(IInstrumentService instrumentService)
         {
             _instrumentService = instrumentService;
-            _installInstrumentService = installInstrumentService;
-            _uninstallInstrumentService = uninstallInstrumentService;
         }
 
         [HttpGet]
@@ -97,44 +89,6 @@ namespace Blaise.Api.Controllers
             LoggingService.LogInfo($"Instrument '{instrumentName}' has the status '{status}'");
 
             return Ok(status);
-        }
-
-        [HttpPost]
-        [Route("")]
-        public async Task<IHttpActionResult> InstallInstrument([FromUri] string serverParkName, [FromBody] InstrumentPackageDto instrumentPackageDto)
-        {
-            LoggingService.LogInfo($"Attempting to install instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
-
-            await _installInstrumentService.InstallInstrumentAsync(serverParkName, instrumentPackageDto);
-
-            LoggingService.LogInfo($"Instrument '{instrumentPackageDto.InstrumentFile}' installed on server park '{serverParkName}'");
-
-            return Created($"{Request.RequestUri}/{instrumentPackageDto.InstrumentName}", instrumentPackageDto);
-        }
-
-        [HttpDelete]
-        [Route("{instrumentName}")]
-        public IHttpActionResult UninstallInstrument([FromUri] string serverParkName,[FromUri] string instrumentName)
-        {
-            LoggingService.LogInfo($"Attempting to uninstall instrument '{instrumentName}' on server park '{serverParkName}'");
-
-            _uninstallInstrumentService.UninstallInstrument(instrumentName, serverParkName);
-
-            LoggingService.LogInfo($"Instrument '{instrumentName}' has been uninstalled from server park '{serverParkName}'");
-
-            return NoContent();
-        }
-
-        [HttpPost]
-        [Route("{instrumentName}/deliver")]
-        public IHttpActionResult DeliverInstrument([FromUri] string serverParkName, [FromBody] InstrumentPackageDto instrumentPackageDto)
-        {
-            LoggingService.LogInfo($"Attempting to deliver instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
-
- 
-            LoggingService.LogInfo($"Instrument '{instrumentPackageDto.InstrumentFile}' installed on server park '{serverParkName}'");
-
-            return Created($"{Request.RequestUri}/{instrumentPackageDto.InstrumentName}", instrumentPackageDto);
         }
 
         [HttpPatch]

@@ -36,14 +36,13 @@ namespace Blaise.Api.Tests.Unit.Services
             _mockSequence = new MockSequence();
 
             _bucketPath = "OPN";
-            _instrumentFile = "OPN1234.zip";
+            _instrumentFile = "OPN2010A.zip";
             _serverParkName = "ServerParkA";
             _instrumentName = "OPN2010A";
 
             _instrumentPackageDto = new InstrumentPackageDto
             {
                 BucketPath = _bucketPath,
-                InstrumentName = _instrumentName,
                 InstrumentFile = _instrumentFile
             };
 
@@ -64,7 +63,10 @@ namespace Blaise.Api.Tests.Unit.Services
                 .ReturnsAsync(instrumentFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(b => b
-                .UpdateInstrumentFileWithSqlConnection(_instrumentName, instrumentFilePath));
+                .UpdateInstrumentFileWithSqlConnection(instrumentFilePath));
+
+            _fileServiceMock.InSequence(_mockSequence).Setup(f => f
+                .GetInstrumentNameFromFile(_instrumentFile)).Returns(_instrumentName);
 
             _blaiseSurveyApiMock.InSequence(_mockSequence).Setup(b => b
                 .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cati));
@@ -76,34 +78,11 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             _storageServiceMock.Verify(v => v.DownloadFromBucketAsync(_bucketPath, _instrumentFile, _instrumentFile), Times.Once);
-            _fileServiceMock.Verify(v => v.UpdateInstrumentFileWithSqlConnection(_instrumentName, instrumentFilePath), Times.Once);
+            _fileServiceMock.Verify(v => v.UpdateInstrumentFileWithSqlConnection(instrumentFilePath), Times.Once);
+            _fileServiceMock.Verify(v => v.GetInstrumentNameFromFile(_instrumentFile), Times.Once);
             _blaiseSurveyApiMock.Verify(v => v.InstallSurvey(_instrumentName, _serverParkName,
                 instrumentFilePath, SurveyInterviewType.Cati), Times.Once);
             _fileServiceMock.Verify(v => v.DeleteFile(instrumentFilePath), Times.Once);
-        }
-
-        [Test]
-        public void Given_An_Empty_InstrumentName_When_I_Call_InstallInstrument_Then_An_ArgumentException_Is_Thrown()
-        {
-            //arrange
-            _instrumentPackageDto.InstrumentName = string.Empty;
-
-            //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.InstallInstrumentAsync(_serverParkName,
-                _instrumentPackageDto));
-            Assert.AreEqual("A value for the argument 'instrumentPackageDto.InstrumentName' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_InstrumentName_When_I_Call_InstallInstrument_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //arrange
-            _instrumentPackageDto.InstrumentName = null;
-
-            //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.InstallInstrumentAsync(_serverParkName,
-                _instrumentPackageDto));
-            Assert.AreEqual("instrumentPackageDto.InstrumentName", exception.ParamName);
         }
 
         [Test]

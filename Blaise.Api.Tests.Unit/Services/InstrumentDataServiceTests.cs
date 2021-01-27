@@ -18,9 +18,9 @@ namespace Blaise.Api.Tests.Unit.Services
         private MockSequence _mockSequence;
 
         private string _serverParkName;
-        private string _instrumentName;
         private string _bucketPath;
         private string _instrumentFile;
+        private string _instrumentName;
 
         private InstrumentPackageDto _instrumentPackageDto;
 
@@ -32,14 +32,13 @@ namespace Blaise.Api.Tests.Unit.Services
             _mockSequence = new MockSequence();
 
             _bucketPath = "OPN";
-            _instrumentFile = "OPN1234.zip";
+            _instrumentFile = "OPN2010A.zip";
             _serverParkName = "ServerParkA";
             _instrumentName = "OPN2010A";
 
             _instrumentPackageDto = new InstrumentPackageDto
             {
                 BucketPath = _bucketPath,
-                InstrumentName = _instrumentName,
                 InstrumentFile = _instrumentFile
             };
 
@@ -49,15 +48,14 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public async Task Given_I_Call_CreateInstrumentPackageWithDataAsync_Then_The_Correct_Services_Are_Called_In_The_Correct_Order()
+        public async Task Given_I_Call_DeliverInstrumentPackageWithDataAsync_Then_The_Correct_Services_Are_Called_In_The_Correct_Order()
         {
             //arrange
             const string deliveryFile = @"dd_OPN2004A_08042020_154000.zip";
             const string instrumentFilePath = @"d:\temp\dd_OPN2004A_08042020_154000.zip";
             var expectedUploadBucketPath = $@"{_bucketPath}/data/OPN2010A";
 
-            _fileServiceMock.InSequence(_mockSequence).Setup(f => f
-                    .GenerateUniqueInstrumentFile(It.IsAny<string>(), It.IsAny<string>()))
+            _fileServiceMock.InSequence(_mockSequence).Setup(f => f.GenerateUniqueInstrumentFile(It.IsAny<string>()))
                 .Returns(deliveryFile);
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFromBucketAsync(It.IsAny<string>(),
@@ -65,7 +63,10 @@ namespace Blaise.Api.Tests.Unit.Services
                 .ReturnsAsync(instrumentFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
-                .UpdateInstrumentFileWithData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                .UpdateInstrumentFileWithData(It.IsAny<string>(), It.IsAny<string>()));
+
+            _fileServiceMock.InSequence(_mockSequence).Setup(f => f
+                .GetInstrumentNameFromFile(It.IsAny<string>())).Returns(_instrumentName);
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.UploadToBucketAsync(It.IsAny<string>(),
                 It.IsAny<string>())).Returns(Task.FromResult(0));
@@ -73,17 +74,18 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.InSequence(_mockSequence).Setup(s => s.DeleteFile(It.IsAny<string>()));
 
             //act
-            await _sut.CreateInstrumentPackageWithDataAsync(_serverParkName, _instrumentPackageDto);
+            await _sut.DeliverInstrumentPackageWithDataAsync(_serverParkName, _instrumentPackageDto);
 
             //assert
-            _fileServiceMock.Verify(v => v.GenerateUniqueInstrumentFile(
-                _instrumentPackageDto.InstrumentFile, _instrumentPackageDto.InstrumentName), Times.Once);
+            _fileServiceMock.Verify(v => v.GenerateUniqueInstrumentFile(_instrumentPackageDto.InstrumentFile), Times.Once);
 
             _storageServiceMock.Verify(v => v.DownloadFromBucketAsync(_bucketPath, _instrumentFile, 
                 deliveryFile), Times.Once);
 
             _fileServiceMock.Verify(v => v.UpdateInstrumentFileWithData(_serverParkName,
-                _instrumentName, instrumentFilePath), Times.Once);
+                instrumentFilePath), Times.Once);
+
+            _fileServiceMock.Verify(v => v.GetInstrumentNameFromFile(instrumentFilePath), Times.Once);
 
             _storageServiceMock.Verify(v => v.UploadToBucketAsync(expectedUploadBucketPath, instrumentFilePath), Times.Once);
 
@@ -92,15 +94,14 @@ namespace Blaise.Api.Tests.Unit.Services
 
 
         [Test]
-        public async Task Given_I_Call_CreateInstrumentPackageWithDataAsync_Then_The_Correct_Uploaded_Bucket_Path_Is_Returned()
+        public async Task Given_I_Call_DeliverInstrumentPackageWithDataAsync_Then_The_Correct_Uploaded_Bucket_Path_Is_Returned()
         {
             //arrange
-            const string deliveryFile = @"dd_OPN2004A_08042020_154000.zip";
-            const string instrumentFilePath = @"d:\temp\dd_OPN2004A_08042020_154000.zip";
+            const string deliveryFile = @"dd_OPN2010A_08042020_154000.zip";
+            const string instrumentFilePath = @"d:\temp\dd_OPN2010A_08042020_154000.zip";
             var expectedUploadBucketPath = $@"{_bucketPath}/data/OPN2010A";
 
-            _fileServiceMock.InSequence(_mockSequence).Setup(f => f
-                    .GenerateUniqueInstrumentFile(It.IsAny<string>(), It.IsAny<string>()))
+            _fileServiceMock.InSequence(_mockSequence).Setup(f => f.GenerateUniqueInstrumentFile(It.IsAny<string>()))
                 .Returns(deliveryFile);
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFromBucketAsync(It.IsAny<string>(),
@@ -108,7 +109,10 @@ namespace Blaise.Api.Tests.Unit.Services
                 .ReturnsAsync(instrumentFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
-                .UpdateInstrumentFileWithData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                .UpdateInstrumentFileWithData(It.IsAny<string>(), It.IsAny<string>()));
+
+            _fileServiceMock.InSequence(_mockSequence).Setup(f => f
+                .GetInstrumentNameFromFile(It.IsAny<string>())).Returns(_instrumentName);
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.UploadToBucketAsync(It.IsAny<string>(),
                 It.IsAny<string>())).Returns(Task.FromResult(0));
@@ -116,7 +120,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.InSequence(_mockSequence).Setup(s => s.DeleteFile(It.IsAny<string>()));
 
             //act
-            var result = await _sut.CreateInstrumentPackageWithDataAsync(_serverParkName, _instrumentPackageDto);
+            var result = await _sut.DeliverInstrumentPackageWithDataAsync(_serverParkName, _instrumentPackageDto);
 
             //assert
             Assert.IsNotNull(result);
@@ -124,66 +128,42 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_An_Empty_InstrumentName_When_I_Call_CreateInstrumentPackageWithDataAsync_Then_An_ArgumentException_Is_Thrown()
-        {
-            //arrange
-            _instrumentPackageDto.InstrumentName = string.Empty;
-
-            //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.CreateInstrumentPackageWithDataAsync(_serverParkName,
-                _instrumentPackageDto));
-            Assert.AreEqual("A value for the argument 'instrumentPackageDto.InstrumentName' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_InstrumentName_When_I_Call_CreateInstrumentPackageWithDataAsync_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //arrange
-            _instrumentPackageDto.InstrumentName = null;
-
-            //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.CreateInstrumentPackageWithDataAsync(_serverParkName,
-                _instrumentPackageDto));
-            Assert.AreEqual("instrumentPackageDto.InstrumentName", exception.ParamName);
-        }
-
-        [Test]
-        public void Given_An_Empty_ServerParkName_When_I_Call_CreateInstrumentPackageWithDataAsync_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_ServerParkName_When_I_Call_DeliverInstrumentPackageWithDataAsync_Then_An_ArgumentException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.CreateInstrumentPackageWithDataAsync(string.Empty, 
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.DeliverInstrumentPackageWithDataAsync(string.Empty, 
                 _instrumentPackageDto));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
         [Test]
-        public void Given_A_Null_ServerParkName_When_I_Call_CreateInstrumentPackageWithDataAsync_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_ServerParkName_When_I_Call_DeliverInstrumentPackageWithDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.CreateInstrumentPackageWithDataAsync(null,
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.DeliverInstrumentPackageWithDataAsync(null,
                 _instrumentPackageDto));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
         [Test]
-        public void Given_An_Empty_BucketPath_When_I_Call_CreateInstrumentPackageWithDataAsync_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_BucketPath_When_I_Call_DeliverInstrumentPackageWithDataAsync_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
             _instrumentPackageDto.BucketPath = string.Empty;
 
             //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.CreateInstrumentPackageWithDataAsync(_serverParkName, _instrumentPackageDto));
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.DeliverInstrumentPackageWithDataAsync(_serverParkName, _instrumentPackageDto));
             Assert.AreEqual("A value for the argument 'instrumentPackageDto.BucketPath' must be supplied", exception.Message);
         }
 
         [Test]
-        public void Given_A_Null_BucketPath_When_I_Call_CreateInstrumentPackageWithDataAsync_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_BucketPath_When_I_Call_DeliverInstrumentPackageWithDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
             _instrumentPackageDto.BucketPath = null;
 
             //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.CreateInstrumentPackageWithDataAsync(_serverParkName,
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.DeliverInstrumentPackageWithDataAsync(_serverParkName,
                 _instrumentPackageDto));
             Assert.AreEqual("instrumentPackageDto.BucketPath", exception.ParamName);
         }

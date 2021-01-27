@@ -5,6 +5,8 @@ namespace Blaise.Api.Core.Interfaces.Services
 {
     public interface IInstrumentDataService
     {
-        Task<string> CreateInstrumentPackageWithDataAsync(string serverParkName, InstrumentPackageDto instrumentPackageDto);
+        Task<string> DeliverInstrumentPackageWithDataAsync(string serverParkName, InstrumentPackageDto instrumentPackageDto);
+
+        Task<string> DownloadInstrumentPackageWithDataAsync(string serverParkName, InstrumentPackageDto instrumentPackageDto);
     }
 }

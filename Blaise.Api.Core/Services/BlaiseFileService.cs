@@ -22,21 +22,22 @@ namespace Blaise.Api.Core.Services
             _fileSystem = fileSystem;
         }
 
-        public void UpdateInstrumentFileWithSqlConnection(string instrumentName, string instrumentFile)
+        public void UpdateInstrumentFileWithSqlConnection(string instrumentFile)
         {
-            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             instrumentFile.ThrowExceptionIfNullOrEmpty("instrumentFile");
+            var instrumentName = GetInstrumentNameFromFile(instrumentFile);
 
             _blaiseFileApi.UpdateInstrumentFileWithSqlConnection(
                 instrumentName,
                 instrumentFile);
         }
 
-        public void UpdateInstrumentFileWithData(string serverParkName, string instrumentName, string instrumentFile)
+        public void UpdateInstrumentFileWithData(string serverParkName, string instrumentFile)
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
-            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             instrumentFile.ThrowExceptionIfNullOrEmpty("instrumentFile");
+
+            var instrumentName = GetInstrumentNameFromFile(instrumentFile);
 
             _blaiseFileApi.UpdateInstrumentFileWithData(serverParkName, instrumentName,
                 instrumentFile);
@@ -46,8 +47,15 @@ namespace Blaise.Api.Core.Services
             _fileSystem.File.Delete(instrumentFile);
         }
 
-        public string GenerateUniqueInstrumentFile(string instrumentFile, string instrumentName)
+        public string GetInstrumentNameFromFile(string instrumentFile)
         {
+            return _fileSystem.Path.GetFileNameWithoutExtension(instrumentFile);
+        }
+
+        public string GenerateUniqueInstrumentFile(string instrumentFile)
+        {
+            var instrumentName = GetInstrumentNameFromFile(instrumentFile);
+
             return GenerateUniqueInstrumentFile(instrumentFile, instrumentName, DateTime.Now);
         }
 

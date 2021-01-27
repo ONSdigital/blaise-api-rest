@@ -19,32 +19,43 @@ namespace Blaise.Api.Core.Services
             _storageService = storageService;
         }
 
-        public async Task<string> CreateInstrumentPackageWithDataAsync(string serverParkName,
+        public async Task<string> DeliverInstrumentPackageWithDataAsync(string serverParkName,
             InstrumentPackageDto instrumentPackageDto)
         {
-            instrumentPackageDto.InstrumentName.ThrowExceptionIfNullOrEmpty("instrumentPackageDto.InstrumentName");
+            var instrumentPackage = await CreateInstrumentPackageWithDataAsync(serverParkName, instrumentPackageDto);
+
+            return await UploadInstrumentToBucketAsync(instrumentPackageDto.BucketPath, instrumentPackage);
+        }
+
+        public async Task<string> DownloadInstrumentPackageWithDataAsync(string serverParkName, InstrumentPackageDto instrumentPackageDto)
+        {
+            return await CreateInstrumentPackageWithDataAsync(serverParkName, instrumentPackageDto);
+        }
+
+        private async Task<string> CreateInstrumentPackageWithDataAsync(string serverParkName, InstrumentPackageDto instrumentPackageDto)
+        {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             instrumentPackageDto.BucketPath.ThrowExceptionIfNullOrEmpty("instrumentPackageDto.BucketPath");
             instrumentPackageDto.InstrumentFile.ThrowExceptionIfNullOrEmpty("instrumentPackageDto.InstrumentFile");
 
-            var instrumentPackage = await DownloadInstrumentAsync(instrumentPackageDto);
+            var instrumentPackage = await DownloadInstrumentFromBucketAsync(instrumentPackageDto);
       
-            _fileService.UpdateInstrumentFileWithData(serverParkName, instrumentPackageDto.InstrumentName, instrumentPackage);
+            _fileService.UpdateInstrumentFileWithData(serverParkName,instrumentPackage);
 
-            return await UploadInstrumentAsync(instrumentPackageDto.BucketPath, instrumentPackageDto.InstrumentName, instrumentPackage);
+            return instrumentPackage;
         }
 
-        private async Task<string> DownloadInstrumentAsync(InstrumentPackageDto instrumentPackageDto)
+        private async Task<string> DownloadInstrumentFromBucketAsync(InstrumentPackageDto instrumentPackageDto)
         {
-            var instrumentPackage = _fileService.GenerateUniqueInstrumentFile(instrumentPackageDto.InstrumentFile,  
-                instrumentPackageDto.InstrumentName);
+            var instrumentPackage = _fileService.GenerateUniqueInstrumentFile(instrumentPackageDto.InstrumentFile);
 
             return await _storageService.DownloadFromBucketAsync(instrumentPackageDto.BucketPath, 
                 instrumentPackageDto.InstrumentFile,instrumentPackage);
         }
 
-        private async Task<string> UploadInstrumentAsync(string bucketPath, string instrumentName,string instrumentFile)
+        private async Task<string> UploadInstrumentToBucketAsync(string bucketPath, string instrumentFile)
         {
+            var instrumentName = _fileService.GetInstrumentNameFromFile(instrumentFile);
             var dataBucketPath = $"{bucketPath}/data/{instrumentName}";
             await _storageService.UploadToBucketAsync(dataBucketPath, instrumentFile);
 

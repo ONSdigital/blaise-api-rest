@@ -23,10 +23,11 @@ namespace Blaise.Api.Tests.Unit.Services
         public void SetUpTests()
         {
             _blaiseFileApiMock = new Mock<IBlaiseFileApi>();
+
             _fileSystemMock = new MockFileSystem();
 
             _serverParkName = "ServerParkA";
-            _instrumentFile = "OPN1234.zip";
+            _instrumentFile = "OPN2010A.zip";
             _instrumentName = "OPN2010A";
 
             _sut = new BlaiseFileService(_blaiseFileApiMock.Object, _fileSystemMock);
@@ -40,7 +41,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _instrumentFile));
 
             //act
-            _sut.UpdateInstrumentFileWithData(_serverParkName, _instrumentName, _instrumentFile);
+            _sut.UpdateInstrumentFileWithData(_serverParkName, _instrumentFile);
 
             //assert
             _blaiseFileApiMock.Verify(v => v.UpdateInstrumentFileWithData(_serverParkName, _instrumentName, 
@@ -53,7 +54,6 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateInstrumentFileWithData(string.Empty,
-                _instrumentName,
                 _instrumentFile));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
@@ -63,28 +63,8 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateInstrumentFileWithData(null,
-                _instrumentName,
                 _instrumentFile));
             Assert.AreEqual("serverParkName", exception.ParamName);
-        }
-
-        [Test]
-        public void Given_An_Empty_InstrumentName_When_I_Call_UpdateInstrumentFileWithData_Then_An_ArgumentException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateInstrumentFileWithData(_serverParkName,
-                string.Empty, _instrumentFile));
-            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_InstrumentName_When_I_Call_UpdateInstrumentFileWithData_Then_An_ArgumentNullException_Is_Thrown()
-        {
-
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateInstrumentFileWithData(_serverParkName,
-                null, _instrumentFile));
-            Assert.AreEqual("instrumentName", exception.ParamName);
         }
 
         [Test]
@@ -92,7 +72,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateInstrumentFileWithData(_serverParkName,
-                _instrumentName, string.Empty));
+                string.Empty));
             Assert.AreEqual("A value for the argument 'instrumentFile' must be supplied", exception.Message);
         }
 
@@ -101,7 +81,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateInstrumentFileWithData(_serverParkName,
-                _instrumentName, null));
+                null));
             Assert.AreEqual("instrumentFile", exception.ParamName);
         }
 
@@ -113,7 +93,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _instrumentName, _instrumentFile));
 
             //act
-            _sut.UpdateInstrumentFileWithSqlConnection(_instrumentName, _instrumentFile);
+            _sut.UpdateInstrumentFileWithSqlConnection(_instrumentFile);
 
             //assert
             _blaiseFileApiMock.Verify(v => v.UpdateInstrumentFileWithSqlConnection(_instrumentName,
@@ -121,30 +101,10 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_An_Empty_InstrumentName_When_I_Call_UpdateInstrumentFileWithSqlConnection_Then_An_ArgumentException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateInstrumentFileWithSqlConnection(
-                string.Empty, _instrumentFile));
-            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_InstrumentName_When_I_Call_UpdateInstrumentFileWithSqlConnection_Then_An_ArgumentNullException_Is_Thrown()
-        {
-
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateInstrumentFileWithSqlConnection(
-                null, _instrumentFile));
-            Assert.AreEqual("instrumentName", exception.ParamName);
-        }
-
-        [Test]
         public void Given_An_Empty_InstrumentFile_When_I_Call_UpdateInstrumentFileWithSqlConnection_Then_An_ArgumentException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateInstrumentFileWithSqlConnection(
-                _instrumentName, string.Empty));
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateInstrumentFileWithSqlConnection(string.Empty));
             Assert.AreEqual("A value for the argument 'instrumentFile' must be supplied", exception.Message);
         }
 
@@ -152,8 +112,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Null_InstrumentFile_When_I_Call_UpdateInstrumentFileWithSqlConnection_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateInstrumentFileWithSqlConnection(
-                _instrumentName, null));
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateInstrumentFileWithSqlConnection(null));
             Assert.AreEqual("instrumentFile", exception.ParamName);
         }
 
@@ -182,7 +141,7 @@ namespace Blaise.Api.Tests.Unit.Services
             const string instrumentName = "OPN2004A";
 
             //act
-            var result = _sut.GenerateUniqueInstrumentFile(instrumentFile, instrumentName);
+            var result = _sut.GenerateUniqueInstrumentFile(instrumentFile);
 
             //assert
             Assert.NotNull(result);

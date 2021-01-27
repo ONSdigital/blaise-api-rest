@@ -26,7 +26,6 @@ namespace Blaise.Api.Core.Services
 
         public async Task InstallInstrumentAsync(string serverParkName, InstrumentPackageDto instrumentPackageDto)
         {
-            instrumentPackageDto.InstrumentName.ThrowExceptionIfNullOrEmpty("instrumentPackageDto.InstrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             instrumentPackageDto.BucketPath.ThrowExceptionIfNullOrEmpty("instrumentPackageDto.BucketPath");
             instrumentPackageDto.InstrumentFile.ThrowExceptionIfNullOrEmpty("instrumentPackageDto.InstrumentFile");
@@ -36,12 +35,12 @@ namespace Blaise.Api.Core.Services
                 instrumentPackageDto.InstrumentFile,
                 instrumentPackageDto.InstrumentFile);
 
-            _fileService.UpdateInstrumentFileWithSqlConnection(
-                instrumentPackageDto.InstrumentName,
-                instrumentFile);
+            _fileService.UpdateInstrumentFileWithSqlConnection(instrumentFile);
+
+            var instrumentName = _fileService.GetInstrumentNameFromFile(instrumentPackageDto.InstrumentFile);
 
             _blaiseSurveyApi.InstallSurvey(
-                instrumentPackageDto.InstrumentName, 
+                instrumentName, 
                 serverParkName, 
                 instrumentFile, 
                 SurveyInterviewType.Cati);

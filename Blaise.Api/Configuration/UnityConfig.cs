@@ -49,6 +49,7 @@ namespace Blaise.Api.Configuration
             //core services
             container.RegisterType<IServerParkService, ServerParkService>();
             container.RegisterType<IInstrumentService, InstrumentService>();
+            container.RegisterType<IInstrumentDataService, InstrumentDataService>();
             container.RegisterType<IInstrumentInstallerService, InstrumentInstallerService>();
             container.RegisterType<IInstrumentUninstallerService, InstrumentUninstallerService>();
             container.RegisterType<ICatiService, CatiService>();

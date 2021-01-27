@@ -10,6 +10,7 @@ namespace Blaise.Api.Tests.Unit.Configuration
         [TestCase(typeof(CatiController))]
         [TestCase(typeof(HealthController))]
         [TestCase(typeof(InstrumentController))]
+        [TestCase(typeof(InstrumentDataController))]
         [TestCase(typeof(ServerParkController))]
         [TestCase(typeof(UserRoleController))]
         [TestCase(typeof(UserController))]

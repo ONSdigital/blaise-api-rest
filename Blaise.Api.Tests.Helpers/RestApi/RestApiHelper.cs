@@ -43,8 +43,7 @@ namespace Blaise.Api.Tests.Helpers.RestApi
             var model = new InstrumentPackageDto
             {
                 BucketPath = bucketPath,
-                InstrumentFile = instrumentPackage,
-                InstrumentName = Path.GetFileNameWithoutExtension(instrumentPackage)
+                InstrumentFile = instrumentPackage
             };
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(model));
@@ -57,8 +56,7 @@ namespace Blaise.Api.Tests.Helpers.RestApi
             var model = new InstrumentPackageDto
             {
                 BucketPath = bucketPath,
-                InstrumentFile = instrumentPackage,
-                InstrumentName = Path.GetFileNameWithoutExtension(instrumentPackage)
+                InstrumentFile = instrumentPackage
             };
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(model));
