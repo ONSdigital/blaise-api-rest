@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
@@ -12,10 +12,14 @@ namespace Blaise.Api.Controllers
     public class CatiController : BaseController
     {
         private readonly ICatiService _catiService;
+        private readonly ILoggingService _loggingService;
 
-        public CatiController(ICatiService catiService)
+        public CatiController(
+            ICatiService catiService, 
+            ILoggingService loggingService)
         {
             _catiService = catiService;
+            _loggingService = loggingService;
         }
 
         [HttpGet]
@@ -23,11 +27,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(IEnumerable<CatiInstrumentDto>))]
         public IHttpActionResult GetInstruments()
         {
-            LoggingService.LogInfo("Obtaining a list of instruments from Cati");
+            _loggingService.LogInfo("Obtaining a list of instruments from Cati");
 
             var instruments = _catiService.GetCatiInstruments().ToList();
 
-            LoggingService.LogInfo($"Successfully received a list of instruments from Cati '{string.Join(", ", instruments)}'");
+            _loggingService.LogInfo($"Successfully received a list of instruments from Cati '{string.Join(", ", instruments)}'");
 
             return Ok(instruments);
         }
@@ -37,11 +41,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(IEnumerable<CatiInstrumentDto>))]
         public IHttpActionResult GetInstruments([FromUri] string serverParkName)
         {
-            LoggingService.LogInfo($"Obtaining a list of instruments from Cati for server park '{serverParkName}'");
+            _loggingService.LogInfo($"Obtaining a list of instruments from Cati for server park '{serverParkName}'");
 
             var instruments = _catiService.GetCatiInstruments(serverParkName).ToList();
 
-            LoggingService.LogInfo($"Successfully received a list of instruments from Cati '{string.Join(", ", instruments)}'");
+            _loggingService.LogInfo($"Successfully received a list of instruments from Cati '{string.Join(", ", instruments)}'");
 
             return Ok(instruments);
         }
@@ -51,11 +55,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(CatiInstrumentDto))]
         public IHttpActionResult GetInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
-            LoggingService.LogInfo($"Obtaining an instrument from Cati for server park '{serverParkName}'");
+            _loggingService.LogInfo($"Obtaining an instrument from Cati for server park '{serverParkName}'");
 
             var instrument = _catiService.GetCatiInstrument(serverParkName, instrumentName);
 
-            LoggingService.LogInfo("Successfully received an instrument from Cati");
+            _loggingService.LogInfo("Successfully received an instrument from Cati");
 
             return Ok(instrument);
         }
@@ -64,11 +68,11 @@ namespace Blaise.Api.Controllers
         [Route("serverparks/{serverParkName}/instruments/{instrumentName}/daybatch")]
         public IHttpActionResult CreateDaybatch([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] DayBatchDto dayBatchDto)
         {
-            LoggingService.LogInfo($"Create a daybatch for instrument '{instrumentName}' on server park '{serverParkName}' for '{dayBatchDto.DaybatchDate}'");
+            _loggingService.LogInfo($"Create a daybatch for instrument '{instrumentName}' on server park '{serverParkName}' for '{dayBatchDto.DaybatchDate}'");
 
             _catiService.CreateDayBatch(instrumentName, serverParkName, dayBatchDto);
 
-            LoggingService.LogInfo($"Daybatch created for instrument '{instrumentName}' on '{dayBatchDto.DaybatchDate}'");
+            _loggingService.LogInfo($"Daybatch created for instrument '{instrumentName}' on '{dayBatchDto.DaybatchDate}'");
 
             return Created("", dayBatchDto);
         }

@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
@@ -10,10 +10,14 @@ namespace Blaise.Api.Controllers
     public class InstrumentDataController : BaseController
     {
         private readonly IInstrumentDataService _instrumentDataService;
-
-        public InstrumentDataController(IInstrumentDataService dataDeliveryService)
+        private readonly ILoggingService _loggingService;
+        
+        public InstrumentDataController(
+            IInstrumentDataService dataDeliveryService, 
+            ILoggingService loggingService)
         {
             _instrumentDataService = dataDeliveryService;
+            _loggingService = loggingService;
         }
 
         [HttpPost]
@@ -21,11 +25,11 @@ namespace Blaise.Api.Controllers
         public async Task<IHttpActionResult> DeliverInstrumentWithDataAsync([FromUri] string serverParkName, [FromUri] string instrumentName,
             [FromBody] DeliverInstrumentDto deliverInstrumentDto)
         {
-            LoggingService.LogInfo($"Attempting to deliver instrument '{instrumentName}' on server park '{serverParkName}'");
+            _loggingService.LogInfo($"Attempting to deliver instrument '{instrumentName}' on server park '{serverParkName}'");
 
             var instrumentPath = await _instrumentDataService.DeliverInstrumentPackageWithDataAsync(serverParkName, instrumentName, deliverInstrumentDto);
 
-            LoggingService.LogInfo($"Instrument '{instrumentName}' delivered with data to '{deliverInstrumentDto.BucketPath}'");
+            _loggingService.LogInfo($"Instrument '{instrumentName}' delivered with data to '{deliverInstrumentDto.BucketPath}'");
 
             return Created($@"gs://{instrumentPath}", deliverInstrumentDto);
         }
@@ -34,7 +38,7 @@ namespace Blaise.Api.Controllers
         [Route("")]
         public async Task<IHttpActionResult> DownloadInstrumentWithDataAsync([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
-            LoggingService.LogInfo($"Attempting to download instrument '{instrumentName}' on server park '{serverParkName}'");
+            _loggingService.LogInfo($"Attempting to download instrument '{instrumentName}' on server park '{serverParkName}'");
 
             var instrumentFile = await _instrumentDataService.DownloadInstrumentPackageWithDataAsync(serverParkName, instrumentName);
 

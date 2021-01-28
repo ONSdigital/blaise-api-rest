@@ -39,7 +39,8 @@ namespace Blaise.Api.Tests.Unit.Storage
             const string localFileName = "DD_OPN1234.zip";
             const string tempPath = @"d:\temp";
             var filePath = $@"{tempPath}\{Guid.NewGuid()}";
-    
+
+            _fileSystemMock.Setup(f => f.Directory.Exists(tempPath)).Returns(true);
             _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>()))
                 .Returns(filePath);
 

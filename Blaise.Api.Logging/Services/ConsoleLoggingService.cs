@@ -1,15 +1,16 @@
 ﻿using System;
+using Blaise.Api.Contracts.Interfaces;
 
 namespace Blaise.Api.Logging.Services
 {
-    public class LoggingService 
+    public class ConsoleLoggingService : ILoggingService
     {
-        public static void LogInfo(string message)
+        public void LogInfo(string message)
         {
             Console.WriteLine(message);
         }
 
-        public static void LogError(string message, Exception exception)
+        public void LogError(string message, Exception exception)
         {
             Console.WriteLine($"{message}: {exception.Message}, {exception.InnerException}");
         }

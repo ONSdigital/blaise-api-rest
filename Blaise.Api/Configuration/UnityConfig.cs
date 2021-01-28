@@ -4,6 +4,7 @@ using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Mappers;
 using Blaise.Api.Core.Services;
+using Blaise.Api.Logging.Services;
 using Blaise.Api.Providers;
 using Blaise.Api.Storage.Interfaces;
 using Blaise.Api.Storage.Providers;
@@ -35,6 +36,9 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IBlaiseFileApi, BlaiseFileApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseCaseApi, BlaiseCaseApi>(new InjectionConstructor(connectionModel));
 
+            //logging
+            container.RegisterType<ILoggingService, FileLoggingService>();
+
             //providers
             container.RegisterType<IConfigurationProvider, ConfigurationProvider>();
             container.RegisterType<ICloudStorageClientProvider, CloudStorageClientProvider>();
@@ -62,6 +66,13 @@ namespace Blaise.Api.Configuration
             container.RegisterType<ICloudStorageService, CloudStorageService>();
 
             return container;
+        }
+
+        public static T Resolve<T>()
+        {
+            var container = GetConfiguredContainer();
+
+            return container.Resolve<T>();
         }
     }
 }

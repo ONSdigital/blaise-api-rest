@@ -4,6 +4,7 @@ using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Enums;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.Health;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Logging.Services;
@@ -14,10 +15,14 @@ namespace Blaise.Api.Controllers
     public class HealthController : BaseController
     {
         private readonly IHealthCheckService _healthService;
+        private readonly ILoggingService _loggingService;
 
-        public HealthController(IHealthCheckService healthService)
+        public HealthController(
+            IHealthCheckService healthService,
+            ILoggingService loggingService)
         {
             _healthService = healthService;
+            _loggingService = loggingService;
         }
         
         [HttpGet]
@@ -25,7 +30,7 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(List<HealthCheckResultDto>))]
         public IHttpActionResult HealthCheck()
         {
-            LoggingService.LogInfo("performing Health check on Blaise connectivity");
+            _loggingService.LogInfo("performing Health check on Blaise connectivity");
 
             var results = _healthService.PerformCheck().ToList();
 

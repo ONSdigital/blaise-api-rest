@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.ServerPark;
 using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
@@ -12,10 +12,14 @@ namespace Blaise.Api.Controllers
     public class ServerParkController : BaseController
     {
         private readonly IServerParkService _serverParkService;
+        private readonly ILoggingService _loggingService;
 
-        public ServerParkController(IServerParkService parkService)
+        public ServerParkController(
+            IServerParkService parkService,
+            ILoggingService loggingService)
         {
             _serverParkService = parkService;
+            _loggingService = loggingService;
         }
 
         [HttpGet]
@@ -23,11 +27,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(IEnumerable<ServerParkDto>))]
         public IHttpActionResult GetServerParks()
         {
-            LoggingService.LogInfo("Obtaining a list of server parks");
+            _loggingService.LogInfo("Obtaining a list of server parks");
 
             var parks = _serverParkService.GetServerParks().ToList();
 
-            LoggingService.LogInfo($"Successfully received a list of server parks '{string.Join(", ", parks)}'");
+            _loggingService.LogInfo($"Successfully received a list of server parks '{string.Join(", ", parks)}'");
 
             return Ok(parks);
         }
@@ -39,7 +43,7 @@ namespace Blaise.Api.Controllers
         {
             var park = _serverParkService.GetServerPark(serverParkName);
 
-            LoggingService.LogInfo($"Successfully received server park '{serverParkName}'");
+            _loggingService.LogInfo($"Successfully received server park '{serverParkName}'");
 
             return Ok(park);
         }
@@ -51,7 +55,7 @@ namespace Blaise.Api.Controllers
         {
             var exists = _serverParkService.ServerParkExists(serverParkName);
 
-            LoggingService.LogInfo($"Successfully found server park '{serverParkName}'");
+            _loggingService.LogInfo($"Successfully found server park '{serverParkName}'");
 
             return Ok(exists);
         }
@@ -60,11 +64,11 @@ namespace Blaise.Api.Controllers
         [Route("{serverParkName}/server")]
         public IHttpActionResult RegisterMachine([FromUri] string serverParkName, [FromBody] ServerDto serverDto)
         {
-            LoggingService.LogInfo($"Attempt to register a server '{serverDto.Name}'");
+            _loggingService.LogInfo($"Attempt to register a server '{serverDto.Name}'");
 
             _serverParkService.RegisterServerOnServerPark(serverParkName, serverDto);
 
-            LoggingService.LogInfo($"Successfully registered a server '{serverDto.Name}'");
+            _loggingService.LogInfo($"Successfully registered a server '{serverDto.Name}'");
 
             return NoContent();
         }
