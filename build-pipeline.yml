@@ -1,0 +1,64 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+trigger:
+- none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+stages:
+  - stage: build
+    displayName: build rest api
+    jobs:
+    - job: build
+      steps: 
+      - task: NuGetToolInstaller@1
+        displayName: Nuget installer
+        
+      - task: NuGetCommand@2
+        displayName: restore Nuget package
+        inputs:
+          command: 'restore'
+          restoreSolution: '**/*.sln'
+          feedsToUse: 'select'
+          vstsFeed: 'fbaf94f7-2d40-410a-8a27-de142d8d2313/2d8c792e-c1ad-4a66-924d-5bc4fec5fca0'
+          
+      - task: VSBuild@1
+        displayName: build solution
+        inputs:
+          solution: '**\*.sln'
+          platform: '$(buildPlatform)'
+          configuration: '$(buildConfiguration)'
+
+      - task: VSTest@2
+        displayName: run unit tests
+        inputs:
+          testSelector: 'testAssemblies'
+          testAssemblyVer2: |
+                        **\*test*.dll
+                        !**\*Behaviour.dll
+                        !**\*TestAdapter.dll
+                        !**\obj\**
+          searchFolder: '$(System.DefaultWorkingDirectory)'
+          
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: '$(System.DefaultWorkingDirectory)'
+          Contents: '**\bin\$(BuildConfiguration)\**'
+          TargetFolder: '$(build.artifactstagingdirectory)'
+          CleanTargetFolder: true
+          OverWrite: true
+        
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: '_blaiseRestAPI'
+          publishLocation: 'Container'

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Tests.Helpers.Configuration;
@@ -37,15 +38,18 @@ namespace Blaise.Api.Tests.Helpers.RestApi
                 : new List<Questionnaire>();
         }
 
-        public async Task DeployQuestionnaire(string url, string bucketPath, string instrumentPackage)
+        public async Task<HttpStatusCode> DeployQuestionnaire(string url, string bucketPath, string instrumentFile)
         {
             var model = new InstrumentPackageDto
             {
-                InstrumentFile = instrumentPackage
+                BucketPath = bucketPath,
+                InstrumentFile = instrumentPackage,
+                InstrumentName = Path.GetFileNameWithoutExtension(instrumentPackage)
             };
 
-            var stringContent = new StringContent(JsonConvert.SerializeObject(model));
-            await _httpClient.PostAsync(url, stringContent);
+            var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(url, stringContent);
+            return response.StatusCode;
         }
 
 

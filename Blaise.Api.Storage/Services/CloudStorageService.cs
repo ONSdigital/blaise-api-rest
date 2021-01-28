@@ -12,7 +12,7 @@ namespace Blaise.Api.Storage.Services
         private readonly IFileSystem _fileSystem;
 
         public CloudStorageService(
-            IConfigurationProvider configurationProvider, 
+            IConfigurationProvider configurationProvider,
             ICloudStorageClientProvider cloudStorageClient,
             IFileSystem fileSystem)
         {
