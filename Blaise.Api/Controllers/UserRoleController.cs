@@ -7,7 +7,7 @@ using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
-    [RoutePrefix("api/v1/roles/user")]
+    [RoutePrefix("api/v1/userroles")]
     public class UserRoleController : BaseController
     {
         private readonly IUserRoleService _roleService;
