@@ -42,9 +42,8 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public async Task WhenTheApiIsCalledToDeliverTheQuestionnaireWithData()
         {
             var deliveredFile = await RestApiHelper.GetInstance().DeliverInstrumentWithData(
-                RestApiConfigurationHelper.InstrumentsUrl,
-                BlaiseConfigurationHelper.InstrumentBucketPath,
-                BlaiseConfigurationHelper.InstrumentPackage);
+                RestApiConfigurationHelper.InstrumentDataDeliveryUrl,
+                BlaiseConfigurationHelper.InstrumentBucketPath);
 
             _scenarioContext.Set(deliveredFile, ApiResponse);
         }

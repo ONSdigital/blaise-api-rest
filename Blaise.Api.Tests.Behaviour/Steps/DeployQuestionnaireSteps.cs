@@ -1,5 +1,6 @@
-﻿using System.Threading.Tasks;
-using System.Web;
+﻿using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Cloud;
 using Blaise.Api.Tests.Helpers.Configuration;
 using Blaise.Api.Tests.Helpers.Instrument;
@@ -26,13 +27,11 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var response = await RestApiHelper.GetInstance().DeployQuestionnaire(
                 RestApiConfigurationHelper.InstrumentsUrl,
-                BlaiseConfigurationHelper.InstrumentBucketPath,
                 BlaiseConfigurationHelper.InstrumentName);
 
             Assert.AreEqual(HttpStatusCode.Created, response);
         }
-
-
+        
         [AfterScenario("deploy")]
         public async Task CleanUpScenario()
         {

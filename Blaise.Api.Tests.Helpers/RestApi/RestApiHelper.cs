@@ -38,13 +38,11 @@ namespace Blaise.Api.Tests.Helpers.RestApi
                 : new List<Questionnaire>();
         }
 
-        public async Task<HttpStatusCode> DeployQuestionnaire(string url, string bucketPath, string instrumentFile)
+        public async Task<HttpStatusCode> DeployQuestionnaire(string url, string instrumentFile)
         {
             var model = new InstrumentPackageDto
             {
-                BucketPath = bucketPath,
-                InstrumentFile = instrumentPackage,
-                InstrumentName = Path.GetFileNameWithoutExtension(instrumentPackage)
+                InstrumentFile = instrumentFile
             };
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
@@ -53,11 +51,11 @@ namespace Blaise.Api.Tests.Helpers.RestApi
         }
 
 
-        public async Task<string> DeliverInstrumentWithData(string url, string bucketPath, string instrumentPackage)
+        public async Task<string> DeliverInstrumentWithData(string url, string bucketPath)
         {
-            var model = new InstrumentPackageDto
+            var model = new DeliverInstrumentDto
             {
-                InstrumentFile = instrumentPackage
+                BucketPath = bucketPath
             };
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(model));

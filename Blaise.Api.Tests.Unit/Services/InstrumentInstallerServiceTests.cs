@@ -22,7 +22,6 @@ namespace Blaise.Api.Tests.Unit.Services
 
         private string _serverParkName;
         private string _instrumentName;
-        private string _bucketPath;
         private string _instrumentFile;
 
         private InstrumentPackageDto _instrumentPackageDto;
@@ -35,7 +34,6 @@ namespace Blaise.Api.Tests.Unit.Services
             _storageServiceMock = new Mock<ICloudStorageService>(MockBehavior.Strict);
             _mockSequence = new MockSequence();
 
-            _bucketPath = "OPN";
             _instrumentFile = "OPN2010A.zip";
             _serverParkName = "ServerParkA";
             _instrumentName = "OPN2010A";

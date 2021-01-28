@@ -8,5 +8,8 @@ namespace Blaise.Api.Tests.Helpers.Configuration
 
         public static string InstrumentsUrl =>
             $"/api/v1/serverparks/{BlaiseConfigurationHelper.ServerParkName}/instruments";
+
+        public static string InstrumentDataDeliveryUrl =>
+            $"/api/v1/serverparks/{BlaiseConfigurationHelper.ServerParkName}/instruments/{BlaiseConfigurationHelper.InstrumentName}/data/deliver";
     }
 }
