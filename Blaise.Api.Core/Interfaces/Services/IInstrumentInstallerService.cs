@@ -5,6 +5,6 @@ namespace Blaise.Api.Core.Interfaces.Services
 {
     public interface IInstrumentInstallerService
     {
-        Task InstallInstrumentAsync(string serverParkName, InstrumentPackageDto instrumentPackageDto);
+        Task<string> InstallInstrumentAsync(string serverParkName, InstrumentPackageDto instrumentPackageDto);
     }
 }

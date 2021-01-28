@@ -7,20 +7,17 @@ using System.Web.Http;
 namespace Blaise.Api.Controllers
 {
     [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments")]
-    public class InstallInstrumentController : BaseController
+    public class InstrumentInstallController : BaseController
     {
         private readonly IInstrumentInstallerService _installInstrumentService;
         private readonly IInstrumentUninstallerService _uninstallInstrumentService;
-        private readonly IBlaiseFileService _fileService;
 
-        public InstallInstrumentController(
+        public InstrumentInstallController(
             IInstrumentInstallerService installInstrumentService, 
-            IInstrumentUninstallerService uninstallInstrumentService, 
-            IBlaiseFileService fileService)
+            IInstrumentUninstallerService uninstallInstrumentService)
         {
             _installInstrumentService = installInstrumentService;
             _uninstallInstrumentService = uninstallInstrumentService;
-            _fileService = fileService;
         }
 
         [HttpPost]
@@ -29,17 +26,16 @@ namespace Blaise.Api.Controllers
         {
             LoggingService.LogInfo($"Attempting to install instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
 
-            await _installInstrumentService.InstallInstrumentAsync(serverParkName, instrumentPackageDto);
+            var instrumentName = await _installInstrumentService.InstallInstrumentAsync(serverParkName, instrumentPackageDto);
 
             LoggingService.LogInfo($"Instrument '{instrumentPackageDto.InstrumentFile}' installed on server park '{serverParkName}'");
 
-            var instrumentName = _fileService.GetInstrumentNameFromFile(instrumentPackageDto.InstrumentFile);
             return Created($"{Request.RequestUri}/{instrumentName}", instrumentPackageDto);
         }
 
         [HttpDelete]
         [Route("{instrumentName}")]
-        public IHttpActionResult UninstallInstrument([FromUri] string serverParkName,[FromUri] string instrumentName)
+        public IHttpActionResult UninstallInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             LoggingService.LogInfo($"Attempting to uninstall instrument '{instrumentName}' on server park '{serverParkName}'");
 

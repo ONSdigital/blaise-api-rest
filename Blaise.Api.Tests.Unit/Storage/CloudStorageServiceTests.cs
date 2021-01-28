@@ -45,12 +45,13 @@ namespace Blaise.Api.Tests.Unit.Storage
                 .Returns(filePath);
 
             _configurationProviderMock.Setup(c => c.TempPath).Returns(tempPath);
+            _configurationProviderMock.Setup(c => c.BucketPath).Returns(bucketPath);
             _fileSystemMock.Setup(s => s.Path.Combine(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(filePath);
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            await _sut.DownloadFromBucketAsync(bucketPath, instrumentFileName, localFileName);
+            await _sut.DownloadFromBucketAsync(instrumentFileName, localFileName);
 
             //assert
             _storageProviderMock.Verify(v => v.DownloadAsync(bucketPath, 
@@ -81,7 +82,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            var result = await _sut.DownloadFromBucketAsync(bucketPath, instrumentFileName, localFileName);
+            var result = await _sut.DownloadFromBucketAsync(instrumentFileName, localFileName);
 
             //arrange
             Assert.AreEqual(instrumentFilePath, result);
@@ -111,10 +112,32 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            await _sut.DownloadFromBucketAsync(bucketPath, instrumentFileName, localFileName);
+            await _sut.DownloadFromBucketAsync(instrumentFileName, localFileName);
 
             //arrange
             _fileSystemMock.Verify(v => v.Directory.CreateDirectory(tempPath), Times.Once);
+        }
+
+        [Test]
+        public async Task Given_I_Call_UploadToBucketAsync_Then_The_File_Is_Uploaded_To_The_Correct_Path()
+        {
+            //arrange
+            const string filePath = @"c:\\temp\OPN2010A.bpkg";
+            const string uploadPath = "data";
+            const string bucketPath = "OPN";
+            var expectedFullUploadPath = $@"{bucketPath}\{uploadPath}";
+
+            _fileSystemMock.Setup(f => f.Path.Combine(bucketPath, uploadPath)).Returns(expectedFullUploadPath);
+
+
+            _configurationProviderMock.Setup(c => c.BucketPath).Returns(bucketPath);
+            _storageProviderMock.Setup(s => s.UploadAsync(It.IsAny<string>(), It.IsAny<string>()));
+
+            //act
+            await _sut.UploadToBucketAsync(uploadPath, filePath);
+
+            //arrange
+            _storageProviderMock.Verify(v => v.UploadAsync(expectedFullUploadPath, filePath));
         }
     }
 }

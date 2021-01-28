@@ -59,6 +59,7 @@
     <Compile Include="Models\Cati\CatiInstrumentDto.cs" />
     <Compile Include="Models\Cati\DayBatchDto.cs" />
     <Compile Include="Models\Health\HealthCheckResultDto.cs" />
+    <Compile Include="Models\Instrument\DeliverInstrumentDto.cs" />
     <Compile Include="Models\Instrument\InstrumentPackageDto.cs" />
     <Compile Include="Models\Instrument\InstrumentDto.cs" />
     <Compile Include="Models\UserRole\UserRoleDto.cs" />

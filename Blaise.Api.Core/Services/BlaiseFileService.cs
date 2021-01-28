@@ -5,6 +5,7 @@ using Blaise.Nuget.Api.Contracts.Interfaces;
 using System.IO;
 using System.IO.Abstractions;
 using System.Runtime.CompilerServices;
+using Blaise.Api.Contracts.Interfaces;
 
 [assembly: InternalsVisibleTo("Blaise.Api.Tests.Unit")]
 namespace Blaise.Api.Core.Services
@@ -13,13 +14,16 @@ namespace Blaise.Api.Core.Services
     {
         private readonly IBlaiseFileApi _blaiseFileApi;
         private readonly IFileSystem _fileSystem;
+        private readonly IConfigurationProvider _configurationProvider;
 
         public BlaiseFileService(
             IBlaiseFileApi blaiseFileApi, 
-            IFileSystem fileSystem)
+            IFileSystem fileSystem, 
+            IConfigurationProvider configurationProvider)
         {
             _blaiseFileApi = blaiseFileApi;
             _fileSystem = fileSystem;
+            _configurationProvider = configurationProvider;
         }
 
         public void UpdateInstrumentFileWithSqlConnection(string instrumentFile)
@@ -50,6 +54,11 @@ namespace Blaise.Api.Core.Services
         public string GetInstrumentNameFromFile(string instrumentFile)
         {
             return _fileSystem.Path.GetFileNameWithoutExtension(instrumentFile);
+        }
+
+        public string GetInstrumentPackageName(string instrumentName)
+        {
+            return $"{instrumentName}.{_configurationProvider.PackageExtension}";
         }
 
         public string GenerateUniqueInstrumentFile(string instrumentFile)

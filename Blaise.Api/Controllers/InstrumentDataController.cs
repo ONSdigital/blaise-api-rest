@@ -6,36 +6,37 @@ using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
-    [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments/data")]
+    [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments/{instrumentName}/data")]
     public class InstrumentDataController : BaseController
     {
-        private readonly IInstrumentDataService _deliverInstrumentService;
+        private readonly IInstrumentDataService _instrumentDataService;
 
         public InstrumentDataController(IInstrumentDataService dataDeliveryService)
         {
-            _deliverInstrumentService = dataDeliveryService;
+            _instrumentDataService = dataDeliveryService;
         }
 
         [HttpPost]
+        [Route("deliver")]
+        public async Task<IHttpActionResult> DeliverInstrumentWithDataAsync([FromUri] string serverParkName, [FromUri] string instrumentName,
+            [FromBody] DeliverInstrumentDto deliverInstrumentDto)
+        {
+            LoggingService.LogInfo($"Attempting to deliver instrument '{instrumentName}' on server park '{serverParkName}'");
+
+            var instrumentPath = await _instrumentDataService.DeliverInstrumentPackageWithDataAsync(serverParkName, instrumentName, deliverInstrumentDto);
+
+            LoggingService.LogInfo($"Instrument '{instrumentName}' delivered with data to '{deliverInstrumentDto.BucketPath}'");
+
+            return Created($@"gs://{instrumentPath}", deliverInstrumentDto);
+        }
+
+        [HttpGet]
         [Route("")]
-        public async Task<IHttpActionResult> DeliverInstrumentWithDataAsync([FromUri] string serverParkName, [FromBody] InstrumentPackageDto instrumentPackageDto)
+        public async Task<IHttpActionResult> DownloadInstrumentWithDataAsync([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
-            LoggingService.LogInfo($"Attempting to deliver instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
+            LoggingService.LogInfo($"Attempting to download instrument '{instrumentName}' on server park '{serverParkName}'");
 
-            var bucketPath = await _deliverInstrumentService.DeliverInstrumentPackageWithDataAsync(serverParkName, instrumentPackageDto);
-
-            LoggingService.LogInfo($"Instrument '{instrumentPackageDto.InstrumentFile}' delivered with data");
-
-            return Created($@"gs://{bucketPath}", instrumentPackageDto);
-        }
-
-        [HttpPost]
-        [Route("download")]
-        public async Task<IHttpActionResult> DownloadInstrumentWithDataAsync([FromUri] string serverParkName, [FromBody] InstrumentPackageDto instrumentPackageDto)
-        {
-            LoggingService.LogInfo($"Attempting to download instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
-
-            var instrumentFile = await _deliverInstrumentService.DeliverInstrumentPackageWithDataAsync(serverParkName, instrumentPackageDto);
+            var instrumentFile = await _instrumentDataService.DownloadInstrumentPackageWithDataAsync(serverParkName, instrumentName);
 
             return DownloadFile(instrumentFile);
         }

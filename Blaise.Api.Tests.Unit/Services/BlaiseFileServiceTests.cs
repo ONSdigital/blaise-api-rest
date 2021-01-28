@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Moq;
@@ -13,7 +14,10 @@ namespace Blaise.Api.Tests.Unit.Services
         private BlaiseFileService _sut;
 
         private Mock<IBlaiseFileApi> _blaiseFileApiMock;
+
         private IFileSystem _fileSystemMock;
+
+        private Mock<IConfigurationProvider> _configurationProviderMock;
 
         private string _serverParkName;
         private string _instrumentName;
@@ -26,11 +30,13 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _fileSystemMock = new MockFileSystem();
 
+            _configurationProviderMock = new Mock<IConfigurationProvider>();
+
             _serverParkName = "ServerParkA";
             _instrumentFile = "OPN2010A.zip";
             _instrumentName = "OPN2010A";
 
-            _sut = new BlaiseFileService(_blaiseFileApiMock.Object, _fileSystemMock);
+            _sut = new BlaiseFileService(_blaiseFileApiMock.Object, _fileSystemMock, _configurationProviderMock.Object);
         }
                 
         [Test]
@@ -124,13 +130,39 @@ namespace Blaise.Api.Tests.Unit.Services
             var fileSystemMock = new Mock<IFileSystem>();
             fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
-            var sut = new BlaiseFileService(_blaiseFileApiMock.Object, fileSystemMock.Object);
+            var sut = new BlaiseFileService(_blaiseFileApiMock.Object, fileSystemMock.Object, _configurationProviderMock.Object);
 
             //act
             sut.DeleteFile(instrumentFile);
 
             //assert
             fileSystemMock.Verify(f =>f.File.Delete(instrumentFile));
+        }
+
+        [Test]
+        public void Given_I_Call_GetInstrumentNameFromFile_Then_The_Correct_Services_Are_Called()
+        {
+            //act
+            var result = _sut.GetInstrumentNameFromFile(_instrumentFile);
+
+            //assert
+            Assert.AreEqual(_instrumentName, result);
+        }
+
+        [Test]
+        public void Given_I_Call_GetInstrumentPackageName_Then_The_Correct_Services_Are_Called()
+        {
+            //arrange
+            var packageExtension = "bpkg";
+            var expectedPackageName = $"{_instrumentName}.{packageExtension}";
+
+            _configurationProviderMock.Setup(c => c.PackageExtension).Returns(packageExtension);
+
+            //act
+            var result = _sut.GetInstrumentPackageName(_instrumentName);
+
+            //assert
+            Assert.AreEqual(expectedPackageName, result);
         }
 
         [Test]

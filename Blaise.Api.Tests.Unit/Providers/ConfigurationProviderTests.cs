@@ -39,5 +39,27 @@ namespace Blaise.Api.Tests.Unit.Providers
             Assert.NotNull(result);
             Assert.AreEqual(@"c:\Blaise\Temp", result);
         }
+
+        [Test]
+        public void Given_BucketPath_Value_Is_Set_When_I_Call_BucketPath_I_Get_The_Correct_Value_Back()
+        {
+            //act
+            var result = _sut.BucketPath;
+
+            //assert
+            Assert.NotNull(result);
+            Assert.AreEqual(@"dqs-bucket", result);
+        }
+        
+        [Test]
+        public void Given_PackageExtension_Value_Is_Set_When_I_Call_PackageExtension_I_Get_The_Correct_Value_Back()
+        {
+            //act
+            var result = _sut.PackageExtension;
+
+            //assert
+            Assert.NotNull(result);
+            Assert.AreEqual(@"bpkg", result);
+        }
     }
 }

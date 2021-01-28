@@ -21,7 +21,7 @@ namespace Blaise.Api.Storage.Services
             _fileSystem = fileSystem;
         }
 
-        public async Task<string> DownloadFromBucketAsync(string bucketPath, string bucketFileName, string localFileName)
+        public async Task<string> DownloadFromBucketAsync(string bucketFileName, string localFileName)
         {
             if (!_fileSystem.Directory.Exists(_configurationProvider.TempPath))
             {
@@ -29,14 +29,15 @@ namespace Blaise.Api.Storage.Services
             }
 
             var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempPath, localFileName);
-            await _cloudStorageClient.DownloadAsync(bucketPath, bucketFileName, destinationFilePath);
+            await _cloudStorageClient.DownloadAsync(_configurationProvider.BucketPath, bucketFileName, destinationFilePath);
 
             return destinationFilePath;
         }
 
-        public async Task UploadToBucketAsync(string bucketPath, string filePath)
+        public async Task UploadToBucketAsync(string uploadPath, string filePath)
         {
-            await _cloudStorageClient.UploadAsync(bucketPath, filePath);
+            var bucketUploadPath = _fileSystem.Path.Combine(_configurationProvider.BucketPath, uploadPath);
+            await _cloudStorageClient.UploadAsync(bucketUploadPath, filePath);
         }
     }
 }
