@@ -7,8 +7,9 @@ namespace Blaise.Api.Tests.Helpers.Configuration
         public static string ServerParkName => ConfigurationExtensions.GetEnvironmentVariable("ServerParkName");
         public static string InstrumentPath => ConfigurationExtensions.GetEnvironmentVariable("InstrumentPath");
         public static string InstrumentName => ConfigurationExtensions.GetEnvironmentVariable("InstrumentName");
-        public static string InstrumentPackage => $"{InstrumentPath}//{InstrumentName}.zip";
-        public static string InstrumentFile => $"{InstrumentName}.{ConfigurationExtensions.GetVariable("PACKAGE_EXTENSION")}";
+        public static string InstrumentExtension => ConfigurationExtensions.GetVariable("PACKAGE_EXTENSION");
+        public static string InstrumentPackage => $"{InstrumentPath}//{InstrumentName}.{InstrumentExtension}";
+        public static string InstrumentFile => $"{InstrumentName}.{InstrumentExtension}";
         public static string BucketName => ConfigurationExtensions.GetVariable("ENV_BLAISE_GCP_BUCKET");
         public static string InstrumentBucketPath => $"{BucketName}";
         public static string DeliveredInstrumentBucketPath => $"{BucketName}//data//{InstrumentName}";
