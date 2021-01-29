@@ -43,7 +43,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var deliveredFile = await RestApiHelper.GetInstance().DeliverInstrumentWithData(
                 RestApiConfigurationHelper.InstrumentDataDeliveryUrl,
-                BlaiseConfigurationHelper.DeliveredInstrumentBucketPath);
+                BlaiseConfigurationHelper.BucketName);
 
             _scenarioContext.Set(deliveredFile, ApiResponse);
         }
@@ -55,7 +55,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             var fileName = Path.GetFileName(deliveredFile);
 
             var exists = CloudStorageHelper.GetInstance().FileExists(
-                BlaiseConfigurationHelper.DeliveredInstrumentBucketPath, fileName);
+                BlaiseConfigurationHelper.BucketName, fileName);
 
             Assert.True(exists);
         }
@@ -79,7 +79,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             var destinationFilePath = Path.Combine(BlaiseConfigurationHelper.TempDownloadPath, fileName);
             
             var downloadedFile = await CloudStorageHelper.GetInstance().DownloadFromBucketAsync(
-                BlaiseConfigurationHelper.DeliveredInstrumentBucketPath,
+                BlaiseConfigurationHelper.BucketName,
                 fileName,
                 destinationFilePath);
 
