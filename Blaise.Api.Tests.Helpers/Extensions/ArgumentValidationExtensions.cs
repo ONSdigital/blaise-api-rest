@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Blaise.Api.Core.Extensions
+namespace Blaise.Api.Tests.Helpers.Extensions
 {
        public static class ArgumentValidationExtensions
     {

@@ -1,14 +1,14 @@
-﻿using System.Configuration;
-using Blaise.Api.Contracts.Interfaces;
+﻿using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Extensions;
 
 namespace Blaise.Api.Providers
 {
     public class ConfigurationProvider : IConfigurationProvider
     {
-        public string BaseUrl => ConfigurationManager.AppSettings["BASE_URL"];
+        public string BaseUrl => ConfigurationExtensions.GetVariable("BASE_URL");
 
-        public string TempPath => ConfigurationManager.AppSettings["TEMP_PATH"];
-        public string BucketPath => ConfigurationManager.AppSettings["ENV_BLAISE_GCP_BUCKET"];
-        public string PackageExtension => ConfigurationManager.AppSettings["ENV_PACKAGE_EXTENSION"];
+        public string TempPath => ConfigurationExtensions.GetVariable("TEMP_PATH");
+        public string BucketPath => ConfigurationExtensions.GetEnvironmentVariable("ENV_BLAISE_DQS_BUCKET");
+        public string PackageExtension => ConfigurationExtensions.GetVariable("PACKAGE_EXTENSION");
     }
 }
