@@ -43,7 +43,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var deliveredFile = await RestApiHelper.GetInstance().DeliverInstrumentWithData(
                 RestApiConfigurationHelper.InstrumentDataDeliveryUrl,
-                BlaiseConfigurationHelper.InstrumentBucketPath);
+                BlaiseConfigurationHelper.DeliveredInstrumentBucketPath);
 
             _scenarioContext.Set(deliveredFile, ApiResponse);
         }

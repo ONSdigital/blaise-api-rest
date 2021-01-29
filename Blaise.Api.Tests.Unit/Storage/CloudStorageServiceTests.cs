@@ -45,7 +45,7 @@ namespace Blaise.Api.Tests.Unit.Storage
                 .Returns(filePath);
 
             _configurationProviderMock.Setup(c => c.TempPath).Returns(tempPath);
-            _configurationProviderMock.Setup(c => c.BucketPath).Returns(bucketPath);
+            _configurationProviderMock.Setup(c => c.DqsBucket).Returns(bucketPath);
             _fileSystemMock.Setup(s => s.Path.Combine(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(filePath);
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
@@ -130,7 +130,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(f => f.Path.Combine(bucketPath, uploadPath)).Returns(expectedFullUploadPath);
 
 
-            _configurationProviderMock.Setup(c => c.BucketPath).Returns(bucketPath);
+            _configurationProviderMock.Setup(c => c.DqsBucket).Returns(bucketPath);
             _storageProviderMock.Setup(s => s.UploadAsync(It.IsAny<string>(), It.IsAny<string>()));
 
             //act

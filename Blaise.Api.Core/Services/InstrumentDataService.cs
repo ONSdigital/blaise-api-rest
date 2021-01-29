@@ -19,7 +19,7 @@ namespace Blaise.Api.Core.Services
             _storageService = storageService;
         }
 
-        public async Task<string> DeliverInstrumentPackageWithDataAsync(string serverParkName, string instrumentName, 
+        public async Task<string> DeliverInstrumentPackageWithDataAsync(string serverParkName, string instrumentName,
             DeliverInstrumentDto deliverInstrumentDto)
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
@@ -28,7 +28,7 @@ namespace Blaise.Api.Core.Services
 
             var instrumentPackage = await CreateInstrumentPackageWithDataAsync(serverParkName, instrumentName);
 
-            return await UploadInstrumentToBucketAsync(deliverInstrumentDto.BucketPath, instrumentName, instrumentPackage);
+            return await UploadInstrumentToBucketAsync(deliverInstrumentDto.BucketPath, instrumentPackage);
         }
 
         public async Task<string> DownloadInstrumentPackageWithDataAsync(string serverParkName, string instrumentName)
@@ -42,20 +42,19 @@ namespace Blaise.Api.Core.Services
         private async Task<string> CreateInstrumentPackageWithDataAsync(string serverParkName, string instrumentName)
         {
             var instrumentPackage = await DownloadInstrumentFromBucketAsync(instrumentName);
-      
-            _fileService.UpdateInstrumentFileWithData(serverParkName,instrumentPackage);
+
+            _fileService.UpdateInstrumentFileWithData(serverParkName, instrumentPackage);
 
             return instrumentPackage;
         }
 
-        private async Task<string> UploadInstrumentToBucketAsync(string bucketPath, string instrumentNameName, string instrumentFile)
+        private async Task<string> UploadInstrumentToBucketAsync(string bucketPath, string instrumentFile)
         {
-            var dataBucketPath = $"{bucketPath}/data/{instrumentNameName}";
-            await _storageService.UploadToBucketAsync(dataBucketPath, instrumentFile);
+            await _storageService.UploadToBucketAsync(bucketPath, instrumentFile);
 
             _fileService.DeleteFile(instrumentFile);
 
-            return dataBucketPath;
+            return bucketPath;
         }
 
         private async Task<string> DownloadInstrumentFromBucketAsync(string instrumentName)
@@ -63,7 +62,7 @@ namespace Blaise.Api.Core.Services
             var instrumentPackageName = _fileService.GetInstrumentPackageName(instrumentName);
             var deliveryFileName = _fileService.GenerateUniqueInstrumentFile(instrumentPackageName);
 
-            return await _storageService.DownloadFromBucketAsync(instrumentPackageName,deliveryFileName);
+            return await _storageService.DownloadFromBucketAsync(instrumentPackageName, deliveryFileName);
         }
     }
 }

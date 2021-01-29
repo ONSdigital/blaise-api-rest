@@ -44,7 +44,7 @@ namespace Blaise.Api.Tests.Unit.Providers
         public void Given_BucketPath_Value_Is_Set_When_I_Call_BucketPath_I_Get_The_Correct_Value_Back()
         {
             //act
-            var result = _sut.BucketPath;
+            var result = _sut.DqsBucket;
 
             //assert
             Assert.NotNull(result);
