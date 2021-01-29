@@ -27,7 +27,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var response = await RestApiHelper.GetInstance().DeployQuestionnaire(
                 RestApiConfigurationHelper.InstrumentsUrl,
-                BlaiseConfigurationHelper.InstrumentName);
+                BlaiseConfigurationHelper.InstrumentFile);
 
             Assert.AreEqual(HttpStatusCode.Created, response);
         }
