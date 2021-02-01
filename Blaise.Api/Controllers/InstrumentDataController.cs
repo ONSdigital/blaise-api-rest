@@ -27,7 +27,7 @@ namespace Blaise.Api.Controllers
         {
             _loggingService.LogInfo($"Attempting to deliver instrument '{instrumentName}' on server park '{serverParkName}'");
 
-            var instrumentPath = await _instrumentDataService.DeliverInstrumentPackageWithDataAsync(serverParkName, instrumentName, deliverInstrumentDto);
+            await _instrumentDataService.DeliverInstrumentPackageWithDataAsync(serverParkName, instrumentName, deliverInstrumentDto);
 
             _loggingService.LogInfo($"Instrument '{instrumentName}' delivered with data to '{deliverInstrumentDto.BucketPath}'");
 
