@@ -31,7 +31,7 @@ namespace Blaise.Api.Controllers
 
             _loggingService.LogInfo($"Instrument '{instrumentName}' delivered with data to '{deliverInstrumentDto.BucketPath}'");
 
-            return Created($@"gs://{instrumentPath}", deliverInstrumentDto);
+            return Created($@"gs://{deliverInstrumentDto.BucketPath}", deliverInstrumentDto);
         }
 
         [HttpGet]
