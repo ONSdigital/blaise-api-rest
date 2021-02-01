@@ -1,7 +1,7 @@
-﻿@deliver
-Feature: Deliver Instrument With Data
+﻿@data
+Feature: Get instrument With Data
 	As a Survey Manager
-	I want raw respondent date delivered (Blaise files)
+	I want to be able to get raw respondent data (Blaise files)
 	So that my team can use the data for further processing
 
 Background:
@@ -14,6 +14,5 @@ Background:
 Scenario: Deliver an instrument with all correspondent data that has been captured so far
 	Given we have captured correspondent data for the questionnaire
 	When the API is called to deliver the questionnaire with data
-	Then the questionnaire package is delivered to the bucket
+	Then the questionnaire package contains the captured correspondent data
 	And the questionnaire is package uses the agreed file name format
-	And the questionnaire package contains the captured correspondent data

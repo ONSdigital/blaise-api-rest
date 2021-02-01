@@ -78,7 +78,7 @@ namespace Blaise.Api.Core.Services
 
         internal string GenerateUniqueInstrumentFileName(string instrumentName, DateTime dateTime)
         {
-            return $"dd_{instrumentName}_{dateTime:ddMMyyyy}_{dateTime:HHmmss}";
+            return $"{instrumentName}_{dateTime:ddMMyyyy}_{dateTime:HHmmss}";
         }
     }
 }

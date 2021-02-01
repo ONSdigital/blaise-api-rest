@@ -13,14 +13,14 @@ using TechTalk.SpecFlow;
 namespace Blaise.Api.Tests.Behaviour.Steps
 {
     [Binding]
-    public sealed class DeliverQuestionnaireWithDataSteps
+    public sealed class GetQuestionnaireWithDataSteps
     {
         private const int ExpectedNumberOfCases = 10;
         private const string ApiResponse = "ApiResponse";
 
         private readonly ScenarioContext _scenarioContext;
 
-        public DeliverQuestionnaireWithDataSteps(ScenarioContext scenarioContext)
+        public GetQuestionnaireWithDataSteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
         }
@@ -48,29 +48,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             _scenarioContext.Set(deliveredFile, ApiResponse);
         }
 
-        [Then(@"the questionnaire package is delivered to the bucket")]
-        public void ThenTheQuestionnairePackageIsDeliveredToTheBucket()
-        {
-            var deliveredFile = _scenarioContext.Get<string>(ApiResponse);
-            var fileName = Path.GetFileName(deliveredFile);
-
-            var exists = CloudStorageHelper.GetInstance().FileExists(
-                BlaiseConfigurationHelper.BucketName, fileName);
-
-            Assert.True(exists);
-        }
-
-        [Then(@"the questionnaire is package uses the agreed file name format")]
-        public void ThenTheQuestionnaireIsPackageUsesTheAgreedFileNameFormat()
-        {
-            var deliveredFile = _scenarioContext.Get<string>(ApiResponse);
-            var dateTime = DateTime.Now;
-            var expectedPartialFileName = $"dd_{BlaiseConfigurationHelper.InstrumentName}_{dateTime:ddMMyyyy}_";
-            var fileName = Path.GetFileName(deliveredFile);
-
-            Assert.True(fileName.StartsWith(expectedPartialFileName));
-        }
-
         [Then(@"the questionnaire package contains the captured correspondent data")]
         public async Task ThenTheQuestionnairePackageContainsTheCapturedCorrespondentData()
         {
@@ -86,12 +63,23 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             var extractedFilePath = Path.GetDirectoryName(destinationFilePath);
 
             downloadedFile.ExtractFile(extractedFilePath);
-            var dataInterfaceFile = $@"{extractedFilePath}\{BlaiseConfigurationHelper.InstrumentName}.bdix";
+            var dataInterfaceFile = $@"{extractedFilePath}\{BlaiseConfigurationHelper.InstrumentName}.{BlaiseConfigurationHelper.InstrumentExtension}";
             var numberOfCases = CaseHelper.GetInstance().NumberOfCasesInInstrument(dataInterfaceFile);
 
             Assert.AreEqual(ExpectedNumberOfCases, numberOfCases);
         }
-        
+
+        [Then(@"the questionnaire is package uses the agreed file name format")]
+        public void ThenTheQuestionnaireIsPackageUsesTheAgreedFileNameFormat()
+        {
+            var deliveredFile = _scenarioContext.Get<string>(ApiResponse);
+            var dateTime = DateTime.Now;
+            var expectedPartialFileName = $"{BlaiseConfigurationHelper.InstrumentName}_{dateTime:ddMMyyyy}_";
+            var fileName = Path.GetFileName(deliveredFile);
+
+            Assert.True(fileName.StartsWith(expectedPartialFileName));
+        }
+
         [AfterScenario("deliver")]
         public async Task CleanUpScenario()
         {

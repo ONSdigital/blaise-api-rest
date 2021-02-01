@@ -186,7 +186,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             const string instrumentFile = @"c:\OPN2004A.zip";
-            const string expectedFileName = @"c:\dd_OPN2004A_08042020_154000.zip";
+            const string expectedFileName = @"c:\OPN2004A_08042020_154000.zip";
             const string instrumentName = "OPN2004A";
             var dateTime = DateTime.ParseExact("2020-04-08 15:40:00,000", "yyyy-MM-dd HH:mm:ss,fff",
                 System.Globalization.CultureInfo.InvariantCulture);
@@ -204,7 +204,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_Valid_Arguments_When_I_Call_GenerateUniqueInstrumentFileName_Then_I_Get_The_Expected_Format_Back()
         {
             //arrange
-            const string expectedFileName = "dd_OPN2004A_08042020_154000";
+            const string expectedFileName = "OPN2004A_08042020_154000";
             const string instrumentName = "OPN2004A";
             var dateTime = DateTime.ParseExact("2020-04-08 15:40:00,000", "yyyy-MM-dd HH:mm:ss,fff",
                 System.Globalization.CultureInfo.InvariantCulture);
