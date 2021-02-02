@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Storage.Interfaces;
@@ -9,13 +10,16 @@ namespace Blaise.Api.Core.Services
     {
         private readonly IBlaiseFileService _fileService;
         private readonly ICloudStorageService _storageService;
+        private readonly ILoggingService _loggingService;
 
         public InstrumentDataService(
             IBlaiseFileService fileService,
-            ICloudStorageService storageService)
+            ICloudStorageService storageService, 
+            ILoggingService loggingService)
         {
             _fileService = fileService;
             _storageService = storageService;
+            _loggingService = loggingService;
         }
 
         public async Task<string> GetInstrumentPackageWithDataAsync(string serverParkName, string instrumentName)
@@ -29,8 +33,10 @@ namespace Blaise.Api.Core.Services
         private async Task<string> CreateInstrumentPackageWithDataAsync(string serverParkName, string instrumentName)
         {
             var instrumentPackage = await DownloadInstrumentFromBucketAsync(instrumentName);
-
+            _loggingService.LogInfo($"Downloaded instrument package '{instrumentPackage}'");
+            
             _fileService.UpdateInstrumentFileWithData(serverParkName, instrumentPackage);
+            _loggingService.LogInfo($"Updated instrument package '{instrumentPackage}' with data");
 
             return instrumentPackage;
         }
@@ -40,6 +46,7 @@ namespace Blaise.Api.Core.Services
             var instrumentPackageName = _fileService.GetInstrumentPackageName(instrumentName);
             var deliveryFileName = _fileService.GenerateUniqueInstrumentFile(instrumentPackageName);
 
+            _loggingService.LogInfo($"Downloading instrument package '{instrumentPackageName}' to file '{deliveryFileName}'");
             return await _storageService.DownloadFromBucketAsync(instrumentPackageName, deliveryFileName);
         }
     }

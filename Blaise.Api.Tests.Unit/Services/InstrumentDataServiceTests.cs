@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
 using Blaise.Api.Storage.Interfaces;
@@ -14,6 +15,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
         private Mock<IBlaiseFileService> _fileServiceMock;
         private Mock<ICloudStorageService> _storageServiceMock;
+        private Mock<ILoggingService> _loggingMock;
         private MockSequence _mockSequence;
 
         private string _serverParkName;
@@ -25,6 +27,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             _fileServiceMock = new Mock<IBlaiseFileService>(MockBehavior.Strict);
             _storageServiceMock = new Mock<ICloudStorageService>(MockBehavior.Strict);
+            _loggingMock = new Mock<ILoggingService>();
             _mockSequence = new MockSequence();
 
             _instrumentFile = "OPN2010A.zip";
@@ -33,7 +36,8 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _sut = new InstrumentDataService(
                 _fileServiceMock.Object,
-                _storageServiceMock.Object);
+                _storageServiceMock.Object,
+                _loggingMock.Object);
         }
 
         [Test]
