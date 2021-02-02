@@ -41,11 +41,10 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [When(@"the API is called to retrieve the questionnaire with data")]
         public async Task WhenTheApiIsCalledToDeliverTheQuestionnaireWithData()
         {
-            var deliveredFile = await RestApiHelper.GetInstance().DeliverInstrumentWithData(
-                RestApiConfigurationHelper.InstrumentDataUrl,
-                BlaiseConfigurationHelper.BucketName);
+            var instrumentFile = await RestApiHelper.GetInstance().GetInstrumentWithData(
+                RestApiConfigurationHelper.InstrumentDataUrl);
 
-            _scenarioContext.Set(deliveredFile, ApiResponse);
+            _scenarioContext.Set(instrumentFile, ApiResponse);
         }
 
         [Then(@"the questionnaire package contains the captured correspondent data")]

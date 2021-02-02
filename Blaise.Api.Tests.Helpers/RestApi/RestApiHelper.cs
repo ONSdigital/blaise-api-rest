@@ -50,6 +50,12 @@ namespace Blaise.Api.Tests.Helpers.RestApi
             return response.StatusCode;
         }
 
+        public async Task<string> GetInstrumentWithData(string url)
+        {
+            var response = await _httpClient.GetAsync(url);
+
+            return "response";
+        }
 
         private static async Task<List<T>> GetListOfObjectsASync<T>(string url)
         {
