@@ -345,153 +345,133 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.IsTrue(result.ActiveToday);
         }
 
-        //[Test]
-        //public void Given_No_Survey_Days_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_False()
-        //{
-        //    //arrange
-        //    var surveyDays = new List<DateTime>();
+        [Test]
+        public void Given_No_Survey_Days_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_False()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>();
 
-        //    //act
-        //    var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
-        //    //assert
-        //    Assert.IsNotNull(result);
-        //    Assert.IsInstanceOf<CatiInstrumentDto>(result);
-        //    Assert.IsFalse(result.DeliverData);
-        //}
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsFalse(result.DeliverData);
+        }
 
-        //[Test]
-        //public void Given_All_SurveyDays_Are_In_The_Future_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_False()
-        //{
-        //    //arrange
-        //    var surveyDays = new List<DateTime>
-        //    {
-        //        DateTime.Today.AddDays(3),
-        //        DateTime.Today.AddDays(2),
-        //        DateTime.Today.AddDays(1)
-        //    };
+        [Test]
+        public void Given_All_SurveyDays_Are_In_The_Future_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_False()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>
+            {
+                DateTime.Today.AddDays(3),
+                DateTime.Today.AddDays(2),
+                DateTime.Today.AddDays(1)
+            };
 
-        //    //act
-        //    var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
-        //    //assert
-        //    Assert.IsNotNull(result);
-        //    Assert.IsInstanceOf<CatiInstrumentDto>(result);
-        //    Assert.IsFalse(result.DeliverData);
-        //}
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsFalse(result.DeliverData);
+        }
 
-        //[Test]
-        //public void Given_There_Is_A_SurveyDay_In_The_Future_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_True()
-        //{
-        //    //arrange
-        //    var surveyDays = new List<DateTime>
-        //    {
-        //        DateTime.Today.AddDays(-3),
-        //        DateTime.Today.AddDays(-2),
-        //        DateTime.Today.AddDays(-1),
-        //        DateTime.Today.AddDays(1)
-        //    };
+        [Test]
+        public void Given_There_Is_A_SurveyDay_In_The_Future_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_True()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>
+            {
+                DateTime.Today.AddDays(-3),
+                DateTime.Today.AddDays(-2),
+                DateTime.Today.AddDays(-1),
+                DateTime.Today.AddDays(1)
+            };
 
-        //    //act
-        //    var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
-        //    //assert
-        //    Assert.IsNotNull(result);
-        //    Assert.IsInstanceOf<CatiInstrumentDto>(result);
-        //    Assert.IsTrue(result.DeliverData);
-        //}
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsTrue(result.DeliverData);
+        }
 
-        //[Test]
-        //public void Given_There_A_SurveyDay_For_Today_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_True()
-        //{
-        //    //arrange
-        //    var surveyDays = new List<DateTime>
-        //    {
-        //        DateTime.Today
-        //    };
+        [Test]
+        public void Given_There_A_SurveyDay_For_Today_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_True()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>
+            {
+                DateTime.Today
+            };
 
-        //    //act
-        //    var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
-        //    //assert
-        //    Assert.IsNotNull(result);
-        //    Assert.IsInstanceOf<CatiInstrumentDto>(result);
-        //    Assert.IsTrue(result.DeliverData);
-        //}
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsTrue(result.DeliverData);
+        }
 
-        //[Test]
-        //public void Given_There_A_SurveyDay_For_Today_At_A_Later_Time_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_True()
-        //{
-        //    //arrange
-        //    var surveyDays = new List<DateTime>
-        //    {
-        //        DateTime.Today.AddHours(1)
-        //    };
+        [Test]
+        public void Given_There_A_SurveyDay_For_Today_At_A_Later_Time_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_True()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>
+            {
+                DateTime.Today.AddHours(1)
+            };
 
-        //    //act
-        //    var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
-        //    //assert
-        //    Assert.IsNotNull(result);
-        //    Assert.IsInstanceOf<CatiInstrumentDto>(result);
-        //    Assert.IsTrue(result.DeliverData);
-        //}
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsTrue(result.DeliverData);
+        }
 
-        //[Test]
-        //public void Given_SurveyDays_Have_All_Passed_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_False()
-        //{
-        //    //arrange
-        //    var surveyDays = new List<DateTime>
-        //    {
-        //        DateTime.Today.AddDays(-3),
-        //        DateTime.Today.AddDays(-2),
-        //        DateTime.Today.AddDays(-1) //see test below
-        //    };
+        [Test]
+        public void Given_The_Last_SurveyDay_Is_Yesterday_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_True_Due_To_DataDelivery_Requirements()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>
+            {
+                DateTime.Today.AddDays(-1)
+            };
 
-        //    //act
-        //    var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
-        //    //assert
-        //    Assert.IsNotNull(result);
-        //    Assert.IsInstanceOf<CatiInstrumentDto>(result);
-        //    Assert.IsFalse(result.DeliverData);
-        //}
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsTrue(result.DeliverData);
+        }
 
-        //[Test]
-        //public void Given_The_Last_SurveyDay_Is_Yesterday_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_True_Due_To_DataDelivery_Requirements()
-        //{
-        //    //arrange
-        //    var surveyDays = new List<DateTime>
-        //    {
-        //        DateTime.Today.AddDays(-1)
-        //    };
+        [Test]
+        public void Given_The_Last_SurveyDay_Is_Two_Days_Ago_Or_More_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_False_Due_To_DataDelivery_Requirements()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>
+            {
+                DateTime.Today.AddDays(3),
+                DateTime.Today.AddDays(2)
+            };
 
-        //    //act
-        //    var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
-        //    //assert
-        //    Assert.IsNotNull(result);
-        //    Assert.IsInstanceOf<CatiInstrumentDto>(result);
-        //    Assert.IsTrue(result.DeliverData);
-        //}
-
-        //[Test]
-        //public void Given_The_Last_SurveyDay_Is_Two_Days_Ago_Or_More_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_False_Due_To_DataDelivery_Requirements()
-        //{
-        //    //arrange
-        //    var surveyDays = new List<DateTime>
-        //    {
-        //        DateTime.Today.AddDays(3),
-        //        DateTime.Today.AddDays(2)
-        //    };
-
-        //    //act
-        //    var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
-
-        //    //assert
-        //    Assert.IsNotNull(result);
-        //    Assert.IsInstanceOf<CatiInstrumentDto>(result);
-        //    Assert.IsFalse(result.DeliverData);
-        //}
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsFalse(result.DeliverData);
+        }
     }
 }

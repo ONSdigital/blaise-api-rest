@@ -46,11 +46,14 @@ namespace Blaise.Api.Core.Mappers
                 SurveyDays = surveyDays,
                 Active = surveyDays.Any(s => s.Date <= DateTime.Today) &&
                          surveyDays.Any(s => s.Date >= DateTime.Today),
-                ActiveToday = surveyDays.Any(s => s.Date == DateTime.Today),
-                DeliverData = surveyDays.Any(s => s.Date <= DateTime.Today) &&
-                         surveyDays.Any(s => s.Date >= DateTime.Today),
+                ActiveToday = surveyDays.Any(s => s.Date == DateTime.Today)
 
             };
+
+            catiInstrument.DeliverData = catiInstrument.Active || 
+                                         catiInstrument.SurveyDays.All(s => s.Date < DateTime.Today) &&
+                                         catiInstrument.SurveyDays.Any(s => s.Date == DateTime.Today.AddDays(-1));
+
             
             return catiInstrument;
         }
