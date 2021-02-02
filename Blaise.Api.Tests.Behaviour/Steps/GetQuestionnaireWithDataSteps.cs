@@ -38,11 +38,11 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             CaseHelper.GetInstance().CreateCases(ExpectedNumberOfCases);
         }
 
-        [When(@"the API is called to deliver the questionnaire with data")]
+        [When(@"the API is called to retrieve the questionnaire with data")]
         public async Task WhenTheApiIsCalledToDeliverTheQuestionnaireWithData()
         {
             var deliveredFile = await RestApiHelper.GetInstance().DeliverInstrumentWithData(
-                RestApiConfigurationHelper.InstrumentDataDeliveryUrl,
+                RestApiConfigurationHelper.InstrumentDataUrl,
                 BlaiseConfigurationHelper.BucketName);
 
             _scenarioContext.Set(deliveredFile, ApiResponse);

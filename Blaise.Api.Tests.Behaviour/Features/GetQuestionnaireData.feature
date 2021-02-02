@@ -13,6 +13,6 @@ Background:
 @smoke
 Scenario: Deliver an instrument with all correspondent data that has been captured so far
 	Given we have captured correspondent data for the questionnaire
-	When the API is called to deliver the questionnaire with data
+	When the API is called to retrieve the questionnaire with data
 	Then the questionnaire package contains the captured correspondent data
 	And the questionnaire is package uses the agreed file name format

@@ -51,19 +51,6 @@ namespace Blaise.Api.Tests.Helpers.RestApi
         }
 
 
-        public async Task<string> DeliverInstrumentWithData(string url, string bucketPath)
-        {
-            var model = new DeliverInstrumentDto
-            {
-                BucketPath = bucketPath
-            };
-
-            var stringContent = new StringContent(JsonConvert.SerializeObject(model));
-            var response = await _httpClient.PostAsync(url, stringContent);
-
-            return response.Headers.Location.AbsoluteUri;
-        }
-
         private static async Task<List<T>> GetListOfObjectsASync<T>(string url)
         {
             var response = await _httpClient.GetAsync(url);

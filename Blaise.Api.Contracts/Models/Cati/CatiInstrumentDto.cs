@@ -16,5 +16,7 @@ namespace Blaise.Api.Contracts.Models.Cati
         public bool Active;
 
         public bool ActiveToday;
+
+        public bool DeliverData;
     }
 }
