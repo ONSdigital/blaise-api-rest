@@ -26,7 +26,6 @@ namespace Blaise.Api.Controllers
             responseMsg.Content.Headers.ContentDisposition =  new ContentDispositionHeaderValue("attachment") {FileName = Path.GetFileName(filePath)};
             responseMsg.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
             
-            File.Delete(filePath);
             return ResponseMessage(responseMsg);
         }
     }
