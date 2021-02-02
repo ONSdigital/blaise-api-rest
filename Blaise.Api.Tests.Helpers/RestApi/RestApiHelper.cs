@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -54,7 +55,15 @@ namespace Blaise.Api.Tests.Helpers.RestApi
         {
             var response = await _httpClient.GetAsync(url);
 
-            return "response";
+            var fileName = response.Content.Headers.ContentDisposition.FileName;
+            var filePath = Path.Combine(BlaiseConfigurationHelper.TempDownloadPath, fileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                await response.Content.CopyToAsync(fileStream);
+            }
+
+            return filePath;
         }
 
         private static async Task<List<T>> GetListOfObjectsASync<T>(string url)
