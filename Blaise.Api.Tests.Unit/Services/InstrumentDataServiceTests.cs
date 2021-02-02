@@ -44,17 +44,12 @@ namespace Blaise.Api.Tests.Unit.Services
         public async Task Given_I_Call_DownloadInstrumentPackageWithDataAsync_Then_The_Correct_Services_Are_Called_In_The_Correct_Order()
         {
             //arrange
-            const string deliveryFile = @"dd_OPN2004A_08042020_154000.zip";
-            const string instrumentFilePath = @"d:\temp\dd_OPN2004A_08042020_154000.zip";
+            const string instrumentFilePath = @"d:\temp\OPN2004A.zip";
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f.GetInstrumentPackageName(It.IsAny<string>()))
                 .Returns(_instrumentFile);
 
-            _fileServiceMock.InSequence(_mockSequence).Setup(f => f.GenerateUniqueInstrumentFile(It.IsAny<string>()))
-                .Returns(deliveryFile);
-
-            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFromBucketAsync(It.IsAny<string>(),
-                    It.IsAny<string>()))
+            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFromBucketAsync(It.IsAny<string>()))
                 .ReturnsAsync(instrumentFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
@@ -70,10 +65,8 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             _fileServiceMock.Verify(v => v.GetInstrumentPackageName(_instrumentName), Times.Once);
-            _fileServiceMock.Verify(v => v.GenerateUniqueInstrumentFile(_instrumentFile), Times.Once);
 
-            _storageServiceMock.Verify(v => v.DownloadFromBucketAsync(_instrumentFile, 
-                deliveryFile), Times.Once);
+            _storageServiceMock.Verify(v => v.DownloadFromBucketAsync(_instrumentFile), Times.Once);
 
             _fileServiceMock.Verify(v => v.UpdateInstrumentFileWithData(_serverParkName,
                 instrumentFilePath), Times.Once);

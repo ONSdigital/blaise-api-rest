@@ -164,58 +164,5 @@ namespace Blaise.Api.Tests.Unit.Services
             //assert
             Assert.AreEqual(expectedPackageName, result);
         }
-
-        [Test]
-        public void Given_Valid_Arguments_When_I_Call_GenerateUniqueInstrumentFileName_Then_I_Get_A_String_Containing_Instrument_Name_Back()
-        {
-            //arrange
-            const string instrumentFile = "OPN2004A.zip";
-            const string instrumentName = "OPN2004A";
-
-            //act
-            var result = _sut.GenerateUniqueInstrumentFile(instrumentFile);
-
-            //assert
-            Assert.NotNull(result);
-            Assert.IsInstanceOf<string>(result);
-            Assert.IsTrue(result.Contains(instrumentName));
-        }
-
-        [Test]
-        public void Given_Valid_Arguments_When_I_Call_GenerateUniqueInstrumentFile_Then_I_Get_The_Expected_Format_Back()
-        {
-            //arrange
-            const string instrumentFile = @"c:\OPN2004A.zip";
-            const string expectedFileName = @"c:\OPN2004A_08042020_154000.zip";
-            const string instrumentName = "OPN2004A";
-            var dateTime = DateTime.ParseExact("2020-04-08 15:40:00,000", "yyyy-MM-dd HH:mm:ss,fff",
-                System.Globalization.CultureInfo.InvariantCulture);
-
-            //act
-            var result = _sut.GenerateUniqueInstrumentFile(instrumentFile, instrumentName, dateTime);
-
-            //assert
-            Assert.NotNull(result);
-            Assert.IsInstanceOf<string>(result);
-            Assert.AreEqual(expectedFileName, result);
-        }
-
-        [Test]
-        public void Given_Valid_Arguments_When_I_Call_GenerateUniqueInstrumentFileName_Then_I_Get_The_Expected_Format_Back()
-        {
-            //arrange
-            const string expectedFileName = "OPN2004A_08042020_154000";
-            const string instrumentName = "OPN2004A";
-            var dateTime = DateTime.ParseExact("2020-04-08 15:40:00,000", "yyyy-MM-dd HH:mm:ss,fff",
-                System.Globalization.CultureInfo.InvariantCulture);
-
-            //act
-            var result = _sut.GenerateUniqueInstrumentFileName(instrumentName, dateTime);
-
-            //assert
-            Assert.NotNull(result);
-            Assert.IsInstanceOf<string>(result);
-            Assert.AreEqual(expectedFileName, result);
-        }
     }
 }

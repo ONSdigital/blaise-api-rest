@@ -1,8 +1,6 @@
-﻿using System;
-using Blaise.Api.Core.Extensions;
+﻿using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
-using System.IO;
 using System.IO.Abstractions;
 using System.Runtime.CompilerServices;
 using Blaise.Api.Contracts.Interfaces;
@@ -59,26 +57,6 @@ namespace Blaise.Api.Core.Services
         public string GetInstrumentPackageName(string instrumentName)
         {
             return $"{instrumentName}.{_configurationProvider.PackageExtension}";
-        }
-
-        public string GenerateUniqueInstrumentFile(string instrumentFile)
-        {
-            var instrumentName = GetInstrumentNameFromFile(instrumentFile);
-
-            return GenerateUniqueInstrumentFile(instrumentFile, instrumentName, DateTime.Now);
-        }
-
-        internal string GenerateUniqueInstrumentFile(string instrumentFile, string instrumentName, DateTime dateTime)
-        {
-            var uniqueInstrumentName = GenerateUniqueInstrumentFileName(instrumentName, dateTime);
-            var fileInfo = _fileSystem.FileInfo.FromFileName(instrumentFile);
-            
-            return Path.Combine(fileInfo.DirectoryName, $"{uniqueInstrumentName}{fileInfo.Extension}");
-        }
-
-        internal string GenerateUniqueInstrumentFileName(string instrumentName, DateTime dateTime)
-        {
-            return $"{instrumentName}_{dateTime:ddMMyyyy}_{dateTime:HHmmss}";
         }
     }
 }

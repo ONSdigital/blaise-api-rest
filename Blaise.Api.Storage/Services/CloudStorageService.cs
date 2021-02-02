@@ -21,15 +21,15 @@ namespace Blaise.Api.Storage.Services
             _fileSystem = fileSystem;
         }
 
-        public async Task<string> DownloadFromBucketAsync(string bucketFileName, string localFileName)
+        public async Task<string> DownloadFromBucketAsync(string fileName)
         {
             if (!_fileSystem.Directory.Exists(_configurationProvider.TempPath))
             {
                 _fileSystem.Directory.CreateDirectory(_configurationProvider.TempPath);
             }
 
-            var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempPath, localFileName);
-            await _cloudStorageClient.DownloadAsync(_configurationProvider.DqsBucket, bucketFileName, destinationFilePath);
+            var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempPath, fileName);
+            await _cloudStorageClient.DownloadAsync(_configurationProvider.DqsBucket, fileName, destinationFilePath);
 
             return destinationFilePath;
         }

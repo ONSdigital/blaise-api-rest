@@ -31,7 +31,6 @@ namespace Blaise.Api.Core.Services
             instrumentPackageDto.InstrumentFile.ThrowExceptionIfNullOrEmpty("instrumentPackageDto.InstrumentFile");
 
             var instrumentFile = await _storageService.DownloadFromBucketAsync(
-                instrumentPackageDto.InstrumentFile,
                 instrumentPackageDto.InstrumentFile);
 
             _fileService.UpdateInstrumentFileWithSqlConnection(instrumentFile);

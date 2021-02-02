@@ -12,6 +12,6 @@ namespace Blaise.Api.Tests.Helpers.Configuration
         public static string InstrumentFile => $"{InstrumentName}.{InstrumentExtension}";
         public static string BucketName => ConfigurationExtensions.GetVariable("ENV_BLAISE_DQS_BUCKET");
         public static string InstrumentBucketPath => $"{BucketName}";
-        public static string TempDownloadPath => $@"c:\temp\instruments";
+        public static string TempDownloadPath => ConfigurationExtensions.GetVariable("TEMP_PATH");
     }
 }

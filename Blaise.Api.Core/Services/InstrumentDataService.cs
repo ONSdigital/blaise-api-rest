@@ -44,10 +44,9 @@ namespace Blaise.Api.Core.Services
         private async Task<string> DownloadInstrumentFromBucketAsync(string instrumentName)
         {
             var instrumentPackageName = _fileService.GetInstrumentPackageName(instrumentName);
-            var deliveryFileName = _fileService.GenerateUniqueInstrumentFile(instrumentPackageName);
 
-            _loggingService.LogInfo($"Downloading instrument package '{instrumentPackageName}' to file '{deliveryFileName}'");
-            return await _storageService.DownloadFromBucketAsync(instrumentPackageName, deliveryFileName);
+            _loggingService.LogInfo($"Downloading instrument package '{instrumentPackageName}'");
+            return await _storageService.DownloadFromBucketAsync(instrumentPackageName);
         }
     }
 }
