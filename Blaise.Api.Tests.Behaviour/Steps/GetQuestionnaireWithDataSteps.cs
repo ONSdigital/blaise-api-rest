@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Case;
-using Blaise.Api.Tests.Helpers.Cloud;
 using Blaise.Api.Tests.Helpers.Configuration;
 using Blaise.Api.Tests.Helpers.Extensions;
 using Blaise.Api.Tests.Helpers.Instrument;
@@ -48,20 +47,13 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         }
 
         [Then(@"the questionnaire package contains the captured correspondent data")]
-        public async Task ThenTheQuestionnairePackageContainsTheCapturedCorrespondentData()
+        public void ThenTheQuestionnairePackageContainsTheCapturedCorrespondentData()
         {
             var deliveredFile = _scenarioContext.Get<string>(ApiResponse);
             var fileName = Path.GetFileName(deliveredFile);
-            var destinationFilePath = Path.Combine(BlaiseConfigurationHelper.TempDownloadPath, fileName);
+            var extractedFilePath = Path.Combine(BlaiseConfigurationHelper.TempDownloadPath, fileName);
             
-            var downloadedFile = await CloudStorageHelper.GetInstance().DownloadFromBucketAsync(
-                BlaiseConfigurationHelper.BucketName,
-                fileName,
-                destinationFilePath);
-
-            var extractedFilePath = Path.GetDirectoryName(destinationFilePath);
-
-            downloadedFile.ExtractFile(extractedFilePath);
+            deliveredFile.ExtractFile(extractedFilePath);
             var dataInterfaceFile = $@"{extractedFilePath}\{BlaiseConfigurationHelper.InstrumentName}.{BlaiseConfigurationHelper.InstrumentExtension}";
             var numberOfCases = CaseHelper.GetInstance().NumberOfCasesInInstrument(dataInterfaceFile);
 
@@ -80,17 +72,13 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         }
 
         [AfterScenario("deliver")]
-        public async Task CleanUpScenario()
+        public void CleanUpScenario()
         {
             CaseHelper.GetInstance().DeleteCases();
             InstrumentHelper.GetInstance().UninstallSurvey();
 
-            var fileName = Path.GetFileName(BlaiseConfigurationHelper.InstrumentPackage);
-
-            await CloudStorageHelper.GetInstance().DeleteFromBucketAsync(
-                BlaiseConfigurationHelper.InstrumentBucketPath,
-                fileName);
-
+            var deliveredFile = _scenarioContext.Get<string>(ApiResponse);
+            File.Delete(deliveredFile);
             Directory.Delete(BlaiseConfigurationHelper.TempDownloadPath, true);
         }
     }
