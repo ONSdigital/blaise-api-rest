@@ -76,7 +76,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             Assert.IsTrue(instrumentHasInstalled, "The instrument has not been installed, or is not active");
         }
 
-        [AfterFeature("regression")]
+        [AfterFeature("questionnaires")]
         public static void CleanUpScenario()
         {
             InstrumentHelper.GetInstance().UninstallSurvey();
