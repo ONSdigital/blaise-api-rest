@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions;
+﻿using System;
+using System.IO.Abstractions;
 using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Storage.Interfaces;
@@ -21,23 +22,27 @@ namespace Blaise.Api.Storage.Services
             _fileSystem = fileSystem;
         }
 
-        public async Task<string> DownloadFromBucketAsync(string fileName)
+        public async Task<string> DownloadFromInstrumentBucketAsync(string fileName)
         {
-            if (!_fileSystem.Directory.Exists(_configurationProvider.TempPath))
-            {
-                _fileSystem.Directory.CreateDirectory(_configurationProvider.TempPath);
-            }
+            var filePath = _fileSystem.Path.Combine(
+                _configurationProvider.TempPath,
+                "InstrumentPackages",
+                Guid.NewGuid().ToString());
 
-            var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempPath, fileName);
-            await _cloudStorageClient.DownloadAsync(_configurationProvider.DqsBucket, fileName, destinationFilePath);
-
-            return destinationFilePath;
+            return await DownloadFromBucketAsync(_configurationProvider.DqsBucket, fileName, filePath);
         }
 
-        public async Task UploadToBucketAsync(string uploadPath, string filePath)
+        public async Task<string> DownloadFromBucketAsync(string bucketName, string fileName, string filePath)
         {
-            var bucketUploadPath = _fileSystem.Path.Combine(_configurationProvider.DqsBucket, uploadPath);
-            await _cloudStorageClient.UploadAsync(bucketUploadPath, filePath);
+            if (!_fileSystem.Directory.Exists(filePath))
+            {
+                _fileSystem.Directory.CreateDirectory(filePath);
+            }
+
+            var destinationFilePath = _fileSystem.Path.Combine(filePath, fileName);
+            await _cloudStorageClient.DownloadAsync(bucketName, fileName, destinationFilePath);
+
+            return destinationFilePath;
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Blaise.Api.Core.Services
             var instrumentPackageName = _fileService.GetInstrumentPackageName(instrumentName);
 
             _loggingService.LogInfo($"Downloading instrument package '{instrumentPackageName}'");
-            return await _storageService.DownloadFromBucketAsync(instrumentPackageName);
+            return await _storageService.DownloadFromInstrumentBucketAsync(instrumentPackageName);
         }
     }
 }

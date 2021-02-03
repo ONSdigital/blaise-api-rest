@@ -30,111 +30,101 @@ namespace Blaise.Api.Tests.Unit.Storage
                 _fileSystemMock.Object);
         }
 
+
+        [Test]
+        public async Task Given_I_Call_DownloadFromInstrumentBucket_Then_The_Correct_BucketName_Is_Provided()
+        {
+            //arrange
+            const string bucketName = "OPN";
+            const string tempPath = @"d:\Temp";
+            const string fileName = "OPN1234.zip";
+            const string filePath = @"d:\temp";
+            var destinationFilePath = $@"{filePath}\{fileName}";
+
+            _configurationProviderMock.Setup(c => c.TempPath).Returns(tempPath);
+            _configurationProviderMock.Setup(c => c.DqsBucket).Returns(bucketName);
+
+            _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(filePath);
+
+            _fileSystemMock.Setup(f => f.Directory.Exists(filePath)).Returns(true);
+            _fileSystemMock.Setup(s => s.Path.Combine(filePath, fileName))
+                .Returns(destinationFilePath);
+            _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
+
+            //act
+            await _sut.DownloadFromInstrumentBucketAsync(fileName);
+
+            //assert
+            _storageProviderMock.Verify(v => v.DownloadAsync(bucketName,
+                fileName, destinationFilePath));
+        }
+
         [Test]
         public async Task Given_I_Call_DownloadFromBucket_Then_The_Correct_Services_Are_Called()
         {
             //arrange
-            const string bucketPath = "OPN";
-            const string instrumentFileName = "OPN1234.zip";
-            const string tempPath = @"d:\temp";
-            var filePath = $@"{tempPath}\{Guid.NewGuid()}";
+            const string bucketName = "OPN";
+            const string fileName = "OPN1234.zip";
+            const string filePath = @"d:\temp";
+            var destinationFilePath = $@"{filePath}\{fileName}";
 
-            _fileSystemMock.Setup(f => f.Directory.Exists(tempPath)).Returns(true);
-            _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>()))
-                .Returns(filePath);
-
-            _configurationProviderMock.Setup(c => c.TempPath).Returns(tempPath);
-            _configurationProviderMock.Setup(c => c.DqsBucket).Returns(bucketPath);
-            _fileSystemMock.Setup(s => s.Path.Combine(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(filePath);
+            _fileSystemMock.Setup(f => f.Directory.Exists(filePath)).Returns(true);
+            _fileSystemMock.Setup(s => s.Path.Combine(filePath, fileName))
+                .Returns(destinationFilePath);
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            await _sut.DownloadFromBucketAsync(instrumentFileName);
+            await _sut.DownloadFromBucketAsync(bucketName, fileName, filePath);
 
             //assert
-            _storageProviderMock.Verify(v => v.DownloadAsync(bucketPath,
-                instrumentFileName, filePath));
+            _storageProviderMock.Verify(v => v.DownloadAsync(bucketName,
+                fileName, destinationFilePath));
         }
 
         [Test]
-        public async Task Given_I_Call_DownloadFromBucket_Then_The_Correct_File_Is_Returned()
+        public async Task Given_I_Call_DownloadFromBucket_Then_The_Correct_FilePath_Is_Returned()
         {
             //arrange
-            const string bucketPath = "OPN";
-            const string instrumentFileName = "OPN1234.zip";
-            const string tempPath = @"d:\temp";
-            var filePath = $"{tempPath}";
-            var instrumentFilePath = $@"{tempPath}\{instrumentFileName}";
+            const string bucketName = "OPN";
+            const string fileName = "OPN1234.zip";
+            const string filePath = @"d:\temp";
+            var destinationFilePath = $@"{filePath}\{fileName}";
 
-            _fileSystemMock.Setup(f => f.Directory.Exists(tempPath)).Returns(true);
-            _fileSystemMock.Setup(f => f.Path.Combine(tempPath, It.IsAny<string>()))
-                .Returns(filePath);
-            
-            _fileSystemMock.Setup(s => s.Path.Combine(filePath, instrumentFileName))
-                .Returns(instrumentFilePath);
-
-            _configurationProviderMock.Setup(c => c.TempPath).Returns(tempPath);
-            _storageProviderMock.Setup(s => s.DownloadAsync(bucketPath, instrumentFileName,
-                It.IsAny<string>()));
+            _fileSystemMock.Setup(f => f.Directory.Exists(filePath)).Returns(true);
+            _fileSystemMock.Setup(s => s.Path.Combine(filePath, fileName))
+                .Returns(destinationFilePath);
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            var result = await _sut.DownloadFromBucketAsync(instrumentFileName);
+            var result = await _sut.DownloadFromBucketAsync(bucketName, fileName, filePath);
 
             //arrange
-            Assert.AreEqual(instrumentFilePath, result);
+            Assert.AreEqual(destinationFilePath, result);
         }
 
         [Test]
         public async Task Given_Temp_Path_Is_Not_There_When_I_Call_DownloadFromBucket_Then_The_Temp_Path_Is_Created()
         {
             //arrange
-            const string bucketPath = "OPN";
-            const string instrumentFileName = "OPN1234.zip";
-            const string tempPath = @"d:\temp";
-            var filePath = $"{tempPath}";
-            var instrumentFilePath = $@"{tempPath}\{instrumentFileName}";
+            const string bucketName = "OPN";
+            const string fileName = "OPN1234.zip";
+            const string filePath = @"d:\temp";
+            var destinationFilePath = $@"{filePath}\{fileName}";
 
-            _fileSystemMock.Setup(f => f.Directory.Exists(tempPath)).Returns(false);
-            _fileSystemMock.Setup(f => f.Path.Combine(tempPath, It.IsAny<string>()))
-                .Returns(filePath);
+            _fileSystemMock.Setup(f => f.Directory.Exists(filePath)).Returns(false);
+            _fileSystemMock.Setup(s => s.Path.Combine(filePath, fileName))
+                .Returns(destinationFilePath);
 
-            _fileSystemMock.Setup(f => f.Path.Combine(filePath, instrumentFileName))
-                .Returns(instrumentFilePath);
-
-            _configurationProviderMock.Setup(c => c.TempPath).Returns(tempPath);
-            _storageProviderMock.Setup(s => s.DownloadAsync(bucketPath, instrumentFileName,
-                It.IsAny<string>()));
+            _storageProviderMock.Setup(s => s.DownloadAsync(bucketName, fileName,
+                filePath));
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            await _sut.DownloadFromBucketAsync(instrumentFileName);
+            await _sut.DownloadFromBucketAsync(bucketName, fileName, filePath);
 
             //arrange
-            _fileSystemMock.Verify(v => v.Directory.CreateDirectory(tempPath), Times.Once);
-        }
-
-        [Test]
-        public async Task Given_I_Call_UploadToBucketAsync_Then_The_File_Is_Uploaded_To_The_Correct_Path()
-        {
-            //arrange
-            const string filePath = @"c:\\temp\OPN2010A.bpkg";
-            const string uploadPath = "data";
-            const string bucketPath = "OPN";
-            var expectedFullUploadPath = $@"{bucketPath}\{uploadPath}";
-
-            _fileSystemMock.Setup(f => f.Path.Combine(bucketPath, uploadPath)).Returns(expectedFullUploadPath);
-
-
-            _configurationProviderMock.Setup(c => c.DqsBucket).Returns(bucketPath);
-            _storageProviderMock.Setup(s => s.UploadAsync(It.IsAny<string>(), It.IsAny<string>()));
-
-            //act
-            await _sut.UploadToBucketAsync(uploadPath, filePath);
-
-            //arrange
-            _storageProviderMock.Verify(v => v.UploadAsync(expectedFullUploadPath, filePath));
+            _fileSystemMock.Verify(v => v.Directory.CreateDirectory(filePath), Times.Once);
         }
     }
 }

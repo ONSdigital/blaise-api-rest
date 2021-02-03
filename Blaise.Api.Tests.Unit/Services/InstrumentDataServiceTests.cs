@@ -49,14 +49,14 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f.GetInstrumentPackageName(It.IsAny<string>()))
                 .Returns(_instrumentFile);
 
-            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFromBucketAsync(It.IsAny<string>()))
+            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFromInstrumentBucketAsync(It.IsAny<string>()))
                 .ReturnsAsync(instrumentFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .UpdateInstrumentFileWithData(It.IsAny<string>(), It.IsAny<string>()));
 
-            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.UploadToBucketAsync(It.IsAny<string>(),
-                It.IsAny<string>())).Returns(Task.FromResult(0));
+            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFromInstrumentBucketAsync(It.IsAny<string>()))
+                .Returns(Task.FromResult(""));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(s => s.DeleteFile(It.IsAny<string>()));
 
@@ -66,7 +66,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //assert
             _fileServiceMock.Verify(v => v.GetInstrumentPackageName(_instrumentName), Times.Once);
 
-            _storageServiceMock.Verify(v => v.DownloadFromBucketAsync(_instrumentFile), Times.Once);
+            _storageServiceMock.Verify(v => v.DownloadFromInstrumentBucketAsync(_instrumentFile), Times.Once);
 
             _fileServiceMock.Verify(v => v.UpdateInstrumentFileWithData(_serverParkName,
                 instrumentFilePath), Times.Once);

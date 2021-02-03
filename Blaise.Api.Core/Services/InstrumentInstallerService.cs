@@ -30,7 +30,7 @@ namespace Blaise.Api.Core.Services
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             instrumentPackageDto.InstrumentFile.ThrowExceptionIfNullOrEmpty("instrumentPackageDto.InstrumentFile");
 
-            var instrumentFile = await _storageService.DownloadFromBucketAsync(
+            var instrumentFile = await _storageService.DownloadFromInstrumentBucketAsync(
                 instrumentPackageDto.InstrumentFile);
 
             _fileService.UpdateInstrumentFileWithSqlConnection(instrumentFile);

@@ -55,7 +55,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             const string instrumentFilePath = "d:\\temp\\OPN1234.zip";
 
-            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFromBucketAsync(
+            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFromInstrumentBucketAsync(
                     _instrumentFile)).ReturnsAsync(instrumentFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(b => b
@@ -73,7 +73,7 @@ namespace Blaise.Api.Tests.Unit.Services
             await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto);
 
             //assert
-            _storageServiceMock.Verify(v => v.DownloadFromBucketAsync( _instrumentFile), Times.Once);
+            _storageServiceMock.Verify(v => v.DownloadFromInstrumentBucketAsync( _instrumentFile), Times.Once);
             _fileServiceMock.Verify(v => v.UpdateInstrumentFileWithSqlConnection(instrumentFilePath), Times.Once);
             _fileServiceMock.Verify(v => v.GetInstrumentNameFromFile(_instrumentFile), Times.Once);
             _blaiseSurveyApiMock.Verify(v => v.InstallSurvey(_instrumentName, _serverParkName,
@@ -87,7 +87,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             const string instrumentFilePath = "d:\\temp\\OPN1234.zip";
 
-            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFromBucketAsync(
+            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFromInstrumentBucketAsync(
                     _instrumentFile)).ReturnsAsync(instrumentFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(b => b
