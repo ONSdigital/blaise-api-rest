@@ -51,24 +51,13 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public void ThenTheQuestionnairePackageContainsTheCapturedCorrespondentData()
         {
             var deliveredFile = _scenarioContext.Get<string>(ApiResponse);
-            var extractedFilePath = BlaiseConfigurationHelper.TempDownloadPath;
-            
+            var extractedFilePath = Path.Combine(BlaiseConfigurationHelper.TempDownloadPath, BlaiseConfigurationHelper.InstrumentName);
+
             deliveredFile.ExtractFile(extractedFilePath);
-            var dataInterfaceFile = $@"{extractedFilePath}\{BlaiseConfigurationHelper.InstrumentName}.{BlaiseConfigurationHelper.InstrumentExtension}";
+            var dataInterfaceFile = $@"{extractedFilePath}\{BlaiseConfigurationHelper.InstrumentName}.bdix";
             var numberOfCases = CaseHelper.GetInstance().NumberOfCasesInInstrument(dataInterfaceFile);
 
             Assert.AreEqual(ExpectedNumberOfCases, numberOfCases);
-        }
-
-        [Then(@"the questionnaire is package uses the agreed file name format")]
-        public void ThenTheQuestionnaireIsPackageUsesTheAgreedFileNameFormat()
-        {
-            var deliveredFile = _scenarioContext.Get<string>(ApiResponse);
-            var dateTime = DateTime.Now;
-            var expectedPartialFileName = $"{BlaiseConfigurationHelper.InstrumentName}_{dateTime:ddMMyyyy}_";
-            var fileName = Path.GetFileName(deliveredFile);
-
-            Assert.True(fileName.StartsWith(expectedPartialFileName));
         }
 
         [AfterScenario("data")]
