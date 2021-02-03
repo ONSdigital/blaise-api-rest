@@ -50,8 +50,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public void ThenTheQuestionnairePackageContainsTheCapturedCorrespondentData()
         {
             var deliveredFile = _scenarioContext.Get<string>(ApiResponse);
-            var fileName = Path.GetFileName(deliveredFile);
-            var extractedFilePath = Path.Combine(BlaiseConfigurationHelper.TempDownloadPath, fileName);
+            var extractedFilePath = BlaiseConfigurationHelper.TempDownloadPath;
             
             deliveredFile.ExtractFile(extractedFilePath);
             var dataInterfaceFile = $@"{extractedFilePath}\{BlaiseConfigurationHelper.InstrumentName}.{BlaiseConfigurationHelper.InstrumentExtension}";
