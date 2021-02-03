@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Configuration;
+using Blaise.Api.Tests.Helpers.Files;
 using Blaise.Api.Tests.Helpers.Instrument;
 using Blaise.Api.Tests.Helpers.RestApi;
 using Blaise.Api.Tests.Models.Questionnaire;
@@ -81,8 +82,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public static void CleanUpScenario()
         {
             InstrumentHelper.GetInstance().UninstallSurvey();
-
-            Directory.Delete(BlaiseConfigurationHelper.TempDownloadPath, true);
+            FileSystemHelper.GetInstance().CleanUpTempFiles();
         }
     }
 }

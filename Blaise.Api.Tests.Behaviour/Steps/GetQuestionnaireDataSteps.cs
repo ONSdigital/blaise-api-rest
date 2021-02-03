@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Case;
 using Blaise.Api.Tests.Helpers.Configuration;
 using Blaise.Api.Tests.Helpers.Extensions;
+using Blaise.Api.Tests.Helpers.Files;
 using Blaise.Api.Tests.Helpers.Instrument;
 using Blaise.Api.Tests.Helpers.RestApi;
 using NUnit.Framework;
@@ -12,14 +13,14 @@ using TechTalk.SpecFlow;
 namespace Blaise.Api.Tests.Behaviour.Steps
 {
     [Binding]
-    public sealed class GetQuestionnaireWithDataSteps
+    public sealed class GetQuestionnaireDataSteps
     {
         private const int ExpectedNumberOfCases = 10;
         private const string ApiResponse = "ApiResponse";
 
         private readonly ScenarioContext _scenarioContext;
 
-        public GetQuestionnaireWithDataSteps(ScenarioContext scenarioContext)
+        public GetQuestionnaireDataSteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
         }
@@ -70,13 +71,12 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             Assert.True(fileName.StartsWith(expectedPartialFileName));
         }
 
-        [AfterScenario("deliver")]
+        [AfterScenario("data")]
         public void CleanUpScenario()
         {
             CaseHelper.GetInstance().DeleteCases();
             InstrumentHelper.GetInstance().UninstallSurvey();
-
-            Directory.Delete(BlaiseConfigurationHelper.TempDownloadPath, true);
+            FileSystemHelper.GetInstance().CleanUpTempFiles();
         }
     }
 }

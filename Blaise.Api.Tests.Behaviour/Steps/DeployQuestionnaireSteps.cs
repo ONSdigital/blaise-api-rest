@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Cloud;
 using Blaise.Api.Tests.Helpers.Configuration;
+using Blaise.Api.Tests.Helpers.Files;
 using Blaise.Api.Tests.Helpers.Instrument;
 using Blaise.Api.Tests.Helpers.RestApi;
 using NUnit.Framework;
@@ -43,7 +44,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                 BlaiseConfigurationHelper.InstrumentPackageBucket,
                 fileName);
 
-            Directory.Delete(BlaiseConfigurationHelper.TempDownloadPath, true);
+            FileSystemHelper.GetInstance().CleanUpTempFiles();
         }
     }
 }

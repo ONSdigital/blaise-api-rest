@@ -191,6 +191,7 @@
     <Compile Include="Extensions\ArgumentValidationExtensions.cs" />
     <Compile Include="Extensions\ConfigurationExtensions.cs" />
     <Compile Include="Extensions\FileExtensions.cs" />
+    <Compile Include="Files\FileSystemHelper.cs" />
     <Compile Include="Instrument\InstrumentHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestApi\RestApiHelper.cs" />
