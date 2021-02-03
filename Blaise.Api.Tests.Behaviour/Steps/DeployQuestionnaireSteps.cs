@@ -42,6 +42,8 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             await CloudStorageHelper.GetInstance().DeleteFromBucketAsync(
                 BlaiseConfigurationHelper.InstrumentPackageBucket,
                 fileName);
+
+            Directory.Delete(BlaiseConfigurationHelper.TempDownloadPath, true);
         }
     }
 }

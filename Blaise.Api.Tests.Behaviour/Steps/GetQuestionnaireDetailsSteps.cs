@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Configuration;
@@ -80,6 +81,8 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public static void CleanUpScenario()
         {
             InstrumentHelper.GetInstance().UninstallSurvey();
+
+            Directory.Delete(BlaiseConfigurationHelper.TempDownloadPath, true);
         }
     }
 }

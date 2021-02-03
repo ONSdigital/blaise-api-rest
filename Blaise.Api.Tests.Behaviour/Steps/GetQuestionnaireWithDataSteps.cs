@@ -76,8 +76,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             CaseHelper.GetInstance().DeleteCases();
             InstrumentHelper.GetInstance().UninstallSurvey();
 
-            var deliveredFile = _scenarioContext.Get<string>(ApiResponse);
-            File.Delete(deliveredFile);
             Directory.Delete(BlaiseConfigurationHelper.TempDownloadPath, true);
         }
     }
