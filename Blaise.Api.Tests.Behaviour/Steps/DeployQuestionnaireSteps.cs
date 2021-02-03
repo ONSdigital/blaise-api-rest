@@ -17,7 +17,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public async Task GivenThereIsAnQuestionnaireAvailableInABucket()
         {
             await CloudStorageHelper.GetInstance().UploadToBucketAsync(
-                BlaiseConfigurationHelper.InstrumentBucketPath,
+                BlaiseConfigurationHelper.InstrumentPackageBucket,
                 BlaiseConfigurationHelper.InstrumentPackage);
         }
 
@@ -40,7 +40,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             var fileName = Path.GetFileName(BlaiseConfigurationHelper.InstrumentPackage);
             
             await CloudStorageHelper.GetInstance().DeleteFromBucketAsync(
-                BlaiseConfigurationHelper.InstrumentBucketPath,
+                BlaiseConfigurationHelper.InstrumentPackageBucket,
                 fileName);
         }
     }
