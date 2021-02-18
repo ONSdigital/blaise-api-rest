@@ -1,4 +1,6 @@
-﻿using Blaise.Api.Contracts.Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using StatNeth.Blaise.API.DataRecord;
@@ -56,11 +58,27 @@ namespace Blaise.Api.Core.Services
         {
             var fieldData = _blaiseApi.GetRecordDataFields(newDataRecord);
 
-            // Modify the Online flag to indicate the new record is from the NISRA data set
-            fieldData.Add("QHAdmin.Online", "1");
+            // we need to preserve the TO CatiMana block data sp remove the fields from WEB
+            RemovedCataManaBlock(fieldData);
+
+            // add the Online flag to indicate the new record is from the NISRA data set
+            AddCatiManaItems(fieldData);
 
             _blaiseApi.UpdateCase(existingDataRecord, fieldData,
                 instrumentName, serverParkName);
+        }
+
+        internal void RemovedCataManaBlock(Dictionary<string, string> fieldData)
+        {
+            foreach (var f in fieldData
+                .Where(kv => kv.Key.StartsWith("CatiMana")).ToList() ) {
+                fieldData.Remove(f.Key);
+            }
+        }
+
+        internal void AddCatiManaItems(Dictionary<string, string> fieldData)
+        {
+            fieldData.Add("QHAdmin.Online", "1");
         }
     }
 }

@@ -275,14 +275,54 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_I_Call_UpdateCase_Then_The_Online_FieldData_Is_Added_To_Indicate_It_Came_From_Online()
+        public void Given_I_Call_UpdateCase_Then_The_FieldData_Is_Modified_As_Expected()
         {
             //arrange
-            var fieldData = new Dictionary<string, string>();
+            var fieldData = new Dictionary<string, string> {{"CatiMana.CatiAppoint.AppointType", "blah1"}};
             _blaiseApiMock.Setup(b => b.GetRecordDataFields(_nisraDataRecordMock.Object)).Returns(fieldData);
 
             //act
             _sut.UpdateCase(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _instrumentName, _serverParkName);
+
+            //assert
+            Assert.IsNotEmpty(fieldData);
+            Assert.AreEqual(1, fieldData.Count);
+            Assert.False(fieldData.ContainsKey("CatiMana.CatiAppoint.AppointType"));
+            Assert.True(fieldData.ContainsKey("QHAdmin.Online"));
+            Assert.AreEqual("1", fieldData["QHAdmin.Online"]);
+        }
+
+        [Test]
+        public void Given_I_Call_RemovedCataManaBlock_Then_The_CatMana_FieldData_Is_Removed()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string>
+            {
+                {"CatiMana.CatiAppoint.AppointType", "blah1"},
+                {"CatiMana.CatiSlices.DialData[1].WeekDay", "blah2"},
+                {"CatiMana.CatiSlices.DialData[1].DialTime", "blah3"},
+                {"InterviewerID", "Jambo"}
+            };
+
+            //act
+            _sut.RemovedCataManaBlock(fieldData);
+
+            //assert
+            Assert.IsNotEmpty(fieldData);
+            Assert.AreEqual(1, fieldData.Count);
+            Assert.True(fieldData.ContainsKey("InterviewerID"));
+            Assert.AreEqual("Jambo", fieldData["InterviewerID"]);
+        }
+
+
+        [Test]
+        public void Given_I_Call_AddCatiManaItems_Then_The_Online_FieldData_Is_Added_To_Indicate_It_Came_From_Online()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string>();
+
+            //act
+            _sut.AddCatiManaItems(fieldData);
 
             //assert
             Assert.True(fieldData.ContainsKey("QHAdmin.Online"));
