@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ArgumentValidationExtensions.cs" />
+    <Compile Include="Interfaces\Services\ICatiManaService.cs" />
     <Compile Include="Interfaces\Services\IInstrumentUninstallerService.cs" />
     <Compile Include="Interfaces\Services\IInstrumentService.cs" />
     <Compile Include="Interfaces\Mappers\IServerParkDtoMapper.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Interfaces\Services\ICatiService.cs" />
     <Compile Include="Interfaces\Services\IUpdateCaseService.cs" />
     <Compile Include="Interfaces\Services\ICaseService.cs" />
+    <Compile Include="Services\CatiManaService.cs" />
     <Compile Include="Services\UpdateCaseService.cs" />
     <Compile Include="Services\CaseService.cs" />
     <Compile Include="Services\CatiService.cs" />

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Interfaces;
+﻿using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using StatNeth.Blaise.API.DataRecord;
@@ -12,17 +10,21 @@ namespace Blaise.Api.Core.Services
     public class UpdateCaseService : IUpdateCaseService
     {
         private readonly IBlaiseCaseApi _blaiseApi;
+        private readonly ICatiManaService _catiManaService;
         private readonly ILoggingService _loggingService;
 
         public UpdateCaseService(
             IBlaiseCaseApi blaiseApi,
+            ICatiManaService catiManaService,
             ILoggingService loggingService)
         {
             _blaiseApi = blaiseApi;
+            _catiManaService = catiManaService;
             _loggingService = loggingService;
         }
 
-        public void UpdateExistingCaseWithOnlineData(IDataRecord onlineDataRecord, IDataRecord existingDataRecord, string serverParkName, string instrumentName, string serialNumber)
+        public void UpdateExistingCaseWithOnlineData(IDataRecord onlineDataRecord, IDataRecord existingDataRecord,
+            string serverParkName, string instrumentName, string serialNumber)
         {
             var nisraOutcome = _blaiseApi.GetOutcomeCode(onlineDataRecord);
 
@@ -37,7 +39,8 @@ namespace Blaise.Api.Core.Services
 
             if (existingOutcome > 542)
             {
-                _loggingService.LogInfo($"Not processed: NISRA case '{serialNumber}' (Existing HOut = '{existingOutcome}'");
+                _loggingService.LogInfo(
+                    $"Not processed: NISRA case '{serialNumber}' (Existing HOut = '{existingOutcome}'");
 
                 return;
             }
@@ -45,40 +48,33 @@ namespace Blaise.Api.Core.Services
             if (existingOutcome == 0 || nisraOutcome <= existingOutcome)
             {
                 UpdateCase(onlineDataRecord, existingDataRecord, instrumentName, serverParkName);
-                _loggingService.LogInfo($"processed: NISRA case '{serialNumber}' (HOut = '{nisraOutcome}' <= '{existingOutcome}') or (HOut = 0)'");
+                _loggingService.LogInfo(
+                    $"processed: NISRA case '{serialNumber}' (HOut = '{nisraOutcome}' <= '{existingOutcome}') or (HOut = 0)'");
 
                 return;
             }
 
-            _loggingService.LogInfo($"Not processed: NISRA case '{serialNumber}' (HOut = '{existingOutcome}' < '{nisraOutcome}')'");
+            _loggingService.LogInfo(
+                $"Not processed: NISRA case '{serialNumber}' (HOut = '{existingOutcome}' < '{nisraOutcome}')'");
         }
 
         internal void UpdateCase(IDataRecord newDataRecord, IDataRecord existingDataRecord, string instrumentName,
             string serverParkName)
         {
-            var fieldData = _blaiseApi.GetRecordDataFields(newDataRecord);
+            var newFieldData = _blaiseApi.GetRecordDataFields(newDataRecord);
+            var existingFieldData = _blaiseApi.GetRecordDataFields(existingDataRecord);
 
             // we need to preserve the TO CatiMana block data sp remove the fields from WEB
-            RemovedCataManaBlock(fieldData);
+            _catiManaService.RemoveCatiManaBlock(newFieldData);
 
-            // add the Online flag to indicate the new record is from the NISRA data set
-            AddCatiManaItems(fieldData);
+            //we need to preserve the wed nudged field
+            _catiManaService.RemoveWebNudgedField(newFieldData);
 
-            _blaiseApi.UpdateCase(existingDataRecord, fieldData,
+            // add the existing cat call data with additional items to the new field data
+            _catiManaService.AddCatiManaCallItems(newFieldData, existingFieldData);
+
+            _blaiseApi.UpdateCase(existingDataRecord, newFieldData,
                 instrumentName, serverParkName);
-        }
-
-        internal void RemovedCataManaBlock(Dictionary<string, string> fieldData)
-        {
-            foreach (var f in fieldData
-                .Where(kv => kv.Key.StartsWith("CatiMana")).ToList() ) {
-                fieldData.Remove(f.Key);
-            }
-        }
-
-        internal void AddCatiManaItems(Dictionary<string, string> fieldData)
-        {
-            fieldData.Add("QHAdmin.Online", "1");
         }
     }
 }
