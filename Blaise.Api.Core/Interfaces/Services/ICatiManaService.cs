@@ -9,6 +9,6 @@ namespace Blaise.Api.Core.Interfaces.Services
         void RemoveWebNudgedField(Dictionary<string, string> fieldData);
 
         void AddCatiManaCallItems(Dictionary<string, string> newFieldData, 
-            Dictionary<string, string> existingFieldData);
+            Dictionary<string, string> existingFieldData, int outcomeCode);
     }
 }

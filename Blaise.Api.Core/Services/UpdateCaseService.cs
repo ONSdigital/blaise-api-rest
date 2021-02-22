@@ -47,7 +47,8 @@ namespace Blaise.Api.Core.Services
 
             if (existingOutcome == 0 || nisraOutcome <= existingOutcome)
             {
-                UpdateCase(onlineDataRecord, existingDataRecord, instrumentName, serverParkName);
+                UpdateCase(onlineDataRecord, existingDataRecord, instrumentName, 
+                    serverParkName, nisraOutcome);
                 _loggingService.LogInfo(
                     $"processed: NISRA case '{serialNumber}' (HOut = '{nisraOutcome}' <= '{existingOutcome}') or (HOut = 0)'");
 
@@ -59,7 +60,7 @@ namespace Blaise.Api.Core.Services
         }
 
         internal void UpdateCase(IDataRecord newDataRecord, IDataRecord existingDataRecord, string instrumentName,
-            string serverParkName)
+            string serverParkName, int outcomeCode)
         {
             var newFieldData = _blaiseApi.GetRecordDataFields(newDataRecord);
             var existingFieldData = _blaiseApi.GetRecordDataFields(existingDataRecord);
@@ -71,7 +72,7 @@ namespace Blaise.Api.Core.Services
             _catiManaService.RemoveWebNudgedField(newFieldData);
 
             // add the existing cat call data with additional items to the new field data
-            _catiManaService.AddCatiManaCallItems(newFieldData, existingFieldData);
+            _catiManaService.AddCatiManaCallItems(newFieldData, existingFieldData, outcomeCode);
 
             _blaiseApi.UpdateCase(existingDataRecord, newFieldData,
                 instrumentName, serverParkName);

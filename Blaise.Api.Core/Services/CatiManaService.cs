@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using Blaise.Api.Core.Interfaces.Services;
 
 [assembly: InternalsVisibleTo("Blaise.Api.Tests.Unit")]
@@ -28,10 +27,12 @@ namespace Blaise.Api.Core.Services
         }
 
         public void AddCatiManaCallItems(Dictionary<string, string> newFieldData, 
-            Dictionary<string, string> existingFieldData)
+            Dictionary<string, string> existingFieldData, int outcomeCode)
         {
-            var catiCallItems = BuildCatiManaCallItems(existingFieldData, "", "", 
-                "", "", "");
+            var catiCallItems = BuildCatiManaRegCallItems(existingFieldData, 
+                outcomeCode);
+
+            AddCatiManaNrOfCallItem(newFieldData, existingFieldData);
 
             foreach (var catiCallItem in catiCallItems)
             {
@@ -39,28 +40,25 @@ namespace Blaise.Api.Core.Services
             }
         }
 
-        internal Dictionary<string, string> BuildCompleteCatiManaCallItem(Dictionary<string, string> fieldData)
+        internal void AddCatiManaNrOfCallItem(Dictionary<string, string> newFieldData, 
+            Dictionary<string, string> existingFieldData)
         {
-            return BuildCatiManaCallItems(fieldData, "", "", 
-                "", "", "");
+            newFieldData.Add("CatiMana.CatiCall.NrOfCall",
+                int.TryParse(existingFieldData["CatiMana.CatiCall.NrOfCall"], out var numberOfCalls)
+                    ? (numberOfCalls + 1).ToString()
+                    : "1");
         }
 
-        internal Dictionary<string, string> BuildPartialCatiManaCallItem(Dictionary<string, string> fieldData)
-        {
-            return BuildCatiManaCallItems(fieldData, "", "", 
-                "", "", "");
-        }
-
-        internal Dictionary<string, string> BuildCatiManaCallItems(Dictionary<string, string> fieldData, string whoMade, 
-            string dayNumber, string dialTime, string numberOfDials, string dialResult)
+        internal Dictionary<string, string> BuildCatiManaRegCallItems(Dictionary<string, string> fieldData, 
+            int outcomeCode)
         {
             var catiCallItems = new Dictionary<string, string>
             {
-                {"CatiMana.CatiCall.RegsCalls[1].WhoMade", whoMade},
-                {"CatiMana.CatiCall.RegsCalls[1].DayNumber", dayNumber},
-                {"CatiMana.CatiCall.RegsCalls[1].DialTime", dialTime},
-                {"CatiMana.CatiCall.RegsCalls[1].NrOfDials", numberOfDials},
-                {"CatiMana.CatiCall.RegsCalls[1].DialResult", dialResult},
+                {"CatiMana.CatiCall.RegsCalls[1].WhoMade", "Web"},
+                {"CatiMana.CatiCall.RegsCalls[1].DayNumber", "1"},
+                {"CatiMana.CatiCall.RegsCalls[1].DialTime", $"{DateTime.Now:HH:mm:ss}"},
+                {"CatiMana.CatiCall.RegsCalls[1].NrOfDials", "1"},
+                {"CatiMana.CatiCall.RegsCalls[1].DialResult", outcomeCode == 110 ? "1" : "2"}
             };
 
             for (var i = 1; i <= 5; i++)

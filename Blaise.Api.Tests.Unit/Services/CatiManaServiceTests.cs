@@ -58,100 +58,108 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.AreEqual("Jambo", fieldData["InterviewerID"]);
         }
 
-        [Test]
-        public void Given_I_Call_AddCatiManaCallItems_Then_The_Existing_Call_Items_Are_Copied_Along_With_New_Values()
+        [TestCase("", "1")]
+        [TestCase("0", "1")]
+        [TestCase("1", "2")]
+        [TestCase("3", "4")]
+        [TestCase("8", "9")]
+        [TestCase("10", "11")]
+        public void Given_I_Call_AddCatiManaNrOfCallItem_Then_The_Field_Is_Added_And_Existing_Value_Is_Incremented(string initialValue, 
+            string newValue)
         {
             //arrange
+            var existingFieldData = new Dictionary<string, string>
+            {
+                {"CatiMana.CatiCall.NrOfCall", initialValue}
+            };
+
             var newFieldData = new Dictionary<string, string>();
-            var existingFieldData = new Dictionary<string, string>();
 
             //act
-            _sut.AddCatiManaCallItems(newFieldData, existingFieldData);
+            _sut.AddCatiManaNrOfCallItem(newFieldData, existingFieldData);
 
             //assert
-
+            Assert.IsNotEmpty(existingFieldData);
+            Assert.AreEqual(1, existingFieldData.Count);
+            Assert.True(newFieldData.ContainsKey("CatiMana.CatiCall.NrOfCall"));
+            Assert.AreEqual(newValue, newFieldData["CatiMana.CatiCall.NrOfCall"]);
         }
 
-        [Test]
-        public void Given_A_CatiCall_Item_When_I_Call_BuildCatiManaCallItems_Then_The_Field_Is_Inserted_At_Position_One()
+        [TestCase(110, "1","1")]
+        [TestCase(210, "6","2")]
+        public void Given_A_CatiCall_Item_When_I_Call_BuildCatiManaRegCallItems_Then_The_Field_Is_Inserted_At_Position_One(int outcomeCode,
+            string telDialResult, string webDialResult)
         {
             //arrange
             var initialFieldData = new Dictionary<string, string>
             {
                 {"CatiMana.CatiCall.RegsCalls[1].WhoMade", "Tel1"},
-                {"CatiMana.CatiCall.RegsCalls[1].DayNumber", "1"},
-                {"CatiMana.CatiCall.RegsCalls[1].DialTime", "21:00"},
+                {"CatiMana.CatiCall.RegsCalls[1].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[1].DialTime", "12:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[1].NrOfDials", "2"},
-                {"CatiMana.CatiCall.RegsCalls[1].DialResult", "partial"},
+                {"CatiMana.CatiCall.RegsCalls[1].DialResult", telDialResult},
 
                 {"CatiMana.CatiCall.RegsCalls[2].WhoMade", "Tel2"},
-                {"CatiMana.CatiCall.RegsCalls[2].DayNumber", "2"},
-                {"CatiMana.CatiCall.RegsCalls[2].DialTime", "22:00"},
+                {"CatiMana.CatiCall.RegsCalls[2].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[2].DialTime", "15:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[2].NrOfDials", "3"},
-                {"CatiMana.CatiCall.RegsCalls[2].DialResult", "partial"},
+                {"CatiMana.CatiCall.RegsCalls[2].DialResult", telDialResult},
 
                 {"CatiMana.CatiCall.RegsCalls[3].WhoMade", "Tel3"},
-                {"CatiMana.CatiCall.RegsCalls[3].DayNumber", "3"},
-                {"CatiMana.CatiCall.RegsCalls[3].DialTime", "22:30"},
+                {"CatiMana.CatiCall.RegsCalls[3].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[3].DialTime", "17:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[3].NrOfDials", "4"},
-                {"CatiMana.CatiCall.RegsCalls[3].DialResult", "partial"},
+                {"CatiMana.CatiCall.RegsCalls[3].DialResult", telDialResult},
 
                 {"CatiMana.CatiCall.RegsCalls[4].WhoMade", "Tel4"},
-                {"CatiMana.CatiCall.RegsCalls[4].DayNumber", "4"},
-                {"CatiMana.CatiCall.RegsCalls[4].DialTime", "23:00"},
+                {"CatiMana.CatiCall.RegsCalls[4].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[4].DialTime", "19:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[4].NrOfDials", "5"},
-                {"CatiMana.CatiCall.RegsCalls[4].DialResult", "partial"},
+                {"CatiMana.CatiCall.RegsCalls[4].DialResult", telDialResult},
 
                 {"CatiMana.CatiCall.RegsCalls[5].WhoMade", "Tel1"},
-                {"CatiMana.CatiCall.RegsCalls[5].DayNumber", "1"},
-                {"CatiMana.CatiCall.RegsCalls[5].DialTime", "21:00"},
+                {"CatiMana.CatiCall.RegsCalls[5].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[5].DialTime", "12:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[5].NrOfDials", "2"},
-                {"CatiMana.CatiCall.RegsCalls[5].DialResult", "partial"}
+                {"CatiMana.CatiCall.RegsCalls[5].DialResult", telDialResult}
             };
 
-            const string whoMade = "Me";
-            const string dayNumber = "2";
-            var dialTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-            const string numberOfDials = "1";
-            const string dialResult = "Complete";
-            
             var expectedFieldData = new Dictionary<string, string>
             {
-                {"CatiMana.CatiCall.RegsCalls[1].WhoMade", whoMade},
-                {"CatiMana.CatiCall.RegsCalls[1].DayNumber", dayNumber},
-                {"CatiMana.CatiCall.RegsCalls[1].DialTime", dialTime},
-                {"CatiMana.CatiCall.RegsCalls[1].NrOfDials", numberOfDials},
-                {"CatiMana.CatiCall.RegsCalls[1].DialResult", dialResult},
+                {"CatiMana.CatiCall.RegsCalls[1].WhoMade", "Web"},
+                {"CatiMana.CatiCall.RegsCalls[1].DayNumber", "1"},
+                {"CatiMana.CatiCall.RegsCalls[1].DialTime", $"{DateTime.Now:HH:mm:ss}"},
+                {"CatiMana.CatiCall.RegsCalls[1].NrOfDials", "1"},
+                {"CatiMana.CatiCall.RegsCalls[1].DialResult", webDialResult},
 
                 {"CatiMana.CatiCall.RegsCalls[2].WhoMade", "Tel1"},
-                {"CatiMana.CatiCall.RegsCalls[2].DayNumber", "1"},
-                {"CatiMana.CatiCall.RegsCalls[2].DialTime", "21:00"},
+                {"CatiMana.CatiCall.RegsCalls[2].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[2].DialTime", "12:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[2].NrOfDials", "2"},
-                {"CatiMana.CatiCall.RegsCalls[2].DialResult", "partial"},
+                {"CatiMana.CatiCall.RegsCalls[2].DialResult", telDialResult},
 
                 {"CatiMana.CatiCall.RegsCalls[3].WhoMade", "Tel2"},
-                {"CatiMana.CatiCall.RegsCalls[3].DayNumber", "2"},
-                {"CatiMana.CatiCall.RegsCalls[3].DialTime", "22:00"},
+                {"CatiMana.CatiCall.RegsCalls[3].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[3].DialTime", "15:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[3].NrOfDials", "3"},
-                {"CatiMana.CatiCall.RegsCalls[3].DialResult", "partial"},
+                {"CatiMana.CatiCall.RegsCalls[3].DialResult", telDialResult},
 
                 {"CatiMana.CatiCall.RegsCalls[4].WhoMade", "Tel3"},
-                {"CatiMana.CatiCall.RegsCalls[4].DayNumber", "3"},
-                {"CatiMana.CatiCall.RegsCalls[4].DialTime", "22:30"},
+                {"CatiMana.CatiCall.RegsCalls[4].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[4].DialTime", "17:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[4].NrOfDials", "4"},
-                {"CatiMana.CatiCall.RegsCalls[4].DialResult", "partial"},
+                {"CatiMana.CatiCall.RegsCalls[4].DialResult", telDialResult},
 
                 //always remain the same which is the first call
                 {"CatiMana.CatiCall.RegsCalls[5].WhoMade", "Tel1"},
-                {"CatiMana.CatiCall.RegsCalls[5].DayNumber", "1"},
-                {"CatiMana.CatiCall.RegsCalls[5].DialTime", "21:00"},
+                {"CatiMana.CatiCall.RegsCalls[5].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[5].DialTime", "12:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[5].NrOfDials", "2"},
-                {"CatiMana.CatiCall.RegsCalls[5].DialResult", "partial"}
+                {"CatiMana.CatiCall.RegsCalls[5].DialResult", telDialResult}
             };
 
             //act
-            var result = _sut.BuildCatiManaCallItems(initialFieldData, whoMade, dayNumber, 
-                dialTime, numberOfDials, dialResult);
+            var result = _sut.BuildCatiManaRegCallItems(initialFieldData, outcomeCode);
 
             //assert
             Assert.IsNotNull(result);
@@ -160,8 +168,16 @@ namespace Blaise.Api.Tests.Unit.Services
 
             foreach (var fieldData in expectedFieldData)
             {
+                if (fieldData.Key == "CatiMana.CatiCall.RegsCalls[1].DialTime")
+                {
+                    //throws error if exact format is not used
+                    DateTime.ParseExact(fieldData.Value, "HH:mm:ss", CultureInfo.InvariantCulture);
+                }
+
                 Assert.AreEqual(fieldData.Value, result[fieldData.Key]);
             }
         }
     }
+
+
 }
