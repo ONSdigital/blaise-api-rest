@@ -3,6 +3,7 @@ using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using StatNeth.Blaise.API.DataRecord;
 using System.Runtime.CompilerServices;
+using Blaise.Nuget.Api.Contracts.Enums;
 
 [assembly: InternalsVisibleTo("Blaise.Api.Tests.Unit")]
 namespace Blaise.Api.Core.Services
@@ -31,6 +32,14 @@ namespace Blaise.Api.Core.Services
             if (nisraOutcome == 0)
             {
                 _loggingService.LogInfo($"Not processed: NISRA case '{serialNumber}' (HOut = 0)");
+
+                return;
+            }
+
+            if (CaseIsCurrentlyInUseInCati(existingDataRecord))
+            {
+                _loggingService.LogInfo(
+                    $"Not processed: NISRA case '{serialNumber}' as the case is open in Cati");
 
                 return;
             }
@@ -76,6 +85,13 @@ namespace Blaise.Api.Core.Services
 
             _blaiseApi.UpdateCase(existingDataRecord, newFieldData,
                 instrumentName, serverParkName);
+        }
+
+        private bool CaseIsCurrentlyInUseInCati(IDataRecord existingDataRecord)
+        {
+            var caseInUse = _blaiseApi.GetFieldValue(existingDataRecord, FieldNameType.CaseInUse);
+
+            return caseInUse.IntegerValue == 1;
         }
     }
 }
