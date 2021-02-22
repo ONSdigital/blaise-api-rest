@@ -201,3 +201,11 @@ Scenario: A case in the online file that is complete and in Blaise it marked as 
 	And the same case exists in Blaise with the outcome code '561'
 	When the online file is imported
 	Then the existing blaise case is kept
+
+#Scenario 11 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
+Scenario: A case in the online file is complete and exists as partially complete in Blaise but the case is open in Cati, do not update
+	Given there is a online file that contains a case that is complete
+	And the same case exists in Blaise that is partially complete
+	And the case is currently open in Cati
+	When the online file is imported
+	Then the existing blaise case is kept

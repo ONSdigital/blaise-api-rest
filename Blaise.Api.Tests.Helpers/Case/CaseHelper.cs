@@ -155,5 +155,16 @@ namespace Blaise.Api.Tests.Helpers.Case
 
             return (ModeType) field.EnumerationValue;
         }
+
+        public void MarkCaseAsOpenInCati(string primaryKey)
+        {
+            var dataRecord = _blaiseCaseApi.GetCase(primaryKey, BlaiseConfigurationHelper.InstrumentName,
+                BlaiseConfigurationHelper.ServerParkName);
+
+            var fieldData = new Dictionary<string, string> {{FieldNameType.CaseInUse.FullName(), "1"}};
+
+            _blaiseCaseApi.UpdateCase(dataRecord, fieldData, BlaiseConfigurationHelper.InstrumentName,
+                BlaiseConfigurationHelper.ServerParkName);
+        }
     }
 }

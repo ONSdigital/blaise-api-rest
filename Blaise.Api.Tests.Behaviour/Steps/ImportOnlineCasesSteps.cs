@@ -85,6 +85,13 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             var caseModel = new CaseModel(primaryKey, outcomeCode.ToString(), ModeType.Tel);
             CaseHelper.GetInstance().CreateCaseInBlaise(caseModel);
         }
+
+        [Given(@"the case is currently open in Cati")]
+        public void GivenTheCaseIsCurrentlyOpenInCati()
+        {
+            var primaryKey = _scenarioContext.Get<string>("primaryKey");
+            CaseHelper.GetInstance().MarkCaseAsOpenInCati(primaryKey);
+        }
         
         [Given(@"blaise contains the following cases")]
         public void GivenBlaiseContainsTheFollowingCases(IEnumerable<CaseModel> cases)
@@ -176,7 +183,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
 
                 Assert.AreEqual(caseRecordExpected.Mode, caseModel.Mode, $"expected an version of '{caseRecordExpected.Mode}' for case '{caseModel.PrimaryKey}'," +
                                                                          $"but was '{caseModel.Mode}'");
-
             }
         }
 
