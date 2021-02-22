@@ -71,7 +71,7 @@ namespace Blaise.Api.Core.Services
             //we need to preserve the wed nudged field
             _catiManaService.RemoveWebNudgedField(newFieldData);
 
-            // add the existing cat call data with additional items to the new field data
+            // add the existing cati call data with additional items to the new field data
             _catiManaService.AddCatiManaCallItems(newFieldData, existingFieldData, outcomeCode);
 
             _blaiseApi.UpdateCase(existingDataRecord, newFieldData,
