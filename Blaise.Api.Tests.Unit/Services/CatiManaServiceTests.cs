@@ -79,10 +79,57 @@ namespace Blaise.Api.Tests.Unit.Services
             _sut.AddCatiManaNrOfCallItem(newFieldData, existingFieldData);
 
             //assert
-            Assert.IsNotEmpty(existingFieldData);
-            Assert.AreEqual(1, existingFieldData.Count);
+            Assert.IsNotEmpty(newFieldData);
+            Assert.AreEqual(1, newFieldData.Count);
             Assert.True(newFieldData.ContainsKey("CatiMana.CatiCall.NrOfCall"));
             Assert.AreEqual(newValue, newFieldData["CatiMana.CatiCall.NrOfCall"]);
+        }
+
+        [Test]
+        public void Given_FirstDay_Is_Not_Set_When_I_Call_SetFirstDayIfNotSet_Then_Todays_Date_Is_Added_In_The_Correct_Format()
+        {
+            //arrange
+            var existingFieldData = new Dictionary<string, string>
+            {
+                {"CatiMana.CatiCall.FirstDay", ""}
+            };
+
+            var newFieldData = new Dictionary<string, string>();
+
+            //act
+            _sut.SetFirstDayIfNotSet(newFieldData, existingFieldData);
+
+            //assert
+            Assert.IsNotEmpty(newFieldData);
+            Assert.AreEqual(1, newFieldData.Count);
+            Assert.True(newFieldData.ContainsKey("CatiMana.CatiCall.FirstDay"));
+
+            //throws error if exact format is not used
+            DateTime.ParseExact(newFieldData["CatiMana.CatiCall.FirstDay"], "ddMMyyyy", CultureInfo.InvariantCulture);
+            
+            Assert.AreEqual(DateTime.Now.ToString("ddMMyyyy", CultureInfo.InvariantCulture), newFieldData["CatiMana.CatiCall.FirstDay"]);
+        }
+
+        [Test]
+        public void Given_FirstDay_Is_Set_When_I_Call_SetFirstDayIfNotSet_Then_The_Existing_Date_Is_Carried_Over()
+        {
+            //arrange
+            var existingFieldData = new Dictionary<string, string>
+            {
+                {"CatiMana.CatiCall.FirstDay", "18022021"}
+            };
+
+            var newFieldData = new Dictionary<string, string>();
+
+            //act
+            _sut.SetFirstDayIfNotSet(newFieldData, existingFieldData);
+
+            //assert
+            Assert.IsNotEmpty(newFieldData);
+            Assert.AreEqual(1, newFieldData.Count);
+            Assert.True(newFieldData.ContainsKey("CatiMana.CatiCall.FirstDay"));
+
+            Assert.AreEqual("18022021", newFieldData["CatiMana.CatiCall.FirstDay"]);
         }
 
         [TestCase(110, "1","1")]
@@ -91,34 +138,34 @@ namespace Blaise.Api.Tests.Unit.Services
             string telDialResult, string webDialResult)
         {
             //arrange
-            var initialFieldData = new Dictionary<string, string>
+            var existingFieldData = new Dictionary<string, string>
             {
                 {"CatiMana.CatiCall.RegsCalls[1].WhoMade", "Tel1"},
-                {"CatiMana.CatiCall.RegsCalls[1].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[1].DayNumber", "1"},
                 {"CatiMana.CatiCall.RegsCalls[1].DialTime", "12:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[1].NrOfDials", "2"},
                 {"CatiMana.CatiCall.RegsCalls[1].DialResult", telDialResult},
 
                 {"CatiMana.CatiCall.RegsCalls[2].WhoMade", "Tel2"},
-                {"CatiMana.CatiCall.RegsCalls[2].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[2].DayNumber", "2"},
                 {"CatiMana.CatiCall.RegsCalls[2].DialTime", "15:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[2].NrOfDials", "3"},
                 {"CatiMana.CatiCall.RegsCalls[2].DialResult", telDialResult},
 
                 {"CatiMana.CatiCall.RegsCalls[3].WhoMade", "Tel3"},
-                {"CatiMana.CatiCall.RegsCalls[3].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[3].DayNumber", "3"},
                 {"CatiMana.CatiCall.RegsCalls[3].DialTime", "17:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[3].NrOfDials", "4"},
                 {"CatiMana.CatiCall.RegsCalls[3].DialResult", telDialResult},
 
                 {"CatiMana.CatiCall.RegsCalls[4].WhoMade", "Tel4"},
-                {"CatiMana.CatiCall.RegsCalls[4].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[4].DayNumber", "4"},
                 {"CatiMana.CatiCall.RegsCalls[4].DialTime", "19:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[4].NrOfDials", "5"},
                 {"CatiMana.CatiCall.RegsCalls[4].DialResult", telDialResult},
 
                 {"CatiMana.CatiCall.RegsCalls[5].WhoMade", "Tel1"},
-                {"CatiMana.CatiCall.RegsCalls[5].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[5].DayNumber", "1"},
                 {"CatiMana.CatiCall.RegsCalls[5].DialTime", "12:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[5].NrOfDials", "2"},
                 {"CatiMana.CatiCall.RegsCalls[5].DialResult", telDialResult}
@@ -133,33 +180,33 @@ namespace Blaise.Api.Tests.Unit.Services
                 {"CatiMana.CatiCall.RegsCalls[1].DialResult", webDialResult},
 
                 {"CatiMana.CatiCall.RegsCalls[2].WhoMade", "Tel1"},
-                {"CatiMana.CatiCall.RegsCalls[2].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[2].DayNumber", "1"},
                 {"CatiMana.CatiCall.RegsCalls[2].DialTime", "12:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[2].NrOfDials", "2"},
                 {"CatiMana.CatiCall.RegsCalls[2].DialResult", telDialResult},
 
                 {"CatiMana.CatiCall.RegsCalls[3].WhoMade", "Tel2"},
-                {"CatiMana.CatiCall.RegsCalls[3].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[3].DayNumber", "2"},
                 {"CatiMana.CatiCall.RegsCalls[3].DialTime", "15:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[3].NrOfDials", "3"},
                 {"CatiMana.CatiCall.RegsCalls[3].DialResult", telDialResult},
 
                 {"CatiMana.CatiCall.RegsCalls[4].WhoMade", "Tel3"},
-                {"CatiMana.CatiCall.RegsCalls[4].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[4].DayNumber", "3"},
                 {"CatiMana.CatiCall.RegsCalls[4].DialTime", "17:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[4].NrOfDials", "4"},
                 {"CatiMana.CatiCall.RegsCalls[4].DialResult", telDialResult},
 
                 //always remain the same which is the first call
                 {"CatiMana.CatiCall.RegsCalls[5].WhoMade", "Tel1"},
-                {"CatiMana.CatiCall.RegsCalls[5].DayNumber", ""},
+                {"CatiMana.CatiCall.RegsCalls[5].DayNumber", "1"},
                 {"CatiMana.CatiCall.RegsCalls[5].DialTime", "12:17:37"},
                 {"CatiMana.CatiCall.RegsCalls[5].NrOfDials", "2"},
                 {"CatiMana.CatiCall.RegsCalls[5].DialResult", telDialResult}
             };
 
             //act
-            var result = _sut.BuildCatiManaRegCallItems(initialFieldData, outcomeCode);
+            var result = _sut.BuildCatiManaRegCallItems(existingFieldData, outcomeCode);
 
             //assert
             Assert.IsNotNull(result);
@@ -180,19 +227,20 @@ namespace Blaise.Api.Tests.Unit.Services
 
         [TestCase(110, "1","1")]
         [TestCase(210, "6","2")]
-        public void Given_I_Call_AddCatiManaCallItems_Then_The_Correct_Items_Are_Added(int outcomeCode,
+        public void Given_No_Existing_CatiMana_Data_When_I_Call_AddCatiManaCallItems_Then_The_Correct_Items_Are_Added(int outcomeCode,
             string telDialResult, string webDialResult)
         {
             //arrange
-            var initialFieldData = new Dictionary<string, string>
+            var existingFieldData = new Dictionary<string, string>
             {
-                {"CatiMana.CatiCall.NrOfCall", "1"},
+                {"CatiMana.CatiCall.NrOfCall", ""},
+                {"CatiMana.CatiCall.FirstDay", ""},
 
-                {"CatiMana.CatiCall.RegsCalls[1].WhoMade", "Tel1"},
+                {"CatiMana.CatiCall.RegsCalls[1].WhoMade", ""},
                 {"CatiMana.CatiCall.RegsCalls[1].DayNumber", ""},
-                {"CatiMana.CatiCall.RegsCalls[1].DialTime", "12:17:37"},
-                {"CatiMana.CatiCall.RegsCalls[1].NrOfDials", "2"},
-                {"CatiMana.CatiCall.RegsCalls[1].DialResult", telDialResult},
+                {"CatiMana.CatiCall.RegsCalls[1].DialTime", ""},
+                {"CatiMana.CatiCall.RegsCalls[1].NrOfDials", ""},
+                {"CatiMana.CatiCall.RegsCalls[1].DialResult", ""},
 
                 {"CatiMana.CatiCall.RegsCalls[2].WhoMade", ""},
                 {"CatiMana.CatiCall.RegsCalls[2].DayNumber", ""},
@@ -212,16 +260,17 @@ namespace Blaise.Api.Tests.Unit.Services
                 {"CatiMana.CatiCall.RegsCalls[4].NrOfDials", ""},
                 {"CatiMana.CatiCall.RegsCalls[4].DialResult", ""},
 
-                {"CatiMana.CatiCall.RegsCalls[5].WhoMade", "Tel1"},
+                {"CatiMana.CatiCall.RegsCalls[5].WhoMade", ""},
                 {"CatiMana.CatiCall.RegsCalls[5].DayNumber", ""},
-                {"CatiMana.CatiCall.RegsCalls[5].DialTime", "12:17:37"},
-                {"CatiMana.CatiCall.RegsCalls[5].NrOfDials", "2"},
-                {"CatiMana.CatiCall.RegsCalls[5].DialResult", telDialResult}
+                {"CatiMana.CatiCall.RegsCalls[5].DialTime", ""},
+                {"CatiMana.CatiCall.RegsCalls[5].NrOfDials", ""},
+                {"CatiMana.CatiCall.RegsCalls[5].DialResult", ""}
             };
 
             var expectedFieldData = new Dictionary<string, string>
             {
-                {"CatiMana.CatiCall.NrOfCall", "2"},
+                {"CatiMana.CatiCall.NrOfCall", "1"},
+                {"CatiMana.CatiCall.FirstDay", $"{DateTime.Now.ToString("ddMMyyyy", CultureInfo.InvariantCulture)}"},
 
                 {"CatiMana.CatiCall.RegsCalls[1].WhoMade", "Web"},
                 {"CatiMana.CatiCall.RegsCalls[1].DayNumber", "1"},
@@ -229,11 +278,11 @@ namespace Blaise.Api.Tests.Unit.Services
                 {"CatiMana.CatiCall.RegsCalls[1].NrOfDials", "1"},
                 {"CatiMana.CatiCall.RegsCalls[1].DialResult", webDialResult},
 
-                {"CatiMana.CatiCall.RegsCalls[2].WhoMade", "Tel1"},
+                {"CatiMana.CatiCall.RegsCalls[2].WhoMade", ""},
                 {"CatiMana.CatiCall.RegsCalls[2].DayNumber", ""},
-                {"CatiMana.CatiCall.RegsCalls[2].DialTime", "12:17:37"},
-                {"CatiMana.CatiCall.RegsCalls[2].NrOfDials", "2"},
-                {"CatiMana.CatiCall.RegsCalls[2].DialResult", telDialResult},
+                {"CatiMana.CatiCall.RegsCalls[2].DialTime", ""},
+                {"CatiMana.CatiCall.RegsCalls[2].NrOfDials", ""},
+                {"CatiMana.CatiCall.RegsCalls[2].DialResult", ""},
 
                 {"CatiMana.CatiCall.RegsCalls[3].WhoMade", ""},
                 {"CatiMana.CatiCall.RegsCalls[3].DayNumber", ""},
@@ -247,18 +296,18 @@ namespace Blaise.Api.Tests.Unit.Services
                 {"CatiMana.CatiCall.RegsCalls[4].NrOfDials", ""},
                 {"CatiMana.CatiCall.RegsCalls[4].DialResult", ""},
 
-                //always remain the same which is the first call
-                {"CatiMana.CatiCall.RegsCalls[5].WhoMade", "Tel1"},
-                {"CatiMana.CatiCall.RegsCalls[5].DayNumber", ""},
-                {"CatiMana.CatiCall.RegsCalls[5].DialTime", "12:17:37"},
-                {"CatiMana.CatiCall.RegsCalls[5].NrOfDials", "2"},
-                {"CatiMana.CatiCall.RegsCalls[5].DialResult", telDialResult}
+                //always the same which is the first call
+                {"CatiMana.CatiCall.RegsCalls[5].WhoMade", "Web"},
+                {"CatiMana.CatiCall.RegsCalls[5].DayNumber", "1"},
+                {"CatiMana.CatiCall.RegsCalls[5].DialTime", $"{DateTime.Now:HH:mm:ss}"},
+                {"CatiMana.CatiCall.RegsCalls[5].NrOfDials", "1"},
+                {"CatiMana.CatiCall.RegsCalls[5].DialResult", webDialResult},
             };
 
             var newFieldData = new Dictionary<string, string>();
 
             //act
-            _sut.AddCatiManaCallItems(newFieldData, initialFieldData, outcomeCode);
+            _sut.AddCatiManaCallItems(newFieldData, existingFieldData, outcomeCode);
 
             //assert
             Assert.IsNotNull(newFieldData);

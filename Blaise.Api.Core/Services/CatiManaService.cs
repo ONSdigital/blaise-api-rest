@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Blaise.Api.Core.Interfaces.Services;
@@ -33,11 +34,23 @@ namespace Blaise.Api.Core.Services
                 outcomeCode);
 
             AddCatiManaNrOfCallItem(newFieldData, existingFieldData);
+            SetFirstDayIfNotSet(newFieldData, existingFieldData);
 
             foreach (var catiCallItem in catiCallItems)
             {
                 newFieldData.Add(catiCallItem.Key, catiCallItem.Value);
             }
+        }
+
+        internal void SetFirstDayIfNotSet(Dictionary<string, string> newFieldData, 
+            Dictionary<string, string> existingFieldData)
+        {
+            var existingFieldValue = existingFieldData["CatiMana.CatiCall.FirstDay"];
+
+            newFieldData.Add("CatiMana.CatiCall.FirstDay",
+                string.IsNullOrWhiteSpace(existingFieldValue)
+                    ? DateTime.Now.ToString("ddMMyyyy", CultureInfo.InvariantCulture)
+                    : existingFieldValue);
         }
 
         internal void AddCatiManaNrOfCallItem(Dictionary<string, string> newFieldData, 
@@ -76,7 +89,11 @@ namespace Blaise.Api.Core.Services
 
                     if (i == 5)
                     {
-                        catiCallItems.Add(key, f.Value);
+                        //if entry 5 is empty it means there has been no previous Tel calls so set it to web values
+                        catiCallItems.Add(key,
+                            string.IsNullOrWhiteSpace(f.Value)
+                                ? catiCallItems[key.Replace("RegsCalls[5]", "RegsCalls[1]")]
+                                : f.Value);
                     }
                 } 
             }
