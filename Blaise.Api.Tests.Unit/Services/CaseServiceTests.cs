@@ -12,6 +12,7 @@ namespace Blaise.Api.Tests.Unit.Services
     public class CaseServiceTests
     {
         private Mock<IBlaiseCaseApi> _blaiseApiMock;
+        private Mock<ICreateCaseService> _createCaseServiceMock;
         private Mock<IUpdateCaseService> _updateCaseServiceMock;
         private Mock<ILoggingService> _loggingMock;
 
@@ -19,7 +20,7 @@ namespace Blaise.Api.Tests.Unit.Services
         private Mock<IDataRecord> _existingDataRecordMock;
         private Mock<IDataSet> _dataSetMock;
 
-        private readonly string _serialNumber;
+        private readonly string _primaryKey;
         private readonly string _databaseFileName;
         private readonly string _serverParkName;
         private readonly string _instrumentName;
@@ -28,7 +29,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
         public CaseServiceTests()
         {
-            _serialNumber = "SN123";
+            _primaryKey = "SN123";
             _serverParkName = "Park1";
             _instrumentName = "OPN123";
             _databaseFileName = "OPN123.bdbx";
@@ -45,18 +46,19 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _blaiseApiMock = new Mock<IBlaiseCaseApi>();
             _blaiseApiMock.Setup(b => b.GetCases(_databaseFileName)).Returns(_dataSetMock.Object);
-            
-            _updateCaseServiceMock = new Mock<IUpdateCaseService>();
 
+            _createCaseServiceMock = new Mock<ICreateCaseService>();
+            _updateCaseServiceMock = new Mock<IUpdateCaseService>();
             _loggingMock = new Mock<ILoggingService>();
 
             _sut = new CaseService(
                 _blaiseApiMock.Object,
+                _createCaseServiceMock.Object,
                 _updateCaseServiceMock.Object,
                 _loggingMock.Object);
         }
 
-  [Test]
+        [Test]
         public void Given_There_Are_No_Records_Available_In_The_Nisra_File_When_I_Call_ImportOnlineDatabaseFile_Then_Nothing_Is_Processed()
         {
             //arrange
@@ -72,6 +74,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _dataSetMock.Verify(v => v.EndOfSet, Times.Once);
 
             _blaiseApiMock.VerifyNoOtherCalls();
+            _createCaseServiceMock.VerifyNoOtherCalls();
             _updateCaseServiceMock.VerifyNoOtherCalls();
         }
 
@@ -84,8 +87,8 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(false)
                 .Returns(true);
 
-            _blaiseApiMock.Setup(b => b.GetPrimaryKeyValue(_newDataRecordMock.Object)).Returns(_serialNumber);
-            _blaiseApiMock.Setup(b => b.CaseExists(_serialNumber, _serverParkName, _instrumentName)).Returns(false);
+            _blaiseApiMock.Setup(b => b.GetPrimaryKeyValue(_newDataRecordMock.Object)).Returns(_primaryKey);
+            _blaiseApiMock.Setup(b => b.CaseExists(_primaryKey, _serverParkName, _instrumentName)).Returns(false);
 
             //act
             _sut.ImportOnlineDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
@@ -93,14 +96,15 @@ namespace Blaise.Api.Tests.Unit.Services
             //assert
             _blaiseApiMock.Verify(v => v.GetCases(_databaseFileName), Times.Once);
             _blaiseApiMock.Verify(v => v.GetPrimaryKeyValue(_newDataRecordMock.Object), Times.Once);
-            _blaiseApiMock.Verify(v => v.CaseExists(_serialNumber, _instrumentName,_serverParkName), Times.Once);
-            _blaiseApiMock.Verify(v => v.CreateCase(_newDataRecordMock.Object, _instrumentName, _serverParkName), Times.Once);
+            _blaiseApiMock.Verify(v => v.CaseExists(_primaryKey, _instrumentName, _serverParkName), Times.Once);
+
+            _createCaseServiceMock.Verify(v => v.CreateOnlineCase(_newDataRecordMock.Object, _instrumentName,
+                _serverParkName, _primaryKey), Times.Once);
 
             _dataSetMock.Verify(v => v.EndOfSet, Times.Exactly(2));
             _dataSetMock.Verify(v => v.ActiveRecord, Times.Once);
             _dataSetMock.Verify(v => v.MoveNext(), Times.Once);
-
-
+            
             _blaiseApiMock.VerifyNoOtherCalls();
             _updateCaseServiceMock.VerifyNoOtherCalls();
         }
@@ -114,10 +118,10 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(false)
                 .Returns(true);
 
-            _blaiseApiMock.Setup(b => b.GetPrimaryKeyValue(_newDataRecordMock.Object)).Returns(_serialNumber);
-            _blaiseApiMock.Setup(b => b.CaseExists(_serialNumber, _instrumentName, _serverParkName)).Returns(true);
+            _blaiseApiMock.Setup(b => b.GetPrimaryKeyValue(_newDataRecordMock.Object)).Returns(_primaryKey);
+            _blaiseApiMock.Setup(b => b.CaseExists(_primaryKey, _instrumentName, _serverParkName)).Returns(true);
 
-            _blaiseApiMock.Setup(b => b.GetCase(_serialNumber, _instrumentName, _serverParkName))
+            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _instrumentName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
 
             //act
@@ -126,16 +130,17 @@ namespace Blaise.Api.Tests.Unit.Services
             //assert
             _blaiseApiMock.Verify(v => v.GetCases(_databaseFileName), Times.Once);
             _blaiseApiMock.Verify(v => v.GetPrimaryKeyValue(_newDataRecordMock.Object), Times.Once);
-            _blaiseApiMock.Verify(v => v.CaseExists(_serialNumber, _instrumentName, _serverParkName), Times.Once);
-            _blaiseApiMock.Verify(v => v.GetCase(_serialNumber, _instrumentName, _serverParkName), Times.Once);
+            _blaiseApiMock.Verify(v => v.CaseExists(_primaryKey, _instrumentName, _serverParkName), Times.Once);
+            _blaiseApiMock.Verify(v => v.GetCase(_primaryKey, _instrumentName, _serverParkName), Times.Once);
 
             _dataSetMock.Verify(v => v.EndOfSet, Times.Exactly(2));
             _dataSetMock.Verify(v => v.ActiveRecord, Times.Once);
             _dataSetMock.Verify(v => v.MoveNext(), Times.Once);
 
             _updateCaseServiceMock.Verify(v => v.UpdateExistingCaseWithOnlineData(_newDataRecordMock.Object, _existingDataRecordMock.Object,
-                _serverParkName, _instrumentName , _serialNumber), Times.Once);
+                _serverParkName, _instrumentName, _primaryKey), Times.Once);
 
+            _createCaseServiceMock.VerifyNoOtherCalls();
             _blaiseApiMock.VerifyNoOtherCalls();
             _updateCaseServiceMock.VerifyNoOtherCalls();
         }

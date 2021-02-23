@@ -25,13 +25,13 @@ namespace Blaise.Api.Core.Services
         }
 
         public void UpdateExistingCaseWithOnlineData(IDataRecord onlineDataRecord, IDataRecord existingDataRecord,
-            string serverParkName, string instrumentName, string serialNumber)
+            string serverParkName, string instrumentName, string primaryKey)
         {
             var nisraOutcome = _blaiseApi.GetOutcomeCode(onlineDataRecord);
 
             if (nisraOutcome == 0)
             {
-                _loggingService.LogInfo($"Not processed: NISRA case '{serialNumber}' (HOut = 0)");
+                _loggingService.LogInfo($"Not processed: NISRA case '{primaryKey}' (HOut = 0)");
 
                 return;
             }
@@ -39,7 +39,7 @@ namespace Blaise.Api.Core.Services
             if (CaseIsCurrentlyInUseInCati(existingDataRecord))
             {
                 _loggingService.LogInfo(
-                    $"Not processed: NISRA case '{serialNumber}' as the case is open in Cati");
+                    $"Not processed: NISRA case '{primaryKey}' as the case is open in Cati");
 
                 return;
             }
@@ -49,7 +49,7 @@ namespace Blaise.Api.Core.Services
             if (existingOutcome > 542)
             {
                 _loggingService.LogInfo(
-                    $"Not processed: NISRA case '{serialNumber}' (Existing HOut = '{existingOutcome}'");
+                    $"Not processed: NISRA case '{primaryKey}' (Existing HOut = '{existingOutcome}'");
 
                 return;
             }
@@ -59,13 +59,13 @@ namespace Blaise.Api.Core.Services
                 UpdateCase(onlineDataRecord, existingDataRecord, instrumentName, 
                     serverParkName, nisraOutcome);
                 _loggingService.LogInfo(
-                    $"processed: NISRA case '{serialNumber}' (HOut = '{nisraOutcome}' <= '{existingOutcome}') or (HOut = 0)'");
+                    $"processed: NISRA case '{primaryKey}' (HOut = '{nisraOutcome}' <= '{existingOutcome}') or (HOut = 0)'");
 
                 return;
             }
 
             _loggingService.LogInfo(
-                $"Not processed: NISRA case '{serialNumber}' (HOut = '{existingOutcome}' < '{nisraOutcome}')'");
+                $"Not processed: NISRA case '{primaryKey}' (HOut = '{existingOutcome}' < '{nisraOutcome}')'");
         }
 
         internal void UpdateCase(IDataRecord newDataRecord, IDataRecord existingDataRecord, string instrumentName,
