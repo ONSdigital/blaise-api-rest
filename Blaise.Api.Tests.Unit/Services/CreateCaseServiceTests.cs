@@ -70,7 +70,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(outcomeCode);
 
             //act
-            _sut.CreateOnlineCase(_nisraDataRecordMock.Object, _serverParkName, _instrumentName, _primaryKey);
+            _sut.CreateOnlineCase(_nisraDataRecordMock.Object, _instrumentName, _serverParkName, _primaryKey);
 
             //assert
             _catiManaMock.Verify(v => v.RemoveCatiManaBlock(_newFieldData), Times.Once);

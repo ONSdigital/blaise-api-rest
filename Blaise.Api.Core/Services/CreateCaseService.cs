@@ -22,8 +22,8 @@ namespace Blaise.Api.Core.Services
             _loggingService = loggingService;
         }
 
-        public void CreateOnlineCase(IDataRecord dataRecord, string serverParkName, 
-            string instrumentName, string primaryKey)
+        public void CreateOnlineCase(IDataRecord dataRecord, string instrumentName, string serverParkName, 
+             string primaryKey)
         {
             var outcomeCode = _blaiseApi.GetOutcomeCode(dataRecord);
             var existingFieldData = _blaiseApi.GetRecordDataFields(dataRecord);
