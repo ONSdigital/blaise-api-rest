@@ -13,7 +13,7 @@ namespace Blaise.Api.Tests.Unit.Services
     public class UpdateCaseServiceTests
     {
         private Mock<IBlaiseCaseApi> _blaiseApiMock;
-        private Mock<ICatiManaService> _catiManaMock;
+        private Mock<ICatiDataService> _catiManaMock;
         private Mock<ILoggingService> _loggingMock;
         private MockSequence _mockSequence;
 
@@ -61,10 +61,11 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(_dataValueMock.Object);
 
             //important that the service calls the methods in the right order, otherwise you could end up removing what you have added
-            _catiManaMock = new Mock<ICatiManaService>(MockBehavior.Strict);
+            _catiManaMock = new Mock<ICatiDataService>(MockBehavior.Strict);
             _mockSequence = new MockSequence();
 
             _catiManaMock.InSequence(_mockSequence).Setup(c => c.RemoveCatiManaBlock(_newFieldData));
+            _catiManaMock.InSequence(_mockSequence).Setup(c => c.RemoveCallHistoryBlock(_newFieldData));
             _catiManaMock.InSequence(_mockSequence).Setup(c => c.RemoveWebNudgedField(_newFieldData));
             _catiManaMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(_newFieldData, _existingFieldData,
                 It.IsAny<int>()));
@@ -349,9 +350,11 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             _catiManaMock.Verify(v => v.RemoveCatiManaBlock(_newFieldData), Times.Once);
+            _catiManaMock.Verify(v => v.RemoveCallHistoryBlock(_newFieldData), Times.Once);
             _catiManaMock.Verify(v => v.RemoveWebNudgedField(_newFieldData), Times.Once);
             _catiManaMock.Verify(v => v.AddCatiManaCallItems(_newFieldData, _existingFieldData,outcomeCode),
                 Times.Once);
+
             _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData, 
                 _instrumentName, _serverParkName), Times.Once);
         }

@@ -13,7 +13,7 @@ namespace Blaise.Api.Tests.Unit.Services
     public class CreateCaseServiceTests
     {
         private Mock<IBlaiseCaseApi> _blaiseApiMock;
-        private Mock<ICatiManaService> _catiManaMock;
+        private Mock<ICatiDataService> _catiManaMock;
         private Mock<ILoggingService> _loggingMock;
         private MockSequence _mockSequence;
 
@@ -49,7 +49,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(_newFieldData);
 
             //important that the service calls the methods in the right order, otherwise you could end up removing what you have added
-            _catiManaMock = new Mock<ICatiManaService>(MockBehavior.Strict);
+            _catiManaMock = new Mock<ICatiDataService>(MockBehavior.Strict);
             _mockSequence = new MockSequence();
 
             _catiManaMock.InSequence(_mockSequence).Setup(c => c.RemoveCatiManaBlock(_newFieldData));

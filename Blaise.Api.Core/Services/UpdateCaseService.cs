@@ -11,16 +11,16 @@ namespace Blaise.Api.Core.Services
     public class UpdateCaseService : IUpdateCaseService
     {
         private readonly IBlaiseCaseApi _blaiseApi;
-        private readonly ICatiManaService _catiManaService;
+        private readonly ICatiDataService _catiDataService;
         private readonly ILoggingService _loggingService;
 
         public UpdateCaseService(
             IBlaiseCaseApi blaiseApi,
-            ICatiManaService catiManaService,
+            ICatiDataService catiDataService,
             ILoggingService loggingService)
         {
             _blaiseApi = blaiseApi;
-            _catiManaService = catiManaService;
+            _catiDataService = catiDataService;
             _loggingService = loggingService;
         }
 
@@ -75,13 +75,16 @@ namespace Blaise.Api.Core.Services
             var existingFieldData = _blaiseApi.GetRecordDataFields(existingDataRecord);
 
             // we need to preserve the TO CatiMana block data sp remove the fields from WEB
-            _catiManaService.RemoveCatiManaBlock(newFieldData);
+            _catiDataService.RemoveCatiManaBlock(newFieldData);
 
-            //we need to preserve the wed nudged field
-            _catiManaService.RemoveWebNudgedField(newFieldData);
+            // we need to preserve the TO CallHistory block data captured in Cati
+            _catiDataService.RemoveCallHistoryBlock(newFieldData);
+
+            //we need to preserve the web nudged field
+            _catiDataService.RemoveWebNudgedField(newFieldData);
 
             // add the existing cati call data with additional items to the new field data
-            _catiManaService.AddCatiManaCallItems(newFieldData, existingFieldData, outcomeCode);
+            _catiDataService.AddCatiManaCallItems(newFieldData, existingFieldData, outcomeCode);
 
             _blaiseApi.UpdateCase(existingDataRecord, newFieldData,
                 instrumentName, serverParkName);

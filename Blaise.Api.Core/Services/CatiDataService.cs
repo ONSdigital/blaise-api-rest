@@ -2,20 +2,31 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Blaise.Api.Core.Interfaces.Services;
 
-[assembly: InternalsVisibleTo("Blaise.Api.Tests.Unit")]
 namespace Blaise.Api.Core.Services
 {
-    public class CatiManaService : ICatiManaService
+    public class CatiDataService : ICatiDataService
     {
         public void RemoveCatiManaBlock(Dictionary<string, string> fieldData)
         {
-            foreach (var f in fieldData
-                .Where(kv => kv.Key.StartsWith("CatiMana")).ToList())
+            var callHistoryItems = fieldData.Where(f => 
+                f.Key.StartsWith("CatiMana")).ToList();
+
+            foreach (var callHistoryItem in callHistoryItems)
             {
-                fieldData.Remove(f.Key);
+                fieldData.Remove(callHistoryItem.Key);
+            }
+        }
+
+        public void RemoveCallHistoryBlock(Dictionary<string, string> fieldData)
+        {
+            var callHistoryItems = fieldData.Where(f => 
+                f.Key.StartsWith("CallHistory")).ToList();
+
+            foreach (var callHistoryItem in callHistoryItems)
+            {
+                fieldData.Remove(callHistoryItem.Key);
             }
         }
         
@@ -42,7 +53,7 @@ namespace Blaise.Api.Core.Services
             }
         }
 
-        internal void SetFirstDayIfNotSet(Dictionary<string, string> newFieldData, 
+        public void SetFirstDayIfNotSet(Dictionary<string, string> newFieldData, 
             Dictionary<string, string> existingFieldData)
         {
             var existingFieldValue = existingFieldData["CatiMana.CatiCall.FirstDay"];
@@ -53,7 +64,7 @@ namespace Blaise.Api.Core.Services
                     : existingFieldValue);
         }
 
-        internal void AddCatiManaNrOfCallItem(Dictionary<string, string> newFieldData, 
+        public void AddCatiManaNrOfCallItem(Dictionary<string, string> newFieldData, 
             Dictionary<string, string> existingFieldData)
         {
             newFieldData.Add("CatiMana.CatiCall.NrOfCall",
@@ -62,7 +73,7 @@ namespace Blaise.Api.Core.Services
                     : "1");
         }
 
-        internal Dictionary<string, string> BuildCatiManaRegCallItems(Dictionary<string, string> fieldData, 
+        public Dictionary<string, string> BuildCatiManaRegCallItems(Dictionary<string, string> fieldData, 
             int outcomeCode)
         {
             var catiCallItems = new Dictionary<string, string>

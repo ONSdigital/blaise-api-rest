@@ -177,7 +177,7 @@
     <Compile Include="Services\InstrumentDataServiceTests.cs" />
     <Compile Include="Services\InstrumentUninstallerServiceTests.cs" />
     <Compile Include="Services\CaseServiceTests.cs" />
-    <Compile Include="Services\CatiManaServiceTests.cs" />
+    <Compile Include="Services\CatiDataServiceTests.cs" />
     <Compile Include="Services\CreateCaseServiceTests.cs" />
     <Compile Include="Services\UpdateCaseServiceTests.cs" />
     <Compile Include="Services\UserServiceTests.cs" />

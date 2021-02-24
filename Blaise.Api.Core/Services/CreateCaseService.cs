@@ -9,12 +9,12 @@ namespace Blaise.Api.Core.Services
     public class CreateCaseService : ICreateCaseService
     {
         private readonly IBlaiseCaseApi _blaiseApi;
-        private readonly ICatiManaService _catiManaService;
+        private readonly ICatiDataService _catiManaService;
         private readonly ILoggingService _loggingService;
 
         public CreateCaseService(
             IBlaiseCaseApi blaiseApi,
-            ICatiManaService catiManaService,
+            ICatiDataService catiManaService,
             ILoggingService loggingService)
         {
             _blaiseApi = blaiseApi;

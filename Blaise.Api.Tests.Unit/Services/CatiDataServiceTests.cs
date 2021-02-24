@@ -6,18 +6,18 @@ using NUnit.Framework;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
-    public class CatiManaServiceTests
+    public class CatiDataServiceTests
     {
-        private CatiManaService _sut;
+        private CatiDataService _sut;
 
         [SetUp]
         public void SetUpTests()
         {
-            _sut = new CatiManaService();
+            _sut = new CatiDataService();
         }
 
         [Test]
-        public void Given_I_Call_RemoveCatiManaBlock_Then_The_CatMana_FieldData_Is_Removed()
+        public void Given_FieldData_Containing_A_CatiMana_Block_When_I_Call_RemoveCatiManaBlock_Then_The_CatMana_FieldData_Is_Removed()
         {
             //arrange
             var fieldData = new Dictionary<string, string>
@@ -38,6 +38,28 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.AreEqual("Jambo", fieldData["InterviewerID"]);
         }
 
+        [Test]
+        public void Given_FieldData_Containing_A_CallHistory_Block_When_I_Call_RemoveCallHistoryBlock_Then_The_CallHistory_FieldData_Is_Removed()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string>
+            {
+                {"CallHistory.ATime", "blah1"},
+                {"CallHistory.CaseHist[1].THour", "blah2"},
+                {"CallHistory.CaseHist[1].TMinute", "blah3"},
+                {"InterviewerID", "Jambo"}
+            };
+
+            //act
+            _sut.RemoveCallHistoryBlock(fieldData);
+
+            //assert
+            Assert.IsNotEmpty(fieldData);
+            Assert.AreEqual(1, fieldData.Count);
+            Assert.True(fieldData.ContainsKey("InterviewerID"));
+            Assert.AreEqual("Jambo", fieldData["InterviewerID"]);
+        }
+        
         [Test]
         public void Given_I_Call_RemoveWebNudgedField_Then_The_WebNudged_FieldData_Is_Removed()
         {
@@ -225,10 +247,10 @@ namespace Blaise.Api.Tests.Unit.Services
             }
         }
 
-        [TestCase(110, "1", "1")]
-        [TestCase(210, "6", "2")]
+        [TestCase(110, "1")]
+        [TestCase(210, "2")]
         public void Given_No_Existing_CatiMana_Data_When_I_Call_AddCatiManaCallItems_Then_The_Correct_Items_Are_Added(int outcomeCode,
-            string telDialResult, string webDialResult)
+             string webDialResult)
         {
             //arrange
             var existingFieldData = new Dictionary<string, string>
@@ -326,10 +348,10 @@ namespace Blaise.Api.Tests.Unit.Services
             }
         }
 
-        [TestCase(110, "1", "1")]
-        [TestCase(210, "6", "2")]
+        [TestCase(110, "1")]
+        [TestCase(210, "2")]
         public void Given_A_New_Online_Case_When_I_Call_AddCatiManaCallItems_Then_The_Correct_Items_Are_Added(int outcomeCode,
-                    string telDialResult, string webDialResult)
+            string webDialResult)
         {
             //arrange
             var existingFieldData = new Dictionary<string, string>
