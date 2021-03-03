@@ -10,6 +10,7 @@ namespace Blaise.Api.Tests.Models.Case
             PrimaryKey = primaryKey;
             Outcome = outcome;
             Mode = mode;
+            LastUpdated = DateTime.Now.AddHours(-1);
         }
 
         public CaseModel(string primaryKey, string outcome, ModeType mode, DateTime lastUpdated)
@@ -17,6 +18,7 @@ namespace Blaise.Api.Tests.Models.Case
             PrimaryKey = primaryKey;
             Outcome = outcome;
             Mode = mode;
+            LastUpdated = lastUpdated;
         }
 
         public string PrimaryKey { get; set; }
