@@ -5,14 +5,6 @@ namespace Blaise.Api.Tests.Models.Case
 {
     public class CaseModel
     {
-        public CaseModel(string primaryKey, string outcome, ModeType mode)
-        {
-            PrimaryKey = primaryKey;
-            Outcome = outcome;
-            Mode = mode;
-            LastUpdated = DateTime.Now.AddHours(-1);
-        }
-
         public CaseModel(string primaryKey, string outcome, ModeType mode, DateTime lastUpdated)
         {
             PrimaryKey = primaryKey;

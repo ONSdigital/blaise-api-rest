@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,12 +49,12 @@ namespace Blaise.Api.Tests.Helpers.Files
             var extractedFilePath = ExtractPackageFiles(path, instrumentPackage);
             var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
 
-            var primaryKey = CaseHelper.GetInstance().CreateCaseInFile(instrumentDatabase,
-                outcomeCode, ModeType.Web);
+            var caseModel = CaseHelper.GetInstance().CreateCaseModel(outcomeCode.ToString(), ModeType.Web, DateTime.Now.AddMinutes(-40));
+           CaseHelper.GetInstance().CreateCaseInFile(instrumentDatabase, caseModel);
 
             await UploadFilesToBucket(extractedFilePath);
 
-            return primaryKey;
+            return caseModel.PrimaryKey;
         }
 
         public async Task CreateCaseInOnlineFileAsync(CaseModel caseModel, string path)

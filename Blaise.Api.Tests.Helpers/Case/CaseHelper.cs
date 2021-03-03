@@ -38,7 +38,7 @@ namespace Blaise.Api.Tests.Helpers.Case
         {
             for (var count = 0; count < expectedNumberOfCases; count++)
             {
-                var caseModel = new CaseModel(_primaryKey.ToString(), "110", ModeType.Tel);
+                var caseModel = new CaseModel(_primaryKey.ToString(), "110", ModeType.Tel, DateTime.Now.AddHours(-1));
                 CreateCaseInBlaise(caseModel);
                 _primaryKey++;
             }
@@ -48,7 +48,8 @@ namespace Blaise.Api.Tests.Helpers.Case
         {
             for (var count = 0; count < expectedNumberOfCases; count++)
             {
-                CreateCaseInFile(extractedFilePath);
+                var caseModel = new CaseModel(_primaryKey.ToString(), "110", ModeType.Web, DateTime.Now.AddMinutes(-20));
+                CreateCaseInFile(extractedFilePath, caseModel);
                 _primaryKey++;
             }
         }
@@ -71,47 +72,36 @@ namespace Blaise.Api.Tests.Helpers.Case
 
         public void CreateCaseInBlaise(CaseModel caseModel)
         {
-            var dataFields = new Dictionary<string, string>
-            {
-                { "SerialNumber", caseModel.PrimaryKey },
-                { FieldNameType.HOut.FullName(), caseModel.Outcome },
-                { FieldNameType.Mode.FullName(), ((int)caseModel.Mode).ToString() }
-            };
+            var dataFields = BuildDataFieldsFromCaseModel(caseModel);
 
             _blaiseCaseApi.CreateCase(caseModel.PrimaryKey, dataFields,
                 BlaiseConfigurationHelper.InstrumentName, BlaiseConfigurationHelper.ServerParkName);
         }
 
-        public string CreateCaseInFile(string databaseFile, int outcome = 110, ModeType mode = ModeType.Web)
-        {
-            var dataFields = new Dictionary<string, string>
-            {
-                { "SerialNumber", _primaryKey.ToString() },
-                { FieldNameType.HOut.FullName(), outcome.ToString() },
-                { FieldNameType.Mode.FullName(), ((int)mode).ToString() }
-            };
-
-            _blaiseCaseApi.CreateCase(databaseFile, _primaryKey.ToString(), dataFields);
-            return _primaryKey.ToString();
-        }
-
         public void CreateCaseInFile(string databaseFile, CaseModel caseModel)
         {
-            var dataFields = new Dictionary<string, string>
+            var dataFields = BuildDataFieldsFromCaseModel(caseModel);
+
+            _blaiseCaseApi.CreateCase(databaseFile, caseModel.PrimaryKey, dataFields);
+        }
+
+        private Dictionary<string, string> BuildDataFieldsFromCaseModel(CaseModel caseModel)
+        {
+            return new Dictionary<string, string>
             {
                 { "SerialNumber", caseModel.PrimaryKey },
                 { FieldNameType.HOut.FullName(), caseModel.Outcome },
-                { FieldNameType.Mode.FullName(), ((int)caseModel.Mode).ToString() }
+                { FieldNameType.Mode.FullName(), ((int)caseModel.Mode).ToString() },
+                { FieldNameType.LastUpdatedDate.FullName(), caseModel.LastUpdated.ToString("dd-MM-yyyy") },
+                { FieldNameType.LastUpdatedTime.FullName(), caseModel.LastUpdated.ToString("HH:mm:ss") }
             };
-
-            _blaiseCaseApi.CreateCase(databaseFile,caseModel.PrimaryKey, dataFields);
         }
 
         public IEnumerable<CaseModel> GetCasesInDatabase()
         {
             var caseModels = new List<CaseModel>();
 
-            var casesInDatabase = _blaiseCaseApi.GetCases( 
+            var casesInDatabase = _blaiseCaseApi.GetCases(
                 BlaiseConfigurationHelper.InstrumentName, BlaiseConfigurationHelper.ServerParkName);
 
             while (!casesInDatabase.EndOfSet)
@@ -120,7 +110,7 @@ namespace Blaise.Api.Tests.Helpers.Case
                 var outcome = _blaiseCaseApi.GetFieldValue(caseRecord, FieldNameType.HOut).IntegerValue.ToString(CultureInfo.InvariantCulture);
                 var mode = _blaiseCaseApi.GetFieldValue(caseRecord, FieldNameType.Mode).EnumerationValue;
 
-                caseModels.Add(new CaseModel(_blaiseCaseApi.GetPrimaryKeyValue(caseRecord), outcome, (ModeType)mode));
+                caseModels.Add(new CaseModel(_blaiseCaseApi.GetPrimaryKeyValue(caseRecord), outcome, (ModeType)mode, DateTime.Now));
                 casesInDatabase.MoveNext();
             }
 
@@ -159,7 +149,7 @@ namespace Blaise.Api.Tests.Helpers.Case
             var field = _blaiseCaseApi.GetFieldValue(primaryKey, BlaiseConfigurationHelper.InstrumentName,
                 BlaiseConfigurationHelper.ServerParkName, FieldNameType.Mode);
 
-            return (ModeType) field.EnumerationValue;
+            return (ModeType)field.EnumerationValue;
         }
 
         public void MarkCaseAsOpenInCati(string primaryKey)
@@ -167,7 +157,7 @@ namespace Blaise.Api.Tests.Helpers.Case
             var dataRecord = _blaiseCaseApi.GetCase(primaryKey, BlaiseConfigurationHelper.InstrumentName,
                 BlaiseConfigurationHelper.ServerParkName);
 
-            var fieldData = new Dictionary<string, string> { 
+            var fieldData = new Dictionary<string, string> {
                 {FieldNameType.LastUpdatedDate.FullName(), DateTime.Now.ToString("dd-MM-yyyy")},
                 {FieldNameType.LastUpdatedTime.FullName(), DateTime.Now.ToString("HH:mm:ss")}};
 

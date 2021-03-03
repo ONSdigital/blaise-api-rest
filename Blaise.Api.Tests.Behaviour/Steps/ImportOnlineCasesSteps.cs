@@ -98,7 +98,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public void GivenTheSameCaseExistsInBlaiseWithTheOutcomeCode(int outcomeCode)
         {
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
-            var caseModel = new CaseModel(primaryKey, outcomeCode.ToString(), ModeType.Tel);
+            var caseModel = new CaseModel(primaryKey, outcomeCode.ToString(), ModeType.Tel, DateTime.Now.AddHours(-2));
             CaseHelper.GetInstance().CreateCaseInBlaise(caseModel);
         }
 
