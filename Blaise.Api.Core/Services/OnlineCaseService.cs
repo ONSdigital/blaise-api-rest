@@ -107,6 +107,8 @@ namespace Blaise.Api.Core.Services
             {
                 _loggingService.LogInfo(
                     $"processed: NISRA case '{primaryKey}' (HOut = '{newOutcome}' <= '{existingOutcome}') or (HOut = 0)'");
+                
+                return;
             }
 
             _loggingService.LogWarn($"NISRA case '{primaryKey}' failed to update - potentially open in Cati at the time of the update");

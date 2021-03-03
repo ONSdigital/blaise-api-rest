@@ -448,6 +448,8 @@ namespace Blaise.Api.Tests.Unit.Services
             //assert
             _loggingMock.Verify(v => v.LogInfo($"processed: NISRA case '{_primaryKey}' (HOut = '{outcomeCode}' <= '{outcomeCode}') or (HOut = 0)'"),
                 Times.Once);
+
+            _loggingMock.Verify(v => v.LogWarn(It.IsAny<string>()), Times.Never);
         }
 
         [Test]

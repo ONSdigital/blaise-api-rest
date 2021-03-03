@@ -67,7 +67,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [Given(@"there is a online file that contains the following cases")]
         public async Task GivenThereIsAOnlineFileThatContainsTheFollowingCases(IEnumerable<CaseModel> cases)
         {
-            await OnlineFileHelper.GetInstance().CreateCasesInOnlineFileAsync(cases,_tempFilePath);
+            await OnlineFileHelper.GetInstance().CreateCasesInOnlineFileAsync(cases, _tempFilePath);
         }
         
         [Given(@"the same case exists in Blaise that is complete")]

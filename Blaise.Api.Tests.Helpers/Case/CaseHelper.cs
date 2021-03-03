@@ -58,6 +58,8 @@ namespace Blaise.Api.Tests.Helpers.Case
         {
             foreach (var caseModel in caseModels)
             {
+                caseModel.LastUpdated = DateTime.Now.AddHours(-2);
+
                 CreateCaseInFile(extractedFilePath, caseModel);
             }
         }
