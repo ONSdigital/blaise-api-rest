@@ -28,7 +28,7 @@ namespace Blaise.Api.Configuration
             var connectionModel = blaiseConfigurationProvider.GetConnectionModel();
 
             //logging
-            container.RegisterType<ILoggingService, FileLoggingService>();
+            container.RegisterType<ILoggingService, EventLogging>();
 
             container.RegisterType<IBlaiseServerParkApi, BlaiseServerParkApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseSurveyApi, BlaiseSurveyApi>(new InjectionConstructor(connectionModel));
