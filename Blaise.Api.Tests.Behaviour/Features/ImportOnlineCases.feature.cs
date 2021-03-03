@@ -701,7 +701,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And(string.Format("the same case exists in Blaise with the outcome code \'{0}\'", existingOutcome), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 166
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the online file is processed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 167
  testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
