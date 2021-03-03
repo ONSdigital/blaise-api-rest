@@ -38,7 +38,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             InstrumentHelper.GetInstance().UninstallSurvey();
             
             var fileName = Path.GetFileName(BlaiseConfigurationHelper.InstrumentPackage);
-            
+
             await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(
                 BlaiseConfigurationHelper.InstrumentPackageBucket,
                 fileName);
