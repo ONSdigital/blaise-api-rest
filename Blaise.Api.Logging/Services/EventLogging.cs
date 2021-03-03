@@ -1,6 +1,7 @@
 ﻿using Blaise.Api.Contracts.Interfaces;
 using System;
 using System.Diagnostics;
+using System.Text;
 
 namespace Blaise.Api.Logging.Services
 {
@@ -8,7 +9,7 @@ namespace Blaise.Api.Logging.Services
     {
         public void LogError(string message, Exception exception)
         {
-            EventLog.WriteEntry("Rest API", message, EventLogEntryType.Error, 0,0, Convert.ToBase64CharArray(exception.InnerException));
+            EventLog.WriteEntry("Rest API", message, EventLogEntryType.Error, 0,0, Encoding.ASCII.GetBytes(exception.InnerException.ToString()));
         }
 
         public void LogInfo(string message)
