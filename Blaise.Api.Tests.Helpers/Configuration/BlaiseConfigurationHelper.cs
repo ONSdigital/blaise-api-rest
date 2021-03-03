@@ -12,7 +12,6 @@ namespace Blaise.Api.Tests.Helpers.Configuration
         public static string InstrumentFile => $"{InstrumentName}.{InstrumentExtension}";
         public static string InstrumentPackageBucket => ConfigurationExtensions.GetVariable("ENV_BLAISE_DQS_BUCKET");
         public static string TempPath => ConfigurationExtensions.GetVariable("TEMP_PATH");
-        public static string TempTestsPath => $"{TempPath}//tests";
         public static string OnlineFileBucket => ConfigurationExtensions.GetVariable("ENV_BLAISE_NISRA_BUCKET");
     }
 }

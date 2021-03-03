@@ -14,14 +14,14 @@ namespace Blaise.Api.Tests.Helpers.Files
             return _currentInstance ?? (_currentInstance = new FileSystemHelper());
         }
 
-        public void CleanUpTempFiles()
+        public void CleanUpTempFiles(string path)
         {
-            if (!Directory.Exists(BlaiseConfigurationHelper.TempTestsPath)) return;
+            if (!Directory.Exists(path)) return;
 
             try
             {
                 Thread.Sleep(10000);
-                DeleteDirectoryAndFilesInPath(BlaiseConfigurationHelper.TempTestsPath);
+                DeleteDirectoryAndFilesInPath(path);
             }
             catch (Exception e)
             {

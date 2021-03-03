@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Case;
 using Blaise.Api.Tests.Helpers.Configuration;
-using Blaise.Api.Tests.Helpers.Files;
 using Blaise.Api.Tests.Helpers.Instrument;
 using Blaise.Api.Tests.Helpers.RestApi;
 using Blaise.Api.Tests.Models.Questionnaire;
@@ -52,7 +51,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [When(@"the API is queried to return all active questionnaires")]
         public async Task WhenTheApiIsQueriedToReturnAllActiveQuestionnairesAsync()
         {
-            var listOfActiveQuestionnaires =  await RestApiHelper.GetInstance().GetAllActiveQuestionnaires();
+            var listOfActiveQuestionnaires = await RestApiHelper.GetInstance().GetAllActiveQuestionnaires();
             _scenarioContext.Set(listOfActiveQuestionnaires, ApiResponse);
         }
 
@@ -62,7 +61,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             var listOfActiveQuestionnaires = _scenarioContext.Get<List<Questionnaire>>(ApiResponse);
             Assert.IsTrue(listOfActiveQuestionnaires.Any(q => q.Name == BlaiseConfigurationHelper.InstrumentName));
         }
-        
+
         [Then(@"the details of the questionnaire is not returned")]
         public void ThenDetailsOfQuestionnaireAIsNotReturned()
         {
@@ -83,7 +82,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             CaseHelper.GetInstance().DeleteCases();
             InstrumentHelper.GetInstance().UninstallSurvey();
-            FileSystemHelper.GetInstance().CleanUpTempFiles();
         }
     }
 }

@@ -51,12 +51,12 @@ namespace Blaise.Api.Tests.Helpers.RestApi
             return response.StatusCode;
         }
 
-        public async Task<string> GetInstrumentWithData(string url)
+        public async Task<string> GetInstrumentWithData(string url, string path)
         {
             var response = await _httpClient.GetAsync(url);
 
             var fileName = response.Content.Headers.ContentDisposition.FileName;
-            var localFilePath = Path.Combine(BlaiseConfigurationHelper.TempTestsPath, Guid.NewGuid().ToString());
+            var localFilePath = Path.Combine(path, Guid.NewGuid().ToString());
 
             if (!Directory.Exists(localFilePath))
             {

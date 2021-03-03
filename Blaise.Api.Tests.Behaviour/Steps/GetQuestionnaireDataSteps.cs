@@ -17,11 +17,13 @@ namespace Blaise.Api.Tests.Behaviour.Steps
     {
         private const int ExpectedNumberOfCases = 10;
         private const string ApiResponse = "ApiResponse";
+        private readonly string _tempFilePath;
 
         private readonly ScenarioContext _scenarioContext;
 
         public GetQuestionnaireDataSteps(ScenarioContext scenarioContext)
         {
+            _tempFilePath = Path.Combine(BlaiseConfigurationHelper.TempPath, "Tests", Guid.NewGuid().ToString());
             _scenarioContext = scenarioContext;
         }
         
@@ -42,7 +44,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public async Task WhenTheApiIsCalledToDeliverTheQuestionnaireWithData()
         {
             var instrumentFile = await RestApiHelper.GetInstance().GetInstrumentWithData(
-                RestApiConfigurationHelper.InstrumentDataUrl);
+                RestApiConfigurationHelper.InstrumentDataUrl, _tempFilePath);
 
             _scenarioContext.Set(instrumentFile, ApiResponse);
         }
@@ -52,7 +54,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var deliveredFile = _scenarioContext.Get<string>(ApiResponse);
             var extractedFilePath = Path.Combine(
-                BlaiseConfigurationHelper.TempTestsPath, 
+                _tempFilePath, 
                 BlaiseConfigurationHelper.InstrumentName);
 
             deliveredFile.ExtractFiles(extractedFilePath);
@@ -67,7 +69,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             CaseHelper.GetInstance().DeleteCases();
             InstrumentHelper.GetInstance().UninstallSurvey();
-            FileSystemHelper.GetInstance().CleanUpTempFiles();
+            FileSystemHelper.GetInstance().CleanUpTempFiles(_tempFilePath);
         }
     }
 }
