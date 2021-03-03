@@ -55,6 +55,18 @@ namespace Blaise.Api.Tests.Helpers.Files
 
             return primaryKey;
         }
+
+        public async Task CreateCaseInOnlineFileAsync(CaseModel caseModel)
+        {
+            var instrumentPackage = await DownloadPackageFromBucket();
+            var extractedFilePath = ExtractPackageFiles(instrumentPackage);
+            var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
+
+            CaseHelper.GetInstance().CreateCaseInFile(instrumentDatabase, caseModel);
+
+            await UploadFilesToBucket(extractedFilePath);
+        }
+
         public async Task CleanUpOnlineFiles()
         {
             await CloudStorageHelper.GetInstance().DeleteFilesInBucketAsync(BlaiseConfigurationHelper.OnlineFileBucket,

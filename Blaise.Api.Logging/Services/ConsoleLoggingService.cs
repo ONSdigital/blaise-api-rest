@@ -10,9 +10,14 @@ namespace Blaise.Api.Logging.Services
             Console.WriteLine(message);
         }
 
+        public void LogWarn(string message)
+        {
+            Console.WriteLine($"Warning - {message}");
+        }
+
         public void LogError(string message, Exception exception)
         {
-            Console.WriteLine($"{message}: {exception.Message}, {exception.InnerException}");
+            Console.WriteLine($"Error - {message}: {exception.Message}, {exception.InnerException}");
         }
     }
 }

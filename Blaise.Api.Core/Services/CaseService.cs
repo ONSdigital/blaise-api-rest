@@ -7,19 +7,16 @@ namespace Blaise.Api.Core.Services
     public class CaseService : ICaseService
     {
         private readonly IBlaiseCaseApi _blaiseApi;
-        private readonly ICreateCaseService _createCaseService;
-        private readonly IUpdateCaseService _updateCaseService;
+        private readonly IOnlineCaseService _onlineCaseService;
         private readonly ILoggingService _loggingService;
 
         public CaseService(
             IBlaiseCaseApi blaiseApi, 
-            ICreateCaseService createCaseService,
-            IUpdateCaseService updateCaseService, 
+            IOnlineCaseService updateCaseService, 
             ILoggingService loggingService)
         {
             _blaiseApi = blaiseApi;
-            _createCaseService = createCaseService;
-            _updateCaseService = updateCaseService;
+            _onlineCaseService = updateCaseService;
             _loggingService = loggingService;
         }
 
@@ -37,14 +34,14 @@ namespace Blaise.Api.Core.Services
                     _loggingService.LogInfo($"Case with serial number '{primaryKey}' exists in Blaise");
 
                     var existingCase = _blaiseApi.GetCase(primaryKey, instrumentName, serverParkName);
-                    _updateCaseService.UpdateExistingCaseWithOnlineData(newRecord, existingCase, 
+                    _onlineCaseService.UpdateExistingCaseWithOnlineData(newRecord, existingCase, 
                         serverParkName, instrumentName,  primaryKey);
                 }
                 else
                 {
                     _loggingService.LogInfo($"Case with serial number '{primaryKey}' does not exist in Blaise");
 
-                    _createCaseService.CreateOnlineCase(newRecord, instrumentName, 
+                    _onlineCaseService.CreateOnlineCase(newRecord, instrumentName, 
                         serverParkName, primaryKey);
                 }
 

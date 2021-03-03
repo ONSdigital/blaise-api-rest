@@ -283,7 +283,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("blaise contains the following cases", ((string)(null)), table2, "And ");
 #line hidden
 #line 76
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the online file is processed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                             "primarykey",
@@ -412,7 +412,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("the same case exists in Blaise that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 114
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the online file is processed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 115
  testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -457,7 +457,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("the same case exists in Blaise that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 121
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the online file is processed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 122
  testRunner.Then("the existing blaise case is kept", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -502,7 +502,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("the same case exists in Blaise that is partially complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 128
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the online file is processed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 129
  testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -557,7 +557,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And(string.Format("the same case exists in Blaise with the outcome code \'{0}\'", existingOutcome), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 135
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the online file is processed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 136
  testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -602,7 +602,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("the same case exists in Blaise that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 152
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the online file is processed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 153
  testRunner.Then("the existing blaise case is kept", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -647,7 +647,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("the same case exists in Blaise that is partially complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 159
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the online file is processed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 160
  testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -746,7 +746,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("the same case exists in Blaise with the outcome code \'310\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 182
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the online file is processed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 183
  testRunner.Then("the existing blaise case is kept", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -791,7 +791,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("the same case exists in Blaise with the outcome code \'562\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 189
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the online file is processed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 190
  testRunner.Then("the existing blaise case is kept", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -836,7 +836,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("the same case exists in Blaise with the outcome code \'561\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 196
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the online file is processed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 197
  testRunner.Then("the existing blaise case is kept", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -846,14 +846,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("A case in the online file is complete and exists as partially complete in Blaise " +
-            "but the case is open in Cati, do not update")]
-        public virtual void ACaseInTheOnlineFileIsCompleteAndExistsAsPartiallyCompleteInBlaiseButTheCaseIsOpenInCatiDoNotUpdate()
+        [NUnit.Framework.DescriptionAttribute("A case in the online file has a better outcome but the case has been updated rece" +
+            "ntly so may be open in Cati, do not update")]
+        public virtual void ACaseInTheOnlineFileHasABetterOutcomeButTheCaseHasBeenUpdatedRecentlySoMayBeOpenInCatiDoNotUpdate()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file is complete and exists as partially complete in Blaise " +
-                    "but the case is open in Cati, do not update", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file has a better outcome but the case has been updated rece" +
+                    "ntly so may be open in Cati, do not update", null, tagsOfScenario, argumentsOfScenario);
 #line 200
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -881,13 +881,53 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("the same case exists in Blaise that is partially complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 203
- testRunner.And("the case is currently open in Cati", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the case has been updated within the past 30 minutes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 204
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the online file is processed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 205
  testRunner.Then("the existing blaise case is kept", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("A case in the online file has already been processed")]
+        public virtual void ACaseInTheOnlineFileHasAlreadyBeenProcessed()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file has already been processed", null, tagsOfScenario, argumentsOfScenario);
+#line 208
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 209
+ testRunner.Given("there is a online file that contains a case that has previously been imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 210
+ testRunner.When("the online file is processed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 211
+ testRunner.Then("the online case is not imported again", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

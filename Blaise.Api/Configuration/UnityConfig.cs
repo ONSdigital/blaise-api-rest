@@ -62,8 +62,7 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IUserService, UserService>();
             container.RegisterType<IFileService, FileService>();
             container.RegisterType<ICaseService, CaseService>();
-            container.RegisterType<ICreateCaseService, CreateCaseService>();
-            container.RegisterType<IUpdateCaseService, UpdateCaseService>();
+            container.RegisterType<IOnlineCaseService, OnlineCaseService>();
             container.RegisterType<ICatiDataService, CatiDataService>();
 
             //storage services

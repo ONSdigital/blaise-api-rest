@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Blaise.Api.Tests.Helpers.Configuration;
 using Blaise.Api.Tests.Models.Case;
@@ -26,6 +27,11 @@ namespace Blaise.Api.Tests.Helpers.Case
         public static CaseHelper GetInstance()
         {
             return _currentInstance ?? (_currentInstance = new CaseHelper());
+        }
+
+        public CaseModel CreateCaseModel(string outCome, ModeType modeType, DateTime lastUpdated)
+        {
+            return new CaseModel(_primaryKey.ToString(), outCome, modeType, lastUpdated);
         }
 
         public void CreateCasesInBlaise(int expectedNumberOfCases)
@@ -161,7 +167,9 @@ namespace Blaise.Api.Tests.Helpers.Case
             var dataRecord = _blaiseCaseApi.GetCase(primaryKey, BlaiseConfigurationHelper.InstrumentName,
                 BlaiseConfigurationHelper.ServerParkName);
 
-            var fieldData = new Dictionary<string, string> {{FieldNameType.CaseInUse.FullName(), "1"}};
+            var fieldData = new Dictionary<string, string> { 
+                {FieldNameType.LastUpdatedDate.FullName(), DateTime.Now.ToString("dd-MM-yyyy")},
+                {FieldNameType.LastUpdatedTime.FullName(), DateTime.Now.ToString("HH:mm:ss")}};
 
             _blaiseCaseApi.UpdateCase(dataRecord, fieldData, BlaiseConfigurationHelper.InstrumentName,
                 BlaiseConfigurationHelper.ServerParkName);

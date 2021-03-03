@@ -73,7 +73,7 @@ Scenario: There is an online file available that contains cases that already exi
 	#scenario 10
 	| 900020     | 561     | Tel  | 
 
-	When the online file is imported
+	When the online file is processed
 	Then blaise will contain the following cases
 	| primarykey | outcome | mode | 
 	#scenario 1
@@ -111,28 +111,28 @@ Scenario: There is an online file available that contains cases that already exi
 Scenario: A case in the online file is complete and in Blaise it is complete, we take the online case
 	Given there is a online file that contains a case that is complete
 	And the same case exists in Blaise that is complete
-	When the online file is imported
+	When the online file is processed
 	Then the existing blaise case is overwritten with the online case
 
 #Scenario 2 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario:  A case in the online file is partially complete and in Blaise it is complete, we keep the existing blaise case
 	Given there is a online file that contains a case that is partially complete
 	And the same case exists in Blaise that is complete
-	When the online file is imported
+	When the online file is processed
 	Then the existing blaise case is kept
 
 #Scenario 3 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file is complete and in Blaise it is partially complete, we take the online case
 	Given there is a online file that contains a case that is complete
 	And the same case exists in Blaise that is partially complete
-	When the online file is imported
+	When the online file is processed
 	Then the existing blaise case is overwritten with the online case
 
 #Scenario 4 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario Outline: A case in the online file is complete and in Blaise it is between the range 210-542, we take the online case
 	Given there is a online file that contains a case that is complete
 	And the same case exists in Blaise with the outcome code '<existingOutcome>'
-	When the online file is imported
+	When the online file is processed
 	Then the existing blaise case is overwritten with the online case
 	Examples: 
 	| existingOutcome | description                                                 |
@@ -149,14 +149,14 @@ Scenario Outline: A case in the online file is complete and in Blaise it is betw
 Scenario: A case in the online file that has not started and in Blaise it is complete, we keep the existing blaise case
 	Given there is a online file that contains a case that has not been started
 	And the same case exists in Blaise that is complete
-	When the online file is imported
+	When the online file is processed
 	Then  the existing blaise case is kept
 
 #Scenario 6  https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file is partially complete and in Blaise it is partially complete, we take the online case
 	Given there is a online file that contains a case that is partially complete
 	And the same case exists in Blaise that is partially complete
-	When the online file is imported
+	When the online file is processed
 	Then the existing blaise case is overwritten with the online case
 
 #Scenario 7  https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
@@ -179,27 +179,33 @@ Scenario Outline: A case in the online file is partially complete and in Blaise 
 Scenario: A case in the online file that has not started and in Blaise it is non-contact, we keep the existing blaise case
 	Given there is a online file that contains a case that has not been started
 	And the same case exists in Blaise with the outcome code '310'
-	When the online file is imported
+	When the online file is processed
 	Then the existing blaise case is kept
 
 #Scenario 9 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file that is partially complete and in Blaise it marked as respondent request for data to be deleted, we keep the existing blaise case
 	Given there is a online file that contains a case that is partially complete
 	And the same case exists in Blaise with the outcome code '562'
-	When the online file is imported
+	When the online file is processed
 	Then the existing blaise case is kept
 
 #Scenario 10 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file that is complete and in Blaise it marked as respondent request for data to be deleted, we keep the existing blaise case
 	Given there is a online file that contains a case that is complete
 	And the same case exists in Blaise with the outcome code '561'
-	When the online file is imported
+	When the online file is processed
 	Then the existing blaise case is kept
 
 #Scenario 11 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
-Scenario: A case in the online file is complete and exists as partially complete in Blaise but the case is open in Cati, do not update
+Scenario: A case in the online file has a better outcome but the case has been updated recently so may be open in Cati, do not update
 	Given there is a online file that contains a case that is complete
 	And the same case exists in Blaise that is partially complete
-	And the case is currently open in Cati
-	When the online file is imported
+	And the case has been updated within the past 30 minutes
+	When the online file is processed
 	Then the existing blaise case is kept
+
+#Scenario 12 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
+Scenario: A case in the online file has already been processed
+	Given there is a online file that contains a case that has previously been imported
+	When the online file is processed
+	Then the online case is not imported again

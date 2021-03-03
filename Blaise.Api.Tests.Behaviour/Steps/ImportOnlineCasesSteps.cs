@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -78,6 +79,18 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             GivenTheSameCaseExistsInBlaiseWithTheOutcomeCode(210);
         }
 
+        [Given(@"there is a online file that contains a case that has previously been imported")]
+        public async Task GivenThereIsAOnlineFileThatContainsACaseThatHasPreviouslyBeenImported()
+        {
+            var caseModel = CaseHelper.GetInstance().CreateCaseModel("110", ModeType.Web, DateTime.Now);
+            CaseHelper.GetInstance().CreateCaseInBlaise(caseModel);
+
+            caseModel.Mode = ModeType.Ftf; //used to differentiate the case to ensure it has not been imported again
+            await OnlineFileHelper.GetInstance().CreateCaseInOnlineFileAsync(caseModel);
+            
+            _scenarioContext.Set(caseModel.PrimaryKey,"primaryKey");
+        }
+        
         [Given(@"the same case exists in Blaise with the outcome code '(.*)'")]
         public void GivenTheSameCaseExistsInBlaiseWithTheOutcomeCode(int outcomeCode)
         {
@@ -86,7 +99,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             CaseHelper.GetInstance().CreateCaseInBlaise(caseModel);
         }
 
-        [Given(@"the case is currently open in Cati")]
+        [Given(@"the case has been updated within the past 30 minutes")]
         public void GivenTheCaseIsCurrentlyOpenInCati()
         {
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
@@ -99,8 +112,8 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             CaseHelper.GetInstance().CreateCasesInBlaise(cases);
         }
         
-        [When(@"the online file is imported")]
-        public async Task WhenTheOnlineFileIsImported()
+        [When(@"the online file is processed")]
+        public async Task WhenTheOnlineFileIsProcessed()
         {
            var statusCode = await RestApiHelper.GetInstance().ImportOnlineCases(RestApiConfigurationHelper.InstrumentDataUrl,
                 BlaiseConfigurationHelper.InstrumentName);
@@ -122,6 +135,14 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
             var modeType = CaseHelper.GetInstance().GetMode(primaryKey);
             Assert.AreEqual(ModeType.Tel, modeType);
+        }
+
+        [Then(@"the online case is not imported again")]
+        public void ThenTheOnlineCaseIsNotImportedAgain()
+        {
+            var primaryKey = _scenarioContext.Get<string>("primaryKey");
+            var modeType = CaseHelper.GetInstance().GetMode(primaryKey);
+            Assert.AreEqual(ModeType.Web, modeType);
         }
 
         [Given(@"there is a online file that contains '(.*)' cases")]

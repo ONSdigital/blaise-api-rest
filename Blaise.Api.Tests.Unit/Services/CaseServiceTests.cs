@@ -12,8 +12,7 @@ namespace Blaise.Api.Tests.Unit.Services
     public class CaseServiceTests
     {
         private Mock<IBlaiseCaseApi> _blaiseApiMock;
-        private Mock<ICreateCaseService> _createCaseServiceMock;
-        private Mock<IUpdateCaseService> _updateCaseServiceMock;
+        private Mock<IOnlineCaseService> _onlineCaseServiceMock;
         private Mock<ILoggingService> _loggingMock;
 
         private Mock<IDataRecord> _newDataRecordMock;
@@ -47,14 +46,12 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock = new Mock<IBlaiseCaseApi>();
             _blaiseApiMock.Setup(b => b.GetCases(_databaseFileName)).Returns(_dataSetMock.Object);
 
-            _createCaseServiceMock = new Mock<ICreateCaseService>();
-            _updateCaseServiceMock = new Mock<IUpdateCaseService>();
+            _onlineCaseServiceMock = new Mock<IOnlineCaseService>();
             _loggingMock = new Mock<ILoggingService>();
 
             _sut = new CaseService(
                 _blaiseApiMock.Object,
-                _createCaseServiceMock.Object,
-                _updateCaseServiceMock.Object,
+                _onlineCaseServiceMock.Object,
                 _loggingMock.Object);
         }
 
@@ -74,8 +71,8 @@ namespace Blaise.Api.Tests.Unit.Services
             _dataSetMock.Verify(v => v.EndOfSet, Times.Once);
 
             _blaiseApiMock.VerifyNoOtherCalls();
-            _createCaseServiceMock.VerifyNoOtherCalls();
-            _updateCaseServiceMock.VerifyNoOtherCalls();
+            _onlineCaseServiceMock.VerifyNoOtherCalls();
+            _onlineCaseServiceMock.VerifyNoOtherCalls();
         }
 
         [Test]
@@ -98,7 +95,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Verify(v => v.GetPrimaryKeyValue(_newDataRecordMock.Object), Times.Once);
             _blaiseApiMock.Verify(v => v.CaseExists(_primaryKey, _instrumentName, _serverParkName), Times.Once);
 
-            _createCaseServiceMock.Verify(v => v.CreateOnlineCase(_newDataRecordMock.Object, _instrumentName,
+            _onlineCaseServiceMock.Verify(v => v.CreateOnlineCase(_newDataRecordMock.Object, _instrumentName,
                 _serverParkName, _primaryKey), Times.Once);
 
             _dataSetMock.Verify(v => v.EndOfSet, Times.Exactly(2));
@@ -106,7 +103,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _dataSetMock.Verify(v => v.MoveNext(), Times.Once);
             
             _blaiseApiMock.VerifyNoOtherCalls();
-            _updateCaseServiceMock.VerifyNoOtherCalls();
+            _onlineCaseServiceMock.VerifyNoOtherCalls();
         }
 
         [Test]
@@ -137,12 +134,11 @@ namespace Blaise.Api.Tests.Unit.Services
             _dataSetMock.Verify(v => v.ActiveRecord, Times.Once);
             _dataSetMock.Verify(v => v.MoveNext(), Times.Once);
 
-            _updateCaseServiceMock.Verify(v => v.UpdateExistingCaseWithOnlineData(_newDataRecordMock.Object, _existingDataRecordMock.Object,
+            _onlineCaseServiceMock.Verify(v => v.UpdateExistingCaseWithOnlineData(_newDataRecordMock.Object, _existingDataRecordMock.Object,
                 _serverParkName, _instrumentName, _primaryKey), Times.Once);
 
-            _createCaseServiceMock.VerifyNoOtherCalls();
             _blaiseApiMock.VerifyNoOtherCalls();
-            _updateCaseServiceMock.VerifyNoOtherCalls();
+            _onlineCaseServiceMock.VerifyNoOtherCalls();
         }
     }
 }

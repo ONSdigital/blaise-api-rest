@@ -18,6 +18,11 @@ namespace Blaise.Api.Logging.Services
             _fileLogger.Info(message);
         }
 
+        public void LogWarn(string message)
+        {
+            _fileLogger.Warn(message);
+        }
+
         public void LogError(string message, Exception exception)
         {
             _fileLogger.Error($"{message}: {exception.Message}, {exception.InnerException}");
