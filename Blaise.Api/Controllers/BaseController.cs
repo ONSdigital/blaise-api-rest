@@ -10,7 +10,7 @@ using Blaise.Api.Filters;
 
 namespace Blaise.Api.Controllers
 {
-    //[ExceptionFilter]
+    [ExceptionFilter]
     public class BaseController : ApiController
     {
         private readonly ILoggingService _loggingService;
