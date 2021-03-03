@@ -163,7 +163,7 @@ Scenario: A case in the online file is partially complete and in Blaise it is pa
 Scenario Outline: A case in the online file is partially complete and in Blaise and it is between the range 310-542, we take the online case
 	Given there is a online file that contains a case that is complete
 	And the same case exists in Blaise with the outcome code '<existingOutcome>'
-	When the online file is imported
+	When the online file is processed
 	Then the existing blaise case is overwritten with the online case
 	Examples: 
 	| existingOutcome | description                                                 |
