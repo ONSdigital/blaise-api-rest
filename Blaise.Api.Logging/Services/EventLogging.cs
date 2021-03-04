@@ -9,7 +9,7 @@ namespace Blaise.Api.Logging.Services
     {
         public void LogError(string message, Exception exception)
         {
-            EventLog.WriteEntry("Rest API", $"{message}: {exception.InnerException}", EventLogEntryType.Error);
+            EventLog.WriteEntry("Rest API", $"{message}: {exception.Message}, {exception.InnerException}", EventLogEntryType.Error);
         }
 
         public void LogInfo(string message)
