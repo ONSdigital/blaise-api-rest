@@ -16,5 +16,10 @@ namespace Blaise.Api.Logging.Services
         {
             EventLog.WriteEntry("Rest API", message, EventLogEntryType.Information);
         }
+
+        public void LogWarn(string message)
+        {
+            EventLog.WriteEntry("Rest API", message, EventLogEntryType.Warning);
+        }
     }
 }
