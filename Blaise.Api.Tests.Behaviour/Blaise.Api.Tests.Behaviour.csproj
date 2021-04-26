@@ -142,14 +142,12 @@
     <Compile Include="Steps\GetQuestionnaireDataSteps.cs" />
     <Compile Include="Steps\DeployQuestionnaireSteps.cs" />
     <Compile Include="Steps\GetQuestionnaireDetailsSteps.cs" />
-    <Compile Include="Steps\ImportOnlineCasesSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Features\DeployQuestionnaire.feature" />
     <None Include="Features\GetQuestionnaireData.feature" />
     <None Include="Features\GetQuestionnaireDetails.feature" />
-    <None Include="Features\ImportOnlineCases.feature" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
