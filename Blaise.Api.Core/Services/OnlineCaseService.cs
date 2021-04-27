@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Core.Enums;
 using Blaise.Api.Core.Interfaces.Services;
+using Blaise.Api.Core.Models;
+using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using StatNeth.Blaise.API.DataRecord;
-using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Blaise.Api.Tests.Unit")]
 namespace Blaise.Api.Core.Services
 {
     public class OnlineCaseService : IOnlineCaseService
@@ -20,21 +21,40 @@ namespace Blaise.Api.Core.Services
             ILoggingService loggingService)
         {
             _blaiseApi = blaiseApi;
-            _catiDataService = catiDataService;
             _loggingService = loggingService;
+            _catiDataService = catiDataService;
         }
 
-        public void UpdateExistingCaseWithOnlineData(IDataRecord nisraDataRecord, IDataRecord existingDataRecord,
-            string serverParkName, string instrumentName, string primaryKey)
+        public IEnumerable<CaseComparisonModel> GetExistingCaseComparisonModels(string instrumentName, string serverParkName)
         {
-            var nisraOutcome = _blaiseApi.GetOutcomeCode(nisraDataRecord);
-            var existingOutcome = _blaiseApi.GetOutcomeCode(existingDataRecord);
+            var comparisonModelList = new List<CaseComparisonModel>();
+            var cases = _blaiseApi.GetCases(instrumentName, serverParkName);
 
+            while (!cases.EndOfSet)
+            {
+                var record = cases.ActiveRecord;
+
+                comparisonModelList.Add(new CaseComparisonModel(
+                    _blaiseApi.GetPrimaryKeyValue(record),
+                    _blaiseApi.GetOutcomeCode(record),
+                    ModeType.Tel,
+                    _blaiseApi.GetLastUpdatedAsString(record)
+                ));
+                
+                cases.MoveNext();
+            }
+
+            return comparisonModelList;
+        }
+
+        public bool UpdateExistingCase(int nisraOutcome, int existingOutcome, string nisraUpdatedDate,
+            string existingUpdatedDate, string primaryKey, string instrumentName)
+        {
             if (nisraOutcome == 0)
             {
                 _loggingService.LogInfo($"Not processed: NISRA case '{primaryKey}' (NISRA HOut = 0) for instrument '{instrumentName}'");
 
-                return;
+                return false;
             }
 
             if (existingOutcome == 561 || existingOutcome == 562)
@@ -42,54 +62,31 @@ namespace Blaise.Api.Core.Services
                 _loggingService.LogInfo(
                     $"Not processed: NISRA case '{primaryKey}' (Existing HOut = '{existingOutcome}' for instrument '{instrumentName}'");
 
-                return;
+                return false;
             }
 
-            if (NisraRecordHasAlreadyBeenProcessed(nisraDataRecord, nisraOutcome, existingDataRecord, 
-                existingOutcome, primaryKey, instrumentName))
+            if (NisraRecordHasAlreadyBeenProcessed(nisraOutcome, existingOutcome, nisraUpdatedDate, existingUpdatedDate,
+                primaryKey, instrumentName))
             {
                 _loggingService.LogInfo(
                     $"Not processed: NISRA case '{primaryKey}' as is has already been updated on a previous run for instrument '{instrumentName}'");
 
-                return;
+                return false;
             }
 
-            if (_blaiseApi.CaseInUseInCati(existingDataRecord))
-            {
-                _loggingService.LogInfo(
-                    $"Not processed: NISRA case '{primaryKey}' as the case may be open in Cati for instrument '{instrumentName}'");
-
-                return;
-            }
 
             if (existingOutcome > 0 && existingOutcome < nisraOutcome)
             {
                 _loggingService.LogInfo(
                     $"Not processed: NISRA case '{primaryKey}' (Existing HOut = '{existingOutcome}' < '{nisraOutcome}')  for instrument '{instrumentName}'");
 
-                return;
+                return false;
             }
 
-            UpdateCase(nisraDataRecord, existingDataRecord, instrumentName,
-                serverParkName, nisraOutcome, existingOutcome, primaryKey);
+            return true;
         }
 
-        internal bool NisraRecordHasAlreadyBeenProcessed(IDataRecord nisraDataRecord, int nisraOutcome,
-            IDataRecord existingDataRecord, int existingOutcome, string primaryKey, string instrumentName)
-        {
-            var nisraTimeStamp = _blaiseApi.GetLastUpdatedDateTime(nisraDataRecord);
-            var existingTimeStamp = _blaiseApi.GetLastUpdatedDateTime(existingDataRecord);
-            var recordHasAlreadyBeenProcessed = nisraOutcome == existingOutcome && nisraTimeStamp == existingTimeStamp;
-            
-            _loggingService.LogInfo($"Check if NISRA case has already been processed previously '{primaryKey}': '{recordHasAlreadyBeenProcessed}' - " +
-                                    $"(NISRA HOut = '{nisraOutcome}' timestamp = '{nisraTimeStamp}') " +
-                                    $"(Existing HOut = '{existingOutcome}' timestamp = '{existingTimeStamp}')" +
-                                    $" for instrument '{instrumentName}'");
-            
-            return recordHasAlreadyBeenProcessed;
-        }
-
-        internal void UpdateCase(IDataRecord newDataRecord, IDataRecord existingDataRecord, string instrumentName,
+        public void UpdateCase(IDataRecord newDataRecord, IDataRecord existingDataRecord, string instrumentName,
             string serverParkName, int newOutcome, int existingOutcome, string primaryKey)
         {
             var fieldData = GetFieldData(newDataRecord, existingDataRecord, newOutcome);
@@ -105,6 +102,21 @@ namespace Blaise.Api.Core.Services
             }
 
             _loggingService.LogWarn($"NISRA case '{primaryKey}' failed to update - potentially open in Cati at the time of the update for instrument '{instrumentName}'");
+        }
+
+        internal bool NisraRecordHasAlreadyBeenProcessed(int nisraOutcome, int existingOutcome, string nisraUpdatedDate,
+            string existingUpdatedDate, string primaryKey, string instrumentName)
+        {
+            var recordHasAlreadyBeenProcessed =
+                nisraOutcome == existingOutcome &&
+                nisraUpdatedDate == existingUpdatedDate;
+
+            _loggingService.LogInfo($"Check if NISRA case has already been processed previously '{primaryKey}': '{recordHasAlreadyBeenProcessed}' - " +
+                                    $"(NISRA HOut = '{nisraOutcome}' timestamp = '{nisraUpdatedDate}') " +
+                                    $"(Existing HOut = '{existingOutcome}' timestamp = '{existingUpdatedDate}')" +
+                                    $" for instrument '{instrumentName}'");
+
+            return recordHasAlreadyBeenProcessed;
         }
 
         internal Dictionary<string, string> GetFieldData(IDataRecord newDataRecord, IDataRecord existingDataRecord, int outcomeCode)
@@ -133,7 +145,7 @@ namespace Blaise.Api.Core.Services
             var existingRecord = _blaiseApi.GetCase(primaryKey, instrumentName, serverParkName);
 
             return _blaiseApi.GetOutcomeCode(existingRecord) == newOutcomeCode &&
-                   _blaiseApi.GetLastUpdatedDateTime(existingRecord) == _blaiseApi.GetLastUpdatedDateTime(newDataRecord);
+                   _blaiseApi.GetFieldValue(existingRecord, FieldNameType.LastUpdated)?.ValueAsText == _blaiseApi.GetFieldValue(newDataRecord, FieldNameType.LastUpdated)?.ValueAsText;
         }
     }
 }

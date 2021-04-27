@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Blaise.Nuget.Api.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2021.4.15.3\lib\net472\Blaise.Nuget.Api.Contracts.dll</HintPath>
+      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2021.4.27.2\lib\net472\Blaise.Nuget.Api.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
@@ -131,9 +131,7 @@
     <Compile Include="Interfaces\Services\ICatiService.cs" />
     <Compile Include="Interfaces\Services\IOnlineCaseService.cs" />
     <Compile Include="Interfaces\Services\ICaseService.cs" />
-    <Compile Include="Services\CaseTableService.cs" />
     <Compile Include="Services\CatiDataService.cs" />
-    <Compile Include="Services\OnlineCaseService2.cs" />
     <Compile Include="Services\OnlineCaseService.cs" />
     <Compile Include="Services\CaseService.cs" />
     <Compile Include="Services\CatiService.cs" />

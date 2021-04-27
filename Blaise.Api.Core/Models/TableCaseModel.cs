@@ -2,9 +2,9 @@
 
 namespace Blaise.Api.Core.Models
 {
-    public class TableCaseModel
+    public class CaseComparisonModel
     {
-        public TableCaseModel(string primaryKey, int outcome, ModeType mode, string lastUpdated)
+        public CaseComparisonModel(string primaryKey, int outcome, ModeType mode, string lastUpdated)
         {
             PrimaryKey = primaryKey;
             Outcome = outcome;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
@@ -57,8 +58,6 @@ namespace Blaise.Api.Tests.Unit.Services
             //set up case not in use
             _dataValueMock = new Mock<IDataValue>();
             _dataValueMock.Setup(d => d.IntegerValue).Returns(0);
-            _blaiseApiMock.Setup(b => b.CaseInUseInCati(_existingDataRecordMock.Object))
-                .Returns(false);
 
             //important that the service calls the methods in the right order, otherwise you could end up removing what you have added
             _catiDataMock = new Mock<ICatiDataService>(MockBehavior.Strict);
@@ -70,9 +69,6 @@ namespace Blaise.Api.Tests.Unit.Services
             _catiDataMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(_newFieldData, _existingFieldData,
                 It.IsAny<int>()));
 
-            //needed as we dont update if these fields match
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(DateTime.Now);
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(DateTime.Now.AddHours(-1));
 
             _sut = new OnlineCaseService(
                 _blaiseApiMock.Object,
@@ -83,63 +79,58 @@ namespace Blaise.Api.Tests.Unit.Services
 
         // Scenario 1 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [Test]
-        public void Given_The_Nisra_Case_And_Existing_Case_Have_An_Outcome_Of_Complete_When_I_Call_UpdateExistingCaseWithOnlineData_Then_The_To_Record_Is_Updated()
+        public void Given_The_Nisra_Case_And_Existing_Case_Have_An_Outcome_Of_Complete_When_I_Call_UpdateExistingCase_Then_True_Is_Returned()
         {
             //arrange
             const int hOutComplete = 110; //complete
 
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(hOutComplete);
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(hOutComplete);
+            var nisraUpdatedDate = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
+            var existingUpdatedDate = DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture);
 
             //act
-            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _serverParkName,
-                _instrumentName, _primaryKey);
+            var result = _sut.UpdateExistingCase(hOutComplete, hOutComplete, nisraUpdatedDate, existingUpdatedDate,
+                _primaryKey, _instrumentName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_existingDataRecordMock.Object), Times.Once);
-
-            _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _instrumentName, _serverParkName), Times.Once);
+            Assert.IsTrue(result);
         }
 
         // Scenario 2 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [Test]
-        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Has_An_Outcome_Of_Complete_When_I_Call_UpdateExistingCaseWithOnlineData_Then_The_To_Record_Is_Not_Updated()
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Has_An_Outcome_Of_Complete_When_I_Call_UpdateExistingCase_Then_False_Is_Returned()
         {
             //arrange
             const int hOutPartial = 210; //partial
             const int hOutComplete = 110; //complete
 
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(hOutPartial);
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(hOutComplete);
+            var nisraUpdatedDate = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
+            var existingUpdatedDate = DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture);
 
             //act
-            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _serverParkName, _instrumentName, _primaryKey);
+            var result = _sut.UpdateExistingCase(hOutPartial, hOutComplete, nisraUpdatedDate, existingUpdatedDate,
+                _primaryKey, _instrumentName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.UpdateCase(It.IsAny<IDataRecord>(), It.IsAny<Dictionary<string, string>>(),
-                It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            Assert.IsFalse(result);
         }
 
         // Scenario 3 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [Test]
-        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Of_Partial_When_I_Call_UpdateExistingCaseWithOnlineData_Then_The_To_Record_Is_Updated()
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Of_Partial_When_I_Call_UpdateExistingCase_Then_True_Is_Returned()
         {
             //arrange
             const int hOutPartial = 210; //partial
             const int hOutComplete = 110; //complete
 
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(hOutComplete);
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(hOutPartial);
+            var nisraUpdatedDate = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
+            var existingUpdatedDate = DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture);
 
             //act
-            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object,
-                _serverParkName, _instrumentName, _primaryKey);
+            var result = _sut.UpdateExistingCase(hOutPartial, hOutComplete, nisraUpdatedDate, existingUpdatedDate,
+                _primaryKey, _instrumentName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _instrumentName, _serverParkName), Times.Once);
+            Assert.IsTrue(result);
         }
 
         // Scenario 4  (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
@@ -150,60 +141,55 @@ namespace Blaise.Api.Tests.Unit.Services
         [TestCase(461)]
         [TestCase(541)]
         [TestCase(542)]
-        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Between_210_And_542_When_I_Call_UpdateExistingCaseWithOnlineData_Then_The_To_Record_Is_Updated(int existingOutcome)
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Between_210_And_542_When_I_Call_UpdateExistingCase_Then_True_Is_Returned(int existingOutcome)
         {
             //arrange
             const int hOutComplete = 110; //complete
 
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(hOutComplete);
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(existingOutcome);
+            var nisraUpdatedDate = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
+            var existingUpdatedDate = DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture);
 
             //act
-            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object,
-                _serverParkName, _instrumentName, _primaryKey);
+            var result = _sut.UpdateExistingCase(hOutComplete, existingOutcome, nisraUpdatedDate, existingUpdatedDate,
+                _primaryKey, _instrumentName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _instrumentName, _serverParkName), Times.Once);
+            Assert.IsTrue(result);
         }
 
         // Scenario 5 & 8 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [TestCase(110)]
         [TestCase(310)]
-        public void Given_The_Nisra_Outcome_Is_Zero_When_I_Call_UpdateExistingCaseWithOnlineData_Then_The_Existing_Record_Is_Not_Updated(
-            int existingOutcome)
+        public void Given_The_Nisra_Outcome_Is_Zero_When_I_Call_UpdateExistingCase_Then_False_Is_Returned(int existingOutcome)
         {
             //arrange
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(0);
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(existingOutcome);
+            var nisraUpdatedDate = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
+            var existingUpdatedDate = DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture);
 
             //act
-            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object,
-                _serverParkName, _instrumentName,
-                _primaryKey);
+            var result = _sut.UpdateExistingCase(0, existingOutcome, nisraUpdatedDate, existingUpdatedDate,
+                _primaryKey, _instrumentName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.UpdateCase(It.IsAny<IDataRecord>(), It.IsAny<Dictionary<string, string>>(),
-                It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            Assert.IsFalse(result);
         }
 
         // Scenario 6 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [Test]
-        public void Given_The_Nisra_Case_And_Existing_Case_Have_An_Outcome_Of_Partial_When_I_Call_UpdateExistingCaseWithOnlineData_Then_The_To_Record_Is_Updated()
+        public void Given_The_Nisra_Case_And_Existing_Case_Have_An_Outcome_Of_Partial_When_I_Call_UpdateExistingCase_Then_True_Is_Returned()
         {
             //arrange
             const int hOutPartial = 210; //partial
 
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(hOutPartial);
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(hOutPartial);
+            var nisraUpdatedDate = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
+            var existingUpdatedDate = DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture);
 
             //act
-            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object,
-                _serverParkName, _instrumentName, _primaryKey);
+            var result = _sut.UpdateExistingCase(hOutPartial, hOutPartial, nisraUpdatedDate, existingUpdatedDate,
+                _primaryKey, _instrumentName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _instrumentName, _serverParkName), Times.Once);
+            Assert.IsTrue(result);
         }
 
         // Scenario 7 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
@@ -214,21 +200,20 @@ namespace Blaise.Api.Tests.Unit.Services
         [TestCase(461)]
         [TestCase(541)]
         [TestCase(542)]
-        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Haw_An_Outcome_Between_210_And_542_When_I_Call_UpdateExistingCaseWithOnlineData_Then_The_To_Record_Is_Updated(int existingOutcome)
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Haw_An_Outcome_Between_210_And_542_When_I_Call_UpdateExistingCase_Then_True_Is_Returned(int existingOutcome)
         {
             //arrange
             const int hOutPartial = 210; //partial
 
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(hOutPartial);
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(existingOutcome);
+            var nisraUpdatedDate = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
+            var existingUpdatedDate = DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture);
 
             //act
-            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object,
-                _serverParkName, _instrumentName, _primaryKey);
+            var result = _sut.UpdateExistingCase(hOutPartial, existingOutcome, nisraUpdatedDate, existingUpdatedDate,
+                _primaryKey, _instrumentName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _instrumentName, _serverParkName), Times.Once);
+            Assert.IsTrue(result);
         }
 
         // Scenario 8 - covered by Scenario 5 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
@@ -236,107 +221,76 @@ namespace Blaise.Api.Tests.Unit.Services
         //additional scenario
         [TestCase(110)]
         [TestCase(210)]
-        public void Given_The_Nisra_Case_Has_A_Valid_Outcome_But_Existing_Case_Haw_An_Outcome_Of_Zero_When_I_Call_UpdateExistingCaseWithOnlineData_Then_The_To_Record_Is_Updated(int nisraOutcome)
+        public void Given_The_Nisra_Case_Has_A_Valid_Outcome_But_Existing_Case_Has_An_Outcome_Of_Zero_When_I_Call_UpdateExistingCase_Then_True_Is_Returned(int nisraOutcome)
         {
             //arrange
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(nisraOutcome);
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(0);
+            var nisraUpdatedDate = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
+            var existingUpdatedDate = DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture);
 
             //act
-            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object,
-                _serverParkName, _instrumentName, _primaryKey);
+            var result = _sut.UpdateExistingCase(nisraOutcome, 0, nisraUpdatedDate, existingUpdatedDate,
+                _primaryKey, _instrumentName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _instrumentName, _serverParkName), Times.Once);
+            Assert.IsTrue(result);
         }
 
         // Scenario 9 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [Test]
-        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Has_An_Outcome_Of_Delete_When_I_Call_UpdateExistingCaseWithOnlineData_Then_The_To_Record_Is_Not_Updated()
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Has_An_Outcome_Of_Delete_When_I_Call_UpdateExistingCase_Then_False_Is_Returned()
         {
             //arrange
             const int hOutPartial = 210; //partial
             const int hOutComplete = 562; //respondent request for data to be deleted
 
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(hOutPartial);
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(hOutComplete);
+            var nisraUpdatedDate = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
+            var existingUpdatedDate = DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture);
 
             //act
-            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object,
-                _serverParkName, _instrumentName, _primaryKey);
+            var result = _sut.UpdateExistingCase(hOutPartial, hOutComplete, nisraUpdatedDate, existingUpdatedDate,
+                _primaryKey, _instrumentName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.UpdateCase(It.IsAny<IDataRecord>(), It.IsAny<Dictionary<string, string>>(),
-                It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            Assert.IsFalse(result);
         }
 
         // Scenario 10 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [Test]
-        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Of_Delete_When_I_Call_UpdateExistingCaseWithOnlineData_Then_The_To_Record_Is_Not_Updated()
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Of_Delete_When_I_Call_UpdateExistingCase_Then_False_Is_Returned()
         {
             //arrange
             const int hOutPartial = 110; //Complete
             const int hOutComplete = 561; //respondent request for data to be deleted
 
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(hOutPartial);
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(hOutComplete);
+            var nisraUpdatedDate = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
+            var existingUpdatedDate = DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture);
 
             //act
-            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object,
-                _serverParkName, _instrumentName, _primaryKey);
+            var result = _sut.UpdateExistingCase(hOutPartial, hOutComplete, nisraUpdatedDate, existingUpdatedDate,
+                _primaryKey, _instrumentName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.UpdateCase(It.IsAny<IDataRecord>(), It.IsAny<Dictionary<string, string>>(),
-                It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            Assert.IsFalse(result);
         }
 
         // Scenario 11
-        [Test]
-        public void Given_Nisra_Is_Superior_But_The_Case_Is_In_Use_In_Cati_When_I_Call_UpdateExistingCaseWithOnlineData_Then_The_Case_Is_Not_Updated()
-        {
-            //arrange
-            const int hOutComplete = 110; //complete
-            const int hOutPartial = 210; //partial
-
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(hOutComplete);
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(hOutPartial);
-
-            //set up case is in use
-            _blaiseApiMock.Setup(b => b.CaseInUseInCati(_existingDataRecordMock.Object))
-                .Returns(true);
-
-            //act
-            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _serverParkName,
-                _instrumentName, _primaryKey);
-
-            //assert
-            _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _instrumentName, _serverParkName), Times.Never);
-        }
+        // see case service tests
 
         // Scenario 12
         [Test]
-        public void Given_The_Case_Has_Been_Processed_Before_When_I_Call_UpdateExistingCaseWithOnlineData_Then_The_Case_Is_Not_Updated()
+        public void Given_The_Case_Has_Been_Processed_Before_When_I_Call_UpdateExistingCase_Then_False_Is_Returned()
         {
             //arrange
             const int hOutComplete = 110; //complete
-
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(hOutComplete);
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(hOutComplete);
-
-            //set up case already been processed
-            var lastUpdated = DateTime.Now;
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(lastUpdated);
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(lastUpdated);
+            
+            var lastUpdatedDate = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
 
             //act
-            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _serverParkName,
-                _instrumentName, _primaryKey);
+            var result = _sut.UpdateExistingCase(hOutComplete, hOutComplete, lastUpdatedDate, lastUpdatedDate,
+                _primaryKey, _instrumentName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _instrumentName, _serverParkName), Times.Never);
+            Assert.IsFalse(result);
         }
 
         [Test]
@@ -379,9 +333,9 @@ namespace Blaise.Api.Tests.Unit.Services
             const int outcomeCode = 110;
             _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(outcomeCode);
 
-            var lastUpdated = DateTime.Now;
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(lastUpdated);
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(lastUpdated);
+            var lastUpdated = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedAsString(_nisraDataRecordMock.Object)).Returns(lastUpdated);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedAsString(_existingDataRecordMock.Object)).Returns(lastUpdated);
 
             _blaiseApiMock.Setup(b => b.GetRecordDataFields(_nisraDataRecordMock.Object)).Returns(_newFieldData);
             _blaiseApiMock.Setup(b => b.GetRecordDataFields(_existingDataRecordMock.Object)).Returns(_existingFieldData);
@@ -436,9 +390,9 @@ namespace Blaise.Api.Tests.Unit.Services
             const int outcomeCode = 110;
             _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(outcomeCode);
 
-            var lastUpdated = DateTime.Now;
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(lastUpdated);
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(lastUpdated);
+            var lastUpdated = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedAsString(_nisraDataRecordMock.Object)).Returns(lastUpdated);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedAsString(_existingDataRecordMock.Object)).Returns(lastUpdated);
 
             //act
             var result = _sut.RecordHasBeenUpdated(_primaryKey, _nisraDataRecordMock.Object, outcomeCode, _instrumentName, _serverParkName);
@@ -458,9 +412,9 @@ namespace Blaise.Api.Tests.Unit.Services
             const int existingOutcomeCode = 110;
             _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(existingOutcomeCode);
 
-            var lastUpdated = DateTime.Now;
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(lastUpdated);
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(lastUpdated);
+            var lastUpdated = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedAsString(_nisraDataRecordMock.Object)).Returns(lastUpdated);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedAsString(_existingDataRecordMock.Object)).Returns(lastUpdated);
 
             //act
             var result = _sut.RecordHasBeenUpdated(_primaryKey, _nisraDataRecordMock.Object, 210, _instrumentName, _serverParkName);
@@ -480,11 +434,11 @@ namespace Blaise.Api.Tests.Unit.Services
             const int outcomeCode = 110;
             _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(outcomeCode);
 
-            var nisraLastUpdated = DateTime.Now;
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(nisraLastUpdated);
+            var nisraLastUpdated = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedAsString(_nisraDataRecordMock.Object)).Returns(nisraLastUpdated);
 
-            var existingLastUpdated = DateTime.Now.AddMinutes(-30);
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(existingLastUpdated);
+            var existingLastUpdated = DateTime.Now.AddMinutes(-30).ToString(CultureInfo.InvariantCulture);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedAsString(_existingDataRecordMock.Object)).Returns(existingLastUpdated);
 
             //act
             var result = _sut.RecordHasBeenUpdated(_primaryKey, _nisraDataRecordMock.Object, outcomeCode, _instrumentName, _serverParkName);
@@ -501,13 +455,11 @@ namespace Blaise.Api.Tests.Unit.Services
             const int nisraOutcomeCode = 110;
             const int existingOutcomeCode = 110;
 
-            var lastUpdated = DateTime.Now;
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(lastUpdated);
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(lastUpdated);
+            var lastUpdated = DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
             //act
-            var result = _sut.NisraRecordHasAlreadyBeenProcessed(_nisraDataRecordMock.Object, nisraOutcomeCode,
-                _existingDataRecordMock.Object, existingOutcomeCode, _primaryKey, _instrumentName);
+            var result = _sut.NisraRecordHasAlreadyBeenProcessed(nisraOutcomeCode, existingOutcomeCode, lastUpdated,
+                lastUpdated, _primaryKey, _instrumentName);
 
             //assert
             Assert.IsNotNull(result);
@@ -521,13 +473,11 @@ namespace Blaise.Api.Tests.Unit.Services
             const int nisraOutcomeCode = 110;
             const int existingOutcomeCode = 210;
 
-            var lastUpdated = DateTime.Now;
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(lastUpdated);
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(lastUpdated);
+            var lastUpdated = DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
             //act
-            var result = _sut.NisraRecordHasAlreadyBeenProcessed(_nisraDataRecordMock.Object, nisraOutcomeCode,
-                _existingDataRecordMock.Object, existingOutcomeCode, _primaryKey, _instrumentName);
+            var result = _sut.NisraRecordHasAlreadyBeenProcessed(nisraOutcomeCode, existingOutcomeCode, lastUpdated,
+                lastUpdated, _primaryKey, _instrumentName);
 
             //assert
             Assert.IsNotNull(result);
@@ -541,15 +491,13 @@ namespace Blaise.Api.Tests.Unit.Services
             const int nisraOutcomeCode = 110;
             const int existingOutcomeCode = 110;
 
-            var nisraLastUpdated = DateTime.Now;
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(nisraLastUpdated);
+            var nisraLastUpdated = DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
-            var existingLastUpdated = DateTime.Now.AddMinutes(-30);
-            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(existingLastUpdated);
+            var existingLastUpdated = DateTime.Now.AddMinutes(-30).ToString(CultureInfo.InvariantCulture);
 
             //act
-            var result = _sut.NisraRecordHasAlreadyBeenProcessed(_nisraDataRecordMock.Object, nisraOutcomeCode,
-                _existingDataRecordMock.Object, existingOutcomeCode, _primaryKey, _instrumentName);
+            var result = _sut.NisraRecordHasAlreadyBeenProcessed(nisraOutcomeCode, existingOutcomeCode,
+                nisraLastUpdated, existingLastUpdated, _primaryKey, _instrumentName);
 
             //assert
             Assert.IsNotNull(result);

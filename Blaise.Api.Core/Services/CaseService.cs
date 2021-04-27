@@ -11,22 +11,22 @@ namespace Blaise.Api.Core.Services
     public class CaseService : ICaseService
     {
         private readonly IBlaiseCaseApi _blaiseApi;
+        private readonly IOnlineCaseService _onlineCaseService;
         private readonly ILoggingService _loggingService;
-        private readonly OnlineCaseService2 _caseService2;
 
         public CaseService(
             IBlaiseCaseApi blaiseApi,
+            IOnlineCaseService onlineCaseService,
             ILoggingService loggingService)
         {
             _blaiseApi = blaiseApi;
             _loggingService = loggingService;
-            _caseService2 = new OnlineCaseService2(_blaiseApi, _loggingService);
+            _onlineCaseService = onlineCaseService;
         }
 
         public void ImportOnlineDatabaseFile(string databaseFilePath, string instrumentName, string serverParkName)
         {
-            var caseTableService = new CaseTableService(_blaiseApi);
-            var telCaseTable = caseTableService.GetTelTable(instrumentName, serverParkName).ToList();
+            var telCaseTable = _onlineCaseService.GetExistingCaseComparisonModels(instrumentName, serverParkName).ToList();
             var caseRecords = _blaiseApi.GetCases(databaseFilePath);
 
             while (!caseRecords.EndOfSet)
@@ -36,8 +36,9 @@ namespace Blaise.Api.Core.Services
                 var nisraOutcome = _blaiseApi.GetOutcomeCode(nisraRecord);
                 var nisraLastUpdateDate = _blaiseApi.GetFieldValue(nisraRecord, FieldNameType.LastUpdated)?.ValueAsText;
 
-                var telEntry = telCaseTable.First(t => t.PrimaryKey == primaryKey);
-                if (_caseService2.UpdateExistingCase(nisraOutcome, telEntry.Outcome,
+                var telEntry = telCaseTable.FirstOrDefault(t => t.PrimaryKey == primaryKey);
+
+                if (telEntry != null && _onlineCaseService.UpdateExistingCase(nisraOutcome, telEntry.Outcome,
                     nisraLastUpdateDate, telEntry.LastUpdated,
                     primaryKey, instrumentName))
                 {
@@ -54,9 +55,9 @@ namespace Blaise.Api.Core.Services
         {
             try
             {
-                var existingRecord = _blaiseApi.GetCase(primaryKey, instrumentName, serverParkName);
+                var existingDataRecord = _blaiseApi.GetCase(primaryKey, instrumentName, serverParkName);
 
-                if (_blaiseApi.CaseInUseInCati(existingRecord))
+                if (_blaiseApi.CaseInUseInCati(existingDataRecord))
                 {
                     _loggingService.LogInfo(
                         $"Not processed: NISRA case '{primaryKey}' as the case may be open in Cati for instrument '{instrumentName}'");
@@ -64,7 +65,7 @@ namespace Blaise.Api.Core.Services
                     return;
                 }
 
-                _caseService2.UpdateCase(nisraRecord, existingRecord, instrumentName,
+                _onlineCaseService.UpdateCase(nisraRecord, existingDataRecord, instrumentName,
                     serverParkName, nisraOutcome, telOutcome, primaryKey);
             }
             catch (Exception ex)
