@@ -15,7 +15,7 @@ namespace Blaise.Api.Tests.Unit.Services
         private InstrumentDataService _sut;
 
         private Mock<IFileService> _fileServiceMock;
-        private Mock<ICaseService> _caseServiceMock;
+        private Mock<INisraService> _caseServiceMock;
         private Mock<ICloudStorageService> _storageServiceMock;
         private Mock<ILoggingService> _loggingMock;
         private MockSequence _mockSequence;
@@ -32,7 +32,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void SetUpTests()
         {
             _fileServiceMock = new Mock<IFileService>(MockBehavior.Strict);
-            _caseServiceMock = new Mock<ICaseService>(MockBehavior.Strict);
+            _caseServiceMock = new Mock<INisraService>(MockBehavior.Strict);
             _storageServiceMock = new Mock<ICloudStorageService>(MockBehavior.Strict);
             _loggingMock = new Mock<ILoggingService>();
             _mockSequence = new MockSequence();

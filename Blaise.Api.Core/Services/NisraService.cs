@@ -7,16 +7,16 @@ using StatNeth.Blaise.API.DataRecord;
 
 namespace Blaise.Api.Core.Services
 {
-    public class CaseService : ICaseService
+    public class NisraService : INisraService
     {
         private readonly IBlaiseCaseApi _blaiseApi;
-        private readonly ICaseComparisonService _caseComparisonService;
-        private readonly IOnlineCaseUpdateService _onlineCaseUpdateService;
+        private readonly INisraCaseComparisonService _caseComparisonService;
+        private readonly INisraCaseUpdateService _onlineCaseUpdateService;
 
-        public CaseService(
+        public NisraService(
             IBlaiseCaseApi blaiseApi,
-            ICaseComparisonService caseComparisonService,
-            IOnlineCaseUpdateService onlineCaseService)
+            INisraCaseComparisonService caseComparisonService,
+            INisraCaseUpdateService onlineCaseService)
         {
             _blaiseApi = blaiseApi;
             _caseComparisonService = caseComparisonService;

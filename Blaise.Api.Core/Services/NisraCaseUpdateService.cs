@@ -7,13 +7,13 @@ using StatNeth.Blaise.API.DataRecord;
 
 namespace Blaise.Api.Core.Services
 {
-    public class OnlineCaseUpdateService : IOnlineCaseUpdateService
+    public class NisraCaseUpdateService : INisraCaseUpdateService
     {
         private readonly IBlaiseCaseApi _blaiseApi;
         private readonly ICatiDataService _catiDataService;
         private readonly ILoggingService _loggingService;
 
-        public OnlineCaseUpdateService(
+        public NisraCaseUpdateService(
             IBlaiseCaseApi blaiseApi,
             ICatiDataService catiDataService,
             ILoggingService loggingService)

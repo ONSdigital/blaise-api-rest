@@ -10,13 +10,13 @@ namespace Blaise.Api.Core.Services
     public class InstrumentDataService : IInstrumentDataService
     {
         private readonly IFileService _fileService;
-        private readonly ICaseService _caseService;
+        private readonly INisraService _caseService;
         private readonly ICloudStorageService _storageService;
         private readonly ILoggingService _loggingService;
 
         public InstrumentDataService(
             IFileService fileService,
-            ICaseService caseService,
+            INisraService caseService,
             ICloudStorageService storageService, 
             ILoggingService loggingService)
         {

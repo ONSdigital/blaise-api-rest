@@ -176,10 +176,10 @@
     <Compile Include="Services\FileServiceTests.cs" />
     <Compile Include="Services\InstrumentDataServiceTests.cs" />
     <Compile Include="Services\InstrumentUninstallerServiceTests.cs" />
-    <Compile Include="Services\CaseServiceTests.cs" />
+    <Compile Include="Services\NisraServiceTests.cs" />
     <Compile Include="Services\CatiDataServiceTests.cs" />
-    <Compile Include="Services\CaseComparisonServiceTests.cs" />
-    <Compile Include="Services\OnlineCaseUpdateServiceTests.cs" />
+    <Compile Include="Services\NisraCaseComparisonServiceTests.cs" />
+    <Compile Include="Services\NisraCaseUpdateServiceTests.cs" />
     <Compile Include="Services\UserServiceTests.cs" />
     <Compile Include="Services\UserRoleServiceTests.cs" />
     <Compile Include="Services\CatiServiceTests.cs" />

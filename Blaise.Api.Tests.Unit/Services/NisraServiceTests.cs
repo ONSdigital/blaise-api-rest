@@ -12,11 +12,11 @@ using StatNeth.Blaise.API.DataRecord;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
-    public class CaseServiceTests
+    public class NisraServiceTests
     {
         private Mock<IBlaiseCaseApi> _blaiseApiMock;
-        private Mock<ICaseComparisonService> _caseComparisonServiceMock;
-        private Mock<IOnlineCaseUpdateService> _onlineCaseServiceMock;
+        private Mock<INisraCaseComparisonService> _caseComparisonServiceMock;
+        private Mock<INisraCaseUpdateService> _onlineCaseServiceMock;
         
         private Mock<IDataRecord> _newDataRecordMock;
         private Mock<IDataRecord> _existingDataRecordMock;
@@ -32,9 +32,9 @@ namespace Blaise.Api.Tests.Unit.Services
 
         private readonly IEnumerable<CaseStatusModel> _existingCaseStatusList;
 
-        private CaseService _sut;
+        private NisraService _sut;
 
-        public CaseServiceTests()
+        public NisraServiceTests()
         {
             _primaryKey = "SN123";
             _serverParkName = "Park1";
@@ -64,11 +64,11 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetCaseStatusList(_instrumentName, _serverParkName)).Returns(_existingCaseStatusList);
             _blaiseApiMock.Setup(b => b.GetCaseStatus(_newDataRecordMock.Object)).Returns(_nisraCaseStatusModel);
 
-            _caseComparisonServiceMock = new Mock<ICaseComparisonService>();
+            _caseComparisonServiceMock = new Mock<INisraCaseComparisonService>();
 
-            _onlineCaseServiceMock = new Mock<IOnlineCaseUpdateService>();
+            _onlineCaseServiceMock = new Mock<INisraCaseUpdateService>();
 
-            _sut = new CaseService(
+            _sut = new NisraService(
                 _blaiseApiMock.Object,
                 _caseComparisonServiceMock.Object,
                 _onlineCaseServiceMock.Object);

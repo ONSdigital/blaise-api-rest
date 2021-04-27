@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
-    public class CaseComparisonServiceTests
+    public class NisraCaseComparisonServiceTests
     {
         private Mock<ILoggingService> _loggingMock;
 
@@ -20,9 +20,9 @@ namespace Blaise.Api.Tests.Unit.Services
         private readonly string _date1;
         private readonly string _date2;
 
-        private CaseComparisonService _sut;
+        private NisraCaseComparisonService _sut;
         
-        public CaseComparisonServiceTests()
+        public NisraCaseComparisonServiceTests()
         {
             _instrumentName = "OPN2101A";
             _primaryKey = "900000";
@@ -39,7 +39,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             _loggingMock = new Mock<ILoggingService>();
 
-            _sut = new CaseComparisonService(_loggingMock.Object);
+            _sut = new NisraCaseComparisonService(_loggingMock.Object);
         }
         
         // Scenario 1 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)

@@ -4,11 +4,11 @@ using Blaise.Nuget.Api.Contracts.Models;
 
 namespace Blaise.Api.Core.Services
 {
-    public class CaseComparisonService : ICaseComparisonService
+    public class NisraCaseComparisonService : INisraCaseComparisonService
     {
         private readonly ILoggingService _loggingService;
 
-        public CaseComparisonService(ILoggingService loggingService)
+        public NisraCaseComparisonService(ILoggingService loggingService)
         {
             _loggingService = loggingService;
         }

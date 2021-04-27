@@ -11,7 +11,7 @@ using StatNeth.Blaise.API.DataRecord;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
-    public class OnlineCaseUpdateServiceTests
+    public class NisraCaseUpdateServiceTests
     {
         private Mock<IBlaiseCaseApi> _blaiseApiMock;
         private Mock<ICatiDataService> _catiDataMock;
@@ -31,9 +31,9 @@ namespace Blaise.Api.Tests.Unit.Services
         private Dictionary<string, string> _existingFieldData;
 
 
-        private OnlineCaseUpdateService _sut;
+        private NisraCaseUpdateService _sut;
 
-        public OnlineCaseUpdateServiceTests()
+        public NisraCaseUpdateServiceTests()
         {
             _primaryKey = "SN123";
             _serverParkName = "Park1";
@@ -72,7 +72,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _catiDataMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(_newFieldData, _existingFieldData,
                 It.IsAny<int>()));
 
-            _sut = new OnlineCaseUpdateService(
+            _sut = new NisraCaseUpdateService(
                 _blaiseApiMock.Object,
                 _catiDataMock.Object,
                 _loggingMock.Object);
