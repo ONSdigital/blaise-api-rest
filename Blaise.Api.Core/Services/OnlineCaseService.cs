@@ -77,8 +77,8 @@ namespace Blaise.Api.Core.Services
         internal bool NisraRecordHasAlreadyBeenProcessed(IDataRecord nisraDataRecord, int nisraOutcome,
             IDataRecord existingDataRecord, int existingOutcome, string primaryKey, string instrumentName)
         {
-            var nisraTimeStamp = _blaiseApi.GetLastUpdatedDateTime(nisraDataRecord);
-            var existingTimeStamp = _blaiseApi.GetLastUpdatedDateTime(existingDataRecord);
+            var nisraTimeStamp = _blaiseApi.GetLastUpdated(nisraDataRecord);
+            var existingTimeStamp = _blaiseApi.GetLastUpdated(existingDataRecord);
             var recordHasAlreadyBeenProcessed = nisraOutcome == existingOutcome && nisraTimeStamp == existingTimeStamp;
             
             _loggingService.LogInfo($"Check if NISRA case has already been processed previously '{primaryKey}': '{recordHasAlreadyBeenProcessed}' - " +
@@ -133,7 +133,7 @@ namespace Blaise.Api.Core.Services
             var existingRecord = _blaiseApi.GetCase(primaryKey, instrumentName, serverParkName);
 
             return _blaiseApi.GetOutcomeCode(existingRecord) == newOutcomeCode &&
-                   _blaiseApi.GetLastUpdatedDateTime(existingRecord) == _blaiseApi.GetLastUpdatedDateTime(newDataRecord);
+                   _blaiseApi.GetLastUpdated(existingRecord) == _blaiseApi.GetLastUpdated(newDataRecord);
         }
     }
 }
