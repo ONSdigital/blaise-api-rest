@@ -94,6 +94,7 @@ namespace Blaise.Api.Tests.Helpers.Case
                 { "SerialNumber", caseModel.PrimaryKey },
                 { FieldNameType.HOut.FullName(), caseModel.Outcome },
                 { FieldNameType.Mode.FullName(), ((int)caseModel.Mode).ToString() },
+                { FieldNameType.LastUpdated.FullName(), caseModel.LastUpdated.ToString("dd-MM-yyyy:HH:mm:ss") },
                 { FieldNameType.LastUpdatedDate.FullName(), caseModel.LastUpdated.ToString("dd-MM-yyyy") },
                 { FieldNameType.LastUpdatedTime.FullName(), caseModel.LastUpdated.ToString("HH:mm:ss") }
             };
