@@ -176,7 +176,7 @@
     <Compile Include="Services\FileServiceTests.cs" />
     <Compile Include="Services\InstrumentDataServiceTests.cs" />
     <Compile Include="Services\InstrumentUninstallerServiceTests.cs" />
-    <Compile Include="Services\NisraServiceTests.cs" />
+    <Compile Include="Services\NisraFileImportServiceTests.cs" />
     <Compile Include="Services\CatiDataServiceTests.cs" />
     <Compile Include="Services\NisraCaseComparisonServiceTests.cs" />
     <Compile Include="Services\NisraCaseUpdateServiceTests.cs" />

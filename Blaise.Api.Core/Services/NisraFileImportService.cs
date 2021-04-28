@@ -7,13 +7,13 @@ using StatNeth.Blaise.API.DataRecord;
 
 namespace Blaise.Api.Core.Services
 {
-    public class NisraService : INisraService
+    public class NisraFileImportService : INisraFileImportService
     {
         private readonly IBlaiseCaseApi _blaiseApi;
         private readonly INisraCaseComparisonService _caseComparisonService;
         private readonly INisraCaseUpdateService _onlineCaseUpdateService;
 
-        public NisraService(
+        public NisraFileImportService(
             IBlaiseCaseApi blaiseApi,
             INisraCaseComparisonService caseComparisonService,
             INisraCaseUpdateService onlineCaseService)

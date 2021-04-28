@@ -12,7 +12,7 @@ using StatNeth.Blaise.API.DataRecord;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
-    public class NisraServiceTests
+    public class NisraFileImportServiceTests
     {
         private Mock<IBlaiseCaseApi> _blaiseApiMock;
         private Mock<INisraCaseComparisonService> _caseComparisonServiceMock;
@@ -32,9 +32,9 @@ namespace Blaise.Api.Tests.Unit.Services
 
         private readonly IEnumerable<CaseStatusModel> _existingCaseStatusList;
 
-        private NisraService _sut;
+        private NisraFileImportService _sut;
 
-        public NisraServiceTests()
+        public NisraFileImportServiceTests()
         {
             _primaryKey = "SN123";
             _serverParkName = "Park1";
@@ -68,7 +68,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _onlineCaseServiceMock = new Mock<INisraCaseUpdateService>();
 
-            _sut = new NisraService(
+            _sut = new NisraFileImportService(
                 _blaiseApiMock.Object,
                 _caseComparisonServiceMock.Object,
                 _onlineCaseServiceMock.Object);

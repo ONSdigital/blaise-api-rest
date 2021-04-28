@@ -15,7 +15,7 @@ namespace Blaise.Api.Tests.Unit.Services
         private InstrumentDataService _sut;
 
         private Mock<IFileService> _fileServiceMock;
-        private Mock<INisraService> _caseServiceMock;
+        private Mock<INisraFileImportService> _nisraServiceMock;
         private Mock<ICloudStorageService> _storageServiceMock;
         private Mock<ILoggingService> _loggingMock;
         private MockSequence _mockSequence;
@@ -32,7 +32,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void SetUpTests()
         {
             _fileServiceMock = new Mock<IFileService>(MockBehavior.Strict);
-            _caseServiceMock = new Mock<INisraService>(MockBehavior.Strict);
+            _nisraServiceMock = new Mock<INisraFileImportService>(MockBehavior.Strict);
             _storageServiceMock = new Mock<ICloudStorageService>(MockBehavior.Strict);
             _loggingMock = new Mock<ILoggingService>();
             _mockSequence = new MockSequence();
@@ -47,7 +47,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _sut = new InstrumentDataService(
                 _fileServiceMock.Object,
-                _caseServiceMock.Object,
+                _nisraServiceMock.Object,
                 _storageServiceMock.Object,
                 _loggingMock.Object);
         }
@@ -150,7 +150,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f.GetDatabaseFile(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(dataBaseFilePath);
 
-            _caseServiceMock.InSequence(_mockSequence).Setup(c => c.ImportOnlineDatabaseFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            _nisraServiceMock.InSequence(_mockSequence).Setup(c => c.ImportOnlineDatabaseFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
 
             //act
@@ -161,7 +161,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _fileServiceMock.Verify(v => v.GetDatabaseFile(_tempPath, _instrumentName), Times.Once);
 
-            _caseServiceMock.Verify(v => v.ImportOnlineDatabaseFile(dataBaseFilePath, _instrumentName, _serverParkName), Times.Once);
+            _nisraServiceMock.Verify(v => v.ImportOnlineDatabaseFile(dataBaseFilePath, _instrumentName, _serverParkName), Times.Once);
         }
 
         [Test]
