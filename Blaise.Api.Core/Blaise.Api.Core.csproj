@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Blaise.Nuget.Api.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2021.4.15.3\lib\net472\Blaise.Nuget.Api.Contracts.dll</HintPath>
+      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2021.4.27.3\lib\net472\Blaise.Nuget.Api.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
@@ -127,11 +127,13 @@
     <Compile Include="Mappers\UserDtoMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\Services\ICatiService.cs" />
-    <Compile Include="Interfaces\Services\IOnlineCaseService.cs" />
-    <Compile Include="Interfaces\Services\ICaseService.cs" />
+    <Compile Include="Interfaces\Services\INisraCaseUpdateService.cs" />
+    <Compile Include="Interfaces\Services\INisraFileImportService.cs" />
     <Compile Include="Services\CatiDataService.cs" />
-    <Compile Include="Services\OnlineCaseService.cs" />
-    <Compile Include="Services\CaseService.cs" />
+    <Compile Include="Services\NisraCaseComparisonService.cs" />
+    <Compile Include="Interfaces\Services\INisraCaseComparisonService.cs" />
+    <Compile Include="Services\NisraCaseUpdateService.cs" />
+    <Compile Include="Services\NisraFileImportService.cs" />
     <Compile Include="Services\CatiService.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\HealthCheckService.cs" />
@@ -163,6 +165,7 @@
       <Name>Blaise.Api.Storage</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

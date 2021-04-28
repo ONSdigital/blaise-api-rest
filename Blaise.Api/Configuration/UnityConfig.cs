@@ -61,9 +61,10 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IUserRoleService, UserRoleService>();
             container.RegisterType<IUserService, UserService>();
             container.RegisterType<IFileService, FileService>();
-            container.RegisterType<ICaseService, CaseService>();
-            container.RegisterType<IOnlineCaseService, OnlineCaseService>();
+            container.RegisterType<INisraFileImportService, NisraFileImportService>();
+            container.RegisterType<INisraCaseUpdateService, NisraCaseUpdateService>();
             container.RegisterType<ICatiDataService, CatiDataService>();
+            container.RegisterType<INisraCaseComparisonService, NisraCaseComparisonService>();
 
             //storage services
             container.RegisterType<ICloudStorageService, CloudStorageService>();

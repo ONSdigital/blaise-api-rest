@@ -47,10 +47,9 @@ namespace Blaise.Api.Core.Mappers
                 Active = surveyDays.Any(s => s.Date <= DateTime.Today) &&
                          surveyDays.Any(s => s.Date >= DateTime.Today),
                 ActiveToday = surveyDays.Any(s => s.Date == DateTime.Today)
-
             };
 
-            catiInstrument.DeliverData = SetDeliverDataWhichIncludesADayGraceFromLastSurveyDay(catiInstrument);
+            catiInstrument.DeliverData = SetDeliverDataWhichIncludesADaysGraceFromLastSurveyDay(catiInstrument);
             
             return catiInstrument;
         }
@@ -62,7 +61,7 @@ namespace Blaise.Api.Core.Mappers
             return reportingInfo.DataRecordCount;
         }
 
-        private static bool SetDeliverDataWhichIncludesADayGraceFromLastSurveyDay(CatiInstrumentDto catiInstrument)
+        private static bool SetDeliverDataWhichIncludesADaysGraceFromLastSurveyDay(CatiInstrumentDto catiInstrument)
         {
             return catiInstrument.Active || 
                    catiInstrument.SurveyDays.All(s => s.Date < DateTime.Today) &&
