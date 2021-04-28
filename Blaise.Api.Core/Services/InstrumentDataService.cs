@@ -10,18 +10,18 @@ namespace Blaise.Api.Core.Services
     public class InstrumentDataService : IInstrumentDataService
     {
         private readonly IFileService _fileService;
-        private readonly ICaseService _caseService;
+        private readonly INisraFileImportService _nisraService;
         private readonly ICloudStorageService _storageService;
         private readonly ILoggingService _loggingService;
 
         public InstrumentDataService(
             IFileService fileService,
-            ICaseService caseService,
+            INisraFileImportService caseService,
             ICloudStorageService storageService, 
             ILoggingService loggingService)
         {
             _fileService = fileService;
-            _caseService = caseService;
+            _nisraService = caseService;
             _storageService = storageService;
             _loggingService = loggingService;
         }
@@ -47,7 +47,7 @@ namespace Blaise.Api.Core.Services
             await DownloadDatabaseFilesFromBucketAsync(instrumentDataDto.InstrumentDataPath, tempFilePath);
             var databaseFile = _fileService.GetDatabaseFile(tempFilePath, instrumentName);
 
-            _caseService.ImportOnlineDatabaseFile(databaseFile, instrumentName, serverParkName);
+            _nisraService.ImportOnlineDatabaseFile(databaseFile, instrumentName, serverParkName);
         }
 
         private async Task<string> CreateInstrumentPackageWithDataAsync(string serverParkName, string instrumentName, string tempFilePath)
