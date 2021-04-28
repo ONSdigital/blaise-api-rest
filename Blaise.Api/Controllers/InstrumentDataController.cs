@@ -64,7 +64,7 @@ namespace Blaise.Api.Controllers
             {
                 _loggingService.LogInfo($"Attempting to import instrument '{instrumentName}' with data on server park '{serverParkName}'");
                 await _instrumentDataService.ImportOnlineDataAsync(instrumentDataDto, serverParkName, instrumentName, tempPath);
-                return Created("{Request.RequestUri}", instrumentDataDto);
+                return Created($"{Request.RequestUri}", instrumentDataDto);
             }
             finally
             {
