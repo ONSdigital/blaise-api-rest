@@ -145,7 +145,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _sut.UpdateCase(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _instrumentName, _serverParkName);
 
             //assert
-            _loggingMock.Verify(v => v.LogInfo($"NISRA case '{_primaryKey}' was successfully update for instrument '{_instrumentName}'"),
+            _loggingMock.Verify(v => v.LogInfo($"NISRA case '{_primaryKey}' was successfully updated for instrument '{_instrumentName}'"),
                 Times.Once);
 
             _loggingMock.Verify(v => v.LogWarn(It.IsAny<string>()), Times.Never);
