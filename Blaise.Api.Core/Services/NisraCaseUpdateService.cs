@@ -44,7 +44,7 @@ namespace Blaise.Api.Core.Services
                 if (RecordHasBeenUpdated(primaryKey, newDataRecord, instrumentName, serverParkName))
                 {
                     _loggingService.LogInfo(
-                        $"NISRA case '{primaryKey}' was successfully update for instrument '{instrumentName}'");
+                        $"NISRA case '{primaryKey}' was successfully updated for instrument '{instrumentName}'");
 
                     return;
                 }
