@@ -44,14 +44,14 @@ namespace Blaise.Api.Tests.Unit.Services
         
         // Scenario 1 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [Test]
-        public void Given_The_Nisra_Case_And_Existing_Case_Have_An_Outcome_Of_Complete_When_I_Call_UpdateExistingCase_Then_True_Is_Returned()
+        public void Given_The_Nisra_Case_And_Existing_Case_Have_An_Outcome_Of_Complete_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned()
         {
             //arrange
             var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutComplete, _date1);
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutComplete, _date2);
 
             //act
-            var result = _sut.UpdateExistingCase(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
 
             //assert
             Assert.IsTrue(result);
@@ -59,14 +59,14 @@ namespace Blaise.Api.Tests.Unit.Services
 
         // Scenario 2 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [Test]
-        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Has_An_Outcome_Of_Complete_When_I_Call_UpdateExistingCase_Then_False_Is_Returned()
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Has_An_Outcome_Of_Complete_When_I_Call_CaseNeedsToBeUpdated_Then_False_Is_Returned()
         {
             //arrange
             var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutPartial, _date1);
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutComplete, _date2);
 
             //act
-            var result = _sut.UpdateExistingCase(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
 
             //assert
             Assert.IsFalse(result);
@@ -74,14 +74,14 @@ namespace Blaise.Api.Tests.Unit.Services
 
         // Scenario 3 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [Test]
-        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Of_Partial_When_I_Call_UpdateExistingCase_Then_True_Is_Returned()
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Of_Partial_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned()
         {
             //arrange
             var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutComplete, _date1);
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutPartial, _date2);
 
             //act
-            var result = _sut.UpdateExistingCase(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
 
             //assert
             Assert.IsTrue(result);
@@ -95,14 +95,14 @@ namespace Blaise.Api.Tests.Unit.Services
         [TestCase(461)]
         [TestCase(541)]
         [TestCase(542)]
-        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Between_210_And_542_When_I_Call_UpdateExistingCase_Then_True_Is_Returned(int existingOutcome)
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Between_210_And_542_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned(int existingOutcome)
         {
             //arrange
             var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutComplete, _date1);
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, existingOutcome, _date2);
 
             //act
-            var result = _sut.UpdateExistingCase(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
 
             //assert
             Assert.IsTrue(result);
@@ -111,14 +111,14 @@ namespace Blaise.Api.Tests.Unit.Services
         // Scenario 5 & 8 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [TestCase(110)]
         [TestCase(310)]
-        public void Given_The_Nisra_Outcome_Is_Zero_When_I_Call_UpdateExistingCase_Then_False_Is_Returned(int existingOutcome)
+        public void Given_The_Nisra_Outcome_Is_Zero_When_I_Call_CaseNeedsToBeUpdated_Then_False_Is_Returned(int existingOutcome)
         {
             //arrange
             var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutNotStarted, _date1);
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, existingOutcome, _date2);
 
             //act
-            var result = _sut.UpdateExistingCase(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
 
             //assert
             Assert.IsFalse(result);
@@ -126,14 +126,14 @@ namespace Blaise.Api.Tests.Unit.Services
 
         // Scenario 6 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [Test]
-        public void Given_The_Nisra_Case_And_Existing_Case_Have_An_Outcome_Of_Partial_When_I_Call_UpdateExistingCase_Then_True_Is_Returned()
+        public void Given_The_Nisra_Case_And_Existing_Case_Have_An_Outcome_Of_Partial_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned()
         {
             //arrange
             var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutPartial, _date1);
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutPartial, _date2);
 
             //act
-            var result = _sut.UpdateExistingCase(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
 
             //assert
             Assert.IsTrue(result);
@@ -147,14 +147,14 @@ namespace Blaise.Api.Tests.Unit.Services
         [TestCase(461)]
         [TestCase(541)]
         [TestCase(542)]
-        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Haw_An_Outcome_Between_210_And_542_When_I_Call_UpdateExistingCase_Then_True_Is_Returned(int existingOutcome)
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Haw_An_Outcome_Between_210_And_542_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned(int existingOutcome)
         {
             //arrange
             var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutPartial, _date1);
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, existingOutcome, _date2);
 
             //act
-            var result = _sut.UpdateExistingCase(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
 
             //assert
             Assert.IsTrue(result);
@@ -165,14 +165,14 @@ namespace Blaise.Api.Tests.Unit.Services
         //additional scenario
         [TestCase(110)]
         [TestCase(210)]
-        public void Given_The_Nisra_Case_Has_A_Valid_Outcome_But_Existing_Case_Has_An_Outcome_Of_Zero_When_I_Call_UpdateExistingCase_Then_True_Is_Returned(int nisraOutcome)
+        public void Given_The_Nisra_Case_Has_A_Valid_Outcome_But_Existing_Case_Has_An_Outcome_Of_Zero_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned(int nisraOutcome)
         {
             //arrange
             var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutPartial, _date1);
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutNotStarted, _date2);
 
             //act
-            var result = _sut.UpdateExistingCase(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
 
             //assert
             Assert.IsTrue(result);
@@ -180,7 +180,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
         // Scenario 9 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [Test]
-        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Has_An_Outcome_Of_Delete_When_I_Call_UpdateExistingCase_Then_False_Is_Returned()
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Has_An_Outcome_Of_Delete_When_I_Call_CaseNeedsToBeUpdated_Then_False_Is_Returned()
         {
             //arrange
             const int outcomeCode = 562; //respondent request for data to be deleted
@@ -189,7 +189,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, outcomeCode, _date2);
 
             //act
-            var result = _sut.UpdateExistingCase(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
 
             //assert
             Assert.IsFalse(result);
@@ -197,7 +197,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
         // Scenario 10 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [Test]
-        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Of_Delete_When_I_Call_UpdateExistingCase_Then_False_Is_Returned()
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Of_Delete_When_I_Call_CaseNeedsToBeUpdated_Then_False_Is_Returned()
         {
             //arrange
             const int outcomeCode = 561; //respondent request for data to be deleted
@@ -206,7 +206,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, outcomeCode, _date2);
 
             //act
-            var result = _sut.UpdateExistingCase(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
 
             //assert
             Assert.IsFalse(result);
@@ -217,14 +217,14 @@ namespace Blaise.Api.Tests.Unit.Services
 
         // Scenario 12
         [Test]
-        public void Given_The_Case_Has_Been_Processed_Before_When_I_Call_UpdateExistingCase_Then_False_Is_Returned()
+        public void Given_The_Case_Has_Been_Processed_Before_When_I_Call_CaseNeedsToBeUpdated_Then_False_Is_Returned()
         {
             //arrange
             var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutComplete, _date1);
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutComplete, _date1);
 
             //act
-            var result = _sut.UpdateExistingCase(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
 
             //assert
             Assert.IsFalse(result);
