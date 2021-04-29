@@ -81,7 +81,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_There_Are_No_Records_Available_In_The_Nisra_File_When_I_Call_ImportOnlineDatabaseFile_Then_Nothing_Is_Processed()
+        public void Given_There_Are_No_Records_Available_In_The_Nisra_File_When_I_Call_ImportNisraDatabaseFile_Then_Nothing_Is_Processed()
         {
             //arrange
             _dataSetMock.Setup(d => d.ActiveRecord).Returns(_newDataRecordMock.Object);
@@ -89,7 +89,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(true);
 
             //act
-            _sut.ImportOnlineDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
+            _sut.ImportNisraDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
 
             //assert
             _blaiseApiMock.Verify(v => v.GetCases(_databaseFileName), Times.Once);
@@ -99,7 +99,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_The_Nisra_Record_Has_Updated_Data_When_I_Call_ImportOnlineDatabaseFile_Then_The_Record_Is_Updated()
+        public void Given_The_Nisra_Record_Has_Updated_Data_When_I_Call_ImportNisraDatabaseFile_Then_The_Record_Is_Updated()
         {
             //arrange
             _dataSetMock.Setup(d => d.ActiveRecord).Returns(_newDataRecordMock.Object);
@@ -115,7 +115,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(_existingDataRecordMock.Object);
 
             //act
-            _sut.ImportOnlineDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
+            _sut.ImportNisraDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
 
             //assert
             _onlineCaseServiceMock.Verify(v => v.UpdateCase(_newDataRecordMock.Object, _existingDataRecordMock.Object,
@@ -123,7 +123,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_The_Nisra_Record_Has_Updated_Data_When_I_Call_ImportCasesFromFile_Then_The_Record_Is_Not_Updated()
+        public void Given_The_Nisra_Record_Has_Updated_Data_When_I_Call_ImportNisraDatabaseFile_Then_The_Record_Is_Not_Updated()
         {
             //arrange
             _dataSetMock.Setup(d => d.ActiveRecord).Returns(_newDataRecordMock.Object);
@@ -139,7 +139,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(_existingDataRecordMock.Object);
 
             //act
-            _sut.ImportOnlineDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
+            _sut.ImportNisraDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
 
             //assert
             _onlineCaseServiceMock.Verify(v => v.UpdateCase(It.IsAny<IDataRecord>(), It.IsAny<IDataRecord>(),
@@ -148,7 +148,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
         [Test]
         public void
-            Given_A_Case_Exists_In_Nisra_But_Not_In_The_Database_When_I_Call_ImportCasesFromFile_Then_Update_Is_Not_Called_And_A_Warning_Is_Logged()
+            Given_A_Case_Exists_In_Nisra_But_Not_In_The_Database_When_I_Call_ImportNisraDatabaseFile_Then_Update_Is_Not_Called_And_A_Warning_Is_Logged()
         {
             //arrange
             var existingCaseStatusList = new List<CaseStatusModel>
@@ -171,7 +171,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(_existingDataRecordMock.Object);
 
             //act
-            _sut.ImportOnlineDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
+            _sut.ImportNisraDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
 
             //assert
             _onlineCaseServiceMock.Verify(v => v.UpdateCase(It.IsAny<IDataRecord>(), It.IsAny<IDataRecord>(),

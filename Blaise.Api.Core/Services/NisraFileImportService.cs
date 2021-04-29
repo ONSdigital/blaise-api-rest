@@ -27,7 +27,7 @@ namespace Blaise.Api.Core.Services
             _loggerService = loggerService;
         }
 
-        public void ImportOnlineDatabaseFile(string databaseFilePath, string instrumentName, string serverParkName)
+        public void ImportNisraDatabaseFile(string databaseFilePath, string instrumentName, string serverParkName)
         {
             var existingTelCaseStatusModels = _blaiseApi.GetCaseStatusList(instrumentName, serverParkName).ToList();
             var nisraFileCaseRecords = _blaiseApi.GetCases(databaseFilePath);
@@ -56,7 +56,7 @@ namespace Blaise.Api.Core.Services
             return _blaiseApi.GetCaseStatus(nisraDataRecord);
         }
 
-        private static CaseStatusModel GetExistingTelCaseStatusModel(string primaryKeyValue, List<CaseStatusModel> existingCaseStatusModelList)
+        private static CaseStatusModel GetExistingTelCaseStatusModel(string primaryKeyValue, IEnumerable<CaseStatusModel> existingCaseStatusModelList)
         {
             return existingCaseStatusModelList.FirstOrDefault(t =>
                 t.PrimaryKey == primaryKeyValue);

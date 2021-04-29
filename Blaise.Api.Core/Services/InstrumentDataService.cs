@@ -47,7 +47,7 @@ namespace Blaise.Api.Core.Services
             await DownloadDatabaseFilesFromBucketAsync(instrumentDataDto.InstrumentDataPath, tempFilePath);
             var databaseFile = _fileService.GetDatabaseFile(tempFilePath, instrumentName);
 
-            _nisraService.ImportOnlineDatabaseFile(databaseFile, instrumentName, serverParkName);
+            _nisraService.ImportNisraDatabaseFile(databaseFile, instrumentName, serverParkName);
         }
 
         private async Task<string> CreateInstrumentPackageWithDataAsync(string serverParkName, string instrumentName, string tempFilePath)
