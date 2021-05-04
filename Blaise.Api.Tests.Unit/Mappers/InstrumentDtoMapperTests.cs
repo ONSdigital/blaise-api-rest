@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Api.Contracts.Models.Instrument;
+using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Mappers;
 using Blaise.Nuget.Api.Contracts.Enums;
-using Blaise.Nuget.Api.Contracts.Extensions;
 using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.ServerManager;
@@ -15,6 +15,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
     public class InstrumentDtoMapperTests
     {
         private InstrumentDtoMapper _sut;
+        private Mock<IInstrumentStatusMapper> _statusMapperMock;
+
         private string _instrumentName;
         private string _serverParkName;
         private DateTime _installDate;
@@ -35,21 +37,13 @@ namespace Blaise.Api.Tests.Unit.Mappers
             _surveyMock.Setup(s => s.ServerPark).Returns(_serverParkName);
             _surveyMock.Setup(s => s.InstallDate).Returns(_installDate);
 
-            var iConfiguration1Mock = new Mock<IConfiguration>();
-            iConfiguration1Mock.Setup(c => c.Status).Returns(SurveyStatusType.Active.FullName());
-
-            var iConfigurations = new List<IConfiguration>
-            {
-                iConfiguration1Mock.Object
-            };
-
-            _surveyMock.Setup(s => s.Configuration.Configurations).Returns(iConfigurations);
-
             _surveyReportingInfoMock = new Mock<ISurveyReportingInfo>();
             _surveyReportingInfoMock.Setup(r => r.DataRecordCount).Returns(_numberOfRecordForInstrument);
             _surveyMock.As<ISurvey2>().Setup(s => s.GetReportingInfo()).Returns(_surveyReportingInfoMock.Object);
 
-            _sut = new InstrumentDtoMapper();
+            _statusMapperMock = new Mock<IInstrumentStatusMapper>();
+
+            _sut = new InstrumentDtoMapper(_statusMapperMock.Object);
         }
 
         [Test]
@@ -65,14 +59,6 @@ namespace Blaise.Api.Tests.Unit.Mappers
             const int numberOfRecordForInstrument1 = 20;
             const int numberOfRecordForInstrument2 = 0;
 
-            var iConfiguration1Mock = new Mock<IConfiguration>();
-            iConfiguration1Mock.Setup(c => c.Status).Returns(SurveyStatusType.Active.FullName());
-
-            var iConfigurations = new List<IConfiguration>
-            {
-                iConfiguration1Mock.Object
-            };
-
             var survey1Mock = new Mock<ISurvey>();
             survey1Mock.As<ISurvey2>();
             survey1Mock.Setup(s => s.Name).Returns(instrument1Name);
@@ -81,7 +67,6 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
             surveyReportingInfoMock1.Setup(r => r.DataRecordCount).Returns(numberOfRecordForInstrument1);
             survey1Mock.As<ISurvey2>().Setup(s => s.GetReportingInfo()).Returns(surveyReportingInfoMock1.Object);
-            survey1Mock.Setup(s => s.Configuration.Configurations).Returns(iConfigurations);
 
             var survey2Mock = new Mock<ISurvey>();
             survey2Mock.As<ISurvey2>();
@@ -91,13 +76,18 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var surveyReportingInfoMock2 = new Mock<ISurveyReportingInfo>();
             surveyReportingInfoMock2.Setup(r => r.DataRecordCount).Returns(numberOfRecordForInstrument2);
             survey2Mock.As<ISurvey2>().Setup(s => s.GetReportingInfo()).Returns(surveyReportingInfoMock2.Object);
-            survey2Mock.Setup(s => s.Configuration.Configurations).Returns(iConfigurations);
-
+            
             var surveys = new List<ISurvey>
             {
                 survey1Mock.Object,
                 survey2Mock.Object
             };
+
+            _statusMapperMock.Setup(s => s.GetInstrumentStatus(survey1Mock.Object))
+                .Returns(SurveyStatusType.Active);
+
+            _statusMapperMock.Setup(s => s.GetInstrumentStatus(survey2Mock.Object))
+                .Returns(SurveyStatusType.Installing);
 
             //act
             var result = _sut.MapToInstrumentDtos(surveys).ToList();
@@ -111,178 +101,17 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 i.Name == instrument1Name &&
                 i.ServerParkName == serverPark1Name &&
                 i.DataRecordCount == numberOfRecordForInstrument1 &&
+                i.Status == SurveyStatusType.Active.ToString() &&
                 i.HasData));
 
             Assert.True(result.Any(i =>
                 i.Name == instrument2Name &&
                 i.ServerParkName == serverPark2Name &&
                 i.DataRecordCount == numberOfRecordForInstrument2 &&
+                i.Status == SurveyStatusType.Installing.ToString() &&
                 i.HasData == false));
         }
-
-        [Test]
-        public void Given_A_Survey_Is_Active_Across_All_Nodes_When_I_Call_MapToInstrumentDto_Then_The_Active_Status_Is_Mapped()
-        {
-            //arrange
-            var iConfiguration1Mock = new Mock<IConfiguration>();
-            var iConfiguration2Mock = new Mock<IConfiguration>();
-            var iConfiguration3Mock = new Mock<IConfiguration>();
-
-            iConfiguration1Mock.Setup(c => c.Status).Returns(SurveyStatusType.Active.FullName());
-            iConfiguration2Mock.Setup(c => c.Status).Returns(SurveyStatusType.Active.FullName());
-            iConfiguration3Mock.Setup(c => c.Status).Returns(SurveyStatusType.Active.FullName());
-
-            var iConfigurations = new List<IConfiguration>
-            {
-                iConfiguration1Mock.Object,
-                iConfiguration2Mock.Object,
-                iConfiguration3Mock.Object
-            };
-
-            _surveyMock.Setup(s => s.Configuration.Configurations).Returns(iConfigurations);
-
-            //act
-            var result = _sut.MapToInstrumentDto(_surveyMock.Object);
-
-            //assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<InstrumentDto>(result);
-            Assert.AreEqual(SurveyStatusType.Active.FullName(), result.Status);
-        }
-
-        [Test]
-        public void Given_A_Survey_Is_Either_Active_Or_Installing_Across_All_Nodes_When_I_Call_MapToInstrumentDto_Then_The_Installing_Status_Is_Mapped()
-        {
-            //arrange
-            var iConfiguration1Mock = new Mock<IConfiguration>();
-            var iConfiguration2Mock = new Mock<IConfiguration>();
-            var iConfiguration3Mock = new Mock<IConfiguration>();
-
-            iConfiguration1Mock.Setup(c => c.Status).Returns(SurveyStatusType.Installing.FullName());
-            iConfiguration2Mock.Setup(c => c.Status).Returns(SurveyStatusType.Active.FullName());
-            iConfiguration3Mock.Setup(c => c.Status).Returns(SurveyStatusType.Active.FullName());
-
-            var iConfigurations = new List<IConfiguration>
-            {
-                iConfiguration1Mock.Object,
-                iConfiguration2Mock.Object,
-                iConfiguration3Mock.Object
-            };
-
-            _surveyMock.Setup(s => s.Configuration.Configurations).Returns(iConfigurations);
-
-            //act
-            var result = _sut.MapToInstrumentDto(_surveyMock.Object);
-
-            //assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<InstrumentDto>(result);
-            Assert.AreEqual(SurveyStatusType.Installing.FullName(), result.Status);
-        }
-
-        [TestCase(10)]
-        [TestCase(11)]
-        [TestCase(60)]
-        public void Given_A_Survey_Status_Is_Installing_But_Has_Taken_Too_Long_When_I_Call_MapToInstrumentDto_Then_The_Failed_Status_Is_Mapped(
-            int minutesSpentInstalling)
-        {
-            //arrange
-            var iConfiguration1Mock = new Mock<IConfiguration>();
-            var iConfiguration2Mock = new Mock<IConfiguration>();
-            var iConfiguration3Mock = new Mock<IConfiguration>();
-
-            iConfiguration1Mock.Setup(c => c.Status).Returns(SurveyStatusType.Installing.FullName());
-            iConfiguration2Mock.Setup(c => c.Status).Returns(SurveyStatusType.Active.FullName());
-            iConfiguration3Mock.Setup(c => c.Status).Returns(SurveyStatusType.Active.FullName());
-
-            var iConfigurations = new List<IConfiguration>
-            {
-                iConfiguration1Mock.Object,
-                iConfiguration2Mock.Object,
-                iConfiguration3Mock.Object
-            };
-
-            _surveyMock.Setup(s => s.Configuration.Configurations).Returns(iConfigurations);
-            _surveyMock.Setup(s => s.InstallDate).Returns(DateTime.Now.AddMinutes(-minutesSpentInstalling));
-
-            //act
-            var result = _sut.MapToInstrumentDto(_surveyMock.Object);
-
-            //assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<InstrumentDto>(result);
-            Assert.AreEqual(SurveyStatusType.Failed.FullName(), result.Status);
-        }
-
-
-        [TestCase(10)]
-        [TestCase(11)]
-        [TestCase(60)]
-        public void Given_A_Survey_Status_Is_Active_And_Is_Outside_Our_Expired_Installation_Period_When_I_Call_MapToInstrumentDto_Then_The_InstallDate_Is_Ignored_And_The_Active_Status_Is_Mapped(
-            int minutesSpentInstalling)
-        {
-            //arrange
-            var iConfiguration1Mock = new Mock<IConfiguration>();
-            var iConfiguration2Mock = new Mock<IConfiguration>();
-            var iConfiguration3Mock = new Mock<IConfiguration>();
-
-            iConfiguration1Mock.Setup(c => c.Status).Returns(SurveyStatusType.Active.FullName());
-            iConfiguration2Mock.Setup(c => c.Status).Returns(SurveyStatusType.Active.FullName());
-            iConfiguration3Mock.Setup(c => c.Status).Returns(SurveyStatusType.Active.FullName());
-            
-            var iConfigurations = new List<IConfiguration>
-            {
-                iConfiguration1Mock.Object,
-                iConfiguration2Mock.Object,
-                iConfiguration3Mock.Object
-            };
-
-            _surveyMock.Setup(s => s.Configuration.Configurations).Returns(iConfigurations);
-            _surveyMock.Setup(s => s.InstallDate).Returns(DateTime.Now.AddMinutes(-minutesSpentInstalling));
-
-            //act
-            var result = _sut.MapToInstrumentDto(_surveyMock.Object);
-
-            //assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<InstrumentDto>(result);
-            Assert.AreEqual(SurveyStatusType.Active.FullName(), result.Status);
-        }
-
-        [TestCase(SurveyStatusType.Erroneous)]
-        [TestCase(SurveyStatusType.Other)]
-        [TestCase(SurveyStatusType.Inactive)]
-        [TestCase(SurveyStatusType.Failed)]
-        public void Given_A_Survey_On_Any_Node_Has_Failed_When_I_Call_MapToInstrumentDto_Then_The_Failed_Status_Is_Mapped(
-            SurveyStatusType statusType)
-        {
-            //arrange
-            var iConfiguration1Mock = new Mock<IConfiguration>();
-            var iConfiguration2Mock = new Mock<IConfiguration>();
-            var iConfiguration3Mock = new Mock<IConfiguration>();
-
-            iConfiguration1Mock.Setup(c => c.Status).Returns(SurveyStatusType.Active.FullName());
-            iConfiguration2Mock.Setup(c => c.Status).Returns(statusType.FullName());
-            iConfiguration3Mock.Setup(c => c.Status).Returns(SurveyStatusType.Installing.FullName());
-
-            var iConfigurations = new List<IConfiguration>
-            {
-                iConfiguration1Mock.Object,
-                iConfiguration2Mock.Object,
-                iConfiguration3Mock.Object
-            };
-
-            _surveyMock.Setup(s => s.Configuration.Configurations).Returns(iConfigurations);
-
-            //act
-            var result = _sut.MapToInstrumentDto(_surveyMock.Object);
-
-            //assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<InstrumentDto>(result);
-            Assert.AreEqual(SurveyStatusType.Failed.FullName(), result.Status);
-        }
-
+        
         [Test]
         public void Given_An_Instrument_And_SurveyDays_When_I_Call_MapToCatiInstrumentDto_Then_A_CatiInstrumentDto_Is_Returned()
         {

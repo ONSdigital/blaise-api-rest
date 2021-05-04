@@ -168,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\UnityTests.cs" />
+    <Compile Include="Mappers\InstrumentStatusMapperTests.cs" />
     <Compile Include="Mappers\InstrumentDtoMapperTests.cs" />
     <Compile Include="Mappers\UserDtoMapperTests.cs" />
     <Compile Include="Mappers\UserRoleDtoMapperTests.cs" />

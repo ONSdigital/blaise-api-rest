@@ -119,9 +119,11 @@
     <Compile Include="Interfaces\Mappers\IServerParkDtoMapper.cs" />
     <Compile Include="Interfaces\Services\IServerParkService.cs" />
     <Compile Include="Interfaces\Mappers\IInstrumentDtoMapper.cs" />
+    <Compile Include="Interfaces\Mappers\IInstrumentStatusMapper.cs" />
     <Compile Include="Mappers\InstrumentDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IUserRoleDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IUserDtoMapper.cs" />
+    <Compile Include="Mappers\InstrumentStatusMapper.cs" />
     <Compile Include="Mappers\UserRoleDtoMapper.cs" />
     <Compile Include="Mappers\ServerParkDtoMapper.cs" />
     <Compile Include="Mappers\UserDtoMapper.cs" />

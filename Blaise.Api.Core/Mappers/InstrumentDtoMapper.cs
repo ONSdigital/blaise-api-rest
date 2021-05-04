@@ -4,13 +4,19 @@ using System.Linq;
 using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Nuget.Api.Contracts.Enums;
 using StatNeth.Blaise.API.ServerManager;
 
 namespace Blaise.Api.Core.Mappers
 {
     public class InstrumentDtoMapper : IInstrumentDtoMapper
     {
+        private readonly IInstrumentStatusMapper _statusMapper;
+
+        public InstrumentDtoMapper(IInstrumentStatusMapper statusMapper)
+        {
+            _statusMapper = statusMapper;
+        }
+
         public IEnumerable<InstrumentDto> MapToInstrumentDtos(IEnumerable<ISurvey> instruments)
         {
             var instrumentDtoList = new List<InstrumentDto>();
@@ -30,7 +36,7 @@ namespace Blaise.Api.Core.Mappers
                 Name = instrument.Name,
                 ServerParkName = instrument.ServerPark,
                 InstallDate = instrument.InstallDate,
-                Status = GetInstrumentStatus(instrument.Configuration.Configurations.ToList(), instrument.InstallDate),
+                Status = _statusMapper.GetInstrumentStatus(instrument).ToString(),
                 DataRecordCount = GetNumberOfDataRecords(instrument as ISurvey2)
             };
         }
@@ -42,7 +48,7 @@ namespace Blaise.Api.Core.Mappers
                 Name = instrument.Name,
                 ServerParkName = instrument.ServerPark,
                 InstallDate = instrument.InstallDate,
-                Status = GetInstrumentStatus(instrument.Configuration.Configurations.ToList(), instrument.InstallDate),
+                Status = _statusMapper.GetInstrumentStatus(instrument).ToString(),
                 DataRecordCount = GetNumberOfDataRecords(instrument as ISurvey2),
                 SurveyDays = surveyDays,
                 Active = surveyDays.Any(s => s.Date <= DateTime.Today) &&
@@ -53,30 +59,6 @@ namespace Blaise.Api.Core.Mappers
             catiInstrument.DeliverData = SetDeliverDataWhichIncludesADaysGraceFromLastSurveyDay(catiInstrument);
             
             return catiInstrument;
-        }
-
-        private string GetInstrumentStatus(IList<IConfiguration> instrumentConfigurations, DateTime installDate)
-        {
-            if (instrumentConfigurations.All(c => c.Status == SurveyStatusType.Active.ToString()))
-            {
-                return SurveyStatusType.Active.ToString();
-            }
-
-            if (instrumentConfigurations.Any(c => 
-                                                  c.Status != SurveyStatusType.Active.ToString() &&
-                                                  c.Status != SurveyStatusType.Installing.ToString()))
-            {
-                return SurveyStatusType.Failed.ToString();
-            }
-
-            var expiredInstallDateTime = DateTime.Now.AddMinutes(-10);
-
-            if (installDate < expiredInstallDateTime)
-            {
-                return SurveyStatusType.Failed.ToString();
-            }
-
-            return SurveyStatusType.Installing.ToString();
         }
 
         private static int GetNumberOfDataRecords(ISurvey2 instrument)
