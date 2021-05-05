@@ -23,7 +23,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         private int _numberOfRecordForInstrument;
         private Mock<ISurvey> _surveyMock;
         private Mock<ISurveyReportingInfo> _surveyReportingInfoMock;
-
+        
         [SetUp]
         public void SetupTests()
         {
@@ -113,6 +113,49 @@ namespace Blaise.Api.Tests.Unit.Mappers
         }
         
         [Test]
+        public void Given_A_Multi_Node_Setup_When_I_Call_MapToInstrumentDto_Then_A_Populated_Node_List_Is_Returned()
+        {
+            //arrange
+           
+            //node 2
+            const string node1Name = "data-management";
+            var node1Status = SurveyStatusType.Active.ToString();
+            var iConfiguration1Mock = new Mock<IConfiguration>();
+            iConfiguration1Mock.Setup(c => c.Status).Returns(node1Status);
+
+            //node 2
+            const string node2Name = "data-entry1";
+            var node2Status = SurveyStatusType.Installing.ToString();
+            var iConfiguration2Mock = new Mock<IConfiguration>();
+            iConfiguration2Mock.Setup(c => c.Status).Returns(node2Status);
+
+            //multi node setup
+            var machineConfigurationMock = new Mock<IMachineConfigurationCollection>();
+            var machineConfigurations = new List<KeyValuePair<string, IConfiguration>>
+            {
+                new KeyValuePair<string, IConfiguration>(node1Name, iConfiguration1Mock.Object),
+                new KeyValuePair<string, IConfiguration>(node2Name, iConfiguration2Mock.Object)
+            };
+
+            machineConfigurationMock.Setup(m => m.GetEnumerator())
+                .Returns(machineConfigurations.GetEnumerator());
+            
+            _surveyMock.Setup(s => s.Configuration).Returns(machineConfigurationMock.Object);
+
+            //act
+            var result = _sut.MapToInstrumentDto(_surveyMock.Object);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<IEnumerable<InstrumentNodeDto>>(result.Nodes);
+            Assert.IsNotEmpty(result.Nodes);
+            Assert.AreEqual(2, result.Nodes.Count());
+
+            Assert.True(result.Nodes.Any(n => n.NodeName == node1Name && n.NodeStatus == node1Status));
+            Assert.True(result.Nodes.Any(n => n.NodeName == node2Name && n.NodeStatus == node2Status));
+        }
+
+        [Test]
         public void Given_An_Instrument_And_SurveyDays_When_I_Call_MapToCatiInstrumentDto_Then_A_CatiInstrumentDto_Is_Returned()
         {
             //act
@@ -144,6 +187,49 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.AreEqual(_installDate, result.InstallDate);
             Assert.AreEqual(numberOfRecords, result.DataRecordCount);
             Assert.AreEqual(hasData, result.HasData);
+        }
+
+        [Test]
+        public void Given_A_Multi_Node_Setup_When_I_Call_MapToCatiInstrumentDto_Then_A_Populated_Node_List_Is_Returned()
+        {
+            //arrange
+
+            //node 2
+            const string node1Name = "data-management";
+            var node1Status = SurveyStatusType.Active.ToString();
+            var iConfiguration1Mock = new Mock<IConfiguration>();
+            iConfiguration1Mock.Setup(c => c.Status).Returns(node1Status);
+
+            //node 2
+            const string node2Name = "data-entry1";
+            var node2Status = SurveyStatusType.Installing.ToString();
+            var iConfiguration2Mock = new Mock<IConfiguration>();
+            iConfiguration2Mock.Setup(c => c.Status).Returns(node2Status);
+
+            //multi node setup
+            var machineConfigurationMock = new Mock<IMachineConfigurationCollection>();
+            var machineConfigurations = new List<KeyValuePair<string, IConfiguration>>
+            {
+                new KeyValuePair<string, IConfiguration>(node1Name, iConfiguration1Mock.Object),
+                new KeyValuePair<string, IConfiguration>(node2Name, iConfiguration2Mock.Object)
+            };
+
+            machineConfigurationMock.Setup(m => m.GetEnumerator())
+                .Returns(machineConfigurations.GetEnumerator());
+
+            _surveyMock.Setup(s => s.Configuration).Returns(machineConfigurationMock.Object);
+
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, new List<DateTime>());
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<IEnumerable<InstrumentNodeDto>>(result.Nodes);
+            Assert.IsNotEmpty(result.Nodes);
+            Assert.AreEqual(2, result.Nodes.Count());
+
+            Assert.True(result.Nodes.Any(n => n.NodeName == node1Name && n.NodeStatus == node1Status));
+            Assert.True(result.Nodes.Any(n => n.NodeName == node2Name && n.NodeStatus == node2Status));
         }
 
         [Test]
