@@ -10,6 +10,13 @@ namespace Blaise.Api.Core.Mappers
 {
     public class InstrumentDtoMapper : IInstrumentDtoMapper
     {
+        private readonly IInstrumentStatusMapper _statusMapper;
+
+        public InstrumentDtoMapper(IInstrumentStatusMapper statusMapper)
+        {
+            _statusMapper = statusMapper;
+        }
+
         public IEnumerable<InstrumentDto> MapToInstrumentDtos(IEnumerable<ISurvey> instruments)
         {
             var instrumentDtoList = new List<InstrumentDto>();
@@ -29,8 +36,9 @@ namespace Blaise.Api.Core.Mappers
                 Name = instrument.Name,
                 ServerParkName = instrument.ServerPark,
                 InstallDate = instrument.InstallDate,
-                Status = instrument.Status,
-                DataRecordCount = GetNumberOfDataRecords(instrument as ISurvey2)
+                Status = _statusMapper.GetInstrumentStatus(instrument).ToString(),
+                DataRecordCount = GetNumberOfDataRecords(instrument as ISurvey2),
+                Nodes = MapInstrumentNodes(instrument.Configuration)
             };
         }
 
@@ -41,7 +49,8 @@ namespace Blaise.Api.Core.Mappers
                 Name = instrument.Name,
                 ServerParkName = instrument.ServerPark,
                 InstallDate = instrument.InstallDate,
-                Status = instrument.Status,
+                Status = _statusMapper.GetInstrumentStatus(instrument).ToString(),
+                Nodes = MapInstrumentNodes(instrument.Configuration),
                 DataRecordCount = GetNumberOfDataRecords(instrument as ISurvey2),
                 SurveyDays = surveyDays,
                 Active = surveyDays.Any(s => s.Date <= DateTime.Today) &&
@@ -52,6 +61,26 @@ namespace Blaise.Api.Core.Mappers
             catiInstrument.DeliverData = SetDeliverDataWhichIncludesADaysGraceFromLastSurveyDay(catiInstrument);
             
             return catiInstrument;
+        }
+        private static IEnumerable<InstrumentNodeDto> MapInstrumentNodes(IMachineConfigurationCollection instrumentConfiguration)
+        {
+            var instrumentNodes = new List<InstrumentNodeDto>();
+
+            if (instrumentConfiguration == null)
+            {
+                return instrumentNodes;
+            }
+
+            foreach (var configuration in instrumentConfiguration)
+            {
+                instrumentNodes.Add(new InstrumentNodeDto
+                {
+                    NodeName = configuration.Key,
+                    NodeStatus = configuration.Value.Status
+                });
+            }
+
+            return instrumentNodes;
         }
 
         private static int GetNumberOfDataRecords(ISurvey2 instrument)

@@ -150,7 +150,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f.GetDatabaseFile(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(dataBaseFilePath);
 
-            _nisraServiceMock.InSequence(_mockSequence).Setup(c => c.ImportOnlineDatabaseFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            _nisraServiceMock.InSequence(_mockSequence).Setup(c => c.ImportNisraDatabaseFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
 
             //act
@@ -161,7 +161,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _fileServiceMock.Verify(v => v.GetDatabaseFile(_tempPath, _instrumentName), Times.Once);
 
-            _nisraServiceMock.Verify(v => v.ImportOnlineDatabaseFile(dataBaseFilePath, _instrumentName, _serverParkName), Times.Once);
+            _nisraServiceMock.Verify(v => v.ImportNisraDatabaseFile(dataBaseFilePath, _instrumentName, _serverParkName), Times.Once);
         }
 
         [Test]

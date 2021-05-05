@@ -4,7 +4,7 @@ namespace Blaise.Api.Core.Interfaces.Services
 {
     public interface INisraCaseComparisonService
     {
-        bool UpdateExistingCase(CaseStatusModel nisraCaseStatusModel, CaseStatusModel existingCaseStatusModel, 
+        bool CaseNeedsToBeUpdated(CaseStatusModel nisraCaseStatusModel, CaseStatusModel existingCaseStatusModel, 
             string instrumentName);
     }
 }

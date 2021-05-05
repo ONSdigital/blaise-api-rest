@@ -13,7 +13,7 @@ namespace Blaise.Api.Core.Services
             _loggingService = loggingService;
         }
 
-        public bool UpdateExistingCase(CaseStatusModel nisraCaseStatusModel, CaseStatusModel existingCaseStatusModel, 
+        public bool CaseNeedsToBeUpdated(CaseStatusModel nisraCaseStatusModel, CaseStatusModel existingCaseStatusModel, 
             string instrumentName)
         {
             if (nisraCaseStatusModel.Outcome == 0)
