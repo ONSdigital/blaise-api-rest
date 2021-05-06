@@ -12,12 +12,12 @@ namespace Blaise.Api.Core.Services
     {
         private readonly IBlaiseCatiApi _blaiseCatiApi;
         private readonly IBlaiseSurveyApi _blaiseSurveyApi;
-        private readonly IInstrumentDtoMapper _mapper;
+        private readonly ICatiInstrumentDtoMapper _mapper;
 
         public CatiService(
             IBlaiseCatiApi blaiseApi,
             IBlaiseSurveyApi blaiseSurveyApi,
-            IInstrumentDtoMapper mapper
+            ICatiInstrumentDtoMapper mapper
            )
         {
             _blaiseCatiApi = blaiseApi;
@@ -78,8 +78,9 @@ namespace Blaise.Api.Core.Services
         private CatiInstrumentDto GetCatiInstrumentDto(ISurvey instrument)
         {
             var surveyDays = _blaiseCatiApi.GetSurveyDays(instrument.Name, instrument.ServerPark);
+            var liveDate = _blaiseSurveyApi.GetLiveDate(instrument.Name, instrument.ServerPark);
 
-            return _mapper.MapToCatiInstrumentDto(instrument, surveyDays);
+            return _mapper.MapToCatiInstrumentDto(instrument, surveyDays, liveDate);
         }
     }
 }

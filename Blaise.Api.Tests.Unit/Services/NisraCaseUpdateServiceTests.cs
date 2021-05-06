@@ -14,7 +14,7 @@ namespace Blaise.Api.Tests.Unit.Services
     public class NisraCaseUpdateServiceTests
     {
         private Mock<IBlaiseCaseApi> _blaiseApiMock;
-        private Mock<ICatiDataService> _catiDataMock;
+        private Mock<ICatiDataBlockService> _catiDataMock;
         private Mock<ILoggingService> _loggingMock;
         private MockSequence _mockSequence;
 
@@ -63,7 +63,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(_existingFieldData);
 
             //important that the service calls the methods in the right order, otherwise you could end up removing what you have added
-            _catiDataMock = new Mock<ICatiDataService>(MockBehavior.Strict);
+            _catiDataMock = new Mock<ICatiDataBlockService>(MockBehavior.Strict);
             _mockSequence = new MockSequence();
 
             _catiDataMock.InSequence(_mockSequence).Setup(c => c.RemoveCatiManaBlock(_newFieldData));
