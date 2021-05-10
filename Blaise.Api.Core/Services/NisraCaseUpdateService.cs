@@ -10,12 +10,12 @@ namespace Blaise.Api.Core.Services
     public class NisraCaseUpdateService : INisraCaseUpdateService
     {
         private readonly IBlaiseCaseApi _blaiseApi;
-        private readonly ICatiDataService _catiDataService;
+        private readonly ICatiDataBlockService _catiDataService;
         private readonly ILoggingService _loggingService;
 
         public NisraCaseUpdateService(
             IBlaiseCaseApi blaiseApi,
-            ICatiDataService catiDataService,
+            ICatiDataBlockService catiDataService,
             ILoggingService loggingService)
         {
             _blaiseApi = blaiseApi;
