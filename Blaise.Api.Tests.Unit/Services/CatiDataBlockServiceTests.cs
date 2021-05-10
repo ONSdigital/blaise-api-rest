@@ -6,14 +6,14 @@ using NUnit.Framework;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
-    public class CatiDataServiceTests
+    public class CatiDataBlockServiceTests
     {
-        private CatiDataService _sut;
+        private CatiDataBlockService _sut;
 
         [SetUp]
         public void SetUpTests()
         {
-            _sut = new CatiDataService();
+            _sut = new CatiDataBlockService();
         }
 
         [Test]

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Blaise.Nuget.Api.Contracts.Models;
@@ -12,27 +13,31 @@ namespace Blaise.Api.Core.Services
         private readonly IBlaiseCaseApi _blaiseApi;
         private readonly INisraCaseComparisonService _caseComparisonService;
         private readonly INisraCaseUpdateService _onlineCaseUpdateService;
+        private readonly ILoggingService _loggerService;
 
         public NisraFileImportService(
             IBlaiseCaseApi blaiseApi,
             INisraCaseComparisonService caseComparisonService,
-            INisraCaseUpdateService onlineCaseService)
+            INisraCaseUpdateService onlineCaseService, 
+            ILoggingService loggerService)
         {
             _blaiseApi = blaiseApi;
             _caseComparisonService = caseComparisonService;
             _onlineCaseUpdateService = onlineCaseService;
+            _loggerService = loggerService;
         }
 
-        public void ImportOnlineDatabaseFile(string databaseFilePath, string instrumentName, string serverParkName)
+        public void ImportNisraDatabaseFile(string databaseFilePath, string instrumentName, string serverParkName)
         {
-            var existingCaseStatusModelList = _blaiseApi.GetCaseStatusList(instrumentName, serverParkName).ToList();
-            var caseRecords = _blaiseApi.GetCases(databaseFilePath);
+            var existingTelCaseStatusModels = _blaiseApi.GetCaseStatusList(instrumentName, serverParkName).ToList();
+            var nisraFileCaseRecords = _blaiseApi.GetCases(databaseFilePath);
 
-            while (!caseRecords.EndOfSet)
+            while (!nisraFileCaseRecords.EndOfSet)
             {
-                var nisraRecord = caseRecords.ActiveRecord;
+                var nisraRecord = nisraFileCaseRecords.ActiveRecord;
+
                 var nisraCaseStatusModel = GetNisraCaseStatusModel(nisraRecord);
-                var existingCaseStatusModel = GetExistingCaseStatusModel(nisraCaseStatusModel.PrimaryKey, existingCaseStatusModelList);
+                var existingCaseStatusModel = GetExistingTelCaseStatusModel(nisraCaseStatusModel.PrimaryKey, existingTelCaseStatusModels);
 
                 if (CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, instrumentName))
                 {
@@ -42,7 +47,7 @@ namespace Blaise.Api.Core.Services
                         instrumentName, serverParkName);
                 }
 
-                caseRecords.MoveNext();
+                nisraFileCaseRecords.MoveNext();
             }
         }
 
@@ -51,7 +56,7 @@ namespace Blaise.Api.Core.Services
             return _blaiseApi.GetCaseStatus(nisraDataRecord);
         }
 
-        private static CaseStatusModel GetExistingCaseStatusModel(string primaryKeyValue, List<CaseStatusModel> existingCaseStatusModelList)
+        private static CaseStatusModel GetExistingTelCaseStatusModel(string primaryKeyValue, IEnumerable<CaseStatusModel> existingCaseStatusModelList)
         {
             return existingCaseStatusModelList.FirstOrDefault(t =>
                 t.PrimaryKey == primaryKeyValue);
@@ -59,10 +64,12 @@ namespace Blaise.Api.Core.Services
         private bool CaseNeedsToBeUpdated(CaseStatusModel nisraCaseStatusModel, CaseStatusModel existingCaseStatusModel,
                     string instrumentName)
         {
-            return existingCaseStatusModel != null && _caseComparisonService.UpdateExistingCase(nisraCaseStatusModel, existingCaseStatusModel,
-                instrumentName);
+            if (existingCaseStatusModel == null)
+            {
+                _loggerService.LogWarn($"The nisra case '{nisraCaseStatusModel.PrimaryKey}' does not exist in the database for the instrument '{instrumentName}'");
+            }
+
+            return _caseComparisonService.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, instrumentName);
         }
-
-
     }
 }

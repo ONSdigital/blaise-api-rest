@@ -47,8 +47,11 @@ namespace Blaise.Api.Configuration
             //core mappers
             container.RegisterType<IServerParkDtoMapper, ServerParkDtoMapper>();
             container.RegisterType<IInstrumentDtoMapper, InstrumentDtoMapper>();
+            container.RegisterType<IInstrumentNodeDtoMapper, InstrumentNodeDtoMapper>();
+            container.RegisterType<ICatiInstrumentDtoMapper, CatiInstrumentDtoMapper>();
             container.RegisterType<IUserRoleDtoMapper, UserRoleDtoMapper>();
             container.RegisterType<IUserDtoMapper, UserDtoMapper>();
+            container.RegisterType<IInstrumentStatusMapper, InstrumentStatusMapper>();
 
             //core services
             container.RegisterType<IServerParkService, ServerParkService>();
@@ -63,7 +66,7 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IFileService, FileService>();
             container.RegisterType<INisraFileImportService, NisraFileImportService>();
             container.RegisterType<INisraCaseUpdateService, NisraCaseUpdateService>();
-            container.RegisterType<ICatiDataService, CatiDataService>();
+            container.RegisterType<ICatiDataBlockService, CatiDataBlockService>();
             container.RegisterType<INisraCaseComparisonService, NisraCaseComparisonService>();
 
             //storage services
