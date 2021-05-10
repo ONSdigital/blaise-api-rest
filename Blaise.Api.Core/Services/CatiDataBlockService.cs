@@ -7,7 +7,7 @@ using Blaise.Api.Core.Interfaces.Services;
 
 namespace Blaise.Api.Core.Services
 {
-    public class CatiDataService : ICatiDataService
+    public class CatiDataBlockService : ICatiDataBlockService
     {
         public void RemoveCatiManaBlock(Dictionary<string, string> fieldData)
         {

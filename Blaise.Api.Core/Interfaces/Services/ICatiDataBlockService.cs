@@ -2,7 +2,7 @@
 
 namespace Blaise.Api.Core.Interfaces.Services
 {
-    public interface ICatiDataService
+    public interface ICatiDataBlockService
     {
         void RemoveCatiManaBlock(Dictionary<string, string> fieldData);
         void RemoveCallHistoryBlock(Dictionary<string, string> fieldData);
