@@ -117,7 +117,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{instrumentName}/liveDate")]
+        [Route("{instrumentName}/livedate")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(DateTime?))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
