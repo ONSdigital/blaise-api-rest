@@ -51,8 +51,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_An_Instrument_And_SurveyDays_When_I_Call_MapToCatiInstrumentDto_Then_A_CatiInstrumentDto_Is_Returned()
         {
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, 
-                new List<DateTime>(), DateTime.Now);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, new List<DateTime>());
 
             //assert
             Assert.IsNotNull(result);
@@ -81,8 +80,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 .Returns(nodeList);
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, new List<DateTime>(),
-                DateTime.Now);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, new List<DateTime>());
 
             //assert
             Assert.IsNotNull(result);
@@ -103,7 +101,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var surveyDays = new List<DateTime>();
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -123,7 +121,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -143,7 +141,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -164,7 +162,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -182,7 +180,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -200,7 +198,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -220,7 +218,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -241,7 +239,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -259,7 +257,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -274,7 +272,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var surveyDays = new List<DateTime>();
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -294,7 +292,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -315,7 +313,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -333,7 +331,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -351,7 +349,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -369,7 +367,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
@@ -388,7 +386,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);

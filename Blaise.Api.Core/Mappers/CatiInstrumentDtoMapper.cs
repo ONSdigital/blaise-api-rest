@@ -20,8 +20,7 @@ namespace Blaise.Api.Core.Mappers
             _nodeDtoMapper = nodeDtoMapper;
         }
 
-        public CatiInstrumentDto MapToCatiInstrumentDto(ISurvey instrument, List<DateTime> surveyDays,
-            DateTime? liveDate)
+        public CatiInstrumentDto MapToCatiInstrumentDto(ISurvey instrument, List<DateTime> surveyDays)
         {
             return new CatiInstrumentDto
             {

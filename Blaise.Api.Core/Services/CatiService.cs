@@ -78,9 +78,8 @@ namespace Blaise.Api.Core.Services
         private CatiInstrumentDto GetCatiInstrumentDto(ISurvey instrument)
         {
             var surveyDays = _blaiseCatiApi.GetSurveyDays(instrument.Name, instrument.ServerPark);
-            var liveDate = _blaiseSurveyApi.GetLiveDate(instrument.Name, instrument.ServerPark);
 
-            return _mapper.MapToCatiInstrumentDto(instrument, surveyDays, liveDate);
+            return _mapper.MapToCatiInstrumentDto(instrument, surveyDays);
         }
     }
 }
