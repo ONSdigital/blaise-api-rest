@@ -11,6 +11,7 @@ namespace Blaise.Api.Contracts.Models.Instrument
         }
 
         public string Name { get; set; }
+        public Guid Id { get; set; }
         public string ServerParkName { get; set; }
         public DateTime InstallDate { get; set; }
         public string Status { get; set; }

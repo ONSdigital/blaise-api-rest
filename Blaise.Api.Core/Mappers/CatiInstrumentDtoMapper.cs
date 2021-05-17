@@ -25,6 +25,7 @@ namespace Blaise.Api.Core.Mappers
             return new CatiInstrumentDto
             {
                 Name = instrument.Name,
+                Id = instrument.InstrumentID,
                 ServerParkName = instrument.ServerPark,
                 InstallDate = instrument.InstallDate,
                 Status = _statusMapper.GetInstrumentStatus(instrument).ToString(),

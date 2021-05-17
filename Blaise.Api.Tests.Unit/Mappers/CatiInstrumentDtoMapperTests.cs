@@ -18,6 +18,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         private Mock<IInstrumentNodeDtoMapper> _nodeDtoMapperMock;
 
         private string _instrumentName;
+        private Guid _instrumentId;
         private string _serverParkName;
         private DateTime _installDate;
         private int _numberOfRecordForInstrument;
@@ -28,12 +29,14 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void SetupTests()
         {
             _instrumentName = "OPN2010A";
+            _instrumentId = Guid.NewGuid();
             _serverParkName = "ServerParkA";
             _installDate = DateTime.Now;
             _numberOfRecordForInstrument = 100;
 
             _surveyMock = new Mock<ISurvey>();
             _surveyMock.Setup(s => s.Name).Returns(_instrumentName);
+            _surveyMock.Setup(s => s.InstrumentID).Returns(_instrumentId);
             _surveyMock.Setup(s => s.ServerPark).Returns(_serverParkName);
             _surveyMock.Setup(s => s.InstallDate).Returns(_installDate);
 
@@ -86,6 +89,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<CatiInstrumentDto>(result);
             Assert.AreEqual(_instrumentName, result.Name);
+            Assert.AreEqual(_instrumentId, result.Id);
             Assert.AreEqual(_serverParkName, result.ServerParkName);
             Assert.AreEqual(_installDate, result.InstallDate);
             Assert.AreEqual(numberOfRecords, result.DataRecordCount);
