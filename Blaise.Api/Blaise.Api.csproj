@@ -226,13 +226,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiService.cs" />
+    <Compile Include="ApiService.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ApiService.Designer.cs">
       <DependentUpon>ApiService.cs</DependentUpon>
     </Compile>
     <Compile Include="Configuration\SwaggerConfig.cs" />
     <Compile Include="Configuration\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\InstrumentDataController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserRoleController.cs" />
