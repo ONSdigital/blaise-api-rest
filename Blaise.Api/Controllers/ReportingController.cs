@@ -11,14 +11,12 @@ namespace Blaise.Api.Controllers
     public class ReportingController : BaseController
     {
         private readonly IReportingService _reportingService;
-        private readonly ILoggingService _loggingService;
 
         public ReportingController(
             IReportingService reportingService,
             ILoggingService loggingService) : base(loggingService)
         {
             _reportingService = reportingService;
-            _loggingService = loggingService;
         }
 
         [HttpGet]
@@ -32,7 +30,6 @@ namespace Blaise.Api.Controllers
             var reportDto = _reportingService.GetReportingData(serverParkName, instrumentName, fieldIds);
 
             return Ok(reportDto);
-
         }
     }
 }
