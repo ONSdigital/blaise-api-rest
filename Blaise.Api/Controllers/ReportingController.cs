@@ -8,16 +8,16 @@ using Swashbuckle.Swagger.Annotations;
 namespace Blaise.Api.Controllers
 {
     [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments/{instrumentName}/report")]
-    public class ReportController : BaseController
+    public class ReportingController : BaseController
     {
-        private readonly IReportService _reportService;
+        private readonly IReportingService _reportingService;
         private readonly ILoggingService _loggingService;
 
-        public ReportController(
-            IReportService reportService,
+        public ReportingController(
+            IReportingService reportingService,
             ILoggingService loggingService) : base(loggingService)
         {
-            _reportService = reportService;
+            _reportingService = reportingService;
             _loggingService = loggingService;
         }
 
@@ -29,7 +29,7 @@ namespace Blaise.Api.Controllers
         public IHttpActionResult GetReportingData([FromUri] string serverParkName, [FromUri] string instrumentName,
             [FromUri] string[] fieldIds)
         {
-            var reportDto = _reportService.GetReportingData(serverParkName, instrumentName, fieldIds);
+            var reportDto = _reportingService.GetReportingData(serverParkName, instrumentName, fieldIds);
 
             return Ok(reportDto);
 

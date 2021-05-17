@@ -2,7 +2,7 @@
 
 namespace Blaise.Api.Core.Interfaces.Services
 {
-    public interface IReportService
+    public interface IReportingService
     {
         ReportDto GetReportingData(string serverParkName, string instrumentName,
             string[] fieldIds);

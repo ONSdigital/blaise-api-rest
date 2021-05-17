@@ -7,11 +7,11 @@ using Blaise.Nuget.Api.Contracts.Interfaces;
 
 namespace Blaise.Api.Core.Services
 {
-    public class ReportService : IReportService
+    public class ReportingService : IReportingService
     {
         private readonly IBlaiseCaseApi _blaiseCaseApi;
 
-        public ReportService(IBlaiseCaseApi blaiseCaseApi)
+        public ReportingService(IBlaiseCaseApi blaiseCaseApi)
         {
             _blaiseCaseApi = blaiseCaseApi;
         }

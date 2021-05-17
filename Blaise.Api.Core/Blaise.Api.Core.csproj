@@ -154,7 +154,7 @@
     <Compile Include="Interfaces\Services\INisraCaseUpdateService.cs" />
     <Compile Include="Interfaces\Services\INisraFileImportService.cs" />
     <Compile Include="Services\CatiDataBlockService.cs" />
-    <Compile Include="Interfaces\Services\IReportService.cs" />
+    <Compile Include="Interfaces\Services\IReportingService.cs" />
     <Compile Include="Services\NisraCaseComparisonService.cs" />
     <Compile Include="Interfaces\Services\INisraCaseComparisonService.cs" />
     <Compile Include="Services\NisraCaseUpdateService.cs" />
@@ -172,7 +172,7 @@
     <Compile Include="Services\InstrumentService.cs" />
     <Compile Include="Interfaces\Services\IUserRoleService.cs" />
     <Compile Include="Interfaces\Services\IUserService.cs" />
-    <Compile Include="Services\ReportService.cs" />
+    <Compile Include="Services\ReportingService.cs" />
     <Compile Include="Services\UserRoleService.cs" />
     <Compile Include="Services\ServerParkService.cs" />
     <Compile Include="Services\UserService.cs" />
