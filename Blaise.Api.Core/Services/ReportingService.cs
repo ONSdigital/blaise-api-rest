@@ -2,6 +2,7 @@
 using Blaise.Api.Contracts.Models.Reports;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
+using StatNeth.Blaise.API.DataRecord;
 
 namespace Blaise.Api.Core.Services
 {
@@ -22,18 +23,27 @@ namespace Blaise.Api.Core.Services
 
             while (!cases.EndOfSet)
             {
-                var reportingData = new Dictionary<string, string>();
+                var caseData = GetReportFieldData(fieldIds, cases.ActiveRecord);
 
-                foreach (var fieldId in fieldIds)
-                {
-                    reportingData.Add(fieldId, _blaiseCaseApi.GetFieldValue(cases.ActiveRecord, fieldId).ValueAsText);
-                }
+                reportDto.ReportingData.Add(caseData);
 
-                reportDto.ReportingData.Add(reportingData);
                 cases.MoveNext();
             }
 
             return reportDto;
+        }
+
+        private Dictionary<string, string> GetReportFieldData(IEnumerable<string> fieldIds, IDataRecord caseRecord)
+        {
+            var reportingData = new Dictionary<string, string>();
+
+
+            foreach (var fieldId in fieldIds)
+            {
+                reportingData.Add(fieldId, _blaiseCaseApi.GetFieldValue(caseRecord, fieldId).ValueAsText);
+            }
+
+            return reportingData;
         }
     }
 }
