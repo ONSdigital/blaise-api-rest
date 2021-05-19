@@ -55,7 +55,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<IEnumerable<InstrumentNodeDto>>(result);
             Assert.IsNotEmpty(result);
-            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(2, result.Count);
 
             Assert.True(result.Any(n => n.NodeName == node1Name && n.NodeStatus == node1Status));
             Assert.True(result.Any(n => n.NodeName == node2Name && n.NodeStatus == node2Status));

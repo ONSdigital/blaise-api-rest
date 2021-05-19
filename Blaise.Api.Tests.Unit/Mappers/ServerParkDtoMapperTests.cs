@@ -30,9 +30,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_List_Of_ServerParks_When_I_Call_MapToServerParkDtos_Then_A_Correct_List_Of_ServerParkDto_Is_Returned()
         {
             //arrange
-            var serverList = new List<IServer>();
             var serverCollection = new Mock<IServerCollection>();
-            serverCollection.Setup(s => s.GetEnumerator()).Returns(serverList.GetEnumerator());
+            serverCollection.Setup(s => s.GetEnumerator()).Returns(new List<IServer>().GetEnumerator());
 
             const string serverPark1Name = "ServerParkA";
             var serverPark1 = new Mock<IServerPark>();
@@ -124,9 +123,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var serverPark = new Mock<IServerPark>();
             serverPark.Setup(s => s.Surveys).Returns(It.IsAny<ISurveyCollection>());
 
-            var serverList = new List<IServer>();
             var serverCollection = new Mock<IServerCollection>();
-            serverCollection.Setup(s => s.GetEnumerator()).Returns(serverList.GetEnumerator());
+            serverCollection.Setup(s => s.GetEnumerator()).Returns(new List<IServer>().GetEnumerator());
             serverPark.Setup(s => s.Servers).Returns(serverCollection.Object);
 
             var instrument1Dto = new InstrumentDto

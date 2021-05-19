@@ -10,6 +10,5 @@ namespace Blaise.Api.Contracts.Models.Reports
         }
 
         public List<Dictionary<string, string>> ReportingData { get; set; }
-        
     }
 }
