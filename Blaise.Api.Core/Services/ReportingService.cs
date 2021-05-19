@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Reports;
 using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 
 namespace Blaise.Api.Core.Services
@@ -31,8 +28,6 @@ namespace Blaise.Api.Core.Services
                 {
                     reportingData.Add(fieldId, _blaiseCaseApi.GetFieldValue(cases.ActiveRecord, fieldId).ValueAsText);
                 }
-
-                _blaiseCaseApi.GetFieldValue(cases.ActiveRecord, FieldNameType.HOut).ValueAsText);
 
                 reportDto.ReportingData.Add(reportingData);
                 cases.MoveNext();
