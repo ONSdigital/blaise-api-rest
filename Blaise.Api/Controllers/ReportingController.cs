@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Web.Http;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.Reports;
@@ -25,7 +26,7 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetReportingData([FromUri] string serverParkName, [FromUri] string instrumentName,
-            [FromUri] string[] fieldIds)
+            [FromUri] List<string> fieldIds)
         {
             var reportDto = _reportingService.GetReportingData(serverParkName, instrumentName, fieldIds);
 

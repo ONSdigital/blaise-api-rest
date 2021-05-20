@@ -16,7 +16,7 @@ namespace Blaise.Api.Core.Services
         }
 
         public ReportDto GetReportingData(string serverParkName, string instrumentName,
-            string[] fieldIds)
+            List<string> fieldIds)
         {
             var reportDto = new ReportDto();
             var cases = _blaiseCaseApi.GetCases(instrumentName, serverParkName);
@@ -36,8 +36,7 @@ namespace Blaise.Api.Core.Services
         private Dictionary<string, string> GetReportFieldData(IEnumerable<string> fieldIds, IDataRecord caseRecord)
         {
             var reportingData = new Dictionary<string, string>();
-
-
+            
             foreach (var fieldId in fieldIds)
             {
                 reportingData.Add(fieldId, _blaiseCaseApi.GetFieldValue(caseRecord, fieldId).ValueAsText);
