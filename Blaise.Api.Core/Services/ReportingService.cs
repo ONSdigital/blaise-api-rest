@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Blaise.Api.Contracts.Models.Reports;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
@@ -9,16 +11,40 @@ namespace Blaise.Api.Core.Services
     public class ReportingService : IReportingService
     {
         private readonly IBlaiseCaseApi _blaiseCaseApi;
+        private readonly IBlaiseSurveyApi _blaiseSurveyApi;
 
-        public ReportingService(IBlaiseCaseApi blaiseCaseApi)
+        public ReportingService(
+            IBlaiseCaseApi blaiseCaseApi, 
+            IBlaiseSurveyApi blaiseSurveyApi)
         {
             _blaiseCaseApi = blaiseCaseApi;
+            _blaiseSurveyApi = blaiseSurveyApi;
         }
 
         public ReportDto GetReportingData(string serverParkName, string instrumentName,
             List<string> fieldIds)
         {
-            var reportDto = new ReportDto();
+            var instrumentId = _blaiseSurveyApi.GetIdOfSurvey(instrumentName, serverParkName);
+
+            return BuildReportDto(serverParkName, instrumentName, instrumentId, fieldIds);
+        }
+
+        public ReportDto GetReportingData(string serverParkName, Guid instrumentId, List<string> fieldIds)
+        {
+            var surveys = _blaiseSurveyApi.GetSurveys(serverParkName);
+            var instrumentName = surveys.First(s => s.InstrumentID == instrumentId).Name;
+
+            return BuildReportDto(serverParkName, instrumentName, instrumentId, fieldIds);
+        }
+
+        private ReportDto BuildReportDto(string serverParkName, string instrumentName, Guid instrumentId, List<string> fieldIds)
+        {
+            var reportDto = new ReportDto
+            {
+                InstrumentName = instrumentName,
+                InstrumentId = instrumentId
+            };
+            
             var cases = _blaiseCaseApi.GetCases(instrumentName, serverParkName);
 
             while (!cases.EndOfSet)

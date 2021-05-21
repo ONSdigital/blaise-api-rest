@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
 using Blaise.Api.Contracts.Interfaces;
@@ -8,7 +9,7 @@ using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
 {
-    [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments/{instrumentName}/report")]
+    [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments")]
     public class ReportingController : BaseController
     {
         private readonly IReportingService _reportingService;
@@ -21,7 +22,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("")]
+        [Route("{instrumentName}/report")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ReportDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
@@ -29,6 +30,19 @@ namespace Blaise.Api.Controllers
             [FromUri] List<string> fieldIds)
         {
             var reportDto = _reportingService.GetReportingData(serverParkName, instrumentName, fieldIds);
+
+            return Ok(reportDto);
+        }
+
+        [HttpGet]
+        [Route("{instrumentId:guid}/report")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ReportDto))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetReportingData([FromUri] string serverParkName, [FromUri] Guid instrumentId,
+            [FromUri] List<string> fieldIds)
+        {
+            var reportDto = _reportingService.GetReportingData(serverParkName, instrumentId, fieldIds);
 
             return Ok(reportDto);
         }
