@@ -1,39 +1,74 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Blaise.Api.Contracts.Models.Reports;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
+using StatNeth.Blaise.API.DataRecord;
 
 namespace Blaise.Api.Core.Services
 {
     public class ReportingService : IReportingService
     {
         private readonly IBlaiseCaseApi _blaiseCaseApi;
+        private readonly IBlaiseSurveyApi _blaiseSurveyApi;
 
-        public ReportingService(IBlaiseCaseApi blaiseCaseApi)
+        public ReportingService(
+            IBlaiseCaseApi blaiseCaseApi,
+            IBlaiseSurveyApi blaiseSurveyApi)
         {
             _blaiseCaseApi = blaiseCaseApi;
+            _blaiseSurveyApi = blaiseSurveyApi;
         }
 
         public ReportDto GetReportingData(string serverParkName, string instrumentName,
-            string[] fieldIds)
+            List<string> fieldIds)
         {
-            var reportDto = new ReportDto();
+            var instrumentId = _blaiseSurveyApi.GetIdOfSurvey(instrumentName, serverParkName);
+
+            return BuildReportDto(serverParkName, instrumentName, instrumentId, fieldIds);
+        }
+
+        public ReportDto GetReportingData(string serverParkName, Guid instrumentId, List<string> fieldIds)
+        {
+            var surveys = _blaiseSurveyApi.GetSurveys(serverParkName);
+            var instrumentName = surveys.First(s => s.InstrumentID == instrumentId).Name;
+
+            return BuildReportDto(serverParkName, instrumentName, instrumentId, fieldIds);
+        }
+
+        private ReportDto BuildReportDto(string serverParkName, string instrumentName, Guid instrumentId, List<string> fieldIds)
+        {
+            var reportDto = new ReportDto
+            {
+                InstrumentName = instrumentName,
+                InstrumentId = instrumentId
+            };
+
             var cases = _blaiseCaseApi.GetCases(instrumentName, serverParkName);
 
             while (!cases.EndOfSet)
             {
-                var reportingData = new Dictionary<string, string>();
+                var caseData = GetReportFieldData(fieldIds, cases.ActiveRecord);
 
-                foreach (var fieldId in fieldIds)
-                {
-                    reportingData.Add(fieldId, _blaiseCaseApi.GetFieldValue(cases.ActiveRecord, fieldId).ValueAsText);
-                }
+                reportDto.ReportingData.Add(caseData);
 
-                reportDto.ReportingData.Add(reportingData);
                 cases.MoveNext();
             }
 
             return reportDto;
+        }
+
+        private Dictionary<string, string> GetReportFieldData(IEnumerable<string> fieldIds, IDataRecord caseRecord)
+        {
+            var reportingData = new Dictionary<string, string>();
+
+            foreach (var fieldId in fieldIds)
+            {
+                reportingData.Add(fieldId, _blaiseCaseApi.GetFieldValue(caseRecord, fieldId).ValueAsText);
+            }
+
+            return reportingData;
         }
     }
 }
