@@ -56,15 +56,15 @@ namespace Blaise.Api.Controllers
             var healthCheckResults = _healthService.PerformCheck().ToList();
             timer.Stop();
 
-            var timeTook = timer.ElapsedMilliseconds / 1000;
+            var timeTookInSeconds = timer.ElapsedMilliseconds / 1000;
 
-            if (timeTook > 5)
+            if (timeTookInSeconds > 5)
             {
-                _loggingService.LogWarn($"Health check took '{timeTook}' seconds");
+                _loggingService.LogWarn($"Health check took '{timeTookInSeconds}' seconds");
             }
             else
             {
-                _loggingService.LogInfo($"Health check took '{timeTook}' seconds");
+                _loggingService.LogInfo($"Health check took '{timeTookInSeconds}' seconds");
             }
 
             return healthCheckResults;
