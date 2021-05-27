@@ -83,12 +83,12 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(surveyDays2);
 
             var catiInstrument1 = new CatiInstrumentDto { Name = "OPN2010A", SurveyDays = surveyDays1 };
-            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(survey1Mock.Object, surveyDays1))
-                .Returns(catiInstrument1);
-            
+            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(survey1Mock.Object, surveyDays1,
+                DateTime.Today)).Returns(catiInstrument1);
+
             var catiInstrument2 = new CatiInstrumentDto { Name = "OPN2010B", SurveyDays = surveyDays2 };
-            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(survey2Mock.Object, surveyDays2))
-                .Returns(catiInstrument2);
+            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(survey2Mock.Object, surveyDays2,
+                DateTime.Today)).Returns(catiInstrument2);
 
             //act
             var result = _sut.GetCatiInstruments().ToList();
@@ -113,7 +113,8 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new List<DateTime>());
 
-            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(It.IsAny<ISurvey>(), It.IsAny<List<DateTime>>()))
+            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(It.IsAny<ISurvey>(), It.IsAny<List<DateTime>>(),
+                    It.IsAny<DateTime?>()))
                 .Returns(new CatiInstrumentDto());
 
             //act
@@ -162,10 +163,10 @@ namespace Blaise.Api.Tests.Unit.Services
             var catiInstrument1 = new CatiInstrumentDto { Name = "OPN2010A", SurveyDays = surveyDays1 };
             var catiInstrument2 = new CatiInstrumentDto { Name = "OPN2010B", SurveyDays = surveyDays2 };
 
-            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(survey1Mock.Object, surveyDays1))
-                .Returns(catiInstrument1);
-            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(survey2Mock.Object, surveyDays2))
-                .Returns(catiInstrument2);
+            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(survey1Mock.Object, surveyDays1,
+                DateTime.Today)).Returns(catiInstrument1);
+            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(survey2Mock.Object, surveyDays2,
+                DateTime.Today)).Returns(catiInstrument2);
 
             //act
             var result = _sut.GetCatiInstruments(serverPark).ToList();
@@ -195,7 +196,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
-   [Test]
+        [Test]
         public void Given_Correct_Arguments_When_I_Call_GetCatiInstrument_Then_I_Get_A_CatiInstrumentDto_Back()
         {
             //arrange
@@ -212,8 +213,8 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new List<DateTime>());
 
-            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(It.IsAny<ISurvey>(), It.IsAny<List<DateTime>>()))
-                .Returns(new CatiInstrumentDto());
+            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(It.IsAny<ISurvey>(), It.IsAny<List<DateTime>>(),
+                    It.IsAny<DateTime?>())).Returns(new CatiInstrumentDto());
 
             //act
             var result = _sut.GetCatiInstrument(serverParkName, instrumentName);
@@ -233,7 +234,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var survey1Mock = new Mock<ISurvey>();
             survey1Mock.Setup(s => s.Name).Returns(instrumentName);
             survey1Mock.Setup(s => s.ServerPark).Returns(serverParkName);
-            
+
             var surveyDays1 = new List<DateTime> { DateTime.Today.AddDays(-1) };
 
             _blaiseSurveyApiMock.Setup(i => i.GetSurvey(instrumentName, serverParkName))
@@ -244,11 +245,11 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(instrumentName, serverParkName))
                 .Returns(surveyDays1);
-            
+
             var catiInstrument1 = new CatiInstrumentDto { Name = "OPN2010A", SurveyDays = surveyDays1 };
 
-            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(survey1Mock.Object, surveyDays1))
-                .Returns(catiInstrument1);
+            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(survey1Mock.Object, surveyDays1,
+                DateTime.Today)).Returns(catiInstrument1);
 
             //act
             var result = _sut.GetCatiInstrument(serverParkName, instrumentName);
@@ -259,7 +260,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.AreSame(catiInstrument1, result);
         }
 
-        
+
         [Test]
         public void Given_An_Empty_InstrumentName_When_I_Call_GetCatiInstrument_Then_An_ArgumentException_Is_Thrown()
         {

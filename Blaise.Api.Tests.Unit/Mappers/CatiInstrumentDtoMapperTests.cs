@@ -18,25 +18,22 @@ namespace Blaise.Api.Tests.Unit.Mappers
         private Mock<IInstrumentNodeDtoMapper> _nodeDtoMapperMock;
 
         private string _instrumentName;
-        private Guid _instrumentId;
         private string _serverParkName;
         private DateTime _installDate;
         private int _numberOfRecordForInstrument;
         private Mock<ISurvey> _surveyMock;
         private Mock<ISurveyReportingInfo> _surveyReportingInfoMock;
-        
+
         [SetUp]
         public void SetupTests()
         {
             _instrumentName = "OPN2010A";
-            _instrumentId = Guid.NewGuid();
             _serverParkName = "ServerParkA";
             _installDate = DateTime.Now;
             _numberOfRecordForInstrument = 100;
 
             _surveyMock = new Mock<ISurvey>();
             _surveyMock.Setup(s => s.Name).Returns(_instrumentName);
-            _surveyMock.Setup(s => s.InstrumentID).Returns(_instrumentId);
             _surveyMock.Setup(s => s.ServerPark).Returns(_serverParkName);
             _surveyMock.Setup(s => s.InstallDate).Returns(_installDate);
 
@@ -54,7 +51,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_An_Instrument_And_SurveyDays_When_I_Call_MapToCatiInstrumentDto_Then_A_CatiInstrumentDto_Is_Returned()
         {
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, new List<DateTime>());
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object,
+                new List<DateTime>(), DateTime.Now);
 
             //assert
             Assert.IsNotNull(result);
@@ -83,13 +81,13 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 .Returns(nodeList);
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, new List<DateTime>());
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, new List<DateTime>(),
+                DateTime.Now);
 
             //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<CatiInstrumentDto>(result);
             Assert.AreEqual(_instrumentName, result.Name);
-            Assert.AreEqual(_instrumentId, result.Id);
             Assert.AreEqual(_serverParkName, result.ServerParkName);
             Assert.AreEqual(_installDate, result.InstallDate);
             Assert.AreEqual(numberOfRecords, result.DataRecordCount);
@@ -105,7 +103,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var surveyDays = new List<DateTime>();
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
@@ -125,7 +123,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
@@ -145,7 +143,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
@@ -166,7 +164,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
@@ -184,7 +182,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
@@ -202,7 +200,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
@@ -222,7 +220,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
@@ -243,7 +241,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
@@ -261,12 +259,153 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<CatiInstrumentDto>(result);
             Assert.IsTrue(result.ActiveToday);
+        }
+
+        [Test]
+        public void Given_The_Survey_Is_Active_And_The_LiveDate_Has_Passed_When_I_Call_MapToInstrumentDto_Then_The_ActiveForTelephoneOperators_Field_Is_Marked_As_True()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>
+            {
+                DateTime.Today,
+            };
+
+            var liveDate = DateTime.Today.AddDays(-1);
+
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, liveDate);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsTrue(result.ActiveForTelephoneOperators);
+        }
+
+        [Test]
+        public void Given_The_Survey_Is_Active_And_The_LiveDate_Is_Today_When_I_Call_MapToInstrumentDto_Then_The_ActiveForTelephoneOperators_Field_Is_Marked_As_True()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>
+            {
+                DateTime.Today,
+            };
+
+            var liveDate = DateTime.Today;
+
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, liveDate);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsTrue(result.ActiveForTelephoneOperators);
+        }
+
+        [Test]
+        public void Given_The_Survey_Is_Active_And_The_LiveDate_Is_Null_When_I_Call_MapToInstrumentDto_Then_The_ActiveForTelephoneOperators_Field_Is_Marked_As_True()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>
+            {
+                DateTime.Today,
+            };
+
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsTrue(result.ActiveForTelephoneOperators);
+        }
+
+        [Test]
+        public void Given_The_Survey_Is_Active_And_The_LiveDate_Is_In_The_Future_When_I_Call_MapToInstrumentDto_Then_The_ActiveForTelephoneOperators_Field_Is_Marked_As_False()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>
+            {
+                DateTime.Today,
+            };
+
+            var liveDate = DateTime.Today.AddDays(1);
+
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, liveDate);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsFalse(result.ActiveForTelephoneOperators);
+        }
+
+        [Test]
+        public void Given_The_Survey_Is_Not_Active_And_The_LiveDate_Has_Passed_When_I_Call_MapToInstrumentDto_Then_The_ActiveForTelephoneOperators_Field_Is_Marked_As_False()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>();
+            var liveDate = DateTime.Today.AddDays(-1);
+
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, liveDate);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsFalse(result.ActiveForTelephoneOperators);
+        }
+
+        [Test]
+        public void Given_The_Survey_Is_Not_Active_And_The_LiveDate_Is_Today_When_I_Call_MapToInstrumentDto_Then_The_ActiveForTelephoneOperators_Field_Is_Marked_As_False()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>();
+            var liveDate = DateTime.Today;
+
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, liveDate);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsFalse(result.ActiveForTelephoneOperators);
+        }
+
+        [Test]
+        public void Given_The_Survey_Is_Not_Active_And_The_LiveDate_Is_In_The_Future_When_I_Call_MapToInstrumentDto_Then_The_ActiveForTelephoneOperators_Field_Is_Marked_As_False()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>();
+            var liveDate = DateTime.Today.AddDays(1);
+
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, liveDate);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsFalse(result.ActiveForTelephoneOperators);
+        }
+
+        [Test]
+        public void Given_The_Survey_Is_Not_Active_And_The_LiveDate_Is_Null_When_I_Call_MapToInstrumentDto_Then_The_ActiveForTelephoneOperators_Field_Is_Marked_As_False()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>();
+
+            //act
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsFalse(result.ActiveForTelephoneOperators);
         }
 
         [Test]
@@ -276,7 +415,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var surveyDays = new List<DateTime>();
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
@@ -296,7 +435,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
@@ -317,7 +456,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
@@ -335,7 +474,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
@@ -353,7 +492,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
@@ -371,7 +510,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
@@ -390,7 +529,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays, null);
 
             //assert
             Assert.IsNotNull(result);
