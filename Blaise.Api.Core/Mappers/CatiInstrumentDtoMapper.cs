@@ -13,19 +13,19 @@ namespace Blaise.Api.Core.Mappers
         private readonly IInstrumentNodeDtoMapper _nodeDtoMapper;
 
         public CatiInstrumentDtoMapper(
-            IInstrumentStatusMapper statusMapper, 
+            IInstrumentStatusMapper statusMapper,
             IInstrumentNodeDtoMapper nodeDtoMapper)
         {
             _statusMapper = statusMapper;
             _nodeDtoMapper = nodeDtoMapper;
         }
 
-        public CatiInstrumentDto MapToCatiInstrumentDto(ISurvey instrument, List<DateTime> surveyDays,
-            DateTime? liveDate)
+        public CatiInstrumentDto MapToCatiInstrumentDto(ISurvey instrument, List<DateTime> surveyDays)
         {
             return new CatiInstrumentDto
             {
                 Name = instrument.Name,
+                Id = instrument.InstrumentID,
                 ServerParkName = instrument.ServerPark,
                 InstallDate = instrument.InstallDate,
                 Status = _statusMapper.GetInstrumentStatus(instrument).ToString(),
@@ -34,7 +34,6 @@ namespace Blaise.Api.Core.Mappers
                 SurveyDays = surveyDays,
                 Active = SurveyIsActive(surveyDays),
                 ActiveToday = SurveyIsActiveToday(surveyDays),
-                ActiveForTelephoneOperators = SurveyIsActiveForTelephoneOperators(surveyDays, liveDate),
                 DeliverData = SetDeliverDataWhichIncludesADaysGraceFromLastSurveyDay(surveyDays)
             };
         }
@@ -50,16 +49,6 @@ namespace Blaise.Api.Core.Mappers
             return surveyDays.Any(s => s.Date == DateTime.Today);
         }
 
-        private static bool SurveyIsActiveForTelephoneOperators(IEnumerable<DateTime> surveyDays, DateTime? liveDate)
-        {
-            if (liveDate == null || liveDate <= DateTime.Now.Date)
-            {
-                return SurveyIsActiveToday(surveyDays);
-            }
-
-            return false;
-        }
-
         private static int GetNumberOfDataRecords(ISurvey2 instrument)
         {
             var reportingInfo = instrument.GetReportingInfo();
@@ -69,7 +58,7 @@ namespace Blaise.Api.Core.Mappers
 
         private static bool SetDeliverDataWhichIncludesADaysGraceFromLastSurveyDay(IReadOnlyCollection<DateTime> surveyDays)
         {
-            return SurveyIsActive(surveyDays) || 
+            return SurveyIsActive(surveyDays) ||
                    surveyDays.All(s => s.Date < DateTime.Today) &&
                    surveyDays.Any(s => s.Date == DateTime.Today.AddDays(-1));
         }

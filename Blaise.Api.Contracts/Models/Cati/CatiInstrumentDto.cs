@@ -17,8 +17,6 @@ namespace Blaise.Api.Contracts.Models.Cati
 
         public bool ActiveToday;
 
-        public bool ActiveForTelephoneOperators;
-
         public bool DeliverData;
     }
 }

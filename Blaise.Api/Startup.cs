@@ -1,6 +1,8 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net.Http.Extensions.Compression.Core.Compressors;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using Blaise.Api.Configuration;
+using Microsoft.AspNet.WebApi.Extensions.Compression.Server;
 using Microsoft.Owin.Extensions;
 using Newtonsoft.Json.Serialization;
 using Owin;
@@ -40,7 +42,7 @@ namespace Blaise.Api
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             config.Formatters.JsonFormatter.UseDataContractJsonSerializer = false;
             config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-
+            config.MessageHandlers.Insert(0, new ServerCompressionHandler(new GZipCompressor(), new DeflateCompressor()));
             SwaggerConfig.Register(config);
         }
     }

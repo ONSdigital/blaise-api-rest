@@ -10,7 +10,6 @@ using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.DataLink;
 using StatNeth.Blaise.API.DataRecord;
-using StatNeth.Blaise.Data.DataValues;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
@@ -33,7 +32,7 @@ namespace Blaise.Api.Tests.Unit.Services
         private readonly CaseStatusModel _nisraCaseStatusModel;
         private readonly CaseStatusModel _existingStatusModel;
 
-        private IEnumerable<CaseStatusModel> _existingCaseStatusList;
+        private readonly IEnumerable<CaseStatusModel> _existingCaseStatusList;
 
         private NisraFileImportService _sut;
 
