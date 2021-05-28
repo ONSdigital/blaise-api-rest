@@ -20,12 +20,12 @@ namespace Blaise.Api.Core.Mappers
             _nodeDtoMapper = nodeDtoMapper;
         }
 
-        public CatiInstrumentDto MapToCatiInstrumentDto(ISurvey instrument, List<DateTime> surveyDays,
-            DateTime? liveDate)
+        public CatiInstrumentDto MapToCatiInstrumentDto(ISurvey instrument, List<DateTime> surveyDays)
         {
             return new CatiInstrumentDto
             {
                 Name = instrument.Name,
+                Id = instrument.InstrumentID,
                 ServerParkName = instrument.ServerPark,
                 InstallDate = instrument.InstallDate,
                 Status = _statusMapper.GetInstrumentStatus(instrument).ToString(),
@@ -34,7 +34,6 @@ namespace Blaise.Api.Core.Mappers
                 SurveyDays = surveyDays,
                 Active = SurveyIsActive(surveyDays),
                 ActiveToday = SurveyIsActiveToday(surveyDays),
-                ActiveForTelephoneOperators = SurveyIsActiveForTelephoneOperators(surveyDays, liveDate),
                 DeliverData = SetDeliverDataWhichIncludesADaysGraceFromLastSurveyDay(surveyDays)
             };
         }
@@ -48,16 +47,6 @@ namespace Blaise.Api.Core.Mappers
         private static bool SurveyIsActiveToday(IEnumerable<DateTime> surveyDays)
         {
             return surveyDays.Any(s => s.Date == DateTime.Today);
-        }
-
-        private static bool SurveyIsActiveForTelephoneOperators(IEnumerable<DateTime> surveyDays, DateTime? liveDate)
-        {
-            if (liveDate == null || liveDate <= DateTime.Now.Date)
-            {
-                return SurveyIsActiveToday(surveyDays);
-            }
-
-            return false;
         }
 
         private static int GetNumberOfDataRecords(ISurvey2 instrument)

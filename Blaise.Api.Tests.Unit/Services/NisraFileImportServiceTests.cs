@@ -10,7 +10,6 @@ using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.DataLink;
 using StatNeth.Blaise.API.DataRecord;
-using StatNeth.Blaise.Data.DataValues;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
