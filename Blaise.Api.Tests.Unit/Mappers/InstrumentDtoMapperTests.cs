@@ -17,8 +17,6 @@ namespace Blaise.Api.Tests.Unit.Mappers
         private Mock<IInstrumentStatusMapper> _statusMapperMock;
         private Mock<IInstrumentNodeDtoMapper> _nodeDtoMapperMock;
 
-        private string _instrumentName;
-        private string _serverParkName;
         private DateTime _installDate;
         private int _numberOfRecordForInstrument;
         private Mock<ISurvey> _surveyMock;
@@ -27,14 +25,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [SetUp]
         public void SetupTests()
         {
-            _instrumentName = "OPN2010A";
-            _serverParkName = "ServerParkA";
             _installDate = DateTime.Now;
             _numberOfRecordForInstrument = 100;
 
             _surveyMock = new Mock<ISurvey>();
-            _surveyMock.Setup(s => s.Name).Returns(_instrumentName);
-            _surveyMock.Setup(s => s.ServerPark).Returns(_serverParkName);
             _surveyMock.Setup(s => s.InstallDate).Returns(_installDate);
 
             _surveyReportingInfoMock = new Mock<ISurveyReportingInfo>();
@@ -52,6 +46,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         {
             //arrange
             const string instrument1Name = "OPN2010A";
+            var instrument1Id = Guid.NewGuid();
             const string serverPark1Name = "ServerParkA";
 
             const int numberOfRecordForInstrument1 = 20;
@@ -59,6 +54,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var survey1Mock = new Mock<ISurvey>();
             survey1Mock.As<ISurvey2>();
             survey1Mock.Setup(s => s.Name).Returns(instrument1Name);
+            survey1Mock.Setup(s => s.InstrumentID).Returns(instrument1Id);
             survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1Name);
 
             var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
@@ -83,6 +79,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<InstrumentDto>(result);
             Assert.AreEqual(instrument1Name, result.Name);
+            Assert.AreEqual(instrument1Id, result.Id);
             Assert.AreEqual(serverPark1Name, result.ServerParkName);
             Assert.AreEqual(numberOfRecordForInstrument1, result.DataRecordCount);
             Assert.AreEqual(SurveyStatusType.Active.ToString(), result.Status);
@@ -97,6 +94,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             const string instrument1Name = "OPN2010A";
             const string instrument2Name = "OPN2010B";
 
+            var instrument1Id = Guid.NewGuid();
+            var instrument2Id = Guid.NewGuid();
+
             const string serverPark1Name = "ServerParkA";
             const string serverPark2Name = "ServerParkB";
 
@@ -106,6 +106,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var survey1Mock = new Mock<ISurvey>();
             survey1Mock.As<ISurvey2>();
             survey1Mock.Setup(s => s.Name).Returns(instrument1Name);
+            survey1Mock.Setup(s => s.InstrumentID).Returns(instrument1Id);
             survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1Name);
 
             var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
@@ -115,6 +116,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var survey2Mock = new Mock<ISurvey>();
             survey2Mock.As<ISurvey2>();
             survey2Mock.Setup(s => s.Name).Returns(instrument2Name);
+            survey2Mock.Setup(s => s.InstrumentID).Returns(instrument2Id);
             survey2Mock.Setup(s => s.ServerPark).Returns(serverPark2Name);
 
             var surveyReportingInfoMock2 = new Mock<ISurveyReportingInfo>();
@@ -152,6 +154,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
 
             Assert.True(result.Any(i =>
                 i.Name == instrument1Name &&
+                i.Id == instrument1Id &&
                 i.ServerParkName == serverPark1Name &&
                 i.DataRecordCount == numberOfRecordForInstrument1 &&
                 i.Status == SurveyStatusType.Active.ToString() &&
@@ -160,6 +163,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
 
             Assert.True(result.Any(i =>
                 i.Name == instrument2Name &&
+                i.Id == instrument2Id &&
                 i.ServerParkName == serverPark2Name &&
                 i.DataRecordCount == numberOfRecordForInstrument2 &&
                 i.Status == SurveyStatusType.Installing.ToString() &&

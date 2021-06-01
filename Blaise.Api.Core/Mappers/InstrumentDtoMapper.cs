@@ -35,6 +35,7 @@ namespace Blaise.Api.Core.Mappers
             return new InstrumentDto
             {
                 Name = instrument.Name,
+                Id = instrument.InstrumentID,
                 ServerParkName = instrument.ServerPark,
                 InstallDate = instrument.InstallDate,
                 Status = _statusMapper.GetInstrumentStatus(instrument).ToString(),

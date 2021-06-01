@@ -19,6 +19,8 @@ namespace Blaise.Api.Core.Interfaces.Services
 
         SurveyStatusType GetInstrumentStatus(string instrumentName, string serverParkName);
 
+        DateTime? GetLiveDate(string instrumentName, string serverParkName);
+
         void ActivateInstrument(string instrumentName, string serverParkName);
 
         void DeactivateInstrument(string instrumentName, string serverParkName);
