@@ -1,6 +1,9 @@
-﻿using System.Web.Http;
+﻿using System.Net;
+using System.Web.Http;
 using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Nuget.Api.Contracts.Interfaces;
+using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
 {
@@ -17,7 +20,15 @@ namespace Blaise.Api.Controllers
             _loggingService = loggingService;
             _blaiseAdminApi = blaiseAdminApi;
         }
-        
+
+        [HttpGet]
+        [Route("connections")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(int))]
+        public IHttpActionResult GetActiveConnections()
+        {
+            return Ok(_blaiseAdminApi.ActiveConnections());
+        }
+
         [HttpDelete]
         [Route("connections")]
         public IHttpActionResult ResetConnections()
