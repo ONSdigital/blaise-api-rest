@@ -67,7 +67,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .GetInstrumentNameFromFile(_instrumentFile)).Returns(_instrumentName);
 
             _blaiseSurveyApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cati));
+                .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cawi));
 
             //act
             await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto, _tempPath);
@@ -77,7 +77,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.Verify(v => v.UpdateInstrumentFileWithSqlConnection(instrumentFilePath), Times.Once);
             _fileServiceMock.Verify(v => v.GetInstrumentNameFromFile(_instrumentFile), Times.Once);
             _blaiseSurveyApiMock.Verify(v => v.InstallSurvey(_instrumentName, _serverParkName,
-                instrumentFilePath, SurveyInterviewType.Cati), Times.Once);
+                instrumentFilePath, SurveyInterviewType.Cawi), Times.Once);
         }
 
         [Test]
@@ -96,7 +96,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .GetInstrumentNameFromFile(_instrumentFile)).Returns(_instrumentName);
 
             _blaiseSurveyApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cati));
+                .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cawi));
 
             //act
             var result = await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto, _tempPath);

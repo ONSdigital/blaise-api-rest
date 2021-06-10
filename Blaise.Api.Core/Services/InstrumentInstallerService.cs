@@ -40,7 +40,7 @@ namespace Blaise.Api.Core.Services
                 instrumentName, 
                 serverParkName, 
                 instrumentFile, 
-                SurveyInterviewType.Cati);
+                SurveyInterviewType.Cawi);
 
             return instrumentName;
         }
