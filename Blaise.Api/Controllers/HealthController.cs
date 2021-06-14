@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
@@ -28,9 +29,7 @@ namespace Blaise.Api.Controllers
         [Route("")]
         public IHttpActionResult HealthCheck()
         {
-            _loggingService.LogInfo("performing Health check on Blaise connectivity");
-
-            var results = _healthService.PerformCheck().ToList();
+            var results = PerformHealthCheck();
 
             if (results.Any(r => r.StatusType == HealthStatusType.Error))
             {
@@ -45,11 +44,30 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(List<HealthCheckResultDto>))]
         public IHttpActionResult HealthCheckDiagnosis()
         {
-            _loggingService.LogInfo("performing Health check on Blaise connectivity");
-
-            var results = _healthService.PerformCheck().ToList();
+            var results = PerformHealthCheck();
 
             return Ok(results);
+        }
+
+        private List<HealthCheckResultDto> PerformHealthCheck()
+        {
+            var timer = new Stopwatch();
+            timer.Start();
+            var healthCheckResults = _healthService.PerformCheck().ToList();
+            timer.Stop();
+
+            var timeTookInSeconds = timer.ElapsedMilliseconds / 1000;
+
+            if (timeTookInSeconds > 5)
+            {
+                _loggingService.LogWarn($"Health check took '{timeTookInSeconds}' seconds");
+            }
+            else
+            {
+                _loggingService.LogInfo($"Health check took '{timeTookInSeconds}' seconds");
+            }
+
+            return healthCheckResults;
         }
     }
 }
