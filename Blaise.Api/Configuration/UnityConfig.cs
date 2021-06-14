@@ -53,6 +53,7 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IUserRoleDtoMapper, UserRoleDtoMapper>();
             container.RegisterType<IUserDtoMapper, UserDtoMapper>();
             container.RegisterType<IInstrumentStatusMapper, InstrumentStatusMapper>();
+            container.RegisterType<IOpenConnectionModelMapper, OpenConnectionModelMapper>();
 
             //core services
             container.RegisterType<IServerParkService, ServerParkService>();
@@ -70,6 +71,7 @@ namespace Blaise.Api.Configuration
             container.RegisterType<ICatiDataBlockService, CatiDataBlockService>();
             container.RegisterType<INisraCaseComparisonService, NisraCaseComparisonService>();
             container.RegisterType<IReportingService, ReportingService>();
+            container.RegisterType<IAdminService, AdminService>();
 
             //storage services
             container.RegisterType<ICloudStorageService, CloudStorageService>();
