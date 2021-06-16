@@ -133,7 +133,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{instrumentName}/uac")]
+        [Route("{instrumentName}/uacs")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<InstrumentUacDto>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
