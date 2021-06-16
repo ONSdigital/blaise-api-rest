@@ -24,5 +24,7 @@ namespace Blaise.Api.Core.Interfaces.Services
         void ActivateInstrument(string instrumentName, string serverParkName);
 
         void DeactivateInstrument(string instrumentName, string serverParkName);
+
+        IEnumerable<InstrumentUacDto> GetUacCodes(string instrumentName, string serverParkName);
     }
 }

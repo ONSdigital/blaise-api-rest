@@ -132,6 +132,20 @@ namespace Blaise.Api.Controllers
             return Ok(liveDate);
         }
 
+        [HttpGet]
+        [Route("{instrumentName}/uac")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<InstrumentUacDto>))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetInstrumentUacCodes([FromUri] string serverParkName, [FromUri] string instrumentName)
+        {
+            _loggingService.LogInfo($"Get a list of UAC codes for an instrument '{instrumentName}' on server park '{serverParkName}'");
+
+            var instrumentUacDtos = _instrumentService.GetUacCodes(instrumentName, serverParkName);
+
+            return Ok(instrumentUacDtos);
+        }
+
         [HttpPost]
         [Route("")]
         [SwaggerResponse(HttpStatusCode.Created, Type=typeof(InstrumentPackageDto))]

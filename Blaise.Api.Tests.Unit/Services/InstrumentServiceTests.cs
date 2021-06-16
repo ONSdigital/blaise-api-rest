@@ -17,7 +17,8 @@ namespace Blaise.Api.Tests.Unit.Services
     {
         private IInstrumentService _sut;
 
-        private Mock<IBlaiseSurveyApi> _blaiseApiMock;
+        private Mock<IBlaiseSurveyApi> _blaiseSurveyApiMock;
+        private Mock<IBlaiseCaseApi> _blaiseCaseApiMock;
         private Mock<IInstrumentDtoMapper> _mapperMock;
         private string _instrumentName;
         private string _serverParkName;
@@ -25,14 +26,16 @@ namespace Blaise.Api.Tests.Unit.Services
         [SetUp]
         public void SetUpTests()
         {
-            _blaiseApiMock = new Mock<IBlaiseSurveyApi>();
+            _blaiseSurveyApiMock = new Mock<IBlaiseSurveyApi>();
+            _blaiseCaseApiMock = new Mock<IBlaiseCaseApi>();
             _mapperMock = new Mock<IInstrumentDtoMapper>();
 
             _instrumentName = "OPN2101A";
             _serverParkName = "ServerParkA";
 
             _sut = new InstrumentService(
-                _blaiseApiMock.Object,
+                _blaiseSurveyApiMock.Object,
+                _blaiseCaseApiMock.Object,
                 _mapperMock.Object);
         }
 
@@ -42,7 +45,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             var surveys = new List<ISurvey>();
             
-            _blaiseApiMock.Setup(b => b.GetSurveysAcrossServerParks())
+            _blaiseSurveyApiMock.Setup(b => b.GetSurveysAcrossServerParks())
                 .Returns(surveys);
 
             _mapperMock.Setup(m => m.MapToInstrumentDtos(surveys))
@@ -61,14 +64,14 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             var surveys = new List<ISurvey>();
 
-            _blaiseApiMock.Setup(b => b.GetSurveysAcrossServerParks())
+            _blaiseSurveyApiMock.Setup(b => b.GetSurveysAcrossServerParks())
                 .Returns(surveys);
 
             //act
             _sut.GetAllInstruments();
 
             //assert
-            _blaiseApiMock.Verify(b => b.GetSurveysAcrossServerParks());
+            _blaiseSurveyApiMock.Verify(b => b.GetSurveysAcrossServerParks());
         }
 
         [Test]
@@ -77,7 +80,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             var surveys = new List<ISurvey>();
             
-            _blaiseApiMock.Setup(b => b.GetSurveysAcrossServerParks())
+            _blaiseSurveyApiMock.Setup(b => b.GetSurveysAcrossServerParks())
                 .Returns(surveys);
 
             var instrumentDtos = new List<InstrumentDto>
@@ -104,7 +107,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var instrumentDtos = new List<InstrumentDto>();
             var surveys = new List<ISurvey>();
 
-            _blaiseApiMock.Setup(b => b.GetSurveys(_serverParkName))
+            _blaiseSurveyApiMock.Setup(b => b.GetSurveys(_serverParkName))
                 .Returns(surveys);
 
             _mapperMock.Setup(m => m.MapToInstrumentDtos(surveys))
@@ -125,7 +128,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var instrumentDtos = new List<InstrumentDto>();
             var surveys = new List<ISurvey>();
 
-            _blaiseApiMock.Setup(b => b.GetSurveys(_serverParkName))
+            _blaiseSurveyApiMock.Setup(b => b.GetSurveys(_serverParkName))
                 .Returns(surveys);
 
             _mapperMock.Setup(m => m.MapToInstrumentDtos(surveys))
@@ -161,7 +164,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var instrumentDto = new InstrumentDto();
             var surveyMock = new Mock<ISurvey>();
 
-            _blaiseApiMock.Setup(b => b
+            _blaiseSurveyApiMock.Setup(b => b
                     .GetSurvey(_instrumentName, _serverParkName))
                 .Returns(surveyMock.Object);
 
@@ -185,7 +188,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var instrumentDto = new InstrumentDto();
             var surveyMock = new Mock<ISurvey>();
 
-            _blaiseApiMock.Setup(b => b
+            _blaiseSurveyApiMock.Setup(b => b
                 .GetSurvey(instrumentName, serverParkName))
                 .Returns(surveyMock.Object);
 
@@ -243,7 +246,7 @@ namespace Blaise.Api.Tests.Unit.Services
             const string instrumentName = "OPN2101A";
             const string serverParkName = "ServerParkA";
 
-            _blaiseApiMock.Setup(b =>
+            _blaiseSurveyApiMock.Setup(b =>
                 b.SurveyExists(instrumentName, serverParkName)).Returns(true);
 
             //act
@@ -261,7 +264,7 @@ namespace Blaise.Api.Tests.Unit.Services
             const string instrumentName = "OPN2101A";
             const string serverParkName = "ServerParkA";
 
-            _blaiseApiMock.Setup(b =>
+            _blaiseSurveyApiMock.Setup(b =>
                 b.SurveyExists(instrumentName, serverParkName)).Returns(false);
 
             //act
@@ -316,7 +319,7 @@ namespace Blaise.Api.Tests.Unit.Services
             const string serverParkName = "ServerParkA";
             var instrumentId = Guid.NewGuid();
 
-            _blaiseApiMock.Setup(b =>
+            _blaiseSurveyApiMock.Setup(b =>
                 b.GetIdOfSurvey(instrumentName, serverParkName)).Returns(instrumentId);
 
             //act
@@ -374,7 +377,7 @@ namespace Blaise.Api.Tests.Unit.Services
             const string instrumentName = "OPN2101A";
             const string serverParkName = "ServerParkA";
   
-            _blaiseApiMock.Setup(b =>
+            _blaiseSurveyApiMock.Setup(b =>
                 b.GetSurveyStatus(instrumentName, serverParkName)).Returns(surveyStatus);
 
             //act
@@ -429,7 +432,7 @@ namespace Blaise.Api.Tests.Unit.Services
             const string serverParkName = "ServerParkA";
             var liveDate = DateTime.Today;
 
-            _blaiseApiMock.Setup(b =>
+            _blaiseSurveyApiMock.Setup(b =>
                 b.GetLiveDate(instrumentName, serverParkName)).Returns(liveDate);
 
             //act
@@ -483,14 +486,14 @@ namespace Blaise.Api.Tests.Unit.Services
             const string instrumentName = "OPN2101A";
             const string serverParkName = "ServerParkA";
   
-            _blaiseApiMock.Setup(b =>
+            _blaiseSurveyApiMock.Setup(b =>
                 b.ActivateSurvey(instrumentName, serverParkName));
 
             //act
             _sut.ActivateInstrument(instrumentName, serverParkName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.ActivateSurvey(instrumentName, serverParkName), Times.Once);
+            _blaiseSurveyApiMock.Verify(v => v.ActivateSurvey(instrumentName, serverParkName), Times.Once);
         }
 
         [Test]
@@ -536,14 +539,14 @@ namespace Blaise.Api.Tests.Unit.Services
             const string instrumentName = "OPN2101A";
             const string serverParkName = "ServerParkA";
   
-            _blaiseApiMock.Setup(b =>
+            _blaiseSurveyApiMock.Setup(b =>
                 b.DeactivateSurvey(instrumentName, serverParkName));
 
             //act
             _sut.DeactivateInstrument(instrumentName, serverParkName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.DeactivateSurvey(instrumentName, serverParkName), Times.Once);
+            _blaiseSurveyApiMock.Verify(v => v.DeactivateSurvey(instrumentName, serverParkName), Times.Once);
         }
 
         [Test]

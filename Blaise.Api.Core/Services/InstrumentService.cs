@@ -11,20 +11,23 @@ namespace Blaise.Api.Core.Services
 {
     public class InstrumentService : IInstrumentService
     {
-        private readonly IBlaiseSurveyApi _blaiseApi;
+        private readonly IBlaiseSurveyApi _blaiseSurveyApi;
+        private readonly IBlaiseCaseApi _blaiseCaseApi;
         private readonly IInstrumentDtoMapper _mapper;
 
         public InstrumentService(
             IBlaiseSurveyApi blaiseApi,
+            IBlaiseCaseApi blaiseCaseApi,
             IInstrumentDtoMapper mapper)
         {
-            _blaiseApi = blaiseApi;
+            _blaiseSurveyApi = blaiseApi;
+            _blaiseCaseApi = blaiseCaseApi;
             _mapper = mapper;
         }
 
         public IEnumerable<InstrumentDto> GetAllInstruments()
         {
-            var instruments = _blaiseApi.GetSurveysAcrossServerParks();
+            var instruments = _blaiseSurveyApi.GetSurveysAcrossServerParks();
             return _mapper.MapToInstrumentDtos(instruments);
         }
 
@@ -32,7 +35,7 @@ namespace Blaise.Api.Core.Services
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            var instruments = _blaiseApi.GetSurveys(serverParkName);
+            var instruments = _blaiseSurveyApi.GetSurveys(serverParkName);
             return _mapper.MapToInstrumentDtos(instruments);
         }
 
@@ -41,7 +44,7 @@ namespace Blaise.Api.Core.Services
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            var instrument = _blaiseApi.GetSurvey(instrumentName, serverParkName);
+            var instrument = _blaiseSurveyApi.GetSurvey(instrumentName, serverParkName);
             return _mapper.MapToInstrumentDto(instrument);
         }
 
@@ -50,7 +53,7 @@ namespace Blaise.Api.Core.Services
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            return _blaiseApi.SurveyExists(instrumentName, serverParkName);
+            return _blaiseSurveyApi.SurveyExists(instrumentName, serverParkName);
         }
 
         public Guid GetInstrumentId(string instrumentName, string serverParkName)
@@ -58,7 +61,7 @@ namespace Blaise.Api.Core.Services
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            return _blaiseApi.GetIdOfSurvey(instrumentName, serverParkName);
+            return _blaiseSurveyApi.GetIdOfSurvey(instrumentName, serverParkName);
         }
 
         public SurveyStatusType GetInstrumentStatus(string instrumentName, string serverParkName)
@@ -66,7 +69,7 @@ namespace Blaise.Api.Core.Services
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            return _blaiseApi.GetSurveyStatus(instrumentName, serverParkName);
+            return _blaiseSurveyApi.GetSurveyStatus(instrumentName, serverParkName);
         }
 
         public DateTime? GetLiveDate(string instrumentName, string serverParkName)
@@ -74,7 +77,7 @@ namespace Blaise.Api.Core.Services
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            return _blaiseApi.GetLiveDate(instrumentName, serverParkName);
+            return _blaiseSurveyApi.GetLiveDate(instrumentName, serverParkName);
         }
 
         public void ActivateInstrument(string instrumentName, string serverParkName)
@@ -82,7 +85,7 @@ namespace Blaise.Api.Core.Services
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            _blaiseApi.ActivateSurvey(instrumentName, serverParkName);
+            _blaiseSurveyApi.ActivateSurvey(instrumentName, serverParkName);
         }
 
         public void DeactivateInstrument(string instrumentName, string serverParkName)
@@ -90,7 +93,32 @@ namespace Blaise.Api.Core.Services
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            _blaiseApi.DeactivateSurvey(instrumentName, serverParkName);
+            _blaiseSurveyApi.DeactivateSurvey(instrumentName, serverParkName);
+        }
+
+        public IEnumerable<InstrumentUacDto> GetUacCodes(string instrumentName, string serverParkName)
+        {
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+
+            var instrumentDtoList = new List<InstrumentUacDto>();
+            var cases = _blaiseCaseApi.GetCases(instrumentName, serverParkName);
+
+            while (!cases.EndOfSet)
+            {
+                var activeRecord = cases.ActiveRecord;
+                instrumentDtoList.Add(new InstrumentUacDto
+                {
+                    CaseId = _blaiseCaseApi.GetPrimaryKeyValue(activeRecord),
+                    UacCode = _blaiseCaseApi.GetFieldValue(activeRecord, "QDataBag.uac1").ValueAsText +
+                              _blaiseCaseApi.GetFieldValue(activeRecord, "QDataBag.uac2").ValueAsText +
+                              _blaiseCaseApi.GetFieldValue(activeRecord, "QDataBag.uac3").ValueAsText
+                });
+
+                cases.MoveNext();
+            }
+
+            return instrumentDtoList;
         }
     }
 }

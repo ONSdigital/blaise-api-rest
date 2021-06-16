@@ -83,6 +83,7 @@
     <Compile Include="Models\Instrument\InstrumentNodeDto.cs" />
     <Compile Include="Models\Instrument\InstrumentPackageDto.cs" />
     <Compile Include="Models\Instrument\InstrumentDto.cs" />
+    <Compile Include="Models\Instrument\InstrumentUacDto.cs" />
     <Compile Include="Models\Reports\ReportDto.cs" />
     <Compile Include="Models\UserRole\UserRoleDto.cs" />
     <Compile Include="Models\ServerPark\ServerDto.cs" />
