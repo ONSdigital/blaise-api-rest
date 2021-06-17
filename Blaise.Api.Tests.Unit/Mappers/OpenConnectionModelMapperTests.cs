@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models.Admin;
 using Blaise.Api.Core.Interfaces.Mappers;
@@ -51,8 +52,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
             //arrange
             var openConnectionModels = new List<OpenConnectionModel>
             {
-                new OpenConnectionModel { ConnectionType = "TestConnection1", Connections = 10},
-                new OpenConnectionModel { ConnectionType = "TestConnection2", Connections = 2}
+                new OpenConnectionModel { ConnectionType = "TestConnection1", Connections = 10, ExpirationDateTimes = new List<DateTime>{DateTime.Now.AddMinutes(-30), DateTime.Now.AddMinutes(-60)}},
+                new OpenConnectionModel { ConnectionType = "TestConnection2", Connections = 2, ExpirationDateTimes = new List<DateTime>{DateTime.Now.AddMinutes(-60), DateTime.Now.AddMinutes(-40)}}
             };
 
             //act
@@ -63,9 +64,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.IsInstanceOf<IEnumerable<OpenConnectionDto>>(result);
             Assert.AreEqual(2, result.Count);
             Assert.True(result.Any(c => 
-                c.ConnectionType == openConnectionModels[0].ConnectionType && c.Connections == openConnectionModels[0].Connections));
+                c.ConnectionType == openConnectionModels[0].ConnectionType && c.Connections == openConnectionModels[0].Connections && Equals(c.ExpirationDateTimes, openConnectionModels[0].ExpirationDateTimes)));
             Assert.True(result.Any(c =>
-                c.ConnectionType == openConnectionModels[1].ConnectionType && c.Connections == openConnectionModels[1].Connections));
+                c.ConnectionType == openConnectionModels[1].ConnectionType && c.Connections == openConnectionModels[1].Connections && Equals(c.ExpirationDateTimes, openConnectionModels[1].ExpirationDateTimes)));
         }
     }
 }
