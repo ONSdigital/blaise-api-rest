@@ -21,7 +21,8 @@ namespace Blaise.Api.Core.Mappers
                 openConnectionDtoList.Add(new OpenConnectionDto
                 {
                     ConnectionType = openConnectionModel.ConnectionType,
-                    Connections = openConnectionModel.Connections
+                    Connections = openConnectionModel.Connections,
+                    ExpirationDateTimes = openConnectionModel.ExpirationDateTimes
                 });
             }
 
