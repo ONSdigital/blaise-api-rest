@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Admin;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
@@ -32,14 +33,14 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             var openConnectionModels = new List<OpenConnectionModel>
             {
-                new OpenConnectionModel { ConnectionType = "TestConnection1", Connections = 10}
+                new OpenConnectionModel { ConnectionType = "TestConnection1", NumberOfConnections = 10, Connections = new Dictionary<string, DateTime>()}
             };
 
             _blaiseAdminApiMock.Setup(b => b.OpenConnections()).Returns(openConnectionModels);
 
             var openConnectionDtos = new List<OpenConnectionDto>
             {
-                new OpenConnectionDto { ConnectionType = "TestConnection1", Connections = 10}
+                new OpenConnectionDto { ConnectionType = "TestConnection1", NumberOfConnections = 10, Connections = new Dictionary<string, DateTime>()}
             };
 
             _mapperMock.Setup(m => m.MapTOpenConnectionDtos(openConnectionModels))

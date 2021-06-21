@@ -7,8 +7,8 @@ namespace Blaise.Api.Contracts.Models.Admin
     {
         public string ConnectionType { get; set; }
 
-        public int Connections { get; set; }
+        public int NumberOfConnections { get; set; }
 
-        public IEnumerable<DateTime> ExpirationDateTimes { get; set; }
+        public Dictionary<string, DateTime> Connections { get; set; }
     }
 }
