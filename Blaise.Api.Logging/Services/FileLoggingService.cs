@@ -25,7 +25,7 @@ namespace Blaise.Api.Logging.Services
 
         public void LogError(string message, Exception exception)
         {
-            _fileLogger.Error($"{message}: {exception.Message}, {exception.InnerException}");
+            _fileLogger.Error($"{message}: {exception}");
         }
     }
 }
