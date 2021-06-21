@@ -21,6 +21,7 @@ namespace Blaise.Api.Core.Mappers
                 openConnectionDtoList.Add(new OpenConnectionDto
                 {
                     ConnectionType = openConnectionModel.ConnectionType,
+                    NumberOfConnections = openConnectionModel.NumberOfConnections,
                     Connections = openConnectionModel.Connections
                 });
             }

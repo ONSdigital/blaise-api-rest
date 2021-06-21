@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models.Admin;
 using Blaise.Api.Core.Interfaces.Mappers;
@@ -51,8 +52,24 @@ namespace Blaise.Api.Tests.Unit.Mappers
             //arrange
             var openConnectionModels = new List<OpenConnectionModel>
             {
-                new OpenConnectionModel { ConnectionType = "TestConnection1", Connections = 10},
-                new OpenConnectionModel { ConnectionType = "TestConnection2", Connections = 2}
+                new OpenConnectionModel {
+                    ConnectionType = "TestConnection1",
+                    NumberOfConnections = 2,
+                    Connections = new Dictionary<string, DateTime>
+                        {
+                            { "Key1", DateTime.Now.AddMinutes(-30) },
+                            { "Key2", DateTime.Now.AddMinutes(-60) },
+                        }
+                },
+                new OpenConnectionModel {
+                    ConnectionType = "TestConnection2",
+                    NumberOfConnections = 2,
+                    Connections = new Dictionary<string, DateTime>
+                    {
+                        { "Key1", DateTime.Now.AddMinutes(-20) },
+                        { "Key2", DateTime.Now.AddMinutes(-40) },
+                    }
+                }
             };
 
             //act
@@ -62,10 +79,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<IEnumerable<OpenConnectionDto>>(result);
             Assert.AreEqual(2, result.Count);
-            Assert.True(result.Any(c => 
-                c.ConnectionType == openConnectionModels[0].ConnectionType && c.Connections == openConnectionModels[0].Connections));
             Assert.True(result.Any(c =>
-                c.ConnectionType == openConnectionModels[1].ConnectionType && c.Connections == openConnectionModels[1].Connections));
+                c.ConnectionType == openConnectionModels[0].ConnectionType && c.Connections == openConnectionModels[0].Connections && Equals(c.NumberOfConnections, openConnectionModels[0].NumberOfConnections)));
+            Assert.True(result.Any(c =>
+                c.ConnectionType == openConnectionModels[1].ConnectionType && c.Connections == openConnectionModels[1].Connections && Equals(c.NumberOfConnections, openConnectionModels[1].NumberOfConnections)));
         }
     }
 }
