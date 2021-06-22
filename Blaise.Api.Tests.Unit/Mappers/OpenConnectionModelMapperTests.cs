@@ -23,7 +23,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_I_Call_MapTOpenConnectionDtos_With_A_Null_Value_Then_An_Empty_List_Of_OpenConnectionDtos_Is_Returned()
         {
             //act
-            var result = _sut.MapTOpenConnectionDtos(null); ;
+            var result = _sut.MapTOpenConnectionDtos(null);
 
             //assert
             Assert.IsNotNull(result);
