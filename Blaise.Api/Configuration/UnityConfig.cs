@@ -30,15 +30,14 @@ namespace Blaise.Api.Configuration
             //logging
             container.RegisterType<ILoggingService, EventLogging>();
 
-            container.RegisterSingleton<IBlaiseServerParkApi, BlaiseServerParkApi>(new InjectionConstructor(connectionModel));
-            container.RegisterSingleton<IBlaiseSurveyApi, BlaiseSurveyApi>(new InjectionConstructor(connectionModel));
-            container.RegisterSingleton<IBlaiseCatiApi, BlaiseCatiApi>(new InjectionConstructor(connectionModel));
-            container.RegisterSingleton<IBlaiseHealthApi, BlaiseHealthApi>(new InjectionConstructor(connectionModel));
-            container.RegisterSingleton<IBlaiseRoleApi, BlaiseRoleApi>(new InjectionConstructor(connectionModel));
-            container.RegisterSingleton<IBlaiseUserApi, BlaiseUserApi>(new InjectionConstructor(connectionModel));
-            container.RegisterSingleton<IBlaiseFileApi, BlaiseFileApi>(new InjectionConstructor(connectionModel));
-            container.RegisterSingleton<IBlaiseCaseApi, BlaiseCaseApi>(new InjectionConstructor(connectionModel));
-            container.RegisterSingleton<IBlaiseAdminApi, BlaiseAdminApi>();
+            container.RegisterType<IBlaiseServerParkApi, BlaiseServerParkApi>(new InjectionConstructor(connectionModel));
+            container.RegisterType<IBlaiseSurveyApi, BlaiseSurveyApi>(new InjectionConstructor(connectionModel));
+            container.RegisterType<IBlaiseCatiApi, BlaiseCatiApi>(new InjectionConstructor(connectionModel));
+            container.RegisterType<IBlaiseHealthApi, BlaiseHealthApi>(new InjectionConstructor(connectionModel));
+            container.RegisterType<IBlaiseRoleApi, BlaiseRoleApi>(new InjectionConstructor(connectionModel));
+            container.RegisterType<IBlaiseUserApi, BlaiseUserApi>(new InjectionConstructor(connectionModel));
+            container.RegisterType<IBlaiseFileApi, BlaiseFileApi>(new InjectionConstructor(connectionModel));
+            container.RegisterType<IBlaiseCaseApi, BlaiseCaseApi>(new InjectionConstructor(connectionModel));
 
             //providers
             container.RegisterType<IConfigurationProvider, ConfigurationProvider>();
@@ -71,7 +70,6 @@ namespace Blaise.Api.Configuration
             container.RegisterType<ICatiDataBlockService, CatiDataBlockService>();
             container.RegisterType<INisraCaseComparisonService, NisraCaseComparisonService>();
             container.RegisterType<IReportingService, ReportingService>();
-            container.RegisterType<IAdminService, AdminService>();
 
             //storage services
             container.RegisterType<ICloudStorageService, CloudStorageService>();
