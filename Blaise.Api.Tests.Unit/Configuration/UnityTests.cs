@@ -14,7 +14,6 @@ namespace Blaise.Api.Tests.Unit.Configuration
         [TestCase(typeof(ServerParkController))]
         [TestCase(typeof(UserRoleController))]
         [TestCase(typeof(UserController))]
-        [TestCase(typeof(AdminController))]
         public void Given_A_Controller_Type_I_Resolve_The_Controller_Type_Then_All_Dependencies_Are_Resolved(Type controllerType)
         {
             //arrange
