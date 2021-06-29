@@ -158,6 +158,8 @@
     <Compile Include="Interfaces\Services\IReportingService.cs" />
     <Compile Include="Interfaces\Mappers\IOpenConnectionModelMapper.cs" />
     <Compile Include="Interfaces\Services\IAdminService.cs" />
+    <Compile Include="Interfaces\Services\IJakeService.cs" />
+    <Compile Include="Services\JakeService.cs" />
     <Compile Include="Services\NisraCaseComparisonService.cs" />
     <Compile Include="Interfaces\Services\INisraCaseComparisonService.cs" />
     <Compile Include="Services\NisraCaseUpdateService.cs" />
