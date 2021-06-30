@@ -3,5 +3,7 @@
     public interface IJakeService
     {
         string HelloJake(string name);
+
+        string CheckName(string name);
     }
 }

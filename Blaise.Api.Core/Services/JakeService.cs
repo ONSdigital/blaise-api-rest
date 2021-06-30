@@ -15,16 +15,56 @@ namespace Blaise.Api.Core.Services
 
         public string HelloJake(string name)
         {
+
+            //var response = $"hey {name}";
+            //var bResponse = $"Yooo its {name}";
+
             if (string.IsNullOrWhiteSpace(name))
             {
                 _logger.LogError("error", new ArgumentException());
                 return null;
             }
 
-            
+            /*string[] bFriends = {"Aidan", "Caleb", "Chloe"};
+            foreach (var i in bFriends)
+            {
+                for
+            }
+            */
+
             _logger.LogInfo($"Saying hello to {name}");
 
-            return $"hey {name}";
+            return CheckName(name);
+        }
+
+        public string CheckName(string name)
+        {
+            var response = $"hey {name}";
+            var bResponse = $"Yooo its {name}";
+
+            //if (name == "aidan")
+            //{
+                
+            //}
+
+            switch (name.ToLower())
+            {
+                case "aidan":
+                response = bResponse;
+                break;
+
+                case "chloe":
+                response = $"Loves you {name}";
+                break;
+
+                case "caleb":
+                    name = "bb";
+                    response = $"Yooo its {name}";
+                    break;
+            }
+
+
+            return response;
         }
     }
 }

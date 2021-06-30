@@ -3,6 +3,7 @@ using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Services;
 using Moq;
 using NUnit.Framework;
+using StatNeth.Blaise.Runtime.DataContract.Cati.Actions;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
@@ -76,6 +77,69 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //Assert
             Assert.IsNull(result);
+        }
+
+        [TestCase("Aidan")]
+        public void Given_I_Call_CheckName_With_Certain_Name_I_Get_A_Set_Response(string name)
+        {
+            //Arrange
+            var loggerMock = new Mock<ILoggingService>();
+            loggerMock.Setup(l => l.LogError(It.IsAny<string>(), It.IsAny<Exception>()));
+
+            var sut = new JakeService(loggerMock.Object);
+
+            //var response = $"hey {name}";
+            //var bResponse = $"Yooo its {name}";
+
+            //Act
+
+            /*
+            switch (name)
+            {
+                case "Aidan":
+                    response = bResponse;
+                    break;
+                case "Chloe":
+                    response = bResponse;
+                    break;
+            }
+            */
+            var result = sut.CheckName(name);
+
+            //Assert
+            Assert.AreEqual($"Yooo its {name}", result);
+        }
+
+        [TestCase("Chloe")]
+        public void Given_I_Call_CheckName_With_Certain_Name_I_Get_A_Set_Response2(string name)
+        {
+            //Arrange
+            var loggerMock = new Mock<ILoggingService>();
+            loggerMock.Setup(l => l.LogError(It.IsAny<string>(), It.IsAny<Exception>()));
+
+            var sut = new JakeService(loggerMock.Object);
+
+            //Act
+            var result = sut.CheckName(name);
+
+            //Assert
+            Assert.AreEqual($"Loves you {name}", result);
+        }
+
+        [TestCase("Caleb")]
+        public void Given_I_Call_CheckName_With_Certain_Name_I_Get_A_Set_Response3(string name)
+        {
+            //Arrange
+            var loggerMock = new Mock<ILoggingService>();
+            loggerMock.Setup(l => l.LogError(It.IsAny<string>(), It.IsAny<Exception>()));
+
+            var sut = new JakeService(loggerMock.Object);
+
+            //Act
+            var result = sut.CheckName(name);
+
+            //Assert
+            Assert.AreEqual($"Yooo its bb", result);
         }
     }
 }
