@@ -1,70 +1,76 @@
 ﻿using System;
-using Blaise.Api.Contracts.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 using Blaise.Api.Core.Interfaces.Services;
+using StringComparison = System.StringComparison;
 
 namespace Blaise.Api.Core.Services
 {
     public class JakeService : IJakeService
     {
-        private readonly ILoggingService _logger;
 
-        public JakeService(ILoggingService logger)
+        private readonly List<string> _bestFriends;
+        private readonly List<string> _naughtyList;
+
+        public JakeService()
         {
-            _logger = logger;
+            _bestFriends = new List<string> { "Jamie", "Nik", "Elinor", "Matthew", "Ali" };
+            _naughtyList = new List<string> { "Richmond" };
         }
 
-        public string HelloJake(string name)
+        public string GreetCustomer(string customerGreeting, string name)
         {
-
-            //var response = $"hey {name}";
-            //var bResponse = $"Yooo its {name}";
+            if (NoGreetingOrNameSupplied(customerGreeting, name))
+            {
+                return "How may I help you?";
+            }
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                _logger.LogError("error", new ArgumentException());
-                return null;
+                return "Good morning";
             }
 
-            /*string[] bFriends = {"Aidan", "Caleb", "Chloe"};
-            foreach (var i in bFriends)
+            if (CustomerIsOnBestFriendsList(name))
             {
-                for
+                return $"Hiya {name}, great to see you!";
             }
-            */
 
-            _logger.LogInfo($"Saying hello to {name}");
+            if (CustomerIsOnNaughtyList(name))
+            {
+                return "And what do you think you are doing here?!";
+            }
 
-            return CheckName(name);
+            if (string.IsNullOrWhiteSpace(customerGreeting))
+            {
+                return $"How may I help you {name}?";
+            }
+
+            if (CustomerSaysHello(customerGreeting))
+            {
+                return string.IsNullOrWhiteSpace(name) ? "Hi there" : $"Hi {name}";
+            }
+
+            return $"Hey {name}";
         }
 
-        public string CheckName(string name)
+        private bool CustomerIsOnBestFriendsList(string name)
         {
-            var response = $"hey {name}";
-            var bResponse = $"Yooo its {name}";
+            return _bestFriends.Any(b => b.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+        }
 
-            //if (name == "aidan")
-            //{
-                
-            //}
+        private bool CustomerIsOnNaughtyList(string name)
+        {
+            return _naughtyList.Any(n => n.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+        }
 
-            switch (name.ToLower())
-            {
-                case "aidan":
-                response = bResponse;
-                break;
+        private static bool CustomerSaysHello(string customerGreeting)
+        {
+            return customerGreeting.Equals("hello", StringComparison.InvariantCultureIgnoreCase);
+        }
 
-                case "chloe":
-                response = $"Loves you {name}";
-                break;
-
-                case "caleb":
-                    name = "bb";
-                    response = $"Yooo its {name}";
-                    break;
-            }
-
-
-            return response;
+        private static bool NoGreetingOrNameSupplied(string customerGreeting, string name)
+        {
+            return string.IsNullOrWhiteSpace(name) && string.IsNullOrWhiteSpace(customerGreeting);
         }
     }
 }

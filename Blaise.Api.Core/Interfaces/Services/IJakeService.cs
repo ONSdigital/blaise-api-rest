@@ -1,9 +1,7 @@
 ﻿namespace Blaise.Api.Core.Interfaces.Services
 {
     public interface IJakeService
-    {
-        string HelloJake(string name);
-
-        string CheckName(string name);
+    { 
+        string GreetCustomer(string customerGreeting, string name);
     }
 }

@@ -16,11 +16,12 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("hello/{name}")]
+        [Route("greet")]
         [SwaggerResponse(HttpStatusCode.OK, Type=typeof(string))]
-        public IHttpActionResult HelloJake([FromUri] string name)
+        public IHttpActionResult GreetCustomer([FromUri] string greeting = null, [FromUri] string name = null)
         {
-            var response = _jakeService.HelloJake(name: name);
+
+            var response = _jakeService.GreetCustomer(greeting, name);
 
             return Ok(response);
         }

@@ -9,137 +9,116 @@ namespace Blaise.Api.Tests.Unit.Services
 {
     public class JakeServiceTests
     {
-        [TestCase("Jamie")]
-        [TestCase("Nik")]
-        [TestCase("Rich")]
-        public void Given_I_Call_HelloJake_With_A_Name_I_Get_Response_Back(string name)
+
+        [TestCase("ello", "Jake")]
+        [TestCase("hi", "Aidan")]
+        [TestCase("yo", "Sarah")]
+        [TestCase("heya", "Callum")]
+        public void Given_Customer_Greets_Us_With_A_Greeting_Other_Than_Hello_And_They_Supply_Name_Response_Is_Given(string greeting, string name)
         {
             //Arrange
-            var loggerMock = new Mock<ILoggingService>();
-
-            var sut = new JakeService(loggerMock.Object);
+            var sut = new JakeService();
 
             //Act
-            var result = sut.HelloJake(name);
+            var response = sut.GreetCustomer(greeting, name);
 
             //Assert
-            Assert.AreEqual($"hey {name}", result);
+            Assert.AreEqual($"Hey {name}", response);
         }
 
-        [Test]
-        public void Given_I_Call_HelloJake_A_Response_is_Logged()
+        [TestCase("hEllo", "Jake")]
+        [TestCase("hellO", "Aidan")]
+        [TestCase("Hello", "Sarah")]
+        [TestCase("heLlo", "Callum")]
+        public void Given_Customer_Greets_Us_With_Hello_And_They_Supply_Name_Response_Is_Given(string greeting, string name)
         {
             //Arrange
-            var loggerMock = new Mock<ILoggingService>();
-            loggerMock.Setup(l => l.LogInfo(It.IsAny<string>()));
-
-            var sut = new JakeService(loggerMock.Object);
+            var sut = new JakeService();
 
             //Act
-            sut.HelloJake("jamie");
+            var response = sut.GreetCustomer(greeting, name);
 
             //Assert
-            loggerMock.Verify(l => l.LogInfo(It.IsAny<string>()), Times.Once);
+            Assert.AreEqual($"Hi {name}", response);
         }
 
-        [TestCase(null)]
-        [TestCase("")]
-        [TestCase(" ")]
-        public void Given_I_Call_HelloJake_With_A_Invalid_Value_Then_An_Error_Is_Logged(string name)
+        [TestCase("ello", "")]
+        [TestCase("hi", " ")]
+        [TestCase("yo", "  ")]
+        [TestCase("heya", null)]
+        public void Given_Customer_Greets_Us_With_A_Greeting_Other_Than_Hello_And_They_Do_Not_Supply_Name_Response_Is_Given(string greeting, string name)
         {
             //Arrange
-            var loggerMock = new Mock<ILoggingService>();
-            loggerMock.Setup(l => l.LogError(It.IsAny<string>(), It.IsAny<Exception>()));
-
-            var sut = new JakeService(loggerMock.Object);
+            var sut = new JakeService();
 
             //Act
-            sut.HelloJake(name);
+            var response = sut.GreetCustomer(greeting, name);
 
             //Assert
-            loggerMock.Verify(l => l.LogError(It.IsAny<string>(), It.IsAny<Exception>()), Times.Once);
-            loggerMock.Verify(l => l.LogInfo(It.IsAny<string>()), Times.Never);
+            Assert.AreEqual("Good morning", response);
         }
 
-        [TestCase(null)]
-        [TestCase("")]
-        [TestCase(" ")]
-        public void Given_I_Call_HelloJake_With_A_Invalid_Value_Then_Null_Is_Returned(string name)
+        [TestCase("hello", "Jamie")]
+        [TestCase("hey", "Nik")]
+        [TestCase("hi", "Elinor")]
+        [TestCase("wassup", "Matthew")]
+        [TestCase("", "Ali")]
+        public void Given_I_Am_On_The_Best_Friends_List_With_Any_Greeting_Response_Is_Given(string greeting, string name)
         {
             //Arrange
-            var loggerMock = new Mock<ILoggingService>();
-            loggerMock.Setup(l => l.LogError(It.IsAny<string>(), It.IsAny<Exception>()));
-
-            var sut = new JakeService(loggerMock.Object);
+            var sut = new JakeService();
 
             //Act
-            var result = sut.HelloJake(name);
+            var response = sut.GreetCustomer(greeting, name);
 
             //Assert
-            Assert.IsNull(result);
+            Assert.AreEqual($"Hiya {name}, great to see you!", response);
         }
 
-        [TestCase("Aidan")]
-        public void Given_I_Call_CheckName_With_Certain_Name_I_Get_A_Set_Response(string name)
+        [TestCase("HeLlo", "Richmond")]
+        [TestCase("yo", "Richmond")]
+        [TestCase("heya", "Richmond")]
+        [TestCase("hi", "Richmond")]
+        public void Given_I_Am_On_The_Naughty_List_With_Any_Greeting_Response_Is_Given(string greeting, string name)
         {
             //Arrange
-            var loggerMock = new Mock<ILoggingService>();
-            loggerMock.Setup(l => l.LogError(It.IsAny<string>(), It.IsAny<Exception>()));
-
-            var sut = new JakeService(loggerMock.Object);
-
-            //var response = $"hey {name}";
-            //var bResponse = $"Yooo its {name}";
+            var sut = new JakeService();
 
             //Act
-
-            /*
-            switch (name)
-            {
-                case "Aidan":
-                    response = bResponse;
-                    break;
-                case "Chloe":
-                    response = bResponse;
-                    break;
-            }
-            */
-            var result = sut.CheckName(name);
+            var response = sut.GreetCustomer(greeting, name);
 
             //Assert
-            Assert.AreEqual($"Yooo its {name}", result);
+            Assert.AreEqual("And what do you think you are doing here?!", response);
         }
 
-        [TestCase("Chloe")]
-        public void Given_I_Call_CheckName_With_Certain_Name_I_Get_A_Set_Response2(string name)
+        [TestCase(" ", null)]
+        [TestCase(null, "")]
+        [TestCase("   ", " ")]
+        [TestCase("", "")]
+        public void Given_Customer_Does_Not_Greet_Us_And_Does_Not_Give_A_Name_Response_Is_Given(string greeting, string name)
         {
             //Arrange
-            var loggerMock = new Mock<ILoggingService>();
-            loggerMock.Setup(l => l.LogError(It.IsAny<string>(), It.IsAny<Exception>()));
-
-            var sut = new JakeService(loggerMock.Object);
+            var sut = new JakeService();
 
             //Act
-            var result = sut.CheckName(name);
+            var response = sut.GreetCustomer(greeting, name);
 
             //Assert
-            Assert.AreEqual($"Loves you {name}", result);
+            Assert.AreEqual("How may I help you?", response);
         }
 
-        [TestCase("Caleb")]
-        public void Given_I_Call_CheckName_With_Certain_Name_I_Get_A_Set_Response3(string name)
+        [TestCase(" ", "jami")]
+        [TestCase(null, "jake")]
+        public void Given_Customer_Does_Not_Greet_Us_And_Does_Give_A_Name_Response_Is_Given(string greeting, string name)
         {
             //Arrange
-            var loggerMock = new Mock<ILoggingService>();
-            loggerMock.Setup(l => l.LogError(It.IsAny<string>(), It.IsAny<Exception>()));
-
-            var sut = new JakeService(loggerMock.Object);
+            var sut = new JakeService();
 
             //Act
-            var result = sut.CheckName(name);
+            var response = sut.GreetCustomer(greeting, name);
 
             //Assert
-            Assert.AreEqual($"Yooo its bb", result);
+            Assert.AreEqual($"How may I help you {name}?", response);
         }
     }
 }
