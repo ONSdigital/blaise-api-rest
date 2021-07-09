@@ -71,8 +71,6 @@ namespace Blaise.Api.Tests.Unit.Services
             };
 
             _blaiseSurveyApiMock.Setup(b => b.GetSurveysAcrossServerParks()).Returns(surveyList);
-            _blaiseSurveyApiMock.Setup(b => b.GetLiveDate(It.IsAny<string>(),
-                It.IsAny<string>())).Returns(DateTime.Today);
 
             var surveyDays1 = new List<DateTime> { DateTime.Today.AddDays(-1) };
             _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(instrument1, serverPark1))
@@ -147,8 +145,6 @@ namespace Blaise.Api.Tests.Unit.Services
             };
 
             _blaiseSurveyApiMock.Setup(b => b.GetSurveys(serverPark)).Returns(surveyList);
-            _blaiseSurveyApiMock.Setup(b => b.GetLiveDate(It.IsAny<string>(),
-                It.IsAny<string>())).Returns(DateTime.Today);
 
             var surveyDays1 = new List<DateTime> { DateTime.Today.AddDays(-1) };
             var surveyDays2 = new List<DateTime> { DateTime.Today };
@@ -238,9 +234,6 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _blaiseSurveyApiMock.Setup(i => i.GetSurvey(instrumentName, serverParkName))
                 .Returns(survey1Mock.Object);
-
-            _blaiseSurveyApiMock.Setup(b => b.GetLiveDate(It.IsAny<string>(),
-                It.IsAny<string>())).Returns(DateTime.Today);
 
             _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(instrumentName, serverParkName))
                 .Returns(surveyDays1);

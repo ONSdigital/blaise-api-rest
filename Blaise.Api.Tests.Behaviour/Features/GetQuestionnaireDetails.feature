@@ -11,9 +11,3 @@ Scenario: Return a list of available questionnaires where a questionnaire is act
 	When the API is queried to return all active questionnaires
 	Then the details of the questionnaire is returned
 
-@smoke
-Scenario: Return a list of available questionnaires where a questionnaire is not active
-	Given there is a questionnaire installed on a Blaise environment
-	And the questionnaire is inactive
-	When the API is queried to return all active questionnaires
-	Then the details of the questionnaire is not returned

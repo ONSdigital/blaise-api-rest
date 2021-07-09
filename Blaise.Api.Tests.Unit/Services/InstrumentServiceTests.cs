@@ -422,61 +422,6 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_An_Instrument_Exists_When_I_Call_GetLiveDate_Then_The_LiveDate_Is_Returned()
-        {
-            //arrange
-            const string instrumentName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
-            var liveDate = DateTime.Today;
-
-            _blaiseApiMock.Setup(b =>
-                b.GetLiveDate(instrumentName, serverParkName)).Returns(liveDate);
-
-            //act
-            var result = _sut.GetLiveDate(instrumentName, serverParkName);
-
-            //assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(liveDate, result);
-        }
-
-        [Test]
-        public void Given_An_Empty_InstrumentName_When_I_Call_GetLiveDate_Then_An_ArgumentException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.GetLiveDate(string.Empty,
-                _serverParkName));
-            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_InstrumentName_When_I_Call_GetLiveDate_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetLiveDate(null,
-                _serverParkName));
-            Assert.AreEqual("instrumentName", exception.ParamName);
-        }
-
-        [Test]
-        public void Given_An_Empty_ServerParkName_When_I_Call_GetLiveDate_Then_An_ArgumentException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.GetLiveDate(_instrumentName,
-                string.Empty));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_ServerParkName_When_I_Call_GetLiveDate_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetLiveDate(_instrumentName,
-                null));
-            Assert.AreEqual("serverParkName", exception.ParamName);
-        }
-
-        [Test]
         public void Given_An_Instrument_Exists_When_I_Call_ActivateInstrument_Then_The_Correct_Service_Is_Called()
         {
             //arrange

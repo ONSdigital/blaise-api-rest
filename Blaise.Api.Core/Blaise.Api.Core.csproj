@@ -53,7 +53,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Blaise.Nuget.Api.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2021.6.23.3\lib\net472\Blaise.Nuget.Api.Contracts.dll</HintPath>
+      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2021.6.29.1\lib\net472\Blaise.Nuget.Api.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
@@ -133,7 +133,6 @@
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Interfaces\Mappers\ICatiInstrumentDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IInstrumentNodeDtoMapper.cs" />
-    <Compile Include="Mappers\OpenConnectionModelMapper.cs" />
     <Compile Include="Interfaces\Services\ICatiDataBlockService.cs" />
     <Compile Include="Interfaces\Services\IInstrumentUninstallerService.cs" />
     <Compile Include="Interfaces\Services\IInstrumentService.cs" />
@@ -156,7 +155,6 @@
     <Compile Include="Interfaces\Services\INisraFileImportService.cs" />
     <Compile Include="Services\CatiDataBlockService.cs" />
     <Compile Include="Interfaces\Services\IReportingService.cs" />
-    <Compile Include="Interfaces\Mappers\IOpenConnectionModelMapper.cs" />
     <Compile Include="Interfaces\Services\IAdminService.cs" />
     <Compile Include="Services\NisraCaseComparisonService.cs" />
     <Compile Include="Interfaces\Services\INisraCaseComparisonService.cs" />
