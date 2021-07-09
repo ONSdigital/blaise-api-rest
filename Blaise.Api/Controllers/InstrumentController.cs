@@ -116,22 +116,6 @@ namespace Blaise.Api.Controllers
             return Ok(status);
         }
 
-        [HttpGet]
-        [Route("{instrumentName}/livedate")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(DateTime?))]
-        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
-        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult GetInstrumentLiveDate([FromUri] string serverParkName, [FromUri] string instrumentName)
-        {
-            _loggingService.LogInfo($"Get the live date of instrument '{instrumentName}' on server park '{serverParkName}'");
-
-            var liveDate = _instrumentService.GetLiveDate(instrumentName, serverParkName);
-
-            _loggingService.LogInfo($"Instrument '{instrumentName}' live date '{liveDate}'");
-
-            return Ok(liveDate);
-        }
-
         [HttpPost]
         [Route("")]
         [SwaggerResponse(HttpStatusCode.Created, Type=typeof(InstrumentPackageDto))]
