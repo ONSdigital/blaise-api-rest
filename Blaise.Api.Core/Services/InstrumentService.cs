@@ -69,14 +69,6 @@ namespace Blaise.Api.Core.Services
             return _blaiseApi.GetSurveyStatus(instrumentName, serverParkName);
         }
 
-        public DateTime? GetLiveDate(string instrumentName, string serverParkName)
-        {
-            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
-            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
-
-            return _blaiseApi.GetLiveDate(instrumentName, serverParkName);
-        }
-
         public void ActivateInstrument(string instrumentName, string serverParkName)
         {
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");

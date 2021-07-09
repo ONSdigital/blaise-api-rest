@@ -36,12 +36,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             Assert.IsTrue(surveyIsActive);
         }
 
-        [Given(@"the questionnaire is inactive")]
-        public void GivenTheQuestionnaireIsInactive()
-        {
-            var surveyIsInactive = InstrumentHelper.GetInstance().SetSurveyAsInactive();
-            Assert.IsTrue(surveyIsInactive);
-        }
 
         [Given(@"there are no questionnaires installed")]
         public void GivenThereAreNoQuestionnairesInstalled()

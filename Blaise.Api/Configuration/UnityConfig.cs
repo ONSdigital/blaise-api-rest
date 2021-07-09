@@ -52,7 +52,6 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IUserRoleDtoMapper, UserRoleDtoMapper>();
             container.RegisterType<IUserDtoMapper, UserDtoMapper>();
             container.RegisterType<IInstrumentStatusMapper, InstrumentStatusMapper>();
-            container.RegisterType<IOpenConnectionModelMapper, OpenConnectionModelMapper>();
 
             //core services
             container.RegisterType<IServerParkService, ServerParkService>();
