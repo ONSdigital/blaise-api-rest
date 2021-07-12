@@ -15,7 +15,6 @@ namespace Blaise.Api.Core.Services
 
         public List<string> GetCaseIds(string serverParkName, string instrumentName)
         {
-
             var caseIds = new List<string>();
 
             var cases = _blaiseCaseApi.GetCases(instrumentName, serverParkName);
