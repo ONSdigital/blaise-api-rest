@@ -88,26 +88,14 @@ namespace Blaise.Api.Core.Services
 
         public IEnumerable<string> GetModes(string instrumentName, string serverParkName)
         {
-            var modeList = _blaiseApi.GetSurveyModes(instrumentName, serverParkName);
-
-            return modeList;
+            return _blaiseApi.GetSurveyModes(instrumentName, serverParkName);
         }
 
-        public bool IsNInModes(string instrumentName, string serverParkName, string mode)
+        public bool ModeExists(string instrumentName, string serverParkName, string mode)
         {
             var modeList = _blaiseApi.GetSurveyModes(instrumentName, serverParkName);
 
-            var isNInModes = modeList.ToList();
-
-            foreach (var i in isNInModes)
-            {
-                if (mode.ToUpperInvariant().Equals(i))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return modeList.Any(m => m.Equals(mode, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

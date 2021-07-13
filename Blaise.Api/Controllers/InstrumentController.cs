@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Extensions;
-using StatNeth.Blaise.API.Meta;
 using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
@@ -207,17 +206,14 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{instrumentName}/modes/{mode}")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<string>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult GetModes([FromUri] string serverParkName, [FromUri] string instrumentName, string mode = null)
+        public IHttpActionResult ModeExists([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri]string mode)
         {
-            if (mode != null)
-            {
-                return Ok(_instrumentService.IsNInModes(instrumentName, serverParkName, mode));
-            }
+            var exists = _instrumentService.ModeExists(instrumentName, serverParkName, mode);
 
-            return Ok(_instrumentService.GetModes(instrumentName, serverParkName));
+            return Ok(exists);
         }
     }
 }

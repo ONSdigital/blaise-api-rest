@@ -25,6 +25,6 @@ namespace Blaise.Api.Core.Interfaces.Services
 
         IEnumerable<string> GetModes(string instrumentName, string serverParkName);
 
-        bool IsNInModes(string instrumentName, string serverParkName, string mode);
+        bool ModeExists(string instrumentName, string serverParkName, string mode);
     }
 }
