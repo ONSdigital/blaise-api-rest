@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
@@ -83,6 +84,30 @@ namespace Blaise.Api.Core.Services
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
             _blaiseApi.DeactivateSurvey(instrumentName, serverParkName);
+        }
+
+        public IEnumerable<string> GetModes(string instrumentName, string serverParkName)
+        {
+            var modeList = _blaiseApi.GetSurveyModes(instrumentName, serverParkName);
+
+            return modeList;
+        }
+
+        public bool IsNInModes(string instrumentName, string serverParkName, string mode)
+        {
+            var modeList = _blaiseApi.GetSurveyModes(instrumentName, serverParkName);
+
+            var isNInModes = modeList.ToList();
+
+            foreach (var i in isNInModes)
+            {
+                if (mode.ToUpperInvariant().Equals(i))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

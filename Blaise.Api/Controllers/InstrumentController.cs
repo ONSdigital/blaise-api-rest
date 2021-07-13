@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Extensions;
+using StatNeth.Blaise.API.Meta;
 using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
@@ -190,6 +191,33 @@ namespace Blaise.Api.Controllers
             _loggingService.LogInfo($"Successfully deactivated instrument '{instrumentName}'");
 
             return NoContent(); 
+        }
+
+        [HttpGet]
+        [Route("{instrumentName}/modes")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<string>))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetModes([FromUri] string serverParkName, [FromUri] string instrumentName)
+        {
+            var modes = _instrumentService.GetModes(instrumentName, serverParkName);
+
+            return Ok(modes);
+        }
+
+        [HttpGet]
+        [Route("{instrumentName}/modes/{mode}")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<string>))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetModes([FromUri] string serverParkName, [FromUri] string instrumentName, string mode = null)
+        {
+            if (mode != null)
+            {
+                return Ok(_instrumentService.IsNInModes(instrumentName, serverParkName, mode));
+            }
+
+            return Ok(_instrumentService.GetModes(instrumentName, serverParkName));
         }
     }
 }

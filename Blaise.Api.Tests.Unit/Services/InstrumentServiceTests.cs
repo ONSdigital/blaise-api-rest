@@ -526,5 +526,36 @@ namespace Blaise.Api.Tests.Unit.Services
                 null));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
+
+        [Test]
+        public void Given_I_Call_GetModes_With_ServerParkName_And_InstrumentName_With_No_Mode_I_Return_A_List()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "localdevelopment";
+
+            //act
+            var result = _sut.GetModes(instrumentName, serverParkName);
+
+            //assert
+            Assert.IsNotNull(result);
+        }
+
+        [TestCase("null")]
+        [TestCase("CATI")]
+        [TestCase("CAWIII")]
+        [TestCase("caWi")]
+        public void Given_I_Call_IsNInModes_With_ServerParkName_And_InstrumentName_With_A_Mode_I_Return_A_Bool(string mode)
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "localdevelopment";
+
+            //act
+            var result = _sut.IsNInModes(instrumentName, serverParkName, mode);
+
+            //assert
+            Assert.IsNotNull(result);
+        }
     }
 }
