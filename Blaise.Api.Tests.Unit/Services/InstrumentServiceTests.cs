@@ -526,5 +526,63 @@ namespace Blaise.Api.Tests.Unit.Services
                 null));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
+
+        [Test]
+        public void Given_An_Instrument_Has_Modes_When_I_Call_GetModes_Then_I_Get_A_List_Containing_Modes_Back()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "LocalDevelopment";
+            var modes = new List<string>{ "CATI", "CAWI"};
+            _blaiseApiMock.Setup(b => b.GetSurveyModes(instrumentName, serverParkName)).Returns(modes);
+
+            //act
+            var result = _sut.GetModes(instrumentName, serverParkName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsNotEmpty(result);
+            Assert.AreSame(modes, result);
+        }
+
+        [TestCase("CATI")]
+        [TestCase("caTi")]
+        [TestCase("cawi")]
+        [TestCase("CAWi")]
+        public void Given_A_Mode_Exists_When_I_Call_ModeExists_With_That_Mode_Then_True_Is_Returned(string mode)
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "LocalDevelopment";
+            var modes = new List<string> { "CATI", "CAWI" };
+            _blaiseApiMock.Setup(b => b.GetSurveyModes(instrumentName, serverParkName)).Returns(modes);
+
+            //act
+            var result = _sut.ModeExists(instrumentName, serverParkName, mode);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result);
+        }
+
+        [TestCase("CATTTI")]
+        [TestCase("caTii")]
+        [TestCase("cawiw")]
+        [TestCase("CAWWi")]
+        public void Given_A_Mode_Does_Not_Exist_When_I_Call_ModeExists_With_That_Mode_Then_False_Is_Returned(string mode)
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "LocalDevelopment";
+            var modes = new List<string> { "CATI", "CAWI" };
+            _blaiseApiMock.Setup(b => b.GetSurveyModes(instrumentName, serverParkName)).Returns(modes);
+
+            //act
+            var result = _sut.ModeExists(instrumentName, serverParkName, mode);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result);
+        }
     }
 }
