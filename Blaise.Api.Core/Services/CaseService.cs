@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Blaise.Api.Core.Interfaces.Services;
+using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 
 namespace Blaise.Api.Core.Services
@@ -29,6 +30,13 @@ namespace Blaise.Api.Core.Services
             }
 
             return caseIds;
+        }
+
+        public string GetPostCode(string serverParkName, string instrumentName, string caseId)
+        {
+            var caseRecord = _blaiseCaseApi.GetCase(caseId, instrumentName, serverParkName);
+
+            return _blaiseCaseApi.GetFieldValue(caseRecord, FieldNameType.PostCode).ValueAsText;
         }
     }
 }
