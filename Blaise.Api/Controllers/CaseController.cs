@@ -30,5 +30,17 @@ namespace Blaise.Api.Controllers
 
             return Ok(caseIds);
         }
+
+        [HttpGet]
+        [Route("{caseId}/postcode")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(string))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetCaseIds([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId)
+        {
+            var postCode = _caseService.GetPostCode(serverParkName, instrumentName, caseId);
+
+            return Ok(postCode);
+        }
     }
 }
