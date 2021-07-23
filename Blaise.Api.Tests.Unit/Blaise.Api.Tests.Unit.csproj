@@ -55,13 +55,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Blaise.Nuget.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.2021.6.29.1\lib\net472\Blaise.Nuget.Api.dll</HintPath>
+      <HintPath>..\packages\Blaise.Nuget.Api.2021.7.20.1\lib\net472\Blaise.Nuget.Api.dll</HintPath>
     </Reference>
     <Reference Include="Blaise.Nuget.Api.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2021.6.29.1\lib\net472\Blaise.Nuget.Api.Contracts.dll</HintPath>
+      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2021.7.20.1\lib\net472\Blaise.Nuget.Api.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="Blaise.Nuget.Api.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.2021.6.29.1\lib\net472\Blaise.Nuget.Api.Core.dll</HintPath>
+      <HintPath>..\packages\Blaise.Nuget.Api.2021.7.20.1\lib\net472\Blaise.Nuget.Api.Core.dll</HintPath>
     </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
@@ -100,7 +100,7 @@
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
     </Reference>
     <Reference Include="StatNeth.Blaise.API, Version=5.0.0.0, Culture=neutral, PublicKeyToken=ad2ddd432cb2a452, processorArchitecture=MSIL">
-      <HintPath>..\packages\StatNeth.Blaise.API.x64.5.9.3\lib\net472\StatNeth.Blaise.API.dll</HintPath>
+      <HintPath>..\packages\StatNeth.Blaise.API.x64.5.9.7\lib\net472\StatNeth.Blaise.API.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -194,6 +194,7 @@
     <Compile Include="Mappers\UserRoleDtoMapperTests.cs" />
     <Compile Include="Mappers\ServerParkDtoMapperTests.cs" />
     <Compile Include="Providers\ConfigurationProviderTests.cs" />
+    <Compile Include="Services\CaseServiceTests.cs" />
     <Compile Include="Services\FileServiceTests.cs" />
     <Compile Include="Services\InstrumentDataServiceTests.cs" />
     <Compile Include="Services\InstrumentUninstallerServiceTests.cs" />
@@ -244,9 +245,9 @@
     <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.targets'))" />
     <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.112.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.112.0\build\net46\System.Data.SQLite.Core.targets'))" />
-    <Error Condition="!Exists('..\packages\StatNeth.Blaise.API.x64.5.9.3\build\StatNeth.Blaise.API.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StatNeth.Blaise.API.x64.5.9.3\build\StatNeth.Blaise.API.x64.targets'))" />
+    <Error Condition="!Exists('..\packages\StatNeth.Blaise.API.x64.5.9.7\build\StatNeth.Blaise.API.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StatNeth.Blaise.API.x64.5.9.7\build\StatNeth.Blaise.API.x64.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.112.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.112.0\build\net46\System.Data.SQLite.Core.targets')" />
-  <Import Project="..\packages\StatNeth.Blaise.API.x64.5.9.3\build\StatNeth.Blaise.API.x64.targets" Condition="Exists('..\packages\StatNeth.Blaise.API.x64.5.9.3\build\StatNeth.Blaise.API.x64.targets')" />
+  <Import Project="..\packages\StatNeth.Blaise.API.x64.5.9.7\build\StatNeth.Blaise.API.x64.targets" Condition="Exists('..\packages\StatNeth.Blaise.API.x64.5.9.7\build\StatNeth.Blaise.API.x64.targets')" />
 </Project>
