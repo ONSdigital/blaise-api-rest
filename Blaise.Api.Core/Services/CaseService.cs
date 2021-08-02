@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
@@ -8,28 +9,19 @@ namespace Blaise.Api.Core.Services
     public class CaseService : ICaseService
     {
         private readonly IBlaiseCaseApi _blaiseCaseApi;
+        private readonly IBlaiseSqlApi _blaiseSqlApi;
 
-        public CaseService(IBlaiseCaseApi blaiseCaseApi)
+        public CaseService(
+            IBlaiseCaseApi blaiseCaseApi, 
+            IBlaiseSqlApi blaiseSqlApi)
         {
             _blaiseCaseApi = blaiseCaseApi;
+            _blaiseSqlApi = blaiseSqlApi;
         }
 
         public List<string> GetCaseIds(string serverParkName, string instrumentName)
         {
-            var caseIds = new List<string>();
-
-            var cases = _blaiseCaseApi.GetCases(instrumentName, serverParkName);
-
-            while (!cases.EndOfSet)
-            {
-                var primaryKey = _blaiseCaseApi.GetPrimaryKeyValue(cases.ActiveRecord);
-
-                caseIds.Add(primaryKey);
-
-                cases.MoveNext();
-            }
-
-            return caseIds;
+            return _blaiseSqlApi.GetCaseIds(instrumentName).ToList();
         }
 
         public string GetPostCode(string serverParkName, string instrumentName, string caseId)

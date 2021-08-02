@@ -38,6 +38,7 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IBlaiseUserApi, BlaiseUserApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseFileApi, BlaiseFileApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseCaseApi, BlaiseCaseApi>(new InjectionConstructor(connectionModel));
+            container.RegisterType<IBlaiseSqlApi, BlaiseSqlApi>();
 
             //providers
             container.RegisterType<IConfigurationProvider, ConfigurationProvider>();
