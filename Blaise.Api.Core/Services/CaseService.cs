@@ -2,21 +2,16 @@
 using System.Linq;
 using Blaise.Api.Contracts.Models.Case;
 using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 
 namespace Blaise.Api.Core.Services
 {
     public class CaseService : ICaseService
     {
-        private readonly IBlaiseCaseApi _blaiseCaseApi;
         private readonly IBlaiseSqlApi _blaiseSqlApi;
 
-        public CaseService(
-            IBlaiseCaseApi blaiseCaseApi, 
-            IBlaiseSqlApi blaiseSqlApi)
+        public CaseService(IBlaiseSqlApi blaiseSqlApi)
         {
-            _blaiseCaseApi = blaiseCaseApi;
             _blaiseSqlApi = blaiseSqlApi;
         }
 
@@ -44,9 +39,7 @@ namespace Blaise.Api.Core.Services
 
         public string GetPostCode(string serverParkName, string instrumentName, string caseId)
         {
-            var caseRecord = _blaiseCaseApi.GetCase(caseId, instrumentName, serverParkName);
-
-            return _blaiseCaseApi.GetFieldValue(caseRecord, FieldNameType.PostCode).ValueAsText;
+            return _blaiseSqlApi.GetPostCode(instrumentName, caseId);
         }
     }
 }
