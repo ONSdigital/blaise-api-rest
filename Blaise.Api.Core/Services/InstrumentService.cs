@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
@@ -69,14 +70,6 @@ namespace Blaise.Api.Core.Services
             return _blaiseApi.GetSurveyStatus(instrumentName, serverParkName);
         }
 
-        public DateTime? GetLiveDate(string instrumentName, string serverParkName)
-        {
-            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
-            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
-
-            return _blaiseApi.GetLiveDate(instrumentName, serverParkName);
-        }
-
         public void ActivateInstrument(string instrumentName, string serverParkName)
         {
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
@@ -91,6 +84,18 @@ namespace Blaise.Api.Core.Services
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
             _blaiseApi.DeactivateSurvey(instrumentName, serverParkName);
+        }
+
+        public IEnumerable<string> GetModes(string instrumentName, string serverParkName)
+        {
+            return _blaiseApi.GetSurveyModes(instrumentName, serverParkName);
+        }
+
+        public bool ModeExists(string instrumentName, string serverParkName, string mode)
+        {
+            var modeList = _blaiseApi.GetSurveyModes(instrumentName, serverParkName);
+
+            return modeList.Any(m => m.Equals(mode, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

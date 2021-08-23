@@ -116,22 +116,6 @@ namespace Blaise.Api.Controllers
             return Ok(status);
         }
 
-        [HttpGet]
-        [Route("{instrumentName}/livedate")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(DateTime?))]
-        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
-        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult GetInstrumentLiveDate([FromUri] string serverParkName, [FromUri] string instrumentName)
-        {
-            _loggingService.LogInfo($"Get the live date of instrument '{instrumentName}' on server park '{serverParkName}'");
-
-            var liveDate = _instrumentService.GetLiveDate(instrumentName, serverParkName);
-
-            _loggingService.LogInfo($"Instrument '{instrumentName}' live date '{liveDate}'");
-
-            return Ok(liveDate);
-        }
-
         [HttpPost]
         [Route("")]
         [SwaggerResponse(HttpStatusCode.Created, Type=typeof(InstrumentPackageDto))]
@@ -206,6 +190,30 @@ namespace Blaise.Api.Controllers
             _loggingService.LogInfo($"Successfully deactivated instrument '{instrumentName}'");
 
             return NoContent(); 
+        }
+
+        [HttpGet]
+        [Route("{instrumentName}/modes")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<string>))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetModes([FromUri] string serverParkName, [FromUri] string instrumentName)
+        {
+            var modes = _instrumentService.GetModes(instrumentName, serverParkName);
+
+            return Ok(modes);
+        }
+
+        [HttpGet]
+        [Route("{instrumentName}/modes/{mode}")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult ModeExists([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri]string mode)
+        {
+            var exists = _instrumentService.ModeExists(instrumentName, serverParkName, mode);
+
+            return Ok(exists);
         }
     }
 }

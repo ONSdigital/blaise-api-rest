@@ -422,61 +422,6 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_An_Instrument_Exists_When_I_Call_GetLiveDate_Then_The_LiveDate_Is_Returned()
-        {
-            //arrange
-            const string instrumentName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
-            var liveDate = DateTime.Today;
-
-            _blaiseApiMock.Setup(b =>
-                b.GetLiveDate(instrumentName, serverParkName)).Returns(liveDate);
-
-            //act
-            var result = _sut.GetLiveDate(instrumentName, serverParkName);
-
-            //assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(liveDate, result);
-        }
-
-        [Test]
-        public void Given_An_Empty_InstrumentName_When_I_Call_GetLiveDate_Then_An_ArgumentException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.GetLiveDate(string.Empty,
-                _serverParkName));
-            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_InstrumentName_When_I_Call_GetLiveDate_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetLiveDate(null,
-                _serverParkName));
-            Assert.AreEqual("instrumentName", exception.ParamName);
-        }
-
-        [Test]
-        public void Given_An_Empty_ServerParkName_When_I_Call_GetLiveDate_Then_An_ArgumentException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.GetLiveDate(_instrumentName,
-                string.Empty));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_ServerParkName_When_I_Call_GetLiveDate_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetLiveDate(_instrumentName,
-                null));
-            Assert.AreEqual("serverParkName", exception.ParamName);
-        }
-
-        [Test]
         public void Given_An_Instrument_Exists_When_I_Call_ActivateInstrument_Then_The_Correct_Service_Is_Called()
         {
             //arrange
@@ -580,6 +525,64 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeactivateInstrument(_instrumentName,
                 null));
             Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Instrument_Has_Modes_When_I_Call_GetModes_Then_I_Get_A_List_Containing_Modes_Back()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "LocalDevelopment";
+            var modes = new List<string>{ "CATI", "CAWI"};
+            _blaiseApiMock.Setup(b => b.GetSurveyModes(instrumentName, serverParkName)).Returns(modes);
+
+            //act
+            var result = _sut.GetModes(instrumentName, serverParkName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsNotEmpty(result);
+            Assert.AreSame(modes, result);
+        }
+
+        [TestCase("CATI")]
+        [TestCase("caTi")]
+        [TestCase("cawi")]
+        [TestCase("CAWi")]
+        public void Given_A_Mode_Exists_When_I_Call_ModeExists_With_That_Mode_Then_True_Is_Returned(string mode)
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "LocalDevelopment";
+            var modes = new List<string> { "CATI", "CAWI" };
+            _blaiseApiMock.Setup(b => b.GetSurveyModes(instrumentName, serverParkName)).Returns(modes);
+
+            //act
+            var result = _sut.ModeExists(instrumentName, serverParkName, mode);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result);
+        }
+
+        [TestCase("CATTTI")]
+        [TestCase("caTii")]
+        [TestCase("cawiw")]
+        [TestCase("CAWWi")]
+        public void Given_A_Mode_Does_Not_Exist_When_I_Call_ModeExists_With_That_Mode_Then_False_Is_Returned(string mode)
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "LocalDevelopment";
+            var modes = new List<string> { "CATI", "CAWI" };
+            _blaiseApiMock.Setup(b => b.GetSurveyModes(instrumentName, serverParkName)).Returns(modes);
+
+            //act
+            var result = _sut.ModeExists(instrumentName, serverParkName, mode);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result);
         }
     }
 }
