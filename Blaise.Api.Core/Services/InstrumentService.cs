@@ -13,20 +13,23 @@ namespace Blaise.Api.Core.Services
     public class InstrumentService : IInstrumentService
     {
         private readonly IBlaiseSurveyApi _blaiseApi;
-        private readonly IInstrumentDtoMapper _mapper;
+        private readonly IInstrumentDtoMapper _instrumentDtoMapper;
+        private readonly IDataEntrySettingsDtoMapper _dataEntrySettingsDtoMapper;
 
         public InstrumentService(
             IBlaiseSurveyApi blaiseApi,
-            IInstrumentDtoMapper mapper)
+            IInstrumentDtoMapper instrumentDtoMapper, 
+            IDataEntrySettingsDtoMapper dataEntryDtoMapper)
         {
             _blaiseApi = blaiseApi;
-            _mapper = mapper;
+            _instrumentDtoMapper = instrumentDtoMapper;
+            _dataEntrySettingsDtoMapper = dataEntryDtoMapper;
         }
 
         public IEnumerable<InstrumentDto> GetAllInstruments()
         {
             var instruments = _blaiseApi.GetSurveysAcrossServerParks();
-            return _mapper.MapToInstrumentDtos(instruments);
+            return _instrumentDtoMapper.MapToInstrumentDtos(instruments);
         }
 
         public IEnumerable<InstrumentDto> GetInstruments(string serverParkName)
@@ -34,7 +37,7 @@ namespace Blaise.Api.Core.Services
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
             var instruments = _blaiseApi.GetSurveys(serverParkName);
-            return _mapper.MapToInstrumentDtos(instruments);
+            return _instrumentDtoMapper.MapToInstrumentDtos(instruments);
         }
 
         public InstrumentDto GetInstrument(string instrumentName, string serverParkName)
@@ -43,7 +46,7 @@ namespace Blaise.Api.Core.Services
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
             var instrument = _blaiseApi.GetSurvey(instrumentName, serverParkName);
-            return _mapper.MapToInstrumentDto(instrument);
+            return _instrumentDtoMapper.MapToInstrumentDto(instrument);
         }
 
         public bool InstrumentExists(string instrumentName, string serverParkName)
@@ -96,6 +99,13 @@ namespace Blaise.Api.Core.Services
             var modeList = _blaiseApi.GetSurveyModes(instrumentName, serverParkName);
 
             return modeList.Any(m => m.Equals(mode, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public IEnumerable<DataEntrySettingsDto> GetDataEntrySettings(string instrumentName, string serverParkName)
+        {
+            var dataEntrySettingsModels = _blaiseApi.GetSurveyDataEntrySettings(instrumentName, serverParkName);
+
+            return _dataEntrySettingsDtoMapper.MapDataEntrySettingsDtos(dataEntrySettingsModels);
         }
     }
 }
