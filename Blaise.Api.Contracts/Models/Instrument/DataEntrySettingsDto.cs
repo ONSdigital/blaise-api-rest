@@ -8,5 +8,6 @@
         public bool DeleteSessionOnTimeout { get; set; }
         public bool DeleteSessionOnQuit { get; set; }
         public int SessionTimeout { get; set; }
+        public bool ApplyRecordLocking { get; set; }
     }
 }

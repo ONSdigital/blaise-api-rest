@@ -20,7 +20,8 @@ namespace Blaise.Api.Core.Mappers
                     SaveSessionOnQuit = dataEntrySettingsModel.SaveSessionOnQuit,
                     DeleteSessionOnTimeout = dataEntrySettingsModel.DeleteSessionOnTimeout,
                     DeleteSessionOnQuit = dataEntrySettingsModel.DeleteSessionOnQuit,
-                    SessionTimeout = dataEntrySettingsModel.SessionTimeout
+                    SessionTimeout = dataEntrySettingsModel.SessionTimeout,
+                    ApplyRecordLocking = dataEntrySettingsModel.ApplyRecordLocking
                 });
             }
 

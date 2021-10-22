@@ -44,7 +44,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
                     SaveSessionOnQuit = false,
                     DeleteSessionOnTimeout = true, 
                     DeleteSessionOnQuit = false, 
-                    SessionTimeout = 30
+                    SessionTimeout = 30,
+                    ApplyRecordLocking = true
                 },
                 new DataEntrySettingsModel
                 {
@@ -53,7 +54,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
                     SaveSessionOnQuit = true,
                     DeleteSessionOnTimeout = false, 
                     DeleteSessionOnQuit = true, 
-                    SessionTimeout = 15
+                    SessionTimeout = 15,
+                    ApplyRecordLocking = false
                 },
             };
 
@@ -72,6 +74,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.IsTrue(dataEntrySettings1.DeleteSessionOnTimeout);
             Assert.IsFalse(dataEntrySettings1.DeleteSessionOnQuit);
             Assert.AreEqual(30, dataEntrySettings1.SessionTimeout);
+            Assert.IsTrue(dataEntrySettings1.ApplyRecordLocking);
 
             var dataEntrySettings2 = result.FirstOrDefault(de => de.Type == "StrictCati");
             Assert.IsNotNull(dataEntrySettings2);
@@ -80,6 +83,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.IsFalse(dataEntrySettings2.DeleteSessionOnTimeout);
             Assert.IsTrue(dataEntrySettings2.DeleteSessionOnQuit);
             Assert.AreEqual(15, dataEntrySettings2.SessionTimeout);
+            Assert.IsFalse(dataEntrySettings2.ApplyRecordLocking);
         }
     }
 }
