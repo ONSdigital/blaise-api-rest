@@ -16,6 +16,7 @@ namespace Blaise.Api.Tests.Unit.Services
         private readonly string _primaryKey;
         private readonly int _hOutComplete;
         private readonly int _hOutPartial;
+        private readonly int _hOutIneligible;
         private readonly int _hOutNotStarted;
         private readonly string _date1;
         private readonly string _date2;
@@ -29,6 +30,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _hOutComplete = 110;
             _hOutPartial = 210;
             _hOutNotStarted = 0;
+            _hOutIneligible = 580;
 
             _date1 = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
             _date2 = DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture);
@@ -147,7 +149,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [TestCase(461)]
         [TestCase(541)]
         [TestCase(542)]
-        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Haw_An_Outcome_Between_210_And_542_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned(int existingOutcome)
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Has_An_Outcome_Between_210_And_542_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned(int existingOutcome)
         {
             //arrange
             var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutPartial, _date1);
@@ -228,6 +230,90 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             Assert.IsFalse(result);
+        }
+
+        // Scenario 13 (https://collaborate2.ons.gov.uk/confluence/display/QSS/LMS+NISRA+Case+Processing+Scenarios - scenario 1)
+        [Test]
+        public void Given_The_Nisra_Case_And_Existing_Case_Have_An_Outcome_Of_Ineligible_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned()
+        {
+            //arrange
+            var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutIneligible, _date1);
+            var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutIneligible, _date2);
+
+            //act
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+
+            //assert
+            Assert.IsTrue(result);
+        }
+
+        // Scenario 14 (https://collaborate2.ons.gov.uk/confluence/display/QSS/LMS+NISRA+Case+Processing+Scenarios - scenario 2)
+        [TestCase(310)]
+        [TestCase(430)]
+        [TestCase(440)]
+        [TestCase(460)]
+        [TestCase(461)]
+        [TestCase(541)]
+        [TestCase(542)]
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Ineligible_And_Existing_Case_Has_An_Outcome_Between_310_And_542_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned(int existingOutcome)
+        {
+            //arrange
+            var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutIneligible, _date1);
+            var existingCaseStatusModel = new CaseStatusModel(_primaryKey, existingOutcome, _date2);
+
+            //act
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+
+            //assert
+            Assert.IsTrue(result);
+        }
+
+        // Scenario 15 (https://collaborate2.ons.gov.uk/confluence/display/QSS/LMS+NISRA+Case+Processing+Scenarios - scenario 3)
+        [TestCase(110)]
+        [TestCase(210)]
+        [TestCase(561)]
+        [TestCase(562)]
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Ineligible_And_Existing_Case_Has_An_Outcome_Of_110_210_561_Or_562_When_I_Call_CaseNeedsToBeUpdated_Then_False_Is_Returned(int existingOutcome)
+        {
+            //arrange
+            var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutIneligible, _date1);
+            var existingCaseStatusModel = new CaseStatusModel(_primaryKey, existingOutcome, _date2);
+
+            //act
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+
+            //assert
+            Assert.IsFalse(result);
+        }
+
+        // Scenario 16
+        [Test]
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Of_Ineligible_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned()
+        {
+            //arrange
+            var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutComplete, _date1);
+            var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutIneligible, _date2);
+
+            //act
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+
+            //assert
+            Assert.IsTrue(result);
+        }
+
+        // Scenario 17
+        [Test]
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Has_An_Outcome_Of_Ineligible_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned()
+        {
+            //arrange
+            var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutPartial, _date1);
+            var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutIneligible, _date2);
+
+            //act
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+
+            //assert
+            Assert.IsTrue(result);
         }
 
         [Test]
