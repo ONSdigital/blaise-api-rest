@@ -132,6 +132,7 @@
     <Compile Include="Extensions\ArgumentValidationExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Interfaces\Mappers\ICatiInstrumentDtoMapper.cs" />
+    <Compile Include="Interfaces\Mappers\IDataEntryDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IInstrumentNodeDtoMapper.cs" />
     <Compile Include="Interfaces\Services\ICatiDataBlockService.cs" />
     <Compile Include="Interfaces\Services\IInstrumentUninstallerService.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Interfaces\Mappers\IInstrumentDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IInstrumentStatusMapper.cs" />
     <Compile Include="Mappers\CatiInstrumentDtoMapper.cs" />
+    <Compile Include="Mappers\DataEntrySettingsDtoMapper.cs" />
     <Compile Include="Mappers\InstrumentNodeDtoMapper.cs" />
     <Compile Include="Mappers\InstrumentDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IUserRoleDtoMapper.cs" />

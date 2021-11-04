@@ -79,6 +79,7 @@
     <Compile Include="Models\Cati\CatiInstrumentDto.cs" />
     <Compile Include="Models\Cati\DayBatchDto.cs" />
     <Compile Include="Models\Health\HealthCheckResultDto.cs" />
+    <Compile Include="Models\Instrument\DataEntrySettingsDto.cs" />
     <Compile Include="Models\Instrument\InstrumentDataDto.cs" />
     <Compile Include="Models\Instrument\InstrumentNodeDto.cs" />
     <Compile Include="Models\Instrument\InstrumentPackageDto.cs" />
