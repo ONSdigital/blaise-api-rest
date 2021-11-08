@@ -78,6 +78,7 @@
     <Compile Include="Models\Admin\OpenConnectionDto.cs" />
     <Compile Include="Models\Cati\CatiInstrumentDto.cs" />
     <Compile Include="Models\Cati\CreateDayBatchDto.cs" />
+    <Compile Include="Models\Cati\DayBatchDto.cs" />
     <Compile Include="Models\Health\HealthCheckResultDto.cs" />
     <Compile Include="Models\Instrument\InstrumentDataDto.cs" />
     <Compile Include="Models\Instrument\InstrumentNodeDto.cs" />

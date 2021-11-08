@@ -6,9 +6,11 @@ using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
+using Blaise.Nuget.Api.Contracts.Models;
 using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.ServerManager;
+using DayBatchDto = Blaise.Api.Contracts.Models.Cati.DayBatchDto;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
@@ -17,7 +19,7 @@ namespace Blaise.Api.Tests.Unit.Services
         private ICatiService _sut;
         private Mock<IBlaiseCatiApi> _blaiseCatiApiMock;
         private Mock<IBlaiseSurveyApi> _blaiseSurveyApiMock;
-        private Mock<ICatiInstrumentDtoMapper> _mapperMock;
+        private Mock<ICatiDtoMapper> _mapperMock;
 
         private CreateDayBatchDto _createDayBatchDto;
 
@@ -26,7 +28,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             _blaiseCatiApiMock = new Mock<IBlaiseCatiApi>();
             _blaiseSurveyApiMock = new Mock<IBlaiseSurveyApi>();
-            _mapperMock = new Mock<ICatiInstrumentDtoMapper>();
+            _mapperMock = new Mock<ICatiDtoMapper>();
 
             _createDayBatchDto = new CreateDayBatchDto { DayBatchDate = DateTime.Today };
 
@@ -308,11 +310,35 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseCatiApiMock.Setup(b =>
                 b.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto.DayBatchDate));
 
+            _mapperMock.Setup(m => m.MapToDayBatchDto(It.IsAny<DayBatchModel>()))
+                .Returns(new DayBatchDto());
+
             //act
             _sut.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto);
 
             //assert
             _blaiseCatiApiMock.Verify(v => v.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto.DayBatchDate), Times.Once);
+        }
+
+        [Test]
+        public void Given_A_SurveyDay_Exists_When_I_Call_CreateDayBatch_Then_A_DayBatchDto_Is_Returned()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
+
+            _blaiseCatiApiMock.Setup(b =>
+                b.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto.DayBatchDate));
+
+            _mapperMock.Setup(m => m.MapToDayBatchDto(It.IsAny<DayBatchModel>()))
+                .Returns(new DayBatchDto());
+
+            //act
+            var result =_sut.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<DayBatchDto>(result);
         }
 
         [Test]
@@ -364,7 +390,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_A_Null_DayBatchDto_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_CreateDayBatchDto_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
             const string instrumentName = "OPN2101A";
@@ -373,7 +399,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(instrumentName,
                 serverParkName, null));
-            Assert.AreEqual("The argument 'dayBatchDto' must be supplied", exception.ParamName);
+            Assert.AreEqual("The argument 'createDayBatchDto' must be supplied", exception.ParamName);
         }
     }
 }

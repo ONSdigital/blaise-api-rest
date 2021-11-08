@@ -71,16 +71,16 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("serverparks/{serverParkName}/instruments/{instrumentName}/daybatch")]
-        [SwaggerResponse(HttpStatusCode.Created, Type= typeof(CreateDayBatchDto))]
+        [SwaggerResponse(HttpStatusCode.Created, Type= typeof(DayBatchDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult CreateDaybatch([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] CreateDayBatchDto dayBatchDto)
+        public IHttpActionResult CreateDayBatch([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] CreateDayBatchDto createDayBatchDto)
         {
-            _loggingService.LogInfo($"Create a daybatch for instrument '{instrumentName}' on server park '{serverParkName}' for '{dayBatchDto.DayBatchDate}'");
+            _loggingService.LogInfo($"Create a daybatch for instrument '{instrumentName}' on server park '{serverParkName}' for '{createDayBatchDto.DayBatchDate}'");
 
-            _catiService.CreateDayBatch(instrumentName, serverParkName, dayBatchDto);
+            var dayBatchDto = _catiService.CreateDayBatch(instrumentName, serverParkName, createDayBatchDto);
 
-            _loggingService.LogInfo($"Daybatch created for instrument '{instrumentName}' on '{dayBatchDto.DayBatchDate}'");
+            _loggingService.LogInfo($"Daybatch created for instrument '{instrumentName}' on '{createDayBatchDto.DayBatchDate}'");
 
             return Created("", dayBatchDto);
         }
