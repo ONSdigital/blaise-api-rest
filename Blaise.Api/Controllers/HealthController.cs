@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Blaise.Api.Contracts.Enums;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.Health;
 using Blaise.Api.Core.Interfaces.Services;
@@ -29,13 +27,6 @@ namespace Blaise.Api.Controllers
         [Route("")]
         public IHttpActionResult HealthCheck()
         {
-            var results = PerformHealthCheck();
-
-            if (results.Any(r => r.StatusType == HealthStatusType.Error))
-            {
-                return Content(HttpStatusCode.ServiceUnavailable, results);
-            }
-
             return Ok();
         }
 
