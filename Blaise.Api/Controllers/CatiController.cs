@@ -71,16 +71,16 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("serverparks/{serverParkName}/instruments/{instrumentName}/daybatch")]
-        [SwaggerResponse(HttpStatusCode.Created, Type= typeof(DayBatchDto))]
+        [SwaggerResponse(HttpStatusCode.Created, Type= typeof(CreateDayBatchDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult CreateDaybatch([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] DayBatchDto dayBatchDto)
+        public IHttpActionResult CreateDaybatch([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] CreateDayBatchDto dayBatchDto)
         {
-            _loggingService.LogInfo($"Create a daybatch for instrument '{instrumentName}' on server park '{serverParkName}' for '{dayBatchDto.DaybatchDate}'");
+            _loggingService.LogInfo($"Create a daybatch for instrument '{instrumentName}' on server park '{serverParkName}' for '{dayBatchDto.DayBatchDate}'");
 
             _catiService.CreateDayBatch(instrumentName, serverParkName, dayBatchDto);
 
-            _loggingService.LogInfo($"Daybatch created for instrument '{instrumentName}' on '{dayBatchDto.DaybatchDate}'");
+            _loggingService.LogInfo($"Daybatch created for instrument '{instrumentName}' on '{dayBatchDto.DayBatchDate}'");
 
             return Created("", dayBatchDto);
         }

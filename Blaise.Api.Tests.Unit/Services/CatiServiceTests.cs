@@ -19,7 +19,7 @@ namespace Blaise.Api.Tests.Unit.Services
         private Mock<IBlaiseSurveyApi> _blaiseSurveyApiMock;
         private Mock<ICatiInstrumentDtoMapper> _mapperMock;
 
-        private DayBatchDto _dayBatchDto;
+        private CreateDayBatchDto _createDayBatchDto;
 
         [SetUp]
         public void SetUpTests()
@@ -28,7 +28,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseSurveyApiMock = new Mock<IBlaiseSurveyApi>();
             _mapperMock = new Mock<ICatiInstrumentDtoMapper>();
 
-            _dayBatchDto = new DayBatchDto { DaybatchDate = DateTime.Today };
+            _createDayBatchDto = new CreateDayBatchDto { DayBatchDate = DateTime.Today };
 
             _sut = new CatiService(
                 _blaiseCatiApiMock.Object,
@@ -306,13 +306,13 @@ namespace Blaise.Api.Tests.Unit.Services
             const string serverParkName = "ServerParkA";
 
             _blaiseCatiApiMock.Setup(b =>
-                b.CreateDayBatch(instrumentName, serverParkName, _dayBatchDto.DaybatchDate));
+                b.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto.DayBatchDate));
 
             //act
-            _sut.CreateDayBatch(instrumentName, serverParkName, _dayBatchDto);
+            _sut.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto);
 
             //assert
-            _blaiseCatiApiMock.Verify(v => v.CreateDayBatch(instrumentName, serverParkName, _dayBatchDto.DaybatchDate), Times.Once);
+            _blaiseCatiApiMock.Verify(v => v.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto.DayBatchDate), Times.Once);
         }
 
         [Test]
@@ -323,7 +323,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateDayBatch(string.Empty,
-                serverParkName, _dayBatchDto));
+                serverParkName, _createDayBatchDto));
             Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
         }
 
@@ -335,7 +335,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(null,
-                serverParkName, _dayBatchDto));
+                serverParkName, _createDayBatchDto));
             Assert.AreEqual("instrumentName", exception.ParamName);
         }
 
@@ -347,7 +347,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateDayBatch(instrumentName,
-                string.Empty, _dayBatchDto));
+                string.Empty, _createDayBatchDto));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -359,7 +359,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(instrumentName,
-                null, _dayBatchDto));
+                null, _createDayBatchDto));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 

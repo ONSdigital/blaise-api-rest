@@ -54,13 +54,13 @@ namespace Blaise.Api.Core.Services
             return GetCatiInstrumentDto(instrument);
         }
 
-        public void CreateDayBatch(string instrumentName, string serverParkName, DayBatchDto dayBatchDto)
+        public void CreateDayBatch(string instrumentName, string serverParkName, CreateDayBatchDto dayBatchDto)
         {
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             dayBatchDto.ThrowExceptionIfNull("dayBatchDto");
 
-            _blaiseCatiApi.CreateDayBatch(instrumentName, serverParkName, dayBatchDto.DaybatchDate);
+            _blaiseCatiApi.CreateDayBatch(instrumentName, serverParkName, dayBatchDto.DayBatchDate);
         }
 
         private List<CatiInstrumentDto> GetCatiInstruments(IEnumerable<ISurvey> instruments)
