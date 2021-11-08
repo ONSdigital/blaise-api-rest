@@ -65,6 +65,16 @@ namespace Blaise.Api.Core.Services
             return _mapper.MapToDayBatchDto(dayBatchModel);
         }
 
+        public DayBatchDto GetDayBatch(string instrumentName, string serverParkName)
+        {
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+
+            var dayBatchModel = _blaiseCatiApi.GetDayBatch(instrumentName, serverParkName);
+
+            return _mapper.MapToDayBatchDto(dayBatchModel);
+        }
+
         private List<CatiInstrumentDto> GetCatiInstruments(IEnumerable<ISurvey> instruments)
         {
             var catiInstruments = new List<CatiInstrumentDto>();
