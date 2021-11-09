@@ -12,12 +12,12 @@ namespace Blaise.Api.Core.Services
     {
         private readonly IBlaiseCatiApi _blaiseCatiApi;
         private readonly IBlaiseSurveyApi _blaiseSurveyApi;
-        private readonly ICatiInstrumentDtoMapper _mapper;
+        private readonly ICatiDtoMapper _mapper;
 
         public CatiService(
             IBlaiseCatiApi blaiseApi,
             IBlaiseSurveyApi blaiseSurveyApi,
-            ICatiInstrumentDtoMapper mapper
+            ICatiDtoMapper mapper
            )
         {
             _blaiseCatiApi = blaiseApi;
@@ -54,13 +54,26 @@ namespace Blaise.Api.Core.Services
             return GetCatiInstrumentDto(instrument);
         }
 
-        public void CreateDayBatch(string instrumentName, string serverParkName, DayBatchDto dayBatchDto)
+        public DayBatchDto CreateDayBatch(string instrumentName, string serverParkName, CreateDayBatchDto createDayBatchDto)
         {
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
-            dayBatchDto.ThrowExceptionIfNull("dayBatchDto");
+            createDayBatchDto.ThrowExceptionIfNull("createDayBatchDto");
 
-            _blaiseCatiApi.CreateDayBatch(instrumentName, serverParkName, dayBatchDto.DaybatchDate);
+            var dayBatchModel = _blaiseCatiApi.CreateDayBatch(instrumentName, serverParkName, 
+                createDayBatchDto.DayBatchDate, createDayBatchDto.CheckForTreatedCases);
+
+            return _mapper.MapToDayBatchDto(dayBatchModel);
+        }
+
+        public DayBatchDto GetDayBatch(string instrumentName, string serverParkName)
+        {
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+
+            var dayBatchModel = _blaiseCatiApi.GetDayBatch(instrumentName, serverParkName);
+
+            return _mapper.MapToDayBatchDto(dayBatchModel);
         }
 
         private List<CatiInstrumentDto> GetCatiInstruments(IEnumerable<ISurvey> instruments)
