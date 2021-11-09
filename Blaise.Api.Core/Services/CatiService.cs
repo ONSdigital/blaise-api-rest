@@ -60,7 +60,8 @@ namespace Blaise.Api.Core.Services
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             createDayBatchDto.ThrowExceptionIfNull("createDayBatchDto");
 
-            var dayBatchModel = _blaiseCatiApi.CreateDayBatch(instrumentName, serverParkName, createDayBatchDto.DayBatchDate);
+            var dayBatchModel = _blaiseCatiApi.CreateDayBatch(instrumentName, serverParkName, 
+                createDayBatchDto.DayBatchDate, createDayBatchDto.CheckForTreatedCases);
 
             return _mapper.MapToDayBatchDto(dayBatchModel);
         }

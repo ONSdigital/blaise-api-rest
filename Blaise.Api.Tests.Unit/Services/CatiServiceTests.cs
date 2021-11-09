@@ -300,15 +300,18 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
-        [Test]
-        public void Given_A_SurveyDay_Exists_When_I_Call_CreateDayBatch_Then_The_Correct_Service_Is_Called()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Given_A_SurveyDay_Exists_When_I_Call_CreateDayBatch_Then_The_Correct_Service_Is_Called(bool checkForTreatedCases)
         {
             //arrange
             const string instrumentName = "OPN2101A";
             const string serverParkName = "ServerParkA";
 
+            _createDayBatchDto.CheckForTreatedCases = checkForTreatedCases;
+
             _blaiseCatiApiMock.Setup(b =>
-                b.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto.DayBatchDate));
+                b.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto.DayBatchDate, checkForTreatedCases));
 
             _mapperMock.Setup(m => m.MapToDayBatchDto(It.IsAny<DayBatchModel>()))
                 .Returns(new DayBatchDto());
@@ -317,18 +320,22 @@ namespace Blaise.Api.Tests.Unit.Services
             _sut.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto);
 
             //assert
-            _blaiseCatiApiMock.Verify(v => v.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto.DayBatchDate), Times.Once);
+            _blaiseCatiApiMock.Verify(v => v.CreateDayBatch(instrumentName, serverParkName, 
+                _createDayBatchDto.DayBatchDate, _createDayBatchDto.CheckForTreatedCases), Times.Once);
         }
 
-        [Test]
-        public void Given_A_SurveyDay_Exists_When_I_Call_CreateDayBatch_Then_A_DayBatchDto_Is_Returned()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Given_A_SurveyDay_Exists_When_I_Call_CreateDayBatch_Then_A_DayBatchDto_Is_Returned(bool checkForTreatedCases)
         {
             //arrange
             const string instrumentName = "OPN2101A";
             const string serverParkName = "ServerParkA";
 
+            _createDayBatchDto.CheckForTreatedCases = checkForTreatedCases;
+
             _blaiseCatiApiMock.Setup(b =>
-                b.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto.DayBatchDate));
+                b.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto.DayBatchDate, checkForTreatedCases));
 
             _mapperMock.Setup(m => m.MapToDayBatchDto(It.IsAny<DayBatchModel>()))
                 .Returns(new DayBatchDto());
