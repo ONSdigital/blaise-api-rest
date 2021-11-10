@@ -98,7 +98,7 @@ namespace Blaise.Api.Controllers
 
             _loggingService.LogInfo($"Daybatch created for instrument '{instrumentName}' on '{createDayBatchDto.DayBatchDate}'");
 
-            return Created("", dayBatchDto);
+            return Created($"{Request.RequestUri}", dayBatchDto);
         }
     }
 }
