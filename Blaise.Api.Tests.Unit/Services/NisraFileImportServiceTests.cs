@@ -10,6 +10,7 @@ using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.DataLink;
 using StatNeth.Blaise.API.DataRecord;
+using StatNeth.Blaise.Shared.App;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
@@ -162,10 +163,6 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(false)
                 .Returns(true);
 
-            _caseComparisonServiceMock.Setup(c =>
-                    c.CaseNeedsToBeUpdated(_nisraCaseStatusModel, _existingStatusModel, _instrumentName))
-                .Returns(true);
-
             _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _instrumentName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
 
@@ -176,6 +173,8 @@ namespace Blaise.Api.Tests.Unit.Services
             _onlineCaseServiceMock.Verify(v => v.UpdateCase(It.IsAny<IDataRecord>(), It.IsAny<IDataRecord>(),
                 It.IsAny<string>(), It.IsAny<string>()), Times.Never);
             _loggingServiceMock.Verify(l => l.LogWarn($"The nisra case '{_nisraCaseStatusModel.PrimaryKey}' does not exist in the database for the instrument '{_instrumentName}'"), Times.Once());
+            _caseComparisonServiceMock.Verify(cc => cc.CaseNeedsToBeUpdated(It.IsAny<CaseStatusModel>(), It.IsAny<CaseStatusModel>(),
+                It.IsAny<string>()), Times.Never);
         }
     }
 }
