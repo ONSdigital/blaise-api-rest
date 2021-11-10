@@ -5,15 +5,16 @@ using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Mappers;
 using Blaise.Nuget.Api.Contracts.Enums;
+using Blaise.Nuget.Api.Contracts.Models;
 using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.ServerManager;
 
 namespace Blaise.Api.Tests.Unit.Mappers
 {
-    public class CatiInstrumentDtoMapperTests
+    public class CatiDtoMapperTests
     {
-        private CatiInstrumentDtoMapper _sut;
+        private CatiDtoMapper _sut;
         private Mock<IInstrumentStatusMapper> _statusMapperMock;
         private Mock<IInstrumentNodeDtoMapper> _nodeDtoMapperMock;
 
@@ -47,7 +48,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             _statusMapperMock = new Mock<IInstrumentStatusMapper>();
             _nodeDtoMapperMock = new Mock<IInstrumentNodeDtoMapper>();
 
-            _sut = new CatiInstrumentDtoMapper(_statusMapperMock.Object, _nodeDtoMapperMock.Object);
+            _sut = new CatiDtoMapper(_statusMapperMock.Object, _nodeDtoMapperMock.Object);
         }
 
         [Test]
@@ -398,6 +399,36 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.IsFalse(result.DeliverData);
         }
 
+        [Test]
+        public void Given_An_DayBatchModel_When_I_Call_MapToDayBatchDto_Then_A_DayBatchDto_Is_Returned()
+        {
+            //arrange
+            var dayBatchModel = new DayBatchModel(DateTime.Today, new List<string>());
 
+            //act
+            var result = _sut.MapToDayBatchDto(dayBatchModel);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<DayBatchDto>(result);
+        }
+
+        [Test]
+        public void Given_An_DayBatchModel_When_I_Call_MapToDayBatchDto_Then_An_ExpectedDayBatchDto_Is_Returned()
+        {
+            //arrange
+            var dayBatchDate = DateTime.Today;
+            var caseIds = new List<string> { "90001", "90002" };
+            var dayBatchModel = new DayBatchModel(dayBatchDate, caseIds);
+
+            //act
+            var result = _sut.MapToDayBatchDto(dayBatchModel);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<DayBatchDto>(result);
+            Assert.AreEqual(dayBatchDate, result.DayBatchDate);
+            Assert.AreEqual(caseIds, result.CaseIds);
+        }
     }
 }

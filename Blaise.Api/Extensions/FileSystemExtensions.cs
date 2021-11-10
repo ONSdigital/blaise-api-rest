@@ -29,9 +29,8 @@ namespace Blaise.Api.Extensions
                 Thread.Sleep(2000);
                 Directory.Delete(path, true);
             }
-            catch (Exception e)
+            catch //ewwwwwww fml
             {
-                Console.WriteLine(e);
             }
         }
     }

@@ -191,7 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\UnityTests.cs" />
-    <Compile Include="Mappers\CatiInstrumentDtoMapperTests.cs" />
+    <Compile Include="Mappers\CatiDtoMapperTests.cs" />
     <Compile Include="Mappers\InstrumentNodeDtoMapperTests.cs" />
     <Compile Include="Mappers\InstrumentStatusMapperTests.cs" />
     <Compile Include="Mappers\InstrumentDtoMapperTests.cs" />
