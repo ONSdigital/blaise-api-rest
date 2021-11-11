@@ -11,26 +11,29 @@ namespace Blaise.Api.Core.Services
     public class CatiService : ICatiService
     {
         private readonly IBlaiseCatiApi _blaiseCatiApi;
-        private readonly IBlaiseSurveyApi _blaiseSurveyApi;
+        private readonly IBlaiseServerParkApi _blaiseServerParkApi;
         private readonly ICatiDtoMapper _mapper;
 
         public CatiService(
             IBlaiseCatiApi blaiseApi,
-            IBlaiseSurveyApi blaiseSurveyApi,
-            ICatiDtoMapper mapper
-           )
+            IBlaiseServerParkApi blaiseServerParkApi,
+            ICatiDtoMapper mapper)
         {
             _blaiseCatiApi = blaiseApi;
+            _blaiseServerParkApi = blaiseServerParkApi;
             _mapper = mapper;
-            _blaiseSurveyApi = blaiseSurveyApi;
         }
 
         public List<CatiInstrumentDto> GetCatiInstruments()
         {
             var catiInstruments = new List<CatiInstrumentDto>();
+            var serverParks = _blaiseServerParkApi.GetNamesOfServerParks();
 
-            var instruments = _blaiseSurveyApi.GetSurveysAcrossServerParks();
-            catiInstruments.AddRange(GetCatiInstruments(instruments));
+            foreach (var serverPark in serverParks)
+            {
+                var instruments = _blaiseCatiApi.GetInstalledSurveys(serverPark);
+                catiInstruments.AddRange(GetCatiInstruments(instruments));
+            }
 
             return catiInstruments;
         }
@@ -39,7 +42,7 @@ namespace Blaise.Api.Core.Services
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            var instruments = _blaiseSurveyApi.GetSurveys(serverParkName);
+            var instruments = _blaiseCatiApi.GetInstalledSurveys(serverParkName);
 
             return GetCatiInstruments(instruments);
         }
@@ -49,7 +52,7 @@ namespace Blaise.Api.Core.Services
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            var instrument = _blaiseSurveyApi.GetSurvey(instrumentName, serverParkName);
+            var instrument = _blaiseCatiApi.GetInstalledSurvey(instrumentName, serverParkName);
 
             return GetCatiInstrumentDto(instrument);
         }

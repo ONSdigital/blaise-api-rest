@@ -18,7 +18,7 @@ namespace Blaise.Api.Tests.Unit.Services
     {
         private ICatiService _sut;
         private Mock<IBlaiseCatiApi> _blaiseCatiApiMock;
-        private Mock<IBlaiseSurveyApi> _blaiseSurveyApiMock;
+        private Mock<IBlaiseServerParkApi> _blaiseServerParkApiMock;
         private Mock<ICatiDtoMapper> _mapperMock;
 
         private CreateDayBatchDto _createDayBatchDto;
@@ -27,14 +27,14 @@ namespace Blaise.Api.Tests.Unit.Services
         public void SetUpTests()
         {
             _blaiseCatiApiMock = new Mock<IBlaiseCatiApi>();
-            _blaiseSurveyApiMock = new Mock<IBlaiseSurveyApi>();
+            _blaiseServerParkApiMock = new Mock<IBlaiseServerParkApi>();
             _mapperMock = new Mock<ICatiDtoMapper>();
 
             _createDayBatchDto = new CreateDayBatchDto { DayBatchDate = DateTime.Today };
 
             _sut = new CatiService(
                 _blaiseCatiApiMock.Object,
-                _blaiseSurveyApiMock.Object,
+                _blaiseServerParkApiMock.Object,
                 _mapperMock.Object);
         }
 
@@ -55,6 +55,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             const string serverPark1 = "ServerParkA";
             const string serverPark2 = "ServerParkB";
+            var serverParkList = new List<string> { serverPark1, serverPark2 };
 
             const string instrument1 = "OPN2010A";
             var survey1Mock = new Mock<ISurvey>();
@@ -66,13 +67,11 @@ namespace Blaise.Api.Tests.Unit.Services
             survey2Mock.Setup(s => s.Name).Returns(instrument2);
             survey2Mock.Setup(s => s.ServerPark).Returns(serverPark2);
 
-            var surveyList = new List<ISurvey>
-            {
-                survey1Mock.Object,
-                survey2Mock.Object
-            };
 
-            _blaiseSurveyApiMock.Setup(b => b.GetSurveysAcrossServerParks()).Returns(surveyList);
+            _blaiseServerParkApiMock.Setup(b => b.GetNamesOfServerParks()).Returns(serverParkList);
+
+            _blaiseCatiApiMock.Setup(bc => bc.GetInstalledSurveys(serverPark1)).Returns(new List<ISurvey> { survey1Mock.Object });
+            _blaiseCatiApiMock.Setup(bc => bc.GetInstalledSurveys(serverPark2)).Returns(new List<ISurvey> { survey2Mock.Object });
 
             var surveyDays1 = new List<DateTime> { DateTime.Today.AddDays(-1) };
             _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(instrument1, serverPark1))
@@ -146,7 +145,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 survey2Mock.Object
             };
 
-            _blaiseSurveyApiMock.Setup(b => b.GetSurveys(serverPark)).Returns(surveyList);
+            _blaiseCatiApiMock.Setup(b => b.GetInstalledSurveys(serverPark)).Returns(surveyList);
 
             var surveyDays1 = new List<DateTime> { DateTime.Today.AddDays(-1) };
             var surveyDays2 = new List<DateTime> { DateTime.Today };
@@ -204,7 +203,7 @@ namespace Blaise.Api.Tests.Unit.Services
             survey1Mock.Setup(s => s.Name).Returns(instrumentName);
             survey1Mock.Setup(s => s.ServerPark).Returns(serverParkName);
 
-            _blaiseSurveyApiMock.Setup(i => i.GetSurvey(instrumentName, serverParkName))
+            _blaiseCatiApiMock.Setup(i => i.GetInstalledSurvey(instrumentName, serverParkName))
                 .Returns(survey1Mock.Object);
 
             _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(It.IsAny<string>(), It.IsAny<string>()))
@@ -234,7 +233,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             var surveyDays1 = new List<DateTime> { DateTime.Today.AddDays(-1) };
 
-            _blaiseSurveyApiMock.Setup(i => i.GetSurvey(instrumentName, serverParkName))
+            _blaiseCatiApiMock.Setup(i => i.GetInstalledSurvey(instrumentName, serverParkName))
                 .Returns(survey1Mock.Object);
 
             _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(instrumentName, serverParkName))
