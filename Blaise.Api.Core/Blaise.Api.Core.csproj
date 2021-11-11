@@ -142,6 +142,7 @@
     <Compile Include="Interfaces\Mappers\IInstrumentDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IInstrumentStatusMapper.cs" />
     <Compile Include="Mappers\CatiDtoMapper.cs" />
+    <Compile Include="Mappers\DataEntrySettingsDtoMapper.cs" />
     <Compile Include="Mappers\InstrumentNodeDtoMapper.cs" />
     <Compile Include="Mappers\InstrumentDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IUserRoleDtoMapper.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Services\CatiDataBlockService.cs" />
     <Compile Include="Interfaces\Services\IReportingService.cs" />
     <Compile Include="Interfaces\Services\IAdminService.cs" />
+    <Compile Include="Interfaces\Mappers\IDataEntryDtoMapper.cs" />
     <Compile Include="Services\NisraCaseComparisonService.cs" />
     <Compile Include="Interfaces\Services\INisraCaseComparisonService.cs" />
     <Compile Include="Services\NisraCaseUpdateService.cs" />

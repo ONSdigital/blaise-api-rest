@@ -215,5 +215,17 @@ namespace Blaise.Api.Controllers
 
             return Ok(exists);
         }
+
+        [HttpGet]
+        [Route("{instrumentName}/settings")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<DataEntrySettingsDto>))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult DataEntrySettings([FromUri] string serverParkName, [FromUri] string instrumentName)
+        {
+            var dataEntrySettings = _instrumentService.GetDataEntrySettings(instrumentName, serverParkName);
+
+            return Ok(dataEntrySettings);
+        }
     }
 }
