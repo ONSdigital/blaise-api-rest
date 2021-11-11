@@ -67,6 +67,7 @@ namespace Blaise.Api.Core.Services
             if (existingCaseStatusModel == null)
             {
                 _loggerService.LogWarn($"The nisra case '{nisraCaseStatusModel.PrimaryKey}' does not exist in the database for the instrument '{instrumentName}'");
+                return false;
             }
 
             return _caseComparisonService.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, instrumentName);
