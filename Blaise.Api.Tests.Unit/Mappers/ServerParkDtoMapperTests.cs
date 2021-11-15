@@ -65,6 +65,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_ServerPark_When_I_Call_MapToServerParkDto_Then_A_Correct_ServerParkDto_Is_Returned()
         {
             //arrange
+            var productVersionInfoMock = new Mock<IProductVersionInfo>();
+            productVersionInfoMock.Setup(pi => pi.ToString()).Returns("5.9.9");
+
             const string serverParkName = "ServerParkA";
             var serverPark = new Mock<IServerPark>();
             serverPark.Setup(s => s.Name).Returns(serverParkName);
@@ -76,6 +79,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var machine1ServerRoleCollection = new Mock<IServerRoleCollection>();
             machine1ServerRoleCollection.Setup(s => s.GetEnumerator()).Returns(machine1Roles.GetEnumerator());
             server1Mock.Setup(s => s.Name).Returns(machine1Name);
+            server1Mock.As<IServer2>().Setup(s => s.BlaiseVersion).Returns(productVersionInfoMock.Object);
             server1Mock.Setup(s => s.LogicalRoot).Returns(machine1LogicalRoot);
             server1Mock.Setup(s => s.Roles).Returns(machine1ServerRoleCollection.Object);
 
@@ -86,6 +90,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var machine2ServerRoleCollection = new Mock<IServerRoleCollection>();
             machine2ServerRoleCollection.Setup(s => s.GetEnumerator()).Returns(machine2Roles.GetEnumerator());
             server2Mock.Setup(s => s.Name).Returns(machine2Name);
+            server2Mock.As<IServer2>().Setup(s => s.BlaiseVersion).Returns(productVersionInfoMock.Object);
             server2Mock.Setup(s => s.LogicalRoot).Returns(machine2LogicalRoot);
             server2Mock.Setup(s => s.Roles).Returns(machine2ServerRoleCollection.Object);
 
@@ -108,10 +113,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.IsNotEmpty(result.Servers);
             Assert.AreEqual(2, result.Servers.Count());
 
-            Assert.True(result.Servers.Any(s => s.Name == machine1Name && s.LogicalServerName == machine1LogicalRoot &&
+            Assert.True(result.Servers.Any(s => s.Name == machine1Name && s.BlaiseVersion == "5.9.9" && s.LogicalServerName == machine1LogicalRoot &&
                                                 s.Roles.OrderByDescending(l => l).SequenceEqual(machine1Roles.OrderByDescending(l => l))));
 
-            Assert.True(result.Servers.Any(s => s.Name == machine2Name && s.LogicalServerName == machine2LogicalRoot && 
+            Assert.True(result.Servers.Any(s => s.Name == machine2Name && s.BlaiseVersion == "5.9.9" && s.LogicalServerName == machine2LogicalRoot && 
                                                 s.Roles.OrderByDescending(l => l).SequenceEqual(machine2Roles.OrderByDescending(l => l))));
 
         }

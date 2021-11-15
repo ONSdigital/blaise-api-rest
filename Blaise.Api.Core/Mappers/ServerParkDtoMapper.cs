@@ -32,11 +32,12 @@ namespace Blaise.Api.Core.Mappers
             return new ServerParkDto
             {
                 Name = serverPark.Name,
+                LoadBalancer = serverPark.LoadBalancer,
                 Instruments = _mapper.MapToInstrumentDtos(serverPark.Surveys),
                 Servers = MapToServerDtos(serverPark.Servers)
             };
         }
-
+        
         private static IEnumerable<ServerDto> MapToServerDtos(IServerCollection servers)
         {
             var serverDtoList = new List<ServerDto>();
@@ -46,6 +47,7 @@ namespace Blaise.Api.Core.Mappers
                 serverDtoList.Add(new ServerDto
                 {
                     Name = server.Name,
+                    BlaiseVersion = ((IServer2)server).BlaiseVersion.ToString(),
                     LogicalServerName = server.LogicalRoot,
                     Roles = server.Roles.ToList()
                 });
