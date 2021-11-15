@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using StatNeth.Blaise.API.ServerManager;
+// ReSharper disable PossibleInvalidOperationException
 
 namespace Blaise.Api.Core.Services
 {
@@ -62,9 +64,11 @@ namespace Blaise.Api.Core.Services
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             createDayBatchDto.ThrowExceptionIfNull("createDayBatchDto");
+            createDayBatchDto.DayBatchDate.ThrowExceptionIfNull("createDayBatchDto.DayBatchDate");
+            createDayBatchDto.CheckForTreatedCases.ThrowExceptionIfNull("createDayBatchDto.CheckForTreatedCases");
 
-            var dayBatchModel = _blaiseCatiApi.CreateDayBatch(instrumentName, serverParkName, 
-                createDayBatchDto.DayBatchDate, createDayBatchDto.CheckForTreatedCases);
+            var dayBatchModel = _blaiseCatiApi.CreateDayBatch(instrumentName, serverParkName,
+                (DateTime)createDayBatchDto.DayBatchDate, (bool)createDayBatchDto.CheckForTreatedCases);
 
             return _mapper.MapToDayBatchDto(dayBatchModel);
         }
