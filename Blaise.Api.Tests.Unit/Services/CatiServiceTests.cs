@@ -310,7 +310,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _createDayBatchDto.CheckForTreatedCases = checkForTreatedCases;
 
             _blaiseCatiApiMock.Setup(b =>
-                b.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto.DayBatchDate, checkForTreatedCases));
+                b.CreateDayBatch(instrumentName, serverParkName, (DateTime)_createDayBatchDto.DayBatchDate, checkForTreatedCases));
 
             _mapperMock.Setup(m => m.MapToDayBatchDto(It.IsAny<DayBatchModel>()))
                 .Returns(new DayBatchDto());
@@ -320,7 +320,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             _blaiseCatiApiMock.Verify(v => v.CreateDayBatch(instrumentName, serverParkName, 
-                _createDayBatchDto.DayBatchDate, _createDayBatchDto.CheckForTreatedCases), Times.Once);
+                (DateTime)_createDayBatchDto.DayBatchDate, (bool)_createDayBatchDto.CheckForTreatedCases), Times.Once);
         }
 
         [TestCase(true)]
@@ -334,7 +334,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _createDayBatchDto.CheckForTreatedCases = checkForTreatedCases;
 
             _blaiseCatiApiMock.Setup(b =>
-                b.CreateDayBatch(instrumentName, serverParkName, _createDayBatchDto.DayBatchDate, checkForTreatedCases));
+                b.CreateDayBatch(instrumentName, serverParkName, (DateTime)_createDayBatchDto.DayBatchDate, checkForTreatedCases));
 
             _mapperMock.Setup(m => m.MapToDayBatchDto(It.IsAny<DayBatchModel>()))
                 .Returns(new DayBatchDto());
@@ -406,6 +406,35 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(instrumentName,
                 serverParkName, null));
             Assert.AreEqual("The argument 'createDayBatchDto' must be supplied", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_A_Null_DayBatchDate_In_CreateDayBatchDto_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
+            var createDayBatchDto = new CreateDayBatchDto { CheckForTreatedCases = true };
+
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(instrumentName,
+                serverParkName, createDayBatchDto));
+            Assert.AreEqual("The argument 'createDayBatchDto.DayBatchDate' must be supplied", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_A_Null_CheckForTreatedCases_In_CreateDayBatchDto_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
+            var createDayBatchDto = new CreateDayBatchDto { DayBatchDate = DateTime.Today };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(instrumentName,
+                serverParkName, createDayBatchDto));
+            Assert.AreEqual("The argument 'createDayBatchDto.CheckForTreatedCases' must be supplied", exception.ParamName);
         }
 
         [Test]
