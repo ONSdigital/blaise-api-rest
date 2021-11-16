@@ -9,6 +9,8 @@ namespace Blaise.Api.Contracts.Models.ServerPark
 
         public string LogicalServerName { get; set; }
 
+        public string BlaiseVersion { get; set; }
+
         public IList<string> Roles { get; set; }
     }
 }
