@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Cati;
 
 namespace Blaise.Api.Core.Interfaces.Services
@@ -11,8 +12,12 @@ namespace Blaise.Api.Core.Interfaces.Services
 
         CatiInstrumentDto GetCatiInstrument(string serverParkName, string instrumentName);
 
-        DayBatchDto CreateDayBatch(string instrumentName, string serverParkName, CreateDayBatchDto dayBatchDate);
+        DayBatchDto CreateDayBatch(string instrumentName, string serverParkName, CreateDayBatchDto createDayBatchDto);
 
         DayBatchDto GetDayBatch(string instrumentName, string serverParkName);
+
+        List<DateTime> AddSurveyDays(string instrumentName, string serverParkName, List<DateTime> surveyDays);
+
+        List<DateTime> GetSurveyDays(string instrumentName, string serverParkName);
     }
 }

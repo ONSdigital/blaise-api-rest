@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
@@ -99,6 +100,38 @@ namespace Blaise.Api.Controllers
             _loggingService.LogInfo($"Daybatch created for instrument '{instrumentName}' on '{createDayBatchDto.DayBatchDate}'");
 
             return Created($"{Request.RequestUri}", dayBatchDto);
+        }
+
+        [HttpGet]
+        [Route("serverparks/{serverParkName}/instruments/{instrumentName}/surveydays")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<DateTime>))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetSurveyDays([FromUri] string serverParkName, [FromUri] string instrumentName)
+        {
+            _loggingService.LogInfo($"Get survey days for instrument '{instrumentName}' on server park '{serverParkName}'");
+
+            var surveyDays = _catiService.GetSurveyDays(instrumentName, serverParkName);
+
+            _loggingService.LogInfo($"Survey days retrieved for instrument '{instrumentName}'");
+
+            return Ok(surveyDays);
+        }
+
+        [HttpPost]
+        [Route("serverparks/{serverParkName}/instruments/{instrumentName}/surveydays")]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(List<DateTime>))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult AddSurveyDays([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] List<DateTime> surveyDays)
+        {
+            _loggingService.LogInfo($"Add survey days for instrument '{instrumentName}' on server park '{serverParkName}' for '{surveyDays}'");
+
+            surveyDays = _catiService.AddSurveyDays(instrumentName, serverParkName, surveyDays);
+
+            _loggingService.LogInfo($"Survey days added for instrument '{instrumentName}'");
+
+            return Created($"{Request.RequestUri}", surveyDays);
         }
     }
 }
