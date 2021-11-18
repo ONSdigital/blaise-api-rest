@@ -199,7 +199,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetModes([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
+            _loggingService.LogInfo($"Get modes for instrument '{instrumentName}' on server park '{serverParkName}'");
+
             var modes = _instrumentService.GetModes(instrumentName, serverParkName);
+
+            _loggingService.LogInfo($"Got modes for instrument '{instrumentName}': '{modes}'");
 
             return Ok(modes);
         }
@@ -211,7 +215,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult ModeExists([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri]string mode)
         {
+            _loggingService.LogInfo($"Check if a mode exists for instrument '{instrumentName}' on server park '{serverParkName}'");
+
             var exists = _instrumentService.ModeExists(instrumentName, serverParkName, mode);
+
+            _loggingService.LogInfo($"Mode exists for instrument '{instrumentName}': '{exists}'");
 
             return Ok(exists);
         }
@@ -223,7 +231,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult DataEntrySettings([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
+            _loggingService.LogInfo($"Get settings for instrument '{instrumentName}' on server park '{serverParkName}'");
+
             var dataEntrySettings = _instrumentService.GetDataEntrySettings(instrumentName, serverParkName);
+
+            _loggingService.LogInfo($"Got settings for instrument '{instrumentName}': '{dataEntrySettings}'");
 
             return Ok(dataEntrySettings);
         }
