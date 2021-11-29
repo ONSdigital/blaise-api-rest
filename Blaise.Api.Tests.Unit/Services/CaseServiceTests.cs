@@ -1,4 +1,7 @@
-﻿using Blaise.Api.Core.Interfaces.Services;
+﻿using System;
+using System.Collections.Generic;
+using Blaise.Api.Contracts.Models.Case;
+using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Moq;
@@ -108,6 +111,236 @@ namespace Blaise.Api.Tests.Unit.Services
             //assert
             Assert.IsNotNull(result);
             Assert.AreEqual(postCode, result);
+        }
+
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_GetCase_Then_The_Correct_Service_Is_Called()
+        {
+            //arrange
+            const string caseId = "1000001";
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            _blaiseCaseApiMock.Setup(c => c.GetCase(caseId, _instrumentName, _serverParkName))
+                .Returns(_dataRecordMock.Object);
+
+            _blaiseCaseApiMock.Setup(c => c.GetPrimaryKeyValue(_dataRecordMock.Object)).Returns(caseId);
+
+            _blaiseCaseApiMock.Setup(c => c.GetRecordDataFields(_dataRecordMock.Object)).Returns(fieldData);
+
+            //act
+            _sut.GetCase(_serverParkName, _instrumentName, caseId);
+
+            //assert
+            _blaiseCaseApiMock.Verify(v => v.GetCase(caseId, _instrumentName, _serverParkName), Times.Once);
+        }
+
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_GetCase_Then_The_Correct_CaseDto_Is_Returned()
+        {
+            //arrange
+            const string caseId = "1000001";
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            _blaiseCaseApiMock.Setup(c => c.GetCase(caseId, _instrumentName, _serverParkName))
+                .Returns(_dataRecordMock.Object);
+
+            _blaiseCaseApiMock.Setup(c => c.GetPrimaryKeyValue(_dataRecordMock.Object)).Returns(caseId);
+
+            _blaiseCaseApiMock.Setup(c => c.GetRecordDataFields(_dataRecordMock.Object)).Returns(fieldData);
+
+            //act
+            var result = _sut.GetCase(_serverParkName, _instrumentName, caseId);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CaseDto>(result);
+            Assert.AreEqual(caseId, result.CaseId);
+            Assert.AreEqual(fieldData, result.FieldData);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_GetCase_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(string.Empty,
+                _instrumentName, caseId));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_GetCase_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCase(null,
+                _instrumentName, caseId));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_InstrumentName_When_I_Call_GetCase_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(_serverParkName,
+                string.Empty, caseId));
+            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_InstrumentName_When_I_Call_GetCase_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCase(_serverParkName,
+                null, caseId));
+            Assert.AreEqual("instrumentName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_CaseId_When_I_Call_GetCase_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(_serverParkName,
+                _instrumentName, string.Empty));
+            Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_CaseId_When_I_Call_GetCase_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCase(_serverParkName,
+                _serverParkName, null));
+            Assert.AreEqual("caseId", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_CreateCase_Then_The_Correct_Service_Is_Called()
+        {
+            //arrange
+            const string caseId = "1000001";
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            //act
+            _sut.CreateCase(_serverParkName, _instrumentName, caseId, fieldData);
+
+            //assert
+            _blaiseCaseApiMock.Verify(v => v.CreateCase(caseId, fieldData, _instrumentName, _serverParkName), Times.Once);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_CreateCase_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(string.Empty,
+                _instrumentName, caseId, fieldData));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_CreateCase_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(null,
+                _instrumentName, caseId, fieldData));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_InstrumentName_When_I_Call_CreateCase_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(_serverParkName,
+                string.Empty, caseId, fieldData));
+            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_InstrumentName_When_I_Call_CreateCase_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(_serverParkName,
+                null, caseId, fieldData));
+            Assert.AreEqual("instrumentName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_CaseId_When_I_Call_CreateCase_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(_serverParkName,
+                _instrumentName, string.Empty, fieldData));
+            Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_CaseId_When_I_Call_CreateCase_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(_serverParkName,
+                _serverParkName, null, fieldData));
+            Assert.AreEqual("caseId", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_Empty_FieldData_When_I_Call_CreateCase_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+            var fieldData = new Dictionary<string, string>();
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(_serverParkName,
+                _instrumentName, caseId, fieldData));
+            Assert.AreEqual("A value for the argument 'fieldData' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_Null_FieldData_When_I_Call_CreateCase_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(_serverParkName,
+                _serverParkName, caseId, null));
+            Assert.AreEqual("fieldData", exception.ParamName);
         }
     }
 }
