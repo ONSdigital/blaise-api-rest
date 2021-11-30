@@ -6,7 +6,6 @@ using Blaise.Nuget.Api.Contracts.Interfaces;
 using StatNeth.Blaise.API.ServerManager;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 // ReSharper disable PossibleInvalidOperationException
 
 namespace Blaise.Api.Core.Services
@@ -84,17 +83,6 @@ namespace Blaise.Api.Core.Services
             return _mapper.MapToDayBatchDto(dayBatchModel);
         }
 
-        public List<DateTime> AddSurveyDays(string instrumentName, string serverParkName, List<DateTime> surveyDays)
-        {
-            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
-            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
-            surveyDays.ThrowExceptionIfNullOrEmpty("surveyDays");
-            
-            _blaiseCatiApi.SetSurveyDays(instrumentName, serverParkName, surveyDays);
-
-            return GetSurveyDays(instrumentName, serverParkName);
-        }
-
         public List<DateTime> GetSurveyDays(string instrumentName, string serverParkName)
         {
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
@@ -103,6 +91,26 @@ namespace Blaise.Api.Core.Services
             var surveyDays = _blaiseCatiApi.GetSurveyDays(instrumentName, serverParkName);
 
             return surveyDays;
+        }
+
+        public List<DateTime> AddSurveyDays(string instrumentName, string serverParkName, List<DateTime> surveyDays)
+        {
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            surveyDays.ThrowExceptionIfNullOrEmpty("surveyDays");
+
+            _blaiseCatiApi.SetSurveyDays(instrumentName, serverParkName, surveyDays);
+
+            return GetSurveyDays(instrumentName, serverParkName);
+        }
+
+        public void RemoveSurveyDays(string instrumentName, string serverParkName, List<DateTime> surveyDays)
+        {
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            surveyDays.ThrowExceptionIfNullOrEmpty("surveyDays");
+
+            _blaiseCatiApi.RemoveSurveyDays(instrumentName, serverParkName, surveyDays);
         }
 
         private List<CatiInstrumentDto> GetCatiInstruments(IEnumerable<ISurvey> instruments)

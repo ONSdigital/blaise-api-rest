@@ -133,5 +133,21 @@ namespace Blaise.Api.Controllers
 
             return Created($"{Request.RequestUri}", surveyDays);
         }
+
+        [HttpDelete]
+        [Route("serverparks/{serverParkName}/instruments/{instrumentName}/surveydays")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult RemoveSurveyDays([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] List<DateTime> surveyDays)
+        {
+            _loggingService.LogInfo($"Remove survey days for instrument '{instrumentName}' on server park '{serverParkName}' for '{surveyDays}'");
+
+             _catiService.RemoveSurveyDays(instrumentName, serverParkName, surveyDays);
+
+            _loggingService.LogInfo($"Survey days Removed for instrument '{instrumentName}'");
+
+            return NoContent();
+        }
     }
 }
