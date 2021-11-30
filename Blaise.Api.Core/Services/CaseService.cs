@@ -56,7 +56,7 @@ namespace Blaise.Api.Core.Services
             };
         }
 
-        public void CreateCase(string serverParkName, string instrumentName, string caseId, 
+        public void CreateCase(string serverParkName, string instrumentName, string caseId,
             Dictionary<string, string> fieldData)
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
@@ -65,6 +65,16 @@ namespace Blaise.Api.Core.Services
             fieldData.ThrowExceptionIfNullOrEmpty("fieldData");
 
             _blaiseCaseApi.CreateCase(caseId, fieldData, instrumentName, serverParkName);
+        }
+
+        public void UpdateCase(string serverParkName, string instrumentName, string caseId, Dictionary<string, string> fieldData)
+        {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            caseId.ThrowExceptionIfNullOrEmpty("caseId");
+            fieldData.ThrowExceptionIfNullOrEmpty("fieldData");
+
+            _blaiseCaseApi.UpdateCase(caseId, fieldData, instrumentName, serverParkName);
         }
     }
 }

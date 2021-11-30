@@ -78,5 +78,22 @@ namespace Blaise.Api.Controllers
 
             return Created($"{Request.RequestUri}/{caseId}", caseId);
         }
+
+        [HttpPatch]
+        [Route("{caseId}")]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult UpdateCase([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId,
+            [FromBody] Dictionary<string, string> fieldData)
+        {
+            _loggingService.LogInfo($"Attempting to create case '{caseId}'");
+
+            _caseService.UpdateCase(serverParkName, instrumentName, caseId, fieldData);
+
+            _loggingService.LogInfo($"Successfully created case '{caseId}'");
+
+            return NoContent();
+        }
     }
 }
