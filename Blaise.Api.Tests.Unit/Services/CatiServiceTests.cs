@@ -10,7 +10,6 @@ using Blaise.Nuget.Api.Contracts.Models;
 using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.ServerManager;
-using DayBatchDto = Blaise.Api.Contracts.Models.Cati.DayBatchDto;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
@@ -518,6 +517,93 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetDayBatch(instrumentName, null));
             Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_A_DayBatch_Exists_When_I_Call_AddCaseToDayBatch_Then_The_Correct_Service_Is_Called()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
+            const string caseId = "1000001";
+
+            //act
+            _sut.AddCaseToDayBatch(instrumentName, serverParkName, caseId);
+
+            //assert
+            _blaiseCatiApiMock.Verify(v => v.AddToDayBatch(instrumentName, serverParkName, caseId), Times.Once);
+        }
+
+        [Test]
+        public void Given_An_Empty_InstrumentName_When_I_Call_AddCaseToDayBatch_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string serverParkName = "ServerParkA";
+            const string caseId = "1000001";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.AddCaseToDayBatch(string.Empty, serverParkName, caseId));
+            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_InstrumentName_When_I_Call_AddCaseToDayBatch_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string serverParkName = "ServerParkA";
+            const string caseId = "1000001";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddCaseToDayBatch(null, serverParkName, caseId));
+            Assert.AreEqual("instrumentName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_AddCaseToDayBatch_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string caseId = "1000001";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.AddCaseToDayBatch(instrumentName, string.Empty, caseId));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_AddCaseToDayBatch_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string caseId = "1000001";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddCaseToDayBatch(instrumentName, null, caseId));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_CaseId_When_I_Call_AddCaseToDayBatch_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.AddCaseToDayBatch(instrumentName, serverParkName, string.Empty));
+            Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_CaseId_When_I_Call_AddCaseToDayBatch_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddCaseToDayBatch(instrumentName, serverParkName, null));
+            Assert.AreEqual("caseId", exception.ParamName);
         }
 
         [Test]

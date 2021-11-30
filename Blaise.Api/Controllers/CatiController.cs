@@ -102,6 +102,22 @@ namespace Blaise.Api.Controllers
             return Created($"{Request.RequestUri}", dayBatchDto);
         }
 
+        [HttpPost]
+        [Route("serverparks/{serverParkName}/instruments/{instrumentName}/daybatch/{caseId}")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult CreateDayBatch([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId)
+        {
+            _loggingService.LogInfo($"Add case '{caseId}' to the current daybatch for instrument '{instrumentName}' on server park '{serverParkName}'");
+
+            _catiService.AddCaseToDayBatch(instrumentName, serverParkName, caseId);
+
+            _loggingService.LogInfo($"Case added to daybatch to the current daybatch for instrument '{instrumentName}' on server park '{serverParkName}'");
+
+            return NoContent();
+        }
+
         [HttpGet]
         [Route("serverparks/{serverParkName}/instruments/{instrumentName}/surveydays")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<DateTime>))]
