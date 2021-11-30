@@ -76,5 +76,14 @@ namespace Blaise.Api.Core.Services
 
             _blaiseCaseApi.UpdateCase(caseId, fieldData, instrumentName, serverParkName);
         }
+
+        public void DeleteCase(string serverParkName, string instrumentName, string caseId)
+        {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            caseId.ThrowExceptionIfNullOrEmpty("caseId");
+
+            _blaiseCaseApi.RemoveCase(caseId, instrumentName, serverParkName);
+        }
     }
 }

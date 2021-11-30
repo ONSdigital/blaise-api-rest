@@ -457,5 +457,95 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName, caseId, null));
             Assert.AreEqual("fieldData", exception.ParamName);
         }
+
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_DeleteCase_Then_The_Correct_Service_Is_Called()
+        {
+            //arrange
+            const string caseId = "1000001";
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            //act
+            _sut.DeleteCase(_serverParkName, _instrumentName, caseId);
+
+            //assert
+            _blaiseCaseApiMock.Verify(v => v.RemoveCase(caseId, _instrumentName, _serverParkName), Times.Once);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_DeleteCase_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(string.Empty,
+                _instrumentName, caseId));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_DeleteCase_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(null,
+                _instrumentName, caseId));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_InstrumentName_When_I_Call_DeleteCase_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(_serverParkName,
+                string.Empty, caseId));
+            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_InstrumentName_When_I_Call_DeleteCase_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(_serverParkName,
+                null, caseId));
+            Assert.AreEqual("instrumentName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_CaseId_When_I_Call_DeleteCase_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(_serverParkName,
+                _instrumentName, string.Empty));
+            Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_CaseId_When_I_Call_DeleteCase_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(_serverParkName,
+                _serverParkName, null));
+            Assert.AreEqual("caseId", exception.ParamName);
+        }
     }
 }

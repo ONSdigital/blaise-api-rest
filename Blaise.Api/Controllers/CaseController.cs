@@ -81,17 +81,33 @@ namespace Blaise.Api.Controllers
 
         [HttpPatch]
         [Route("{caseId}")]
-        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult UpdateCase([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId,
             [FromBody] Dictionary<string, string> fieldData)
         {
-            _loggingService.LogInfo($"Attempting to create case '{caseId}'");
+            _loggingService.LogInfo($"Attempting to update case '{caseId}'");
 
             _caseService.UpdateCase(serverParkName, instrumentName, caseId, fieldData);
 
-            _loggingService.LogInfo($"Successfully created case '{caseId}'");
+            _loggingService.LogInfo($"Successfully updated case '{caseId}'");
+
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("{caseId}")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult DeleteCase([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId)
+        {
+            _loggingService.LogInfo($"Attempting to delete case '{caseId}'");
+
+            _caseService.DeleteCase(serverParkName, instrumentName, caseId);
+
+            _loggingService.LogInfo($"Successfully deleted case '{caseId}'");
 
             return NoContent();
         }
