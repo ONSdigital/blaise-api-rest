@@ -83,13 +83,16 @@ namespace Blaise.Api.Core.Services
             return _mapper.MapToDayBatchDto(dayBatchModel);
         }
 
-        public void AddCaseToDayBatch(string instrumentName, string serverParkName, string caseId)
+        public void AddCasesToDayBatch(string instrumentName, string serverParkName, List<string> caseIds)
         {
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
-            caseId.ThrowExceptionIfNullOrEmpty("caseId");
+            caseIds.ThrowExceptionIfNullOrEmpty("caseIds");
 
-            _blaiseCatiApi.AddToDayBatch(instrumentName, serverParkName, caseId);
+            foreach (var caseId in caseIds)
+            {
+                _blaiseCatiApi.AddToDayBatch(instrumentName, serverParkName, caseId);
+            }
         }
 
         public List<DateTime> GetSurveyDays(string instrumentName, string serverParkName)

@@ -103,17 +103,17 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpPost]
-        [Route("serverparks/{serverParkName}/instruments/{instrumentName}/daybatch/{caseId}")]
+        [Route("serverparks/{serverParkName}/instruments/{instrumentName}/daybatch/add")]
         [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult CreateDayBatch([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId)
+        public IHttpActionResult CreateDayBatch([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] List<string> caseIds)
         {
-            _loggingService.LogInfo($"Add case '{caseId}' to the current daybatch for instrument '{instrumentName}' on server park '{serverParkName}'");
+            _loggingService.LogInfo($"Add cases to the current daybatch for instrument '{instrumentName}' on server park '{serverParkName}'");
 
-            _catiService.AddCaseToDayBatch(instrumentName, serverParkName, caseId);
+            _catiService.AddCasesToDayBatch(instrumentName, serverParkName, caseIds);
 
-            _loggingService.LogInfo($"Case added to daybatch to the current daybatch for instrument '{instrumentName}' on server park '{serverParkName}'");
+            _loggingService.LogInfo($"Cases added to daybatch to the current daybatch for instrument '{instrumentName}' on server park '{serverParkName}'");
 
             return NoContent();
         }

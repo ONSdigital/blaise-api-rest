@@ -16,7 +16,7 @@ namespace Blaise.Api.Core.Interfaces.Services
 
         DayBatchDto GetDayBatch(string instrumentName, string serverParkName);
 
-        void AddCaseToDayBatch(string instrumentName, string serverParkName, string caseId);
+        void AddCasesToDayBatch(string instrumentName, string serverParkName, List<string> caseIds);
 
         List<DateTime> GetSurveyDays(string instrumentName, string serverParkName);
 
