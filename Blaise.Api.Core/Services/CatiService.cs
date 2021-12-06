@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.Cati;
+﻿using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using StatNeth.Blaise.API.ServerManager;
+using System;
+using System.Collections.Generic;
+// ReSharper disable PossibleInvalidOperationException
 
 namespace Blaise.Api.Core.Services
 {
@@ -62,9 +64,11 @@ namespace Blaise.Api.Core.Services
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             createDayBatchDto.ThrowExceptionIfNull("createDayBatchDto");
+            createDayBatchDto.DayBatchDate.ThrowExceptionIfNull("createDayBatchDto.DayBatchDate");
+            createDayBatchDto.CheckForTreatedCases.ThrowExceptionIfNull("createDayBatchDto.CheckForTreatedCases");
 
-            var dayBatchModel = _blaiseCatiApi.CreateDayBatch(instrumentName, serverParkName, 
-                createDayBatchDto.DayBatchDate, createDayBatchDto.CheckForTreatedCases);
+            var dayBatchModel = _blaiseCatiApi.CreateDayBatch(instrumentName, serverParkName,
+                (DateTime)createDayBatchDto.DayBatchDate, (bool)createDayBatchDto.CheckForTreatedCases);
 
             return _mapper.MapToDayBatchDto(dayBatchModel);
         }
@@ -77,6 +81,48 @@ namespace Blaise.Api.Core.Services
             var dayBatchModel = _blaiseCatiApi.GetDayBatch(instrumentName, serverParkName);
 
             return _mapper.MapToDayBatchDto(dayBatchModel);
+        }
+
+        public void AddCasesToDayBatch(string instrumentName, string serverParkName, List<string> caseIds)
+        {
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            caseIds.ThrowExceptionIfNullOrEmpty("caseIds");
+
+            foreach (var caseId in caseIds)
+            {
+                _blaiseCatiApi.AddToDayBatch(instrumentName, serverParkName, caseId);
+            }
+        }
+
+        public List<DateTime> GetSurveyDays(string instrumentName, string serverParkName)
+        {
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+
+            var surveyDays = _blaiseCatiApi.GetSurveyDays(instrumentName, serverParkName);
+
+            return surveyDays;
+        }
+
+        public List<DateTime> AddSurveyDays(string instrumentName, string serverParkName, List<DateTime> surveyDays)
+        {
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            surveyDays.ThrowExceptionIfNullOrEmpty("surveyDays");
+
+            _blaiseCatiApi.SetSurveyDays(instrumentName, serverParkName, surveyDays);
+
+            return GetSurveyDays(instrumentName, serverParkName);
+        }
+
+        public void RemoveSurveyDays(string instrumentName, string serverParkName, List<DateTime> surveyDays)
+        {
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            surveyDays.ThrowExceptionIfNullOrEmpty("surveyDays");
+
+            _blaiseCatiApi.RemoveSurveyDays(instrumentName, serverParkName, surveyDays);
         }
 
         private List<CatiInstrumentDto> GetCatiInstruments(IEnumerable<ISurvey> instruments)
