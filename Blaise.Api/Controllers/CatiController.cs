@@ -107,13 +107,13 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult DayBatchForToday([FromUri] string serverParkName, [FromUri] string instrumentName)
+        public IHttpActionResult HasDayBatchForToday([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             _loggingService.LogInfo($"Check a daybatch exists today for instrument '{instrumentName}' on server park '{serverParkName}'");
 
             var exists = _catiService.InstrumentHasADayBatchForToday(instrumentName, serverParkName);
 
-            _loggingService.LogInfo($"Daybatch exists today for instrument '{instrumentName}' - '{exists}'");
+            _loggingService.LogInfo($"Daybatch exists today for instrument'{instrumentName}' - '{exists}'");
 
             return Ok(exists);
         }
