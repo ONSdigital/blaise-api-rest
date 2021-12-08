@@ -123,7 +123,7 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult CreateDayBatch([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] List<string> caseIds)
+        public IHttpActionResult AddCasesToDayBatch([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] List<string> caseIds)
         {
             _loggingService.LogInfo($"Add cases to the current daybatch for instrument '{instrumentName}' on server park '{serverParkName}'");
 
