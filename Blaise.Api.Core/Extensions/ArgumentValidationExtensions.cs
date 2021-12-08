@@ -20,7 +20,7 @@ namespace Blaise.Api.Core.Extensions
             }
         }
 
-        public static void ThrowExceptionIfNullOrEmpty(this IEnumerable<string> argument, string argumentName)
+        public static void ThrowExceptionIfNullOrEmpty<T>(this IEnumerable<T> argument, string argumentName)
         {
             if (argument == null)
             {

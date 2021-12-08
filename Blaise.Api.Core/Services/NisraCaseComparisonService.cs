@@ -31,16 +31,23 @@ namespace Blaise.Api.Core.Services
                 return false;
             }
 
-            if (NisraRecordHasAlreadyBeenProcessed(nisraCaseStatusModel, existingCaseStatusModel,
-                instrumentName))
+            if (NisraRecordHasAlreadyBeenProcessed(nisraCaseStatusModel, existingCaseStatusModel, instrumentName))
             {
                 _loggingService.LogInfo(
                     $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' as is has already been updated on a previous run for instrument '{instrumentName}'");
 
                 return false;
             }
-            
-            if (existingCaseStatusModel.Outcome > 0 && existingCaseStatusModel.Outcome < nisraCaseStatusModel.Outcome)
+
+            if (nisraCaseStatusModel.Outcome == 580 && existingCaseStatusModel.Outcome <= 210)
+            {
+                _loggingService.LogInfo(
+                    $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (Existing HOut = '{existingCaseStatusModel.Outcome}' < '{nisraCaseStatusModel.Outcome}')  for instrument '{instrumentName}'");
+
+                return false;
+            }
+
+            if (nisraCaseStatusModel.Outcome != 580 && existingCaseStatusModel.Outcome > 0 && existingCaseStatusModel.Outcome < nisraCaseStatusModel.Outcome)
             {
                 _loggingService.LogInfo(
                     $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (Existing HOut = '{existingCaseStatusModel.Outcome}' < '{nisraCaseStatusModel.Outcome}')  for instrument '{instrumentName}'");

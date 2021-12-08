@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Blaise.Api.Contracts.Models.Case;
+using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
@@ -37,6 +39,51 @@ namespace Blaise.Api.Core.Services
             var caseRecord = _blaiseCaseApi.GetCase(caseId, instrumentName, serverParkName);
 
             return _blaiseCaseApi.GetFieldValue(caseRecord, FieldNameType.PostCode).ValueAsText;
+        }
+
+        public CaseDto GetCase(string serverParkName, string instrumentName, string caseId)
+        {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            caseId.ThrowExceptionIfNullOrEmpty("caseId");
+
+            var caseRecord = _blaiseCaseApi.GetCase(caseId, instrumentName, serverParkName);
+
+            return new CaseDto
+            {
+                CaseId = _blaiseCaseApi.GetPrimaryKeyValue(caseRecord),
+                FieldData = _blaiseCaseApi.GetRecordDataFields(caseRecord)
+            };
+        }
+
+        public void CreateCase(string serverParkName, string instrumentName, string caseId,
+            Dictionary<string, string> fieldData)
+        {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            caseId.ThrowExceptionIfNullOrEmpty("caseId");
+            fieldData.ThrowExceptionIfNullOrEmpty("fieldData");
+
+            _blaiseCaseApi.CreateCase(caseId, fieldData, instrumentName, serverParkName);
+        }
+
+        public void UpdateCase(string serverParkName, string instrumentName, string caseId, Dictionary<string, string> fieldData)
+        {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            caseId.ThrowExceptionIfNullOrEmpty("caseId");
+            fieldData.ThrowExceptionIfNullOrEmpty("fieldData");
+
+            _blaiseCaseApi.UpdateCase(caseId, fieldData, instrumentName, serverParkName);
+        }
+
+        public void DeleteCase(string serverParkName, string instrumentName, string caseId)
+        {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            caseId.ThrowExceptionIfNullOrEmpty("caseId");
+
+            _blaiseCaseApi.RemoveCase(caseId, instrumentName, serverParkName);
         }
     }
 }
