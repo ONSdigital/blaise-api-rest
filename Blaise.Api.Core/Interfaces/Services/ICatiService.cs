@@ -16,12 +16,13 @@ namespace Blaise.Api.Core.Interfaces.Services
 
         DayBatchDto GetDayBatch(string instrumentName, string serverParkName);
 
+        bool InstrumentHasADayBatchForToday(string instrumentName, string serverParkName);
+        
         void AddCasesToDayBatch(string instrumentName, string serverParkName, List<string> caseIds);
 
         List<DateTime> GetSurveyDays(string instrumentName, string serverParkName);
 
         List<DateTime> AddSurveyDays(string instrumentName, string serverParkName, List<DateTime> surveyDays);
-
 
         void RemoveSurveyDays(string instrumentName, string serverParkName, List<DateTime> surveyDays);
     }

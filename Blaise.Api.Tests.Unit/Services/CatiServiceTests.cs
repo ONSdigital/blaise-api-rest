@@ -5,6 +5,7 @@ using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
+using Blaise.Nuget.Api.Contracts.Exceptions;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Blaise.Nuget.Api.Contracts.Models;
 using Moq;
@@ -476,6 +477,19 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
+        public void Given_A_DayBatch_Does_Not_Exist_When_I_Call_GetDayBatch_Then_A_DataNotFoundException_Is_Returned()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
+
+            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(instrumentName, serverParkName)).Returns((DayBatchModel)null);
+
+            //act && assert
+            Assert.Throws<DataNotFoundException>(() => _sut.GetDayBatch(instrumentName, serverParkName));
+        }
+
+        [Test]
         public void Given_An_Empty_InstrumentName_When_I_Call_GetDayBatch_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
@@ -516,6 +530,103 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetDayBatch(instrumentName, null));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_A_DayBatch_Exists_Today_When_I_Call_InstrumentHasADayBatchForToday_Then_True_Is_Returned()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
+            var dayBatchModel = new DayBatchModel { DayBatchDate = DateTime.Today };
+
+            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(instrumentName, serverParkName)).Returns(dayBatchModel);
+
+            //act
+            var result = _sut.InstrumentHasADayBatchForToday(instrumentName, serverParkName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void Given_A_DayBatch_Does_Not_Exist_Today_When_I_Call_InstrumentHasADayBatchForToday_Then_False_Is_Returned()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
+            var dayBatchModel = new DayBatchModel { DayBatchDate = DateTime.Today.AddDays(-1) };
+
+            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(instrumentName, serverParkName)).Returns(dayBatchModel);
+
+            //act
+            var result = _sut.InstrumentHasADayBatchForToday(instrumentName, serverParkName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void Given_An_Instrument_Has_No_DayBatch_When_I_Call_InstrumentHasADayBatchForToday_Then_False_Is_Returned()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
+
+            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(instrumentName, serverParkName)).Returns((DayBatchModel)null);
+
+            //act
+            var result = _sut.InstrumentHasADayBatchForToday(instrumentName, serverParkName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void Given_An_Empty_InstrumentName_When_I_Call_InstrumentHasADayBatchForToday_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string serverParkName = "ServerParkA";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.InstrumentHasADayBatchForToday(string.Empty, serverParkName));
+            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_InstrumentName_When_I_Call_InstrumentHasADayBatchForToday_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string serverParkName = "ServerParkA";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.InstrumentHasADayBatchForToday(null, serverParkName));
+            Assert.AreEqual("instrumentName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_InstrumentHasADayBatchForToday_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.InstrumentHasADayBatchForToday(instrumentName, string.Empty));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_InstrumentHasADayBatchForToday_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string instrumentName = "OPN2101A";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.InstrumentHasADayBatchForToday(instrumentName, null));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 

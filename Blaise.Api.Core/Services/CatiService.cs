@@ -6,6 +6,8 @@ using Blaise.Nuget.Api.Contracts.Interfaces;
 using StatNeth.Blaise.API.ServerManager;
 using System;
 using System.Collections.Generic;
+using Blaise.Nuget.Api.Contracts.Exceptions;
+
 // ReSharper disable PossibleInvalidOperationException
 
 namespace Blaise.Api.Core.Services
@@ -80,7 +82,22 @@ namespace Blaise.Api.Core.Services
 
             var dayBatchModel = _blaiseCatiApi.GetDayBatch(instrumentName, serverParkName);
 
+            if (dayBatchModel == null)
+            {
+                throw new DataNotFoundException("No daybatch found");
+            }
+
             return _mapper.MapToDayBatchDto(dayBatchModel);
+        }
+
+        public bool InstrumentHasADayBatchForToday(string instrumentName, string serverParkName)
+        {
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+
+            var dayBatchModel = _blaiseCatiApi.GetDayBatch(instrumentName, serverParkName);
+
+            return dayBatchModel?.DayBatchDate.Date == DateTime.Today;
         }
 
         public void AddCasesToDayBatch(string instrumentName, string serverParkName, List<string> caseIds)
