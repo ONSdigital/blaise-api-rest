@@ -132,6 +132,7 @@
     <Compile Include="Extensions\ArgumentValidationExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Interfaces\Mappers\ICatiDtoMapper.cs" />
+    <Compile Include="Interfaces\Mappers\IDataEntryDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IInstrumentNodeDtoMapper.cs" />
     <Compile Include="Interfaces\Services\ICatiDataBlockService.cs" />
     <Compile Include="Interfaces\Services\IInstrumentUninstallerService.cs" />
@@ -158,7 +159,6 @@
     <Compile Include="Services\CatiDataBlockService.cs" />
     <Compile Include="Interfaces\Services\IReportingService.cs" />
     <Compile Include="Interfaces\Services\IAdminService.cs" />
-    <Compile Include="Interfaces\Mappers\IDataEntryDtoMapper.cs" />
     <Compile Include="Services\NisraCaseComparisonService.cs" />
     <Compile Include="Interfaces\Services\INisraCaseComparisonService.cs" />
     <Compile Include="Services\NisraCaseUpdateService.cs" />
