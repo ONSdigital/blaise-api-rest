@@ -2,6 +2,7 @@
 using System.Net;
 using System.Web.Http;
 using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Contracts.Models.Case;
 using Blaise.Api.Core.Interfaces.Services;
 using Swashbuckle.Swagger.Annotations;
 
@@ -11,12 +12,14 @@ namespace Blaise.Api.Controllers
     public class CaseController : BaseController
     {
         private readonly ICaseService _caseService;
+        private readonly ILoggingService _loggingService;
 
         public CaseController(
             ICaseService caseService,
             ILoggingService loggingService) : base(loggingService)
         {
             _caseService = caseService;
+            _loggingService = loggingService;
         }
 
         [HttpGet]
@@ -41,6 +44,72 @@ namespace Blaise.Api.Controllers
             var postCode = _caseService.GetPostCode(serverParkName, instrumentName, caseId);
 
             return Ok(postCode);
+        }
+
+        [HttpGet]
+        [Route("{caseId}")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(CaseDto))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetCase([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId)
+        {
+            _loggingService.LogInfo($"Attempting to get case '{caseId}'");
+
+            var caseDto = _caseService.GetCase(serverParkName, instrumentName, caseId);
+
+            _loggingService.LogInfo($"Successfully got case '{caseId}'");
+
+            return Ok(caseDto);
+        }
+
+        [HttpPost]
+        [Route("{caseId}")]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult CreateCase([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId, 
+            [FromBody] Dictionary<string, string> fieldData)
+        {
+            _loggingService.LogInfo($"Attempting to create case '{caseId}'");
+
+            _caseService.CreateCase(serverParkName, instrumentName, caseId, fieldData);
+
+            _loggingService.LogInfo($"Successfully created case '{caseId}'");
+
+            return Created($"{Request.RequestUri}/{caseId}", caseId);
+        }
+
+        [HttpPatch]
+        [Route("{caseId}")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult UpdateCase([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId,
+            [FromBody] Dictionary<string, string> fieldData)
+        {
+            _loggingService.LogInfo($"Attempting to update case '{caseId}'");
+
+            _caseService.UpdateCase(serverParkName, instrumentName, caseId, fieldData);
+
+            _loggingService.LogInfo($"Successfully updated case '{caseId}'");
+
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("{caseId}")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult DeleteCase([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId)
+        {
+            _loggingService.LogInfo($"Attempting to delete case '{caseId}'");
+
+            _caseService.DeleteCase(serverParkName, instrumentName, caseId);
+
+            _loggingService.LogInfo($"Successfully deleted case '{caseId}'");
+
+            return NoContent();
         }
     }
 }
