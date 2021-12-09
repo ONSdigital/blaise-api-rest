@@ -53,15 +53,6 @@ namespace Blaise.Api.Tests.Helpers.Instrument
             return SurveyIsActive(BlaiseConfigurationHelper.InstrumentName, timeoutInSeconds);
         }
 
-        public bool SetSurveyAsInactive()
-        {
-            _blaiseSurveyApi.DeactivateSurvey(
-                BlaiseConfigurationHelper.InstrumentName,
-                BlaiseConfigurationHelper.ServerParkName);
-
-            return GetSurveyStatus(BlaiseConfigurationHelper.InstrumentName) == SurveyStatusType.Inactive;
-        }
-
         private bool SurveyIsActive(string instrumentName, int timeoutInSeconds)
         {
             var counter = 0;

@@ -20,11 +20,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [Test]
         public void Given_A_DataEntrySettingsModel_When_I_Call_MapToDataEntrySettingsDto_Then_I_Get_A_List_Of_DataEntrySettingsDtos_Back()
         {
-            //arrange
-            var dataEntrySettingsModelList = new List<DataEntrySettingsModel>();
-
             //act
-            var result = _sut.MapDataEntrySettingsDtos(dataEntrySettingsModelList);
+            var result = _sut.MapDataEntrySettingsDtos(new List<DataEntrySettingsModel>());
 
             //assert
             Assert.NotNull(result);

@@ -50,14 +50,12 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_GetUserRoles_Then_I_Get_A_Correct_List_Of_UserRoleDtos_Back()
         {
             //arrange
-            var roles = new List<IRole>();
-
             _blaiseApiMock.Setup(b => b.GetRoles())
-                .Returns(roles);
+                .Returns(new List<IRole>());
 
             var roleDtos = new List<UserRoleDto> { _roleDto };
 
-            _mapperMock.Setup(m => m.MapToUserRoleDtos(roles))
+            _mapperMock.Setup(m => m.MapToUserRoleDtos(new List<IRole>()))
                 .Returns(roleDtos);
             //act
             var result = _sut.GetUserRoles();

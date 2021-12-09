@@ -16,7 +16,7 @@ namespace Blaise.Api.Controllers
 
         public CaseController(
             ICaseService caseService,
-            ILoggingService loggingService) : base(loggingService)
+            ILoggingService loggingService)
         {
             _caseService = caseService;
             _loggingService = loggingService;

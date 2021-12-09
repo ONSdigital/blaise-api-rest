@@ -17,7 +17,7 @@ namespace Blaise.Api.Controllers
 
         public HealthController(
             IHealthCheckService healthService,
-            ILoggingService loggingService) : base(loggingService)
+            ILoggingService loggingService)
         {
             _healthService = healthService;
             _loggingService = loggingService;
