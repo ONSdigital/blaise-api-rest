@@ -23,7 +23,7 @@ namespace Blaise.Api.Tests.Helpers.Files
 
         public async Task CreateCasesInOnlineFileAsync(int numberOfCases, string path)
         {
-            var instrumentPackage = await DownloadPackageFromBucket(path);
+            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackage;
             var extractedFilePath = ExtractPackageFiles(path, instrumentPackage);
             var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
 
@@ -34,7 +34,7 @@ namespace Blaise.Api.Tests.Helpers.Files
 
         public async Task CreateCasesInOnlineFileAsync(IEnumerable<CaseModel> caseModels, string path)
         {
-            var instrumentPackage = await DownloadPackageFromBucket(path);
+            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackage;
             var extractedFilePath = ExtractPackageFiles(path, instrumentPackage);
             var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
 
@@ -45,7 +45,7 @@ namespace Blaise.Api.Tests.Helpers.Files
 
         public async Task<string> CreateCaseInOnlineFileAsync(int outcomeCode, string path)
         {
-            var instrumentPackage = await DownloadPackageFromBucket(path);
+            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackage;
             var extractedFilePath = ExtractPackageFiles(path, instrumentPackage);
             var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
 
@@ -59,7 +59,7 @@ namespace Blaise.Api.Tests.Helpers.Files
 
         public async Task CreateCaseInOnlineFileAsync(CaseModel caseModel, string path)
         {
-            var instrumentPackage = await DownloadPackageFromBucket(path);
+            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackage;
             var extractedFilePath = ExtractPackageFiles(path, instrumentPackage);
             var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
 
@@ -74,13 +74,6 @@ namespace Blaise.Api.Tests.Helpers.Files
                 BlaiseConfigurationHelper.InstrumentName);
         }
 
-        private async Task<string> DownloadPackageFromBucket(string path)
-        {
-            return await CloudStorageHelper.GetInstance().DownloadFromBucketAsync(
-                BlaiseConfigurationHelper.InstrumentPackageBucket,
-                BlaiseConfigurationHelper.InstrumentFile, path);
-        }
-
         private string ExtractPackageFiles(string path, string instrumentPackage)
         {
             var extractedFilePath = Path.Combine(path, BlaiseConfigurationHelper.InstrumentName);
@@ -92,10 +85,9 @@ namespace Blaise.Api.Tests.Helpers.Files
 
         private async Task UploadFilesToBucket(string filePath)
         {
-            var uploadPath = Path.Combine(BlaiseConfigurationHelper.OnlineFileBucket);
-
             await CloudStorageHelper.GetInstance().UploadFolderToBucketAsync(
-                uploadPath, filePath);
+                BlaiseConfigurationHelper.OnlineFileBucket, 
+                filePath);
         }
     }
 }
