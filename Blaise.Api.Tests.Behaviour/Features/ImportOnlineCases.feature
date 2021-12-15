@@ -4,7 +4,7 @@ Feature: Import online cases
 	As a service
 	I want to be given cases to import representing the data captured online
 
-#@smoke
+@smoke
 #Covers all scenarios in one test run
 Scenario: There is an online file available that contains cases that already exists in the blaise database, the cases are updated depending on the outcome codes
 	Given there is a online file that contains the following cases
@@ -41,23 +41,23 @@ Scenario: There is an online file available that contains cases that already exi
 	| 900020     | 110     | Web  | 
 	#scenario 13
 	| 900021     | 580     | Web  | 
-	#scenario 14
-	| 900022     | 580     | Web  | 
-	| 900023     | 580     | Web  | 
-	| 900024     | 580     | Web  | 
-	| 900025     | 580     | Web  | 
-	| 900026     | 580     | Web  | 
-	| 900027     | 580     | Web  | 
-	| 900028     | 580     | Web  | 
-	#scenario 15
-	| 900029     | 580     | Web  | 
-	| 900030     | 580     | Web  | 
-	| 900031     | 580     | Web  | 
-	| 900032     | 580     | Web  | 
-	#scenario 16
-	| 900033     | 110     | Web  | 
-	#scenario 17
-	| 900034     | 210     | Web  | 
+	##scenario 14
+	#| 900022     | 580     | Web  | 
+	#| 900023     | 580     | Web  | 
+	#| 900024     | 580     | Web  | 
+	#| 900025     | 580     | Web  | 
+	#| 900026     | 580     | Web  | 
+	#| 900027     | 580     | Web  | 
+	#| 900028     | 580     | Web  | 
+	##scenario 15
+	#| 900029     | 580     | Web  | 
+	#| 900030     | 580     | Web  | 
+	#| 900031     | 580     | Web  | 
+	#| 900032     | 580     | Web  | 
+	##scenario 16
+	#| 900033     | 110     | Web  | 
+	##scenario 17
+	#| 900034     | 210     | Web  | 
 	
 	And blaise contains the following cases
 	| primarykey | outcome | mode | 
@@ -93,23 +93,23 @@ Scenario: There is an online file available that contains cases that already exi
 	| 900020     | 561     | Tel  | 
 	#scenario 13
 	| 900021     | 580     | tel  | 
-	#scenario 14
-	| 900022     | 310     | tel  | 
-	| 900023     | 430     | tel  | 
-	| 900024     | 440     | tel  | 
-	| 900025     | 460     | tel  | 
-	| 900026     | 461     | tel  | 
-	| 900027     | 541     | tel  | 
-	| 900028     | 542     | tel  | 
-	#scenario 15
-	| 900029     | 110     | tel  | 
-	| 900030     | 210     | tel  | 
-	| 900031     | 561     | tel  | 
-	| 900032     | 562     | tel  | 
-	#scenario 16
-	| 900033     | 580     | tel  | 
-	#scenario 17
-	| 900034     | 580     | tel  | 
+	##scenario 14
+	#| 900022     | 310     | tel  | 
+	#| 900023     | 430     | tel  | 
+	#| 900024     | 440     | tel  | 
+	#| 900025     | 460     | tel  | 
+	#| 900026     | 461     | tel  | 
+	#| 900027     | 541     | tel  | 
+	#| 900028     | 542     | tel  | 
+	##scenario 15
+	#| 900029     | 110     | tel  | 
+	#| 900030     | 210     | tel  | 
+	#| 900031     | 561     | tel  | 
+	#| 900032     | 562     | tel  | 
+	##scenario 16
+	#| 900033     | 580     | tel  | 
+	##scenario 17
+	#| 900034     | 580     | tel  | 
 
 	When the online file is processed
 	Then blaise will contain the following cases
@@ -146,23 +146,23 @@ Scenario: There is an online file available that contains cases that already exi
 	| 900020     | 561     | Tel  | 
 	#scenario 13
 	| 900021     | 580     | Web  | 
-	#scenario 14
-	| 900022     | 580     | Web  | 
-	| 900023     | 580     | Web  | 
-	| 900024     | 580     | Web  | 
-	| 900025     | 580     | Web  | 
-	| 900026     | 580     | Web  | 
-	| 900027     | 580     | Web  | 
-	| 900028     | 580     | Web  | 
-	#scenario 15
-	| 900029     | 110     | tel  | 
-	| 900030     | 210     | tel  | 
-	| 900031     | 561     | tel  | 
-	| 900032     | 562     | tel  | 
-	#scenario 16
-	| 900033     | 110     | Web  | 
-	#scenario 17
-	| 900034     | 210     | Web  | 
+	##scenario 14
+	#| 900022     | 580     | Web  | 
+	#| 900023     | 580     | Web  | 
+	#| 900024     | 580     | Web  | 
+	#| 900025     | 580     | Web  | 
+	#| 900026     | 580     | Web  | 
+	#| 900027     | 580     | Web  | 
+	#| 900028     | 580     | Web  | 
+	##scenario 15
+	#| 900029     | 110     | tel  | 
+	#| 900030     | 210     | tel  | 
+	#| 900031     | 561     | tel  | 
+	#| 900032     | 562     | tel  | 
+	##scenario 16
+	#| 900033     | 110     | Web  | 
+	##scenario 17
+	#| 900034     | 210     | Web  | 
 
 #Scenario 1 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file is complete and in Blaise it is complete, we take the online case
