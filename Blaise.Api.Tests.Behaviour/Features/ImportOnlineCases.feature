@@ -4,7 +4,7 @@ Feature: Import online cases
 	As a service
 	I want to be given cases to import representing the data captured online
 
-@smoke
+#@smoke
 #Covers all scenarios in one test run
 Scenario: There is an online file available that contains cases that already exists in the blaise database, the cases are updated depending on the outcome codes
 	Given there is a online file that contains the following cases
