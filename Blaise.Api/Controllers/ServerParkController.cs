@@ -17,7 +17,7 @@ namespace Blaise.Api.Controllers
 
         public ServerParkController(
             IServerParkService parkService,
-            ILoggingService loggingService) : base(loggingService)
+            ILoggingService loggingService)
         {
             _serverParkService = parkService;
             _loggingService = loggingService;

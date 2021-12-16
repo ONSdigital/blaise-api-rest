@@ -127,8 +127,9 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.True(newFieldData.ContainsKey("CatiMana.CatiCall.FirstDay"));
 
             //throws error if exact format is not used
-            DateTime.ParseExact(newFieldData["CatiMana.CatiCall.FirstDay"], "ddMMyyyy", CultureInfo.InvariantCulture);
+            var dateTime = DateTime.ParseExact(newFieldData["CatiMana.CatiCall.FirstDay"], "ddMMyyyy", CultureInfo.InvariantCulture);
 
+            Assert.IsNotNull(dateTime);
             Assert.AreEqual(DateTime.Now.ToString("ddMMyyyy", CultureInfo.InvariantCulture), newFieldData["CatiMana.CatiCall.FirstDay"]);
         }
 
@@ -240,7 +241,8 @@ namespace Blaise.Api.Tests.Unit.Services
                 if (fieldData.Key == "CatiMana.CatiCall.RegsCalls[1].DialTime")
                 {
                     //throws error if exact format is not used
-                    DateTime.ParseExact(fieldData.Value, "HH:mm:ss", CultureInfo.InvariantCulture);
+                    var dateTime = DateTime.ParseExact(fieldData.Value, "HH:mm:ss", CultureInfo.InvariantCulture);
+                    Assert.IsNotNull(dateTime);
                 }
 
                 Assert.AreEqual(fieldData.Value, result[fieldData.Key]);
@@ -341,7 +343,8 @@ namespace Blaise.Api.Tests.Unit.Services
                 if (fieldData.Key == "CatiMana.CatiCall.RegsCalls[1].DialTime")
                 {
                     //throws error if exact format is not used
-                    DateTime.ParseExact(fieldData.Value, "HH:mm:ss", CultureInfo.InvariantCulture);
+                    var dateTime = DateTime.ParseExact(fieldData.Value, "HH:mm:ss", CultureInfo.InvariantCulture);
+                    Assert.IsNotNull(dateTime);
                 }
 
                 Assert.AreEqual(fieldData.Value, newFieldData[fieldData.Key]);
@@ -452,7 +455,8 @@ namespace Blaise.Api.Tests.Unit.Services
                 if (fieldData.Key == "CatiMana.CatiCall.RegsCalls[1].DialTime")
                 {
                     //throws error if exact format is not used
-                    DateTime.ParseExact(fieldData.Value, "HH:mm:ss", CultureInfo.InvariantCulture);
+                    var dateTime = DateTime.ParseExact(fieldData.Value, "HH:mm:ss", CultureInfo.InvariantCulture);
+                    Assert.IsNotNull(dateTime);
                 }
 
                 Assert.AreEqual(fieldData.Value, newFieldData[fieldData.Key]);

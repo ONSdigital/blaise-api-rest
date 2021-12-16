@@ -16,11 +16,5 @@ namespace Blaise.Api.Tests.Helpers.Extensions
 
             return destinationFilePath;
         }
-
-        public static string ZipFolder(this string sourceFilePath, string destinationFilePath)
-        {
-            ZipFile.CreateFromDirectory(sourceFilePath, destinationFilePath);
-            return destinationFilePath;
-        }
     }
 }

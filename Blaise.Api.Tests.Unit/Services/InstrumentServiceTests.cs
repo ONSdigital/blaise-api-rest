@@ -44,12 +44,10 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_GetAllInstruments_Then_I_Get_A_List_Of_InstrumentDtos_Returned()
         {
             //arrange
-            var surveys = new List<ISurvey>();
-            
             _blaiseApiMock.Setup(b => b.GetSurveysAcrossServerParks())
-                .Returns(surveys);
+                .Returns(new List<ISurvey>());
 
-            _instrumentMapperMock.Setup(m => m.MapToInstrumentDtos(surveys))
+            _instrumentMapperMock.Setup(m => m.MapToInstrumentDtos(new List<ISurvey>()))
                 .Returns(new List<InstrumentDto>());
             //act
             var result = _sut.GetAllInstruments();
@@ -63,10 +61,8 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_GetAllInstruments_Then_I_Get_A_List_Of_All_Instruments_Across_All_ServerParks()
         {
             //arrange
-            var surveys = new List<ISurvey>();
-
             _blaiseApiMock.Setup(b => b.GetSurveysAcrossServerParks())
-                .Returns(surveys);
+                .Returns(new List<ISurvey>());
 
             //act
             _sut.GetAllInstruments();
@@ -79,10 +75,8 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_GetAllInstruments_Then_I_Get_A_Correct_List_Of_InstrumentDtos_Returned()
         {
             //arrange
-            var surveys = new List<ISurvey>();
-            
             _blaiseApiMock.Setup(b => b.GetSurveysAcrossServerParks())
-                .Returns(surveys);
+                .Returns(new List<ISurvey>());
 
             var instrumentDtos = new List<InstrumentDto>
             {
@@ -90,7 +84,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 new InstrumentDto {Name = "OPN2010B"}
             };
 
-            _instrumentMapperMock.Setup(m => m.MapToInstrumentDtos(surveys))
+            _instrumentMapperMock.Setup(m => m.MapToInstrumentDtos(new List<ISurvey>()))
                 .Returns(instrumentDtos);
 
             //act
@@ -105,14 +99,11 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_GetInstruments_Then_I_Get_A_List_Of_InstrumentDtos_Back()
         {
             //arrange
-            var instrumentDtos = new List<InstrumentDto>();
-            var surveys = new List<ISurvey>();
-
             _blaiseApiMock.Setup(b => b.GetSurveys(_serverParkName))
-                .Returns(surveys);
+                .Returns(new List<ISurvey>());
 
-            _instrumentMapperMock.Setup(m => m.MapToInstrumentDtos(surveys))
-                .Returns(instrumentDtos);
+            _instrumentMapperMock.Setup(m => m.MapToInstrumentDtos(new List<ISurvey>()))
+                .Returns(new List<InstrumentDto>());
 
             //act
             var result = _sut.GetInstruments(_serverParkName);
@@ -126,21 +117,18 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_GetInstrument_Then_I_Get_A_Correct_List_Of_InstrumentDtos_Back()
         {
             //arrange
-            var instrumentDtos = new List<InstrumentDto>();
-            var surveys = new List<ISurvey>();
-
             _blaiseApiMock.Setup(b => b.GetSurveys(_serverParkName))
-                .Returns(surveys);
+                .Returns(new List<ISurvey>());
 
-            _instrumentMapperMock.Setup(m => m.MapToInstrumentDtos(surveys))
-                .Returns(instrumentDtos);
+            _instrumentMapperMock.Setup(m => m.MapToInstrumentDtos(new List<ISurvey>()))
+                .Returns(new List<InstrumentDto>());
 
             //act
             var result = _sut.GetInstruments(_serverParkName);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(instrumentDtos, result);
+            Assert.AreEqual(new List<InstrumentDto>(), result);
         }
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_GetInstruments_Then_An_ArgumentException_Is_Thrown()
@@ -593,13 +581,11 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_GetDataEntrySettings_I_Get_A_List_Of_DataEntrySettingsDtos_Back()
         {
             //arrange
-            var dataEntrySettingsModelList = new List<DataEntrySettingsModel>();
             _blaiseApiMock.Setup(api => api.GetSurveyDataEntrySettings(_instrumentName, _serverParkName))
-                .Returns(dataEntrySettingsModelList);
+                .Returns(new List<DataEntrySettingsModel>());
 
-            var dataEntrySettingsDtoList = new List<DataEntrySettingsDto>();
-            _dataEntrySettingsMapperMock.Setup(de => de.MapDataEntrySettingsDtos(dataEntrySettingsModelList))
-                .Returns(dataEntrySettingsDtoList);
+            _dataEntrySettingsMapperMock.Setup(de => de.MapDataEntrySettingsDtos(new List<DataEntrySettingsModel>()))
+                .Returns(new List<DataEntrySettingsDto>());
 
             //act
             var result = _sut.GetDataEntrySettings(_instrumentName, _serverParkName);
@@ -613,12 +599,11 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_GetDataEntrySettings_I_Get_A_Valid_List_Of_DataEntrySettingsDtos_Back()
         {
             //arrange
-            var dataEntrySettingsModelList = new List<DataEntrySettingsModel>();
             _blaiseApiMock.Setup(api => api.GetSurveyDataEntrySettings(_instrumentName, _serverParkName))
-                .Returns(dataEntrySettingsModelList);
+                .Returns(new List<DataEntrySettingsModel>());
 
             var dataEntrySettingsDtoList = new List<DataEntrySettingsDto>();
-            _dataEntrySettingsMapperMock.Setup(de => de.MapDataEntrySettingsDtos(dataEntrySettingsModelList))
+            _dataEntrySettingsMapperMock.Setup(de => de.MapDataEntrySettingsDtos(new List<DataEntrySettingsModel>()))
                 .Returns(dataEntrySettingsDtoList);
 
             //act
