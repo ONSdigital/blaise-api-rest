@@ -2,7 +2,6 @@
 {
     public enum ModeType
     {
-        NotSpecified,
         Tel,
         Ftf,
         Web

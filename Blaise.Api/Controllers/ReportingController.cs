@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
-using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.Reports;
 using Blaise.Api.Core.Interfaces.Services;
 using Swashbuckle.Swagger.Annotations;
@@ -14,9 +13,7 @@ namespace Blaise.Api.Controllers
     {
         private readonly IReportingService _reportingService;
 
-        public ReportingController(
-            IReportingService reportingService,
-            ILoggingService loggingService) : base(loggingService)
+        public ReportingController(IReportingService reportingService)
         {
             _reportingService = reportingService;
         }

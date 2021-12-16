@@ -16,7 +16,7 @@ namespace Blaise.Api.Controllers
 
         public UserController(
             IUserService userService,
-            ILoggingService loggingService) : base(loggingService)
+            ILoggingService loggingService)
         {
             _userService = userService;
             _loggingService = loggingService;

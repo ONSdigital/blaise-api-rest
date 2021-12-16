@@ -46,14 +46,12 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_GetUsers_Then_I_Get_A_Correct_List_Of_UserDtos_Back()
         {
             //arrange
-            var users = new List<IUser>();
-
             _blaiseApiMock.Setup(b => b.GetUsers())
-                .Returns(users);
+                .Returns(new List<IUser>());
 
             var userDtos = new List<UserDto> { new UserDto() };
 
-            _mapperMock.Setup(m => m.MapToUserDtos(users))
+            _mapperMock.Setup(m => m.MapToUserDtos(new List<IUser>()))
                 .Returns(userDtos);
             //act
             var result = _sut.GetUsers();
