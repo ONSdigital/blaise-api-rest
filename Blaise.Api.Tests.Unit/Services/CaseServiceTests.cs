@@ -463,7 +463,6 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             const string caseId = "1000001";
-            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
             //act
             _sut.DeleteCase(_serverParkName, _instrumentName, caseId);
@@ -477,7 +476,6 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             const string caseId = "1000001";
-            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(string.Empty,
@@ -490,7 +488,6 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             const string caseId = "1000001";
-            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(null,
@@ -503,7 +500,6 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             const string caseId = "1000001";
-            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(_serverParkName,
@@ -516,7 +512,6 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             const string caseId = "1000001";
-            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(_serverParkName,
@@ -527,9 +522,6 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_CaseId_When_I_Call_DeleteCase_Then_An_ArgumentException_Is_Thrown()
         {
-            //arrange
-            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
-
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(_serverParkName,
                 _instrumentName, string.Empty));
@@ -539,9 +531,6 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_CaseId_When_I_Call_DeleteCase_Then_An_ArgumentNullException_Is_Thrown()
         {
-            //arrange
-            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
-
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(_serverParkName,
                 _serverParkName, null));

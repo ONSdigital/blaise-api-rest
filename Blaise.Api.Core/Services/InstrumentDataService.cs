@@ -26,15 +26,6 @@ namespace Blaise.Api.Core.Services
             _loggingService = loggingService;
         }
 
-        public async Task<string> GetInstrumentPackageWithDataAsync(string serverParkName, string instrumentName, string tempFilePath)
-        {
-            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
-            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
-            tempFilePath.ThrowExceptionIfNullOrEmpty("tempFilePath");
-
-            return await CreateInstrumentPackageWithDataAsync(serverParkName, instrumentName, tempFilePath);
-        }
-
         public async Task ImportOnlineDataAsync(InstrumentDataDto instrumentDataDto, string serverParkName,
             string instrumentName, string tempFilePath)
         {
@@ -48,25 +39,6 @@ namespace Blaise.Api.Core.Services
             var databaseFile = _fileService.GetDatabaseFile(tempFilePath, instrumentName);
 
             _nisraService.ImportNisraDatabaseFile(databaseFile, instrumentName, serverParkName);
-        }
-
-        private async Task<string> CreateInstrumentPackageWithDataAsync(string serverParkName, string instrumentName, string tempFilePath)
-        {
-            var instrumentPackage = await DownloadInstrumentFromBucketAsync(instrumentName, tempFilePath);
-            _loggingService.LogInfo($"Downloaded instrument package '{instrumentPackage}'");
-            
-            _fileService.UpdateInstrumentFileWithData(serverParkName, instrumentPackage);
-            _loggingService.LogInfo($"Updated instrument package '{instrumentPackage}' with data");
-
-            return instrumentPackage;
-        }
-
-        private async Task<string> DownloadInstrumentFromBucketAsync(string instrumentName, string tempFilePath)
-        {
-            var instrumentPackageName = _fileService.GetInstrumentPackageName(instrumentName);
-
-            _loggingService.LogInfo($"Downloading instrument package '{instrumentPackageName}'");
-            return await _storageService.DownloadPackageFromInstrumentBucketAsync(instrumentPackageName, tempFilePath);
         }
 
         private async Task DownloadDatabaseFilesFromBucketAsync(string bucketPath, string tempFilePath)

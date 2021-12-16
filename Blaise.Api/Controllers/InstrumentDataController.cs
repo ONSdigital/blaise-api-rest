@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Blaise.Api.Contracts.Interfaces;
@@ -20,34 +19,11 @@ namespace Blaise.Api.Controllers
         public InstrumentDataController(
             IInstrumentDataService dataDeliveryService, 
             ILoggingService loggingService, 
-            IConfigurationProvider configurationProvider) : base(loggingService)
+            IConfigurationProvider configurationProvider)
         {
             _instrumentDataService = dataDeliveryService;
             _loggingService = loggingService;
             _configurationProvider = configurationProvider;
-        }
-
-        [HttpGet]
-        [Route("")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ByteArrayContent))]
-        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
-        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public async Task<IHttpActionResult> GetInstrumentWithDataAsync([FromUri] string serverParkName, [FromUri] string instrumentName)
-        {
-            var tempPath = _configurationProvider.TempPath;
-            
-            try
-            {
-                _loggingService.LogInfo($"Attempting to download instrument '{instrumentName}' with data on server park '{serverParkName}'");
-                var instrumentFile = await _instrumentDataService.GetInstrumentPackageWithDataAsync(serverParkName, instrumentName, tempPath);
-               
-                return DownloadFile(instrumentFile);
-            }
-            finally
-            {
-                tempPath.CleanUpTempFiles();
-                _loggingService.LogInfo($"Removed temporary files and folder '{tempPath}'");
-            }
         }
 
         [HttpPost]

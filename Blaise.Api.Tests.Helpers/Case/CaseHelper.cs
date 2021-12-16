@@ -144,11 +144,6 @@ namespace Blaise.Api.Tests.Helpers.Case
                 BlaiseConfigurationHelper.ServerParkName);
         }
 
-        public object NumberOfCasesInInstrument(string dataInterfaceFile)
-        {
-            return _blaiseCaseApi.GetNumberOfCases(dataInterfaceFile);
-        }
-
         public ModeType GetMode(string primaryKey)
         {
             var field = _blaiseCaseApi.GetFieldValue(primaryKey, BlaiseConfigurationHelper.InstrumentName,

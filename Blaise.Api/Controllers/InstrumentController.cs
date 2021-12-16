@@ -26,7 +26,8 @@ namespace Blaise.Api.Controllers
             IInstrumentService instrumentService,
             IInstrumentInstallerService installInstrumentService,
             IInstrumentUninstallerService uninstallInstrumentService,
-            ILoggingService loggingService, IConfigurationProvider configurationProvider) : base(loggingService)
+            ILoggingService loggingService, 
+            IConfigurationProvider configurationProvider)
         {
             _instrumentService = instrumentService;
             _installInstrumentService = installInstrumentService;

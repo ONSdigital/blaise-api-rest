@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -49,27 +48,6 @@ namespace Blaise.Api.Tests.Helpers.RestApi
             var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(url, stringContent);
             return response.StatusCode;
-        }
-
-        public async Task<string> GetInstrumentWithData(string url, string path)
-        {
-            var response = await _httpClient.GetAsync(url);
-
-            var fileName = response.Content.Headers.ContentDisposition.FileName;
-            var localFilePath = Path.Combine(path, Guid.NewGuid().ToString());
-
-            if (!Directory.Exists(localFilePath))
-            {
-                Directory.CreateDirectory(localFilePath);
-            }
-
-            var filePath = Path.Combine(localFilePath, fileName);
-            using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
-            {
-                await response.Content.CopyToAsync(fileStream);
-            }
-
-            return filePath;
         }
 
         public async Task<HttpStatusCode> ImportOnlineCases(string url, string instrumentDataPath)

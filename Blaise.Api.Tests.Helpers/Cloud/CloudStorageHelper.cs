@@ -62,12 +62,6 @@ namespace Blaise.Api.Tests.Helpers.Cloud
             await storageClient.DeleteObjectAsync(bucketPath, fileName);
         }
 
-        public async Task DeleteFolderInBucketAsync(string bucketPath, string fileName)
-        {
-            var storageClient = GetStorageClient();
-            await storageClient.DeleteObjectAsync(bucketPath, $"{fileName}/");
-        }
-
         public async Task DeleteFilesInBucketAsync(string bucketName, string bucketPath)
         {
             var storageClient = GetStorageClient();
