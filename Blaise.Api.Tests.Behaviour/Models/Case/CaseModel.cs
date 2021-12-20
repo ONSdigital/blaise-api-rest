@@ -1,7 +1,7 @@
 ﻿using System;
-using Blaise.Api.Tests.Models.Enums;
+using Blaise.Api.Tests.Behaviour.Models.Enums;
 
-namespace Blaise.Api.Tests.Models.Case
+namespace Blaise.Api.Tests.Behaviour.Models.Case
 {
     public class CaseModel
     {

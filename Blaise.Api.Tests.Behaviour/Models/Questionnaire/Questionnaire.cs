@@ -1,6 +1,6 @@
 ﻿using Blaise.Nuget.Api.Contracts.Enums;
 
-namespace Blaise.Api.Tests.Models.Questionnaire
+namespace Blaise.Api.Tests.Behaviour.Models.Questionnaire
 {
     public class Questionnaire
     {

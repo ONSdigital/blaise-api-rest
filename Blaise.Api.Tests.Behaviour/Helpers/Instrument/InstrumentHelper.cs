@@ -1,10 +1,10 @@
 ﻿using System.Threading;
-using Blaise.Api.Tests.Helpers.Configuration;
+using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Nuget.Api.Api;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 
-namespace Blaise.Api.Tests.Helpers.Instrument
+namespace Blaise.Api.Tests.Behaviour.Helpers.Instrument
 {
     public class InstrumentHelper
     {

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Blaise.Api.Tests.Helpers.Case;
-using Blaise.Api.Tests.Helpers.Configuration;
-using Blaise.Api.Tests.Helpers.Instrument;
-using Blaise.Api.Tests.Helpers.RestApi;
-using Blaise.Api.Tests.Models.Questionnaire;
+using Blaise.Api.Tests.Behaviour.Helpers.Case;
+using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
+using Blaise.Api.Tests.Behaviour.Helpers.Instrument;
+using Blaise.Api.Tests.Behaviour.Helpers.RestApi;
+using Blaise.Api.Tests.Behaviour.Models.Questionnaire;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 

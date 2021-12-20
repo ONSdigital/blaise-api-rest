@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Blaise.Api.Tests.Helpers.Configuration;
-using Blaise.Api.Tests.Models.Case;
-using Blaise.Api.Tests.Models.Enums;
+using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
+using Blaise.Api.Tests.Behaviour.Models.Case;
+using Blaise.Api.Tests.Behaviour.Models.Enums;
 using Blaise.Nuget.Api.Api;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Extensions;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 
-namespace Blaise.Api.Tests.Helpers.Case
+namespace Blaise.Api.Tests.Behaviour.Helpers.Case
 {
     public class CaseHelper
     {

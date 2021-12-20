@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using Blaise.Api.Tests.Helpers.Configuration;
+using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Google.Cloud.Storage.V1;
 
-namespace Blaise.Api.Tests.Helpers.Cloud
+namespace Blaise.Api.Tests.Behaviour.Helpers.Cloud
 {
     public class CloudStorageHelper
     {

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.IO.Compression;
 
-namespace Blaise.Api.Tests.Helpers.Extensions
+namespace Blaise.Api.Tests.Behaviour.Helpers.Extensions
 {
     public static class FileExtensions
     {

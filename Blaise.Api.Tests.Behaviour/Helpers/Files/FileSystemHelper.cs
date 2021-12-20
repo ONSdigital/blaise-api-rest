@@ -1,6 +1,6 @@
 ﻿using Blaise.Api.Extensions;
 
-namespace Blaise.Api.Tests.Helpers.Files
+namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 {
     public class FileSystemHelper
     {

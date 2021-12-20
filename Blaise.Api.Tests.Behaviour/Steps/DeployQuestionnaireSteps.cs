@@ -1,10 +1,10 @@
 ﻿using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using Blaise.Api.Tests.Helpers.Cloud;
-using Blaise.Api.Tests.Helpers.Configuration;
-using Blaise.Api.Tests.Helpers.Instrument;
-using Blaise.Api.Tests.Helpers.RestApi;
+using Blaise.Api.Tests.Behaviour.Helpers.Cloud;
+using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
+using Blaise.Api.Tests.Behaviour.Helpers.Instrument;
+using Blaise.Api.Tests.Behaviour.Helpers.RestApi;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 

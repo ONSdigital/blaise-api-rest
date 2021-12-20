@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Blaise.Api.Tests.Helpers.Case;
-using Blaise.Api.Tests.Helpers.Cloud;
-using Blaise.Api.Tests.Helpers.Configuration;
-using Blaise.Api.Tests.Helpers.Extensions;
-using Blaise.Api.Tests.Models.Case;
-using Blaise.Api.Tests.Models.Enums;
+using Blaise.Api.Tests.Behaviour.Helpers.Case;
+using Blaise.Api.Tests.Behaviour.Helpers.Cloud;
+using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
+using Blaise.Api.Tests.Behaviour.Helpers.Extensions;
+using Blaise.Api.Tests.Behaviour.Models.Case;
+using Blaise.Api.Tests.Behaviour.Models.Enums;
 
-namespace Blaise.Api.Tests.Helpers.Files
+namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 {
     public class OnlineFileHelper
     {

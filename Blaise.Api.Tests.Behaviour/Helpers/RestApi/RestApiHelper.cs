@@ -7,12 +7,12 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Blaise.Api.Contracts.Models.Instrument;
-using Blaise.Api.Tests.Helpers.Configuration;
-using Blaise.Api.Tests.Models.Questionnaire;
+using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
+using Blaise.Api.Tests.Behaviour.Models.Questionnaire;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Newtonsoft.Json;
 
-namespace Blaise.Api.Tests.Helpers.RestApi
+namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
 {
     public class RestApiHelper
     {

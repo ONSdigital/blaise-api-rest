@@ -1,6 +1,6 @@
-﻿using Blaise.Api.Tests.Helpers.Extensions;
+﻿using Blaise.Api.Tests.Behaviour.Helpers.Extensions;
 
-namespace Blaise.Api.Tests.Helpers.Configuration
+namespace Blaise.Api.Tests.Behaviour.Helpers.Configuration
 {
     public static class BlaiseConfigurationHelper
     {

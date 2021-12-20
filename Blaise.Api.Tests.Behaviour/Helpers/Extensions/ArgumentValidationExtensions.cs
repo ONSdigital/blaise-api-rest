@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Blaise.Api.Tests.Helpers.Extensions
+namespace Blaise.Api.Tests.Behaviour.Helpers.Extensions
 {
        public static class ArgumentValidationExtensions
     {
