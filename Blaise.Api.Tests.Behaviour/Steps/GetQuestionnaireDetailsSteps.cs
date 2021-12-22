@@ -25,6 +25,11 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [Given(@"there is a questionnaire installed on a Blaise environment")]
         public void GivenThereIsAnInstrumentInstalledOnABlaiseEnvironment()
         {
+            if (RestApiConfigurationHelper.RunLocalUsingStubs)
+            {
+                return;
+            }
+
             InstrumentHelper.GetInstance().InstallSurvey();
             Assert.IsTrue(InstrumentHelper.GetInstance().SurveyHasInstalled(60));
         }
@@ -32,14 +37,13 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [Given(@"the questionnaire is active")]
         public void GivenTheQuestionnaireIsActive()
         {
+            if (RestApiConfigurationHelper.RunLocalUsingStubs)
+            {
+                return;
+            }
+
             var surveyIsActive = InstrumentHelper.GetInstance().SetSurveyAsActive(60);
             Assert.IsTrue(surveyIsActive);
-        }
-
-
-        [Given(@"there are no questionnaires installed")]
-        public void GivenThereAreNoQuestionnairesInstalled()
-        {
         }
 
         [When(@"the API is queried to return all active questionnaires")]
@@ -49,31 +53,21 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             _scenarioContext.Set(listOfActiveQuestionnaires, ApiResponse);
         }
 
-        [Then(@"the details of the questionnaire is returned")]
+        [Then(@"the details of the questionnaire are returned")]
         public void ThenDetailsOfQuestionnaireAIsReturned()
         {
             var listOfActiveQuestionnaires = _scenarioContext.Get<List<Questionnaire>>(ApiResponse);
             Assert.IsTrue(listOfActiveQuestionnaires.Any(q => q.Name == BlaiseConfigurationHelper.InstrumentName));
         }
 
-        [Then(@"the details of the questionnaire is not returned")]
-        public void ThenDetailsOfQuestionnaireAIsNotReturned()
-        {
-            var listOfActiveQuestionnaires = _scenarioContext.Get<List<Questionnaire>>(ApiResponse);
-            Assert.IsFalse(listOfActiveQuestionnaires.Any(q => q.Name == BlaiseConfigurationHelper.InstrumentName));
-        }
-
-        [Then(@"the questionnaire is available to use in the Blaise environment")]
-        public void ThenTheInstrumentIsAvailableToUseInTheBlaiseEnvironment()
-        {
-            var instrumentHasInstalled = InstrumentHelper.GetInstance().SurveyHasInstalled(60);
-
-            Assert.IsTrue(instrumentHasInstalled, "The instrument has not been installed, or is not active");
-        }
-
         [AfterFeature("questionnaires")]
         public static void CleanUpScenario()
         {
+            if (RestApiConfigurationHelper.RunLocalUsingStubs)
+            {
+                return;
+            }
+
             CaseHelper.GetInstance().DeleteCases();
             InstrumentHelper.GetInstance().UninstallSurvey();
         }

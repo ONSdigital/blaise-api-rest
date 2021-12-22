@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Api.Tests.Behaviour.Models.Questionnaire;
+using Blaise.Api.Tests.Behaviour.Stubs;
 using Blaise.Nuget.Api.Contracts.Enums;
+using Microsoft.Owin.Hosting;
 using Newtonsoft.Json;
 
 namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
@@ -18,6 +20,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
     {
         private static HttpClient _httpClient;
         private static RestApiHelper _currentInstance;
+        private static IDisposable _webApp;
 
         public RestApiHelper()
         {
@@ -30,10 +33,19 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
             return _currentInstance ?? (_currentInstance = new RestApiHelper());
         }
 
+        public void StartWebApi()
+        {
+            _webApp = WebApp.Start<StartupStub>("http://localhost:9443/");
+        }
+
+        public void StopWebApi()
+        {
+            _webApp.Dispose();
+        }
+
         public async Task<List<Questionnaire>> GetAllActiveQuestionnaires()
         {
-            var questionnaires =
-                await GetListOfObjectsASync<Questionnaire>(RestApiConfigurationHelper.InstrumentsUrl);
+            var questionnaires = await GetListOfObjectsASync<Questionnaire>(RestApiConfigurationHelper.InstrumentsUrl);
             return questionnaires != null ? questionnaires.Where(q => q.Status == SurveyStatusType.Active).ToList()
                 : new List<Questionnaire>();
         }
@@ -47,6 +59,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(url, stringContent);
+
             return response.StatusCode;
         }
 

@@ -259,7 +259,6 @@
     <Compile Include="Controllers\InstrumentController.cs" />
     <Compile Include="Controllers\ServerParkController.cs" />
     <Compile Include="Extensions\ConfigurationExtensions.cs" />
-    <Compile Include="Extensions\FileSystemExtensions.cs" />
     <Compile Include="Filters\ExceptionFilter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,4 +1,4 @@
-﻿using Blaise.Api.Extensions;
+﻿using System.IO;
 
 namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 {
@@ -13,7 +13,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
         public void CleanUpTempFiles(string path)
         {
-            path.CleanUpTempFiles();
+            Directory.Delete(path, true);
         }
     }
 }
