@@ -10,9 +10,15 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
 {
     public class BlaiseSurveyApiStub : IBlaiseSurveyApi
     {
+        public bool SurveyInstalled;
+        public string NameOfInstalledSurvey;
+        public string ServerParkOfInstalledSurvey;
+        public SurveyStatusType SurveyStatusType;
+
         public bool SurveyExists(string instrumentName, string serverParkName)
         {
-            throw new NotImplementedException();
+            return NameOfInstalledSurvey.Equals(instrumentName, StringComparison.CurrentCultureIgnoreCase) &&
+                   ServerParkOfInstalledSurvey.Equals(serverParkName, StringComparison.CurrentCultureIgnoreCase);
         }
 
         public IEnumerable<ISurvey> GetSurveysAcrossServerParks()
@@ -32,7 +38,12 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
 
         public SurveyStatusType GetSurveyStatus(string instrumentName, string serverParkName)
         {
-            throw new NotImplementedException();
+            if (SurveyInstalled)
+            {
+                return SurveyStatusType;
+            }
+
+            return SurveyStatusType.Erroneous;
         }
 
         public IEnumerable<string> GetNamesOfSurveys(string serverParkName)
@@ -53,26 +64,37 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
         public void InstallSurvey(string instrumentName, string serverParkName, string instrumentFile,
             SurveyInterviewType surveyInterviewType)
         {
+            NameOfInstalledSurvey = instrumentName;
+            ServerParkOfInstalledSurvey = serverParkName;
+            SurveyInstalled = true;
+            SurveyStatusType = SurveyStatusType.Active;
         }
 
         public void UninstallSurvey(string instrumentName, string serverParkName)
         {
-            throw new NotImplementedException();
+            NameOfInstalledSurvey = null;
+            ServerParkOfInstalledSurvey = null;
+            SurveyInstalled = false;
+            SurveyStatusType = SurveyStatusType.Erroneous;
         }
 
         public void ActivateSurvey(string instrumentName, string serverParkName)
         {
-            throw new NotImplementedException();
+            SurveyStatusType = SurveyStatusType.Active;
         }
 
         public void DeactivateSurvey(string instrumentName, string serverParkName)
         {
-            throw new NotImplementedException();
+            SurveyStatusType = SurveyStatusType.Inactive;
         }
 
         public IEnumerable<string> GetSurveyModes(string instrumentName, string serverParkName)
         {
-            throw new NotImplementedException();
+            return new List<string>
+            {
+                "CAWI",
+                "CATI"
+            };
         }
 
         public IEnumerable<DataEntrySettingsModel> GetSurveyDataEntrySettings(string instrumentName, string serverParkName)

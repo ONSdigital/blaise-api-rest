@@ -13,7 +13,7 @@ namespace Blaise.Api
 {
     public class Startup
     {
-        public virtual IUnityContainer UnityContainer => UnityConfig.GetConfiguredContainer();
+        public virtual IUnityContainer UnityContainer => UnityConfig.UnityContainer;
 
         public void Configuration(IAppBuilder appBuilder)
         {

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Blaise.Api.Tests.Behaviour.Helpers.Case;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Api.Tests.Behaviour.Helpers.Instrument;
 using Blaise.Api.Tests.Behaviour.Helpers.RestApi;
@@ -25,11 +24,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [Given(@"there is a questionnaire installed on a Blaise environment")]
         public void GivenThereIsAnInstrumentInstalledOnABlaiseEnvironment()
         {
-            if (RestApiConfigurationHelper.RunLocalUsingStubs)
-            {
-                return;
-            }
-
             InstrumentHelper.GetInstance().InstallSurvey();
             Assert.IsTrue(InstrumentHelper.GetInstance().SurveyHasInstalled(60));
         }
@@ -37,11 +31,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [Given(@"the questionnaire is active")]
         public void GivenTheQuestionnaireIsActive()
         {
-            if (RestApiConfigurationHelper.RunLocalUsingStubs)
-            {
-                return;
-            }
-
             var surveyIsActive = InstrumentHelper.GetInstance().SetSurveyAsActive(60);
             Assert.IsTrue(surveyIsActive);
         }
@@ -63,12 +52,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [AfterFeature("questionnaires")]
         public static void CleanUpScenario()
         {
-            if (RestApiConfigurationHelper.RunLocalUsingStubs)
-            {
-                return;
-            }
-
-            CaseHelper.GetInstance().DeleteCases();
             InstrumentHelper.GetInstance().UninstallSurvey();
         }
     }

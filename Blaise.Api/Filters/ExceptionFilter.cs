@@ -2,8 +2,8 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
-using Blaise.Api.Configuration;
 using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Logging.Services;
 using Blaise.Nuget.Api.Contracts.Exceptions;
 
 namespace Blaise.Api.Filters
@@ -13,7 +13,11 @@ namespace Blaise.Api.Filters
         private readonly ILoggingService _loggingService;
         public ExceptionFilter()
         {
-            _loggingService = UnityConfig.Resolve<ILoggingService>();
+            #if DEBUG
+                _loggingService = new ConsoleLogging();
+            #else
+                _loggingService = UnityConfig.Resolve<ILoggingService>();
+            #endif
         }
 
         public override void OnException(HttpActionExecutedContext context)

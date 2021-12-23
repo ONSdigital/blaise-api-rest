@@ -3,7 +3,7 @@ using System;
 
 namespace Blaise.Api.Logging.Services
 {
-    public class TestLogging : ILoggingService
+    public class ConsoleLogging : ILoggingService
     {
         public void LogInfo(string message)
         {

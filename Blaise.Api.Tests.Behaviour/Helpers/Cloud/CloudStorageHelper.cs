@@ -17,6 +17,11 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Cloud
 
         public async Task UploadToBucketAsync(string bucketPath, string filePath)
         {
+            if (StubConfigurationHelper.UseStubs)
+            {
+                return;
+            }
+
             var storageClient = GetStorageClient();
             using (var fileStream = File.OpenRead(filePath))
             {

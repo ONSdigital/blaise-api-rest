@@ -17,7 +17,7 @@ namespace Blaise.Api.Tests.Unit.Configuration
         public void Given_A_Controller_Type_I_Resolve_The_Controller_Type_Then_All_Dependencies_Are_Resolved(Type controllerType)
         {
             //arrange
-            var container = UnityConfig.GetConfiguredContainer();
+            var container = UnityConfig.UnityContainer;
 
             //act && assert
             Assert.DoesNotThrow(() => container.Resolve(controllerType, controllerType.ToString()));

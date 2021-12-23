@@ -131,8 +131,8 @@
     <Reference Include="Microsoft.Owin.Host.HttpListener, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Host.HttpListener.4.2.0\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Hosting, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Hosting.4.2.0\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Hosting, Version=2.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Hosting.2.0.2\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=8.0.22.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.22\lib\net452\MySql.Data.dll</HintPath>
@@ -248,6 +248,7 @@
     <Compile Include="Helpers\Case\CaseHelper.cs" />
     <Compile Include="Helpers\Cloud\CloudStorageHelper.cs" />
     <Compile Include="Helpers\Configuration\BlaiseConfigurationHelper.cs" />
+    <Compile Include="Helpers\Configuration\StubConfigurationHelper.cs" />
     <Compile Include="Helpers\Configuration\RestApiConfigurationHelper.cs" />
     <Compile Include="Helpers\Extensions\ArgumentValidationExtensions.cs" />
     <Compile Include="Helpers\Extensions\ConfigurationExtensions.cs" />

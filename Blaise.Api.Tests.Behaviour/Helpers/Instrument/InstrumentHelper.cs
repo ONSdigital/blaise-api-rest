@@ -1,5 +1,7 @@
 ﻿using System.Threading;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
+using Blaise.Api.Tests.Behaviour.Stubs;
+using Blaise.Api.Tests.Behaviour.Stubs.Blaise;
 using Blaise.Nuget.Api.Api;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
@@ -14,6 +16,13 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Instrument
 
         public InstrumentHelper()
         {
+            if (StubConfigurationHelper.UseStubs)
+            {
+                _blaiseSurveyApi = UnityConfigStub.Resolve<IBlaiseSurveyApi>();
+
+                return;
+            }
+
             _blaiseSurveyApi = new BlaiseSurveyApi();
         }
 

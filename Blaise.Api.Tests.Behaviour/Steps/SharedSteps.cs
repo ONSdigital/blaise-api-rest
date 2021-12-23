@@ -7,19 +7,19 @@ namespace Blaise.Api.Tests.Behaviour.Steps
     [Binding]
     public sealed class SharedSteps
     {
-        [BeforeScenario]
-        public void StartApiIfRunningLocally()
+        [BeforeFeature]
+        public static void StartApiIfRunningLocally()
         {
-            if (RestApiConfigurationHelper.RunLocalUsingStubs)
+            if (StubConfigurationHelper.UseStubs)
             {
                 RestApiHelper.GetInstance().StartWebApi();
             }
         }
 
-        [AfterScenario]
-        public void StopApiIfRunningLocally()
+        [AfterFeature]
+        public static void StopApiIfRunningLocally()
         {
-            if (RestApiConfigurationHelper.RunLocalUsingStubs)
+            if (StubConfigurationHelper.UseStubs)
             {
                 RestApiHelper.GetInstance().StopWebApi();
             }
