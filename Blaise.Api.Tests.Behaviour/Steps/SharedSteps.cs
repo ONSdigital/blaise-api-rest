@@ -7,7 +7,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
     [Binding]
     public sealed class SharedSteps
     {
-        [BeforeFeature]
+        [BeforeTestRun]
         public static void StartApiIfRunningLocally()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -16,7 +16,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             }
         }
 
-        [AfterFeature]
+        [AfterTestRun]
         public static void StopApiIfRunningLocally()
         {
             if (StubConfigurationHelper.UseStubs)

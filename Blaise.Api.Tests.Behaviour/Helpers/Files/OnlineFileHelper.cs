@@ -23,7 +23,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
         public async Task CreateCasesInOnlineFileAsync(int numberOfCases, string path)
         {
-            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackage;
+            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackagePath;
             var extractedFilePath = ExtractPackageFiles(path, instrumentPackage);
             var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
 
@@ -34,7 +34,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
         public async Task CreateCasesInOnlineFileAsync(IEnumerable<CaseModel> caseModels, string path)
         {
-            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackage;
+            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackagePath;
             var extractedFilePath = ExtractPackageFiles(path, instrumentPackage);
             var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
 
@@ -45,7 +45,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
         public async Task<string> CreateCaseInOnlineFileAsync(int outcomeCode, string path)
         {
-            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackage;
+            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackagePath;
             var extractedFilePath = ExtractPackageFiles(path, instrumentPackage);
             var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
 
@@ -59,7 +59,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
         public async Task CreateCaseInOnlineFileAsync(CaseModel caseModel, string path)
         {
-            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackage;
+            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackagePath;
             var extractedFilePath = ExtractPackageFiles(path, instrumentPackage);
             var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
 

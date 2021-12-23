@@ -13,7 +13,7 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
         public bool SurveyInstalled;
         public string NameOfInstalledSurvey;
         public string ServerParkOfInstalledSurvey;
-        public SurveyStatusType SurveyStatusType;
+        public SurveyStatusType? SurveyStatus;
 
         public bool SurveyExists(string instrumentName, string serverParkName)
         {
@@ -38,9 +38,9 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
 
         public SurveyStatusType GetSurveyStatus(string instrumentName, string serverParkName)
         {
-            if (SurveyInstalled)
+            if (SurveyInstalled && SurveyStatus != null)
             {
-                return SurveyStatusType;
+                return (SurveyStatusType)SurveyStatus;
             }
 
             return SurveyStatusType.Erroneous;
@@ -67,7 +67,7 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
             NameOfInstalledSurvey = instrumentName;
             ServerParkOfInstalledSurvey = serverParkName;
             SurveyInstalled = true;
-            SurveyStatusType = SurveyStatusType.Active;
+            SurveyStatus = SurveyStatusType.Active;
         }
 
         public void UninstallSurvey(string instrumentName, string serverParkName)
@@ -75,17 +75,17 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
             NameOfInstalledSurvey = null;
             ServerParkOfInstalledSurvey = null;
             SurveyInstalled = false;
-            SurveyStatusType = SurveyStatusType.Erroneous;
+            SurveyStatus = null;
         }
 
         public void ActivateSurvey(string instrumentName, string serverParkName)
         {
-            SurveyStatusType = SurveyStatusType.Active;
+            SurveyStatus = SurveyStatusType.Active;
         }
 
         public void DeactivateSurvey(string instrumentName, string serverParkName)
         {
-            SurveyStatusType = SurveyStatusType.Inactive;
+            SurveyStatus = SurveyStatusType.Inactive;
         }
 
         public IEnumerable<string> GetSurveyModes(string instrumentName, string serverParkName)

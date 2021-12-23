@@ -36,7 +36,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Instrument
             _blaiseSurveyApi.InstallSurvey(
                 BlaiseConfigurationHelper.InstrumentName,
                 BlaiseConfigurationHelper.ServerParkName,
-                BlaiseConfigurationHelper.InstrumentPackage,
+                BlaiseConfigurationHelper.InstrumentPackagePath,
                 SurveyInterviewType.Cati);
         }
 

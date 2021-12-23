@@ -42,27 +42,13 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Cloud
             }          
         }
 
-        public async Task<string> DownloadFromBucketAsync(string bucketPath, string fileName, string destinationFilePath)
-        {
-            var storageClient = GetStorageClient();
-
-            if (!Directory.Exists(destinationFilePath))
-            {
-                Directory.CreateDirectory(destinationFilePath);
-            }
-
-            var downloadedFile = Path.Combine(destinationFilePath, fileName);
-
-            using (var fileStream = File.OpenWrite(downloadedFile))
-            {
-                await storageClient.DownloadObjectAsync(bucketPath, fileName, fileStream);
-            }
-
-            return downloadedFile;
-        }
-
         public async Task DeleteFileInBucketAsync(string bucketPath, string fileName)
         {
+            if (StubConfigurationHelper.UseStubs)
+            {
+                return;
+            }
+
             var storageClient = GetStorageClient();
             await storageClient.DeleteObjectAsync(bucketPath, fileName);
         }

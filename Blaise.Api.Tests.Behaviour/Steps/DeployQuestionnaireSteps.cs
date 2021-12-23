@@ -18,7 +18,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             await CloudStorageHelper.GetInstance().UploadToBucketAsync(
                 BlaiseConfigurationHelper.InstrumentPackageBucket,
-                BlaiseConfigurationHelper.InstrumentPackage);
+                BlaiseConfigurationHelper.InstrumentPackagePath);
 
         }
 
@@ -43,18 +43,11 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [AfterScenario("deploy")]
         public async Task CleanUpScenario()
         {
-            if (StubConfigurationHelper.UseStubs)
-            {
-                return;
-            }
-
             InstrumentHelper.GetInstance().UninstallSurvey();
-
-            var fileName = Path.GetFileName(BlaiseConfigurationHelper.InstrumentPackage);
-
+           
             await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(
                 BlaiseConfigurationHelper.InstrumentPackageBucket,
-                fileName);
+                BlaiseConfigurationHelper.InstrumentPackage);
         }
     }
 }
