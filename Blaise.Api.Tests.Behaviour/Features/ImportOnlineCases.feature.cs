@@ -196,6 +196,58 @@ this.ScenarioInitialize(scenarioInfo);
                             "900021",
                             "580",
                             "Web"});
+                table1.AddRow(new string[] {
+                            "900022",
+                            "580",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900023",
+                            "580",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900024",
+                            "580",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900025",
+                            "580",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900026",
+                            "580",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900027",
+                            "580",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900028",
+                            "580",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900029",
+                            "580",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900030",
+                            "580",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900031",
+                            "580",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900032",
+                            "580",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900033",
+                            "110",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900034",
+                            "210",
+                            "Web"});
 #line 10
  testRunner.Given("there is a online file that contains the following cases", ((string)(null)), table1, "Given ");
 #line hidden
@@ -285,6 +337,58 @@ this.ScenarioInitialize(scenarioInfo);
                             "Tel"});
                 table2.AddRow(new string[] {
                             "900021",
+                            "580",
+                            "tel"});
+                table2.AddRow(new string[] {
+                            "900022",
+                            "310",
+                            "tel"});
+                table2.AddRow(new string[] {
+                            "900023",
+                            "430",
+                            "tel"});
+                table2.AddRow(new string[] {
+                            "900024",
+                            "440",
+                            "tel"});
+                table2.AddRow(new string[] {
+                            "900025",
+                            "460",
+                            "tel"});
+                table2.AddRow(new string[] {
+                            "900026",
+                            "461",
+                            "tel"});
+                table2.AddRow(new string[] {
+                            "900027",
+                            "541",
+                            "tel"});
+                table2.AddRow(new string[] {
+                            "900028",
+                            "542",
+                            "tel"});
+                table2.AddRow(new string[] {
+                            "900029",
+                            "110",
+                            "tel"});
+                table2.AddRow(new string[] {
+                            "900030",
+                            "210",
+                            "tel"});
+                table2.AddRow(new string[] {
+                            "900031",
+                            "561",
+                            "tel"});
+                table2.AddRow(new string[] {
+                            "900032",
+                            "562",
+                            "tel"});
+                table2.AddRow(new string[] {
+                            "900033",
+                            "580",
+                            "tel"});
+                table2.AddRow(new string[] {
+                            "900034",
                             "580",
                             "tel"});
 #line 62
@@ -380,6 +484,58 @@ this.ScenarioInitialize(scenarioInfo);
                 table3.AddRow(new string[] {
                             "900021",
                             "580",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900022",
+                            "580",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900023",
+                            "580",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900024",
+                            "580",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900025",
+                            "580",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900026",
+                            "580",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900027",
+                            "580",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900028",
+                            "580",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900029",
+                            "110",
+                            "tel"});
+                table3.AddRow(new string[] {
+                            "900030",
+                            "210",
+                            "tel"});
+                table3.AddRow(new string[] {
+                            "900031",
+                            "561",
+                            "tel"});
+                table3.AddRow(new string[] {
+                            "900032",
+                            "562",
+                            "tel"});
+                table3.AddRow(new string[] {
+                            "900033",
+                            "110",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900034",
+                            "210",
                             "Web"});
 #line 115
  testRunner.Then("blaise will contain the following cases", ((string)(null)), table3, "Then ");
