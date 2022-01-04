@@ -38,7 +38,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             _blaiseCaseApiMock.Verify(v => v.RemoveCases(_instrumentName, _serverParkName));
-            _blaiseSurveyApiMock.Verify(v => v.UninstallSurvey(_instrumentName, _serverParkName)
+            _blaiseSurveyApiMock.Verify(v => v.UninstallSurvey(_instrumentName, _serverParkName, false)
                 , Times.Once);
         }
 
