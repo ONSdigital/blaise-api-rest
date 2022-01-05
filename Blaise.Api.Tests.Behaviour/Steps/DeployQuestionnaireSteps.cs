@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Behaviour.Helpers.Cloud;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;

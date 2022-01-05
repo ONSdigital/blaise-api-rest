@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Api.Tests.Behaviour.Stubs;
-using Blaise.Api.Tests.Behaviour.Stubs.Blaise;
 using Blaise.Nuget.Api.Api;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
