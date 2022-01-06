@@ -70,7 +70,7 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
             SurveyStatus = SurveyStatusType.Active;
         }
 
-        public void UninstallSurvey(string instrumentName, string serverParkName)
+        public void UninstallSurvey(string instrumentName, string serverParkName, bool deleteCases = false)
         {
             NameOfInstalledSurvey = null;
             ServerParkOfInstalledSurvey = null;
