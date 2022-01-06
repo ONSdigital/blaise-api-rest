@@ -240,9 +240,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiService.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="ApiService.cs" />
     <Compile Include="ApiService.Designer.cs">
       <DependentUpon>ApiService.cs</DependentUpon>
     </Compile>
