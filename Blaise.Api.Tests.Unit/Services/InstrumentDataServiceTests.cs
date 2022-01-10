@@ -64,9 +64,10 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _nisraServiceMock.InSequence(_mockSequence).Setup(c => c.ImportNisraDatabaseFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
+            _fileServiceMock.InSequence(_mockSequence).Setup(f => f.RemovePathAndFiles(It.IsAny<string>()));
 
             //act
-            await _sut.ImportOnlineDataAsync(_instrumentDataDto, _serverParkName, _instrumentName, _tempPath);
+          await _sut.ImportOnlineDataAsync(_instrumentDataDto, _serverParkName, _instrumentName, _tempPath);
 
             //assert
             _storageServiceMock.Verify(v => v.DownloadDatabaseFilesFromNisraBucketAsync(_bucketPath, _tempPath), Times.Once);
@@ -74,6 +75,9 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.Verify(v => v.GetDatabaseFile(_tempPath, _instrumentName), Times.Once);
 
             _nisraServiceMock.Verify(v => v.ImportNisraDatabaseFile(dataBaseFilePath, _instrumentName, _serverParkName), Times.Once);
+
+            _fileServiceMock.InSequence(_mockSequence).Setup(f => f
+                .RemovePathAndFiles(_tempPath));
         }
 
         [Test]

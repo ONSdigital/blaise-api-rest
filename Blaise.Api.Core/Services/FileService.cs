@@ -1,8 +1,10 @@
-﻿using Blaise.Api.Core.Extensions;
+﻿using System;
+using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using System.IO.Abstractions;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 [assembly: InternalsVisibleTo("Blaise.Api.Tests.Unit")]
 namespace Blaise.Api.Core.Services
@@ -38,6 +40,34 @@ namespace Blaise.Api.Core.Services
         public string GetDatabaseFile(string filePath, string instrumentName)
         {
             return _fileSystem.Path.Combine(filePath, $"{instrumentName}.bdix");
+        }
+
+        public void RemovePathAndFiles(string path)
+        {
+            if (!_fileSystem.Directory.Exists(path)) return;
+            
+            var directoryInfo = _fileSystem.Directory.CreateDirectory(path);
+
+            if (directoryInfo.Parent != null &&
+                Guid.TryParse(_fileSystem.Path.GetDirectoryName(directoryInfo.Parent.Name), out _))
+            {
+                CleanUpFiles(directoryInfo.Parent.FullName);
+                return;
+            }
+
+            CleanUpFiles(path);
+        }
+
+        private void CleanUpFiles(string path)
+        {
+            try
+            {
+                Thread.Sleep(2000);
+                _fileSystem.Directory.Delete(path, true);
+            }
+            catch //ewwwwwww fml
+            {
+            }
         }
     }
 }

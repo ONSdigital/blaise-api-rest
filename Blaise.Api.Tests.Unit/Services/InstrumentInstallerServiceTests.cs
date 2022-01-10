@@ -69,6 +69,9 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseSurveyApiMock.InSequence(_mockSequence).Setup(b => b
                 .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cati));
 
+            _fileServiceMock.InSequence(_mockSequence).Setup(f => f
+                .RemovePathAndFiles(_tempPath));
+
             //act
             await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto, _tempPath);
 
@@ -97,6 +100,9 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _blaiseSurveyApiMock.InSequence(_mockSequence).Setup(b => b
                 .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cati));
+
+            _fileServiceMock.InSequence(_mockSequence).Setup(f => f
+                .RemovePathAndFiles(_tempPath));
 
             //act
             var result = await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto, _tempPath);

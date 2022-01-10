@@ -12,9 +12,14 @@ namespace Blaise.Api.Core.Mappers
 
         public SurveyStatusType GetInstrumentStatus(ISurvey instrument)
         {
-            if (AllInstrumentNodesAreActive(instrument))
+            if (AllInstrumentNodesAreInAStatus(instrument, SurveyStatusType.Active))
             {
                 return SurveyStatusType.Active;
+            }
+
+            if (AllInstrumentNodesAreInAStatus(instrument, SurveyStatusType.Inactive))
+            {
+                return SurveyStatusType.Inactive;
             }
 
             return AnyInstrumentNodeHasFailedOrTakenTooLongToInstall(instrument) 
@@ -22,10 +27,10 @@ namespace Blaise.Api.Core.Mappers
                 : SurveyStatusType.Installing;
         }
 
-        private static bool AllInstrumentNodesAreActive(ISurvey instrument)
+        private static bool AllInstrumentNodesAreInAStatus(ISurvey instrument, SurveyStatusType statusType)
         {
             return instrument.Configuration.Configurations
-                .All(c => c.Status == SurveyStatusType.Active.ToString());
+                .All(c => c.Status == statusType.ToString());
         }
 
         private static bool AnyInstrumentNodeHasFailedOrTakenTooLongToInstall(ISurvey instrument)

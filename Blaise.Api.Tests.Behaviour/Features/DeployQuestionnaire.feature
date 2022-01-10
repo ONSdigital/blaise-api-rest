@@ -5,7 +5,7 @@ Feature: Deploy Questionnaire
 	So that we can capture respondents data
 
 @smoke
-Scenario: Deploy a questionnaire from a file held in a bucket
-	Given there is a questionnaire available in a bucket
-	When the API is called to deploy the questionnaire
-	Then the questionnaire is available to use in the Blaise environment 
+Scenario: Deploy a questionnaire
+	Given I have a questionnaire I want to install
+	When the API is called to install the questionnaire
+	Then the questionnaire is available to use

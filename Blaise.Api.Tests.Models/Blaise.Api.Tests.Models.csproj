@@ -67,9 +67,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Case\CaseModel.cs" />
-    <Compile Include="Enums\ModeType.cs" />
-    <Compile Include="Questionnaire\Questionnaire.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

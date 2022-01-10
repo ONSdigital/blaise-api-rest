@@ -1,4 +1,5 @@
-﻿namespace Blaise.Api.Core.Interfaces.Services
+﻿
+namespace Blaise.Api.Core.Interfaces.Services
 {
     public interface IFileService
     {
@@ -7,5 +8,7 @@
         string GetInstrumentNameFromFile(string instrumentFile);
 
         string GetDatabaseFile(string filePath, string instrumentName);
+
+        void RemovePathAndFiles(string path);
     }
 }
