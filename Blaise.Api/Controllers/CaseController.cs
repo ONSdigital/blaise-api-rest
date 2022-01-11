@@ -35,6 +35,18 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
+        [Route("status")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<CaseStatusDto>))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetStatusOfCases([FromUri] string serverParkName, [FromUri] string instrumentName)
+        {
+            var caseStatusDtoList = _caseService.GetCaseStatusList(serverParkName, instrumentName);
+
+            return Ok(caseStatusDtoList);
+        }
+
+        [HttpGet]
         [Route("{caseId}/postcode")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(string))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]

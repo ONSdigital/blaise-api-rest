@@ -34,6 +34,26 @@ namespace Blaise.Api.Core.Services
             return caseIds;
         }
 
+        public List<CaseStatusDto> GetCaseStatusList(string serverParkName, string instrumentName)
+        {
+            var caseStatusList = _blaiseCaseApi.GetCaseStatusList(instrumentName, serverParkName);
+            var caseStatusDtoList = new List<CaseStatusDto>();
+
+            foreach (var caseStatus in caseStatusList)
+            {
+                caseStatusDtoList.Add(
+
+                    new CaseStatusDto
+                    {
+                        PrimaryKey = caseStatus.PrimaryKey,
+                        Outcome = caseStatus.Outcome
+                    });
+
+            }
+
+            return caseStatusDtoList;
+        }
+
         public string GetPostCode(string serverParkName, string instrumentName, string caseId)
         {
             var caseRecord = _blaiseCaseApi.GetCase(caseId, instrumentName, serverParkName);
