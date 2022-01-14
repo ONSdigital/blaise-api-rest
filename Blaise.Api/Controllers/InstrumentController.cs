@@ -8,7 +8,6 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Extensions;
 using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
@@ -26,7 +25,7 @@ namespace Blaise.Api.Controllers
             IInstrumentService instrumentService,
             IInstrumentInstallerService installInstrumentService,
             IInstrumentUninstallerService uninstallInstrumentService,
-            ILoggingService loggingService, 
+            ILoggingService loggingService,
             IConfigurationProvider configurationProvider)
         {
             _instrumentService = instrumentService;
@@ -38,7 +37,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(IEnumerable<InstrumentDto>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<InstrumentDto>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetInstruments(string serverParkName)
@@ -54,7 +53,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{instrumentName}")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(InstrumentDto))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(InstrumentDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
@@ -71,7 +70,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{instrumentName}/exists")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult InstrumentExists([FromUri] string serverParkName, [FromUri] string instrumentName)
@@ -87,7 +86,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{instrumentName}/id")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(Guid))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(Guid))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetInstrumentId([FromUri] string serverParkName, [FromUri] string instrumentName)
@@ -103,7 +102,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{instrumentName}/status")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(SurveyStatusType))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(SurveyStatusType))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetInstrumentStatus([FromUri] string serverParkName, [FromUri] string instrumentName)
@@ -119,28 +118,20 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("")]
-        [SwaggerResponse(HttpStatusCode.Created, Type=typeof(InstrumentPackageDto))]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(InstrumentPackageDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public async Task<IHttpActionResult> InstallInstrument([FromUri] string serverParkName, [FromBody] InstrumentPackageDto instrumentPackageDto)
         {
             var tempPath = _configurationProvider.TempPath;
-            
-            try
-            {
-                _loggingService.LogInfo($"Attempting to install instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
 
-                var instrumentName = await _installInstrumentService.InstallInstrumentAsync(serverParkName, instrumentPackageDto, tempPath);
+            _loggingService.LogInfo($"Attempting to install instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
 
-                _loggingService.LogInfo($"Instrument '{instrumentPackageDto.InstrumentFile}' installed on server park '{serverParkName}'");
+            var instrumentName = await _installInstrumentService.InstallInstrumentAsync(serverParkName, instrumentPackageDto, tempPath);
 
-                return Created($"{Request.RequestUri}/{instrumentName}", instrumentPackageDto);
-            }
-            finally
-            {
-                tempPath.CleanUpTempFiles();
-                _loggingService.LogInfo($"Removed temporary files and folder '{tempPath}'");
-            }
+            _loggingService.LogInfo($"Instrument '{instrumentPackageDto.InstrumentFile}' installed on server park '{serverParkName}'");
+
+            return Created($"{Request.RequestUri}/{instrumentName}", instrumentPackageDto);
         }
 
         [HttpDelete]
@@ -190,7 +181,7 @@ namespace Blaise.Api.Controllers
 
             _loggingService.LogInfo($"Successfully deactivated instrument '{instrumentName}'");
 
-            return NoContent(); 
+            return NoContent();
         }
 
         [HttpGet]
@@ -214,7 +205,7 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult ModeExists([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri]string mode)
+        public IHttpActionResult ModeExists([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string mode)
         {
             _loggingService.LogInfo($"Check if a mode exists for instrument '{instrumentName}' on server park '{serverParkName}'");
 

@@ -207,18 +207,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Case\CaseHelper.cs" />
-    <Compile Include="Cloud\CloudStorageHelper.cs" />
-    <Compile Include="Configuration\BlaiseConfigurationHelper.cs" />
-    <Compile Include="Configuration\RestApiConfigurationHelper.cs" />
-    <Compile Include="Extensions\ArgumentValidationExtensions.cs" />
-    <Compile Include="Extensions\ConfigurationExtensions.cs" />
-    <Compile Include="Extensions\FileExtensions.cs" />
-    <Compile Include="Files\FileSystemHelper.cs" />
-    <Compile Include="Files\OnlineFileHelper.cs" />
-    <Compile Include="Instrument\InstrumentHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RestApi\RestApiHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -228,10 +217,6 @@
     <ProjectReference Include="..\Blaise.Api.Contracts\Blaise.Api.Contracts.csproj">
       <Project>{2bcba3c0-1df1-4f28-96af-0b5f9f8015a3}</Project>
       <Name>Blaise.Api.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Blaise.Api.Tests.Models\Blaise.Api.Tests.Models.csproj">
-      <Project>{14D16F19-4BCA-4320-822F-B140B762B2B5}</Project>
-      <Name>Blaise.Api.Tests.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Blaise.Api\Blaise.Api.csproj">
       <Project>{f35096f9-a4bb-4c18-8da1-158c66fabcac}</Project>
