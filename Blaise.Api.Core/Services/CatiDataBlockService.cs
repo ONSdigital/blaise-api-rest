@@ -11,12 +11,12 @@ namespace Blaise.Api.Core.Services
     {
         public void RemoveCatiManaBlock(Dictionary<string, string> fieldData)
         {
-            var callHistoryItems = fieldData.Where(f =>
+            var catiManaItems = fieldData.Where(f =>
                 f.Key.StartsWith("CatiMana")).ToList();
 
-            foreach (var callHistoryItem in callHistoryItems)
+            foreach (var catiManaItem in catiManaItems)
             {
-                fieldData.Remove(callHistoryItem.Key);
+                fieldData.Remove(catiManaItem.Key);
             }
         }
 

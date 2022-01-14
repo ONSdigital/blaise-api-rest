@@ -6,12 +6,15 @@ using Microsoft.AspNet.WebApi.Extensions.Compression.Server;
 using Microsoft.Owin.Extensions;
 using Newtonsoft.Json.Serialization;
 using Owin;
+using Unity;
 using Unity.WebApi;
 
 namespace Blaise.Api
 {
     public class Startup
     {
+        public virtual IUnityContainer UnityContainer => UnityConfig.UnityContainer;
+
         public void Configuration(IAppBuilder appBuilder)
         {
             appBuilder.Use((context, next) =>
@@ -24,8 +27,7 @@ namespace Blaise.Api
             // Configure Web API for self-host. 
             var config = new HttpConfiguration
             {
-                DependencyResolver = new UnityDependencyResolver(
-                    UnityConfig.GetConfiguredContainer())
+                DependencyResolver = new UnityDependencyResolver(UnityContainer)
             };
 
             config.MapHttpAttributeRoutes();

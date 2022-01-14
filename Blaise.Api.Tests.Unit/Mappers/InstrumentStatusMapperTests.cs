@@ -58,6 +58,23 @@ namespace Blaise.Api.Tests.Unit.Mappers
         }
 
         [Test]
+        public void Given_A_Survey_Is_Inactive_Across_All_Nodes_When_I_Call_MapToInstrumentDto_Then_The_Inactive_Status_Is_Mapped()
+        {
+            //arrange
+            _iConfiguration1Mock.Setup(c => c.Status).Returns(SurveyStatusType.Inactive.FullName());
+            _iConfiguration2Mock.Setup(c => c.Status).Returns(SurveyStatusType.Inactive.FullName());
+            _iConfiguration3Mock.Setup(c => c.Status).Returns(SurveyStatusType.Inactive.FullName());
+
+            //act
+            var result = _sut.GetInstrumentStatus(_surveyMock.Object);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<SurveyStatusType>(result);
+            Assert.AreEqual(SurveyStatusType.Inactive, result);
+        }
+
+        [Test]
         public void Given_A_Survey_Is_Either_Active_Or_Installing_Across_All_Nodes_When_I_Call_MapToInstrumentDto_Then_The_Installing_Status_Is_Mapped()
         {
             //arrange

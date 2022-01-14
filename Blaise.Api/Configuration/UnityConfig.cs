@@ -19,70 +19,68 @@ namespace Blaise.Api.Configuration
 {
     public static class UnityConfig
     {
-        public static IUnityContainer GetConfiguredContainer()
+        public static IUnityContainer UnityContainer;
+
+        static UnityConfig()
         {
-            var container = new UnityContainer();
+            UnityContainer = new UnityContainer();
 
             //blaise api
             var blaiseConfigurationProvider = new BlaiseConfigurationProvider();
             var connectionModel = blaiseConfigurationProvider.GetConnectionModel();
 
             //logging
-            container.RegisterType<ILoggingService, EventLogging>();
+            UnityContainer.RegisterType<ILoggingService, EventLogging>();
 
-            container.RegisterType<IBlaiseServerParkApi, BlaiseServerParkApi>(new InjectionConstructor(connectionModel));
-            container.RegisterType<IBlaiseSurveyApi, BlaiseSurveyApi>(new InjectionConstructor(connectionModel));
-            container.RegisterType<IBlaiseCatiApi, BlaiseCatiApi>(new InjectionConstructor(connectionModel));
-            container.RegisterType<IBlaiseHealthApi, BlaiseHealthApi>(new InjectionConstructor(connectionModel));
-            container.RegisterType<IBlaiseRoleApi, BlaiseRoleApi>(new InjectionConstructor(connectionModel));
-            container.RegisterType<IBlaiseUserApi, BlaiseUserApi>(new InjectionConstructor(connectionModel));
-            container.RegisterType<IBlaiseFileApi, BlaiseFileApi>(new InjectionConstructor(connectionModel));
-            container.RegisterType<IBlaiseCaseApi, BlaiseCaseApi>(new InjectionConstructor(connectionModel));
+            UnityContainer.RegisterType<IBlaiseServerParkApi, BlaiseServerParkApi>(new InjectionConstructor(connectionModel));
+            UnityContainer.RegisterType<IBlaiseSurveyApi, BlaiseSurveyApi>(new InjectionConstructor(connectionModel));
+            UnityContainer.RegisterType<IBlaiseCatiApi, BlaiseCatiApi>(new InjectionConstructor(connectionModel));
+            UnityContainer.RegisterType<IBlaiseHealthApi, BlaiseHealthApi>(new InjectionConstructor(connectionModel));
+            UnityContainer.RegisterType<IBlaiseRoleApi, BlaiseRoleApi>(new InjectionConstructor(connectionModel));
+            UnityContainer.RegisterType<IBlaiseUserApi, BlaiseUserApi>(new InjectionConstructor(connectionModel));
+            UnityContainer.RegisterType<IBlaiseFileApi, BlaiseFileApi>(new InjectionConstructor(connectionModel));
+            UnityContainer.RegisterType<IBlaiseCaseApi, BlaiseCaseApi>(new InjectionConstructor(connectionModel));
 
             //providers
-            container.RegisterType<IConfigurationProvider, ConfigurationProvider>();
-            container.RegisterType<ICloudStorageClientProvider, CloudStorageClientProvider>();
-            container.RegisterType<IFileSystem, FileSystem>();
+            UnityContainer.RegisterType<IConfigurationProvider, ConfigurationProvider>();
+            UnityContainer.RegisterType<ICloudStorageClientProvider, CloudStorageClientProvider>();
+            UnityContainer.RegisterType<IFileSystem, FileSystem>();
 
             //core mappers
-            container.RegisterType<IServerParkDtoMapper, ServerParkDtoMapper>();
-            container.RegisterType<IInstrumentDtoMapper, InstrumentDtoMapper>();
-            container.RegisterType<IInstrumentNodeDtoMapper, InstrumentNodeDtoMapper>();
-            container.RegisterType<ICatiDtoMapper, CatiDtoMapper>();
-            container.RegisterType<IUserRoleDtoMapper, UserRoleDtoMapper>();
-            container.RegisterType<IUserDtoMapper, UserDtoMapper>();
-            container.RegisterType<IInstrumentStatusMapper, InstrumentStatusMapper>();
-            container.RegisterType<IDataEntrySettingsDtoMapper, DataEntrySettingsDtoMapper>();
+            UnityContainer.RegisterType<IServerParkDtoMapper, ServerParkDtoMapper>();
+            UnityContainer.RegisterType<IInstrumentDtoMapper, InstrumentDtoMapper>();
+            UnityContainer.RegisterType<IInstrumentNodeDtoMapper, InstrumentNodeDtoMapper>();
+            UnityContainer.RegisterType<ICatiDtoMapper, CatiDtoMapper>();
+            UnityContainer.RegisterType<IUserRoleDtoMapper, UserRoleDtoMapper>();
+            UnityContainer.RegisterType<IUserDtoMapper, UserDtoMapper>();
+            UnityContainer.RegisterType<IInstrumentStatusMapper, InstrumentStatusMapper>();
+            UnityContainer.RegisterType<IDataEntrySettingsDtoMapper, DataEntrySettingsDtoMapper>();
 
             //core services
-            container.RegisterType<IServerParkService, ServerParkService>();
-            container.RegisterType<IInstrumentService, InstrumentService>();
-            container.RegisterType<IInstrumentDataService, InstrumentDataService>();
-            container.RegisterType<IInstrumentInstallerService, InstrumentInstallerService>();
-            container.RegisterType<IInstrumentUninstallerService, InstrumentUninstallerService>();
-            container.RegisterType<ICatiService, CatiService>();
-            container.RegisterType<IHealthCheckService, HealthCheckService>();
-            container.RegisterType<IUserRoleService, UserRoleService>();
-            container.RegisterType<IUserService, UserService>();
-            container.RegisterType<IFileService, FileService>();
-            container.RegisterType<INisraFileImportService, NisraFileImportService>();
-            container.RegisterType<INisraCaseUpdateService, NisraCaseUpdateService>();
-            container.RegisterType<ICatiDataBlockService, CatiDataBlockService>();
-            container.RegisterType<INisraCaseComparisonService, NisraCaseComparisonService>();
-            container.RegisterType<IReportingService, ReportingService>();
-            container.RegisterType<ICaseService, CaseService>();
+            UnityContainer.RegisterType<IServerParkService, ServerParkService>();
+            UnityContainer.RegisterType<IInstrumentService, InstrumentService>();
+            UnityContainer.RegisterType<IInstrumentDataService, InstrumentDataService>();
+            UnityContainer.RegisterType<IInstrumentInstallerService, InstrumentInstallerService>();
+            UnityContainer.RegisterType<IInstrumentUninstallerService, InstrumentUninstallerService>();
+            UnityContainer.RegisterType<ICatiService, CatiService>();
+            UnityContainer.RegisterType<IHealthCheckService, HealthCheckService>();
+            UnityContainer.RegisterType<IUserRoleService, UserRoleService>();
+            UnityContainer.RegisterType<IUserService, UserService>();
+            UnityContainer.RegisterType<IFileService, FileService>();
+            UnityContainer.RegisterType<INisraFileImportService, NisraFileImportService>();
+            UnityContainer.RegisterType<INisraCaseUpdateService, NisraCaseUpdateService>();
+            UnityContainer.RegisterType<ICatiDataBlockService, CatiDataBlockService>();
+            UnityContainer.RegisterType<INisraCaseComparisonService, NisraCaseComparisonService>();
+            UnityContainer.RegisterType<IReportingService, ReportingService>();
+            UnityContainer.RegisterType<ICaseService, CaseService>();
 
             //storage services
-            container.RegisterType<ICloudStorageService, CloudStorageService>();
-
-            return container;
+            UnityContainer.RegisterType<ICloudStorageService, CloudStorageService>();
         }
 
         public static T Resolve<T>()
         {
-            var container = GetConfiguredContainer();
-
-            return container.Resolve<T>();
+            return UnityContainer.Resolve<T>();
         }
     }
 }

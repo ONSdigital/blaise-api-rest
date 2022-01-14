@@ -9,5 +9,5 @@ Scenario: Return a list of available questionnaires where a questionnaire is act
 	Given there is a questionnaire installed on a Blaise environment
 	And the questionnaire is active
 	When the API is queried to return all active questionnaires
-	Then the details of the questionnaire is returned
+	Then the details of the questionnaire are returned
 

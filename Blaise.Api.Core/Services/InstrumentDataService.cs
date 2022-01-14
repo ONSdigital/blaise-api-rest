@@ -39,6 +39,7 @@ namespace Blaise.Api.Core.Services
             var databaseFile = _fileService.GetDatabaseFile(tempFilePath, instrumentName);
 
             _nisraService.ImportNisraDatabaseFile(databaseFile, instrumentName, serverParkName);
+            _fileService.RemovePathAndFiles(tempFilePath);
         }
 
         private async Task DownloadDatabaseFilesFromBucketAsync(string bucketPath, string tempFilePath)
