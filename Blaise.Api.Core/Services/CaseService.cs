@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Blaise.Api.Contracts.Models.Case;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
@@ -18,20 +19,29 @@ namespace Blaise.Api.Core.Services
 
         public List<string> GetCaseIds(string serverParkName, string instrumentName)
         {
-            var caseIds = new List<string>();
+            var caseStatusList = _blaiseCaseApi.GetCaseStatusList(instrumentName, serverParkName);
 
-            var cases = _blaiseCaseApi.GetCases(instrumentName, serverParkName);
+            return caseStatusList.Select(caseStatus => caseStatus.PrimaryKey).ToList();
+        }
 
-            while (!cases.EndOfSet)
+        public List<CaseStatusDto> GetCaseStatusList(string serverParkName, string instrumentName)
+        {
+            var caseStatusList = _blaiseCaseApi.GetCaseStatusList(instrumentName, serverParkName);
+            var caseStatusDtoList = new List<CaseStatusDto>();
+
+            foreach (var caseStatus in caseStatusList)
             {
-                var primaryKey = _blaiseCaseApi.GetPrimaryKeyValue(cases.ActiveRecord);
+                caseStatusDtoList.Add(
 
-                caseIds.Add(primaryKey);
+                    new CaseStatusDto
+                    {
+                        PrimaryKey = caseStatus.PrimaryKey,
+                        Outcome = caseStatus.Outcome
+                    });
 
-                cases.MoveNext();
             }
 
-            return caseIds;
+            return caseStatusDtoList;
         }
 
         public string GetPostCode(string serverParkName, string instrumentName, string caseId)
