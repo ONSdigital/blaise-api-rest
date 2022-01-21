@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Blaise.Api.Contracts.Models.Case;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
@@ -9,6 +11,7 @@ using NUnit.Framework;
 using StatNeth.Blaise.API.DataLink;
 using StatNeth.Blaise.API.DataRecord;
 using Blaise.Nuget.Api.Contracts.Enums;
+using Blaise.Nuget.Api.Contracts.Models;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
@@ -41,28 +44,15 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Instrument_Has_Two_Cases_When_I_Call_GetCaseIds_Then_I_Get_A_List_Containing_Two_CaseIds_Back()
         {
             //arrange
-            var primaryKey1 = "0000007";
-            var primaryKey2 = "0000077";
-            var dataRecord1Mock = new Mock<IDataRecord>();
-            var dataRecord2Mock = new Mock<IDataRecord>();
+            var caseStatusModelList = new List<CaseStatusModel>
+            {
+                new CaseStatusModel("0000007", 110, DateTime.Today.ToString(CultureInfo.InvariantCulture)),
+                new CaseStatusModel("0000008", 210, DateTime.Today.ToString(CultureInfo.InvariantCulture)),
+            };
 
-            _dataSetMock.SetupSequence(d => d.EndOfSet)
-                .Returns(false)
-                .Returns(false)
-                .Returns(true);
 
-            _dataSetMock.SetupSequence(b => b.ActiveRecord)
-                .Returns(dataRecord1Mock.Object)
-                .Returns(dataRecord2Mock.Object);
-
-            _blaiseCaseApiMock.Setup(b => b.GetCases(_instrumentName, _serverParkName))
-                .Returns(_dataSetMock.Object);
-
-            _blaiseCaseApiMock.Setup(b => b.GetPrimaryKeyValue(dataRecord1Mock.Object))
-                .Returns(primaryKey1);
-
-            _blaiseCaseApiMock.Setup(b => b.GetPrimaryKeyValue(dataRecord2Mock.Object))
-                .Returns(primaryKey2);
+            _blaiseCaseApiMock.Setup(b => b.GetCaseStatusList(_instrumentName, _serverParkName))
+                .Returns(caseStatusModelList);
 
             //act
             var result = _sut.GetCaseIds(_serverParkName, _instrumentName);
@@ -70,20 +60,17 @@ namespace Blaise.Api.Tests.Unit.Services
             //assert
             Assert.IsNotNull(result);
             Assert.IsNotEmpty(result);
+            Assert.IsInstanceOf<IEnumerable<string>>(result);
             Assert.AreEqual(2, result.Count);
-            Assert.Contains(primaryKey1, result);
-            Assert.Contains(primaryKey2, result);
+            Assert.Contains("0000007", result);
+            Assert.Contains("0000008", result);
         }
 
         [Test]
         public void Given_An_Instrument_Has_No_Cases_When_I_Call_CaseIds_Then_I_Get_An_Empty_List_Back()
         {
-            //arrange
-            _dataSetMock.SetupSequence(d => d.EndOfSet)
-                .Returns(true);
-
-            _blaiseCaseApiMock.Setup(b => b.GetCases(_instrumentName, _serverParkName))
-                .Returns(_dataSetMock.Object);
+            _blaiseCaseApiMock.Setup(b => b.GetCaseStatusList(_instrumentName, _serverParkName))
+                .Returns(new List<CaseStatusModel>());
 
             //act
             var result = _sut.GetCaseIds(_serverParkName, _instrumentName);
@@ -91,6 +78,49 @@ namespace Blaise.Api.Tests.Unit.Services
             //assert
             Assert.IsNotNull(result);
             Assert.IsEmpty(result);
+            Assert.IsInstanceOf<IEnumerable<string>>(result);
+        }
+
+        [Test]
+        public void Given_An_Instrument_Has_Two_Cases_When_I_Call_GetCaseStatusList_Then_I_Get_A_List_Containing_Two_CaseStatusDtos_Back()
+        {
+            //arrange
+            var caseStatusModelList = new List<CaseStatusModel>
+            {
+                new CaseStatusModel("0000007", 110, DateTime.Today.ToString(CultureInfo.InvariantCulture)),
+                new CaseStatusModel("0000008", 210, DateTime.Today.ToString(CultureInfo.InvariantCulture))
+            };
+
+
+            _blaiseCaseApiMock.Setup(b => b.GetCaseStatusList(_instrumentName, _serverParkName))
+                .Returns(caseStatusModelList);
+
+            //act
+            var result = _sut.GetCaseStatusList(_serverParkName, _instrumentName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsNotEmpty(result);
+            Assert.IsInstanceOf<IEnumerable<CaseStatusDto>>(result);
+            Assert.AreEqual(2, result.Count);
+            Assert.IsTrue(result.Any(r => r.PrimaryKey == "0000007" && r.Outcome == 110));
+            Assert.IsTrue(result.Any(r => r.PrimaryKey == "0000008" && r.Outcome == 210));
+        }
+
+        [Test]
+        public void Given_An_Instrument_Has_No_Cases_When_I_Call_GetCaseStatusList_Then_I_Get_An_Empty_List_Back()
+        {
+            //arrange
+            _blaiseCaseApiMock.Setup(b => b.GetCaseStatusList(_instrumentName, _serverParkName))
+                .Returns(new List<CaseStatusModel>());
+
+            //act
+            var result = _sut.GetCaseStatusList(_serverParkName, _instrumentName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsEmpty(result);
+            Assert.IsInstanceOf<IEnumerable<CaseStatusDto>>(result);
         }
 
         [Test]

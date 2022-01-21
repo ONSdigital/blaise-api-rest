@@ -7,6 +7,8 @@ namespace Blaise.Api.Core.Interfaces.Services
     {
         List<string> GetCaseIds(string serverParkName, string instrumentName);
 
+        List<CaseStatusDto> GetCaseStatusList(string serverParkName, string instrumentName);
+
         string GetPostCode(string serverParkName, string instrumentName, string caseId);
 
         CaseDto GetCase(string serverParkName, string instrumentName, string caseId);
