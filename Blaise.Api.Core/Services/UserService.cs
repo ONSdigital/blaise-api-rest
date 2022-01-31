@@ -52,12 +52,12 @@ namespace Blaise.Api.Core.Services
             _blaiseApi.AddUser(addUserDto.Name, addUserDto.Password, addUserDto.Role, addUserDto.ServerParks, addUserDto.DefaultServerPark);
         }
 
-        public void UpdatePassword(string userName, UpdateUserPasswordDto updateUserPasswordDto)
+        public void UpdatePassword(string userName, string password)
         {
             userName.ThrowExceptionIfNullOrEmpty("userName");
-            updateUserPasswordDto.Password.ThrowExceptionIfNullOrEmpty("updateUserPasswordDto.Password");
+            password.ThrowExceptionIfNullOrEmpty("password");
 
-            _blaiseApi.UpdatePassword(userName, updateUserPasswordDto.Password);
+            _blaiseApi.UpdatePassword(userName, password);
         }
 
         public void UpdateRole(string userName, UpdateUserRoleDto updateUserRoleDto)

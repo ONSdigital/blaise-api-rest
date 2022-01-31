@@ -93,7 +93,7 @@
     <Compile Include="Models\User\AddUserDto.cs" />
     <Compile Include="Models\User\UpdateUserServerParksDto.cs" />
     <Compile Include="Models\User\UpdateUserRoleDto.cs" />
-    <Compile Include="Models\User\UpdateUserPasswordDto.cs" />
+    <Compile Include="Models\User\UserPasswordDto.cs" />
     <Compile Include="Models\User\UserDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
