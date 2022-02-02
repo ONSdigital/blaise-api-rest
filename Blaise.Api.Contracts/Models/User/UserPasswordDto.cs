@@ -1,6 +1,6 @@
 ﻿namespace Blaise.Api.Contracts.Models.User
 {
-    public class UpdateUserPasswordDto
+    public class UserPasswordDto
     {
         public string Password { get; set; }
     }
