@@ -10,7 +10,7 @@ namespace Blaise.Api.Core.Interfaces.Services
         bool UserExists(string userName);
         void AddUser(AddUserDto userDto);
         void RemoveUser(string userName);
-        void UpdatePassword(string userName, UpdateUserPasswordDto passwordDto);
+        void UpdatePassword(string userName, string password);
         void UpdateRole(string userName, UpdateUserRoleDto roleDto);
         void UpdateServerParks(string userName, UpdateUserServerParksDto serverParksDto);
 
