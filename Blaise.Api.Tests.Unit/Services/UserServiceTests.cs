@@ -286,11 +286,8 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_Valid_Arguments_When_I_Call_UpdatePassword_Then_The_Correct_Service_Method_Is_Called()
         {
-            //arrange
-            var updatePasswordDto = new UpdateUserPasswordDto {Password = _password};
-
             //act
-            _sut.UpdatePassword(_userName, updatePasswordDto);
+            _sut.UpdatePassword(_userName, _password);
 
             //assert
             _blaiseApiMock.Verify(v => v.UpdatePassword(_userName, _password), Times.Once);
@@ -299,45 +296,33 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_UserName_When_I_Call_UpdatePassword_Then_An_ArgumentException_Is_Thrown()
         {
-            //arrange
-            var updatePasswordDto = new UpdateUserPasswordDto {Password = _password};
-
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdatePassword(string.Empty, updatePasswordDto));
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdatePassword(string.Empty, _password));
             Assert.AreEqual("A value for the argument 'userName' must be supplied", exception.Message);
         }
 
         [Test]
         public void Given_A_Null_Name_When_I_Call_UpdatePassword_Then_An_ArgumentNullException_Is_Thrown()
         {
-            //arrange
-            var updatePasswordDto = new UpdateUserPasswordDto {Password = _password};
-
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdatePassword(null, updatePasswordDto));
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdatePassword(null, _password));
             Assert.AreEqual("userName", exception.ParamName);
         }
 
         [Test]
         public void Given_An_Empty_Password_When_I_Call_UpdatePassword_Then_An_ArgumentException_Is_Thrown()
         {
-            //arrange
-            var updatePasswordDto = new UpdateUserPasswordDto {Password = string.Empty};
-
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdatePassword(_userName, updatePasswordDto));
-            Assert.AreEqual("A value for the argument 'updateUserPasswordDto.Password' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdatePassword(_userName, string.Empty));
+            Assert.AreEqual("A value for the argument 'password' must be supplied", exception.Message);
         }
 
         [Test]
         public void Given_A_Null_Password_When_I_Call_UpdatePassword_Then_An_ArgumentNullException_Is_Thrown()
         {
-            //arrange
-            var updatePasswordDto = new UpdateUserPasswordDto {Password = null};
-
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdatePassword(_userName, updatePasswordDto));
-            Assert.AreEqual("updateUserPasswordDto.Password", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdatePassword(_userName, null));
+            Assert.AreEqual("password", exception.ParamName);
         }
 
         [Test]
