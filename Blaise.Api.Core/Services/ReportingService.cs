@@ -66,9 +66,9 @@ namespace Blaise.Api.Core.Services
 
             foreach (var fieldId in fieldIds)
             {
-                if(caseFields.ContainsKey(fieldId))
+                if(caseFields.Any(f => f.Key.Equals(fieldId, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    reportingData.Add(fieldId, caseFields[fieldId]);
+                    reportingData.Add(fieldId, caseFields.FirstOrDefault(f => f.Key.Equals(fieldId, StringComparison.InvariantCultureIgnoreCase)).Value);
                 }
             }
 
