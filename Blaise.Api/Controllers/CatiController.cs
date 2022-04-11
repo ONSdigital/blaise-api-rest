@@ -77,7 +77,13 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetDayBatch([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
-            throw new Exception("Fudge daybatch error");
+            _loggingService.LogInfo($"Get a daybatch for instrument '{instrumentName}' on server park '{serverParkName}'");
+
+            var dayBatchDto = _catiService.GetDayBatch(instrumentName, serverParkName);
+
+            _loggingService.LogInfo($"Daybatch retrieved for instrument '{instrumentName}' for '{dayBatchDto.DayBatchDate}'");
+
+            return Ok(dayBatchDto);
         }
 
         [HttpPost]
@@ -103,7 +109,13 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult HasDayBatchForToday([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
-            throw new Exception("Fudge daybatch error");
+            _loggingService.LogInfo($"Check a daybatch exists today for instrument '{instrumentName}' on server park '{serverParkName}'");
+
+            var exists = _catiService.InstrumentHasADayBatchForToday(instrumentName, serverParkName);
+
+            _loggingService.LogInfo($"Daybatch exists today for instrument'{instrumentName}' - '{exists}'");
+
+            return Ok(exists);
         }
 
         [HttpPost]
