@@ -67,6 +67,9 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Polly, Version=7.0.0.0, Culture=neutral, PublicKeyToken=c8a3ffc3f8f825cc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Polly.7.2.3\lib\net472\Polly.dll</HintPath>
+    </Reference>
     <Reference Include="StatNeth.Blaise.API, Version=5.0.0.0, Culture=neutral, PublicKeyToken=ad2ddd432cb2a452, processorArchitecture=MSIL">
       <HintPath>..\packages\StatNeth.Blaise.API.x64.5.9.7\lib\net472\StatNeth.Blaise.API.dll</HintPath>
     </Reference>
@@ -158,6 +161,7 @@
     <Compile Include="Interfaces\Services\INisraFileImportService.cs" />
     <Compile Include="Services\CatiDataBlockService.cs" />
     <Compile Include="Interfaces\Services\IReportingService.cs" />
+    <Compile Include="Interfaces\Services\IRetryService.cs" />
     <Compile Include="Services\NisraCaseComparisonService.cs" />
     <Compile Include="Interfaces\Services\INisraCaseComparisonService.cs" />
     <Compile Include="Services\NisraCaseUpdateService.cs" />
@@ -177,6 +181,7 @@
     <Compile Include="Interfaces\Services\IUserService.cs" />
     <Compile Include="Services\CaseService.cs" />
     <Compile Include="Services\ReportingService.cs" />
+    <Compile Include="Services\RetryService.cs" />
     <Compile Include="Services\UserRoleService.cs" />
     <Compile Include="Services\ServerParkService.cs" />
     <Compile Include="Services\UserService.cs" />
