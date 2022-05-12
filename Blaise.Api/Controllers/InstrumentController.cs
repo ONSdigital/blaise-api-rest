@@ -20,19 +20,22 @@ namespace Blaise.Api.Controllers
         private readonly IInstrumentUninstallerService _uninstallInstrumentService;
         private readonly ILoggingService _loggingService;
         private readonly IConfigurationProvider _configurationProvider;
+        private readonly IRetryService<Exception> _retryService;
 
         public InstrumentController(
             IInstrumentService instrumentService,
             IInstrumentInstallerService installInstrumentService,
             IInstrumentUninstallerService uninstallInstrumentService,
             ILoggingService loggingService,
-            IConfigurationProvider configurationProvider)
+            IConfigurationProvider configurationProvider, 
+            IRetryService<Exception> retryService)
         {
             _instrumentService = instrumentService;
             _installInstrumentService = installInstrumentService;
             _uninstallInstrumentService = uninstallInstrumentService;
             _loggingService = loggingService;
             _configurationProvider = configurationProvider;
+            _retryService = retryService;
         }
 
         [HttpGet]
@@ -44,7 +47,7 @@ namespace Blaise.Api.Controllers
         {
             _loggingService.LogInfo("Obtaining a list of instruments for a server park");
 
-            var instruments = _instrumentService.GetInstruments(serverParkName).ToList();
+            var instruments = _retryService.Retry(_instrumentService.GetInstruments, serverParkName).ToList();
 
             _loggingService.LogInfo($"Successfully received {instruments.Count} instruments");
 
