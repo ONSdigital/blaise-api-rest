@@ -67,6 +67,7 @@ namespace Blaise.Api.Tests.Behaviour.Stubs
             UnityContainer.RegisterType<INisraCaseComparisonService, NisraCaseComparisonService>();
             UnityContainer.RegisterType<IReportingService, ReportingService>();
             UnityContainer.RegisterType<ICaseService, CaseService>();
+            UnityContainer.RegisterType(typeof(IRetryService<>), typeof(RetryService<>));
 
             //storage services
             UnityContainer.RegisterSingleton<ICloudStorageService, CloudStorageServiceStub>();
