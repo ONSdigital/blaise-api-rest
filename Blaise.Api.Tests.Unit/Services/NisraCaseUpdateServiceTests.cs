@@ -29,8 +29,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
         private Dictionary<string, string> _newFieldData;
         private Dictionary<string, string> _existingFieldData;
-
-
+        
         private NisraCaseUpdateService _sut;
 
         public NisraCaseUpdateServiceTests()
