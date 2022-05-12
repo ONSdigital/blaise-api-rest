@@ -62,10 +62,14 @@ namespace Blaise.Api.Core.Services
         private Dictionary<string, string> GetReportFieldData(IEnumerable<string> fieldIds, IDataRecord caseRecord)
         {
             var reportingData = new Dictionary<string, string>();
+            var caseFields = _blaiseCaseApi.GetRecordDataFields(caseRecord);
 
             foreach (var fieldId in fieldIds)
             {
-                reportingData.Add(fieldId, _blaiseCaseApi.GetFieldValue(caseRecord, fieldId).ValueAsText);
+                if (caseFields.Any(f => f.Key.Equals(fieldId, StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    reportingData.Add(fieldId, caseFields.FirstOrDefault(f => f.Key.Equals(fieldId, StringComparison.InvariantCultureIgnoreCase)).Value);
+                }
             }
 
             return reportingData;
