@@ -26,7 +26,7 @@ namespace Blaise.Api.Storage.Services
             _loggingService = loggingService;
         }
 
-        public async Task<string> DownloadPackageFromInstrumentBucketAsync(string fileName, string tempFilePath)
+        public async Task<string> DownloadPackageFromQuestionnaireBucketAsync(string fileName, string tempFilePath)
         {
 
             _loggingService.LogInfo($"Attempting to download package '{fileName}' from bucket '{_configurationProvider.DqsBucket}'");

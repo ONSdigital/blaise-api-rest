@@ -53,7 +53,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Blaise.Nuget.Api.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2022.1.4.1\lib\net472\Blaise.Nuget.Api.Contracts.dll</HintPath>
+      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2022.6.1.1\lib\net472\Blaise.Nuget.Api.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
@@ -136,22 +136,23 @@
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Interfaces\Mappers\ICatiDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IDataEntryDtoMapper.cs" />
-    <Compile Include="Interfaces\Mappers\IInstrumentNodeDtoMapper.cs" />
+    <Compile Include="Interfaces\Mappers\IQuestionnaireNodeDtoMapper.cs" />
     <Compile Include="Interfaces\Services\ICatiDataBlockService.cs" />
-    <Compile Include="Interfaces\Services\IInstrumentUninstallerService.cs" />
-    <Compile Include="Interfaces\Services\IInstrumentService.cs" />
+    <Compile Include="Interfaces\Services\IQuestionnaireUninstallerService.cs" />
+    <Compile Include="Interfaces\Services\IQuestionnaireService.cs" />
     <Compile Include="Interfaces\Mappers\IServerParkDtoMapper.cs" />
     <Compile Include="Interfaces\Services\ICaseService.cs" />
+    <Compile Include="Interfaces\Services\IReportingServiceV2.cs" />
     <Compile Include="Interfaces\Services\IServerParkService.cs" />
-    <Compile Include="Interfaces\Mappers\IInstrumentDtoMapper.cs" />
-    <Compile Include="Interfaces\Mappers\IInstrumentStatusMapper.cs" />
+    <Compile Include="Interfaces\Mappers\IQuestionnaireDtoMapper.cs" />
+    <Compile Include="Interfaces\Mappers\IQuestionnaireStatusMapper.cs" />
     <Compile Include="Mappers\CatiDtoMapper.cs" />
     <Compile Include="Mappers\DataEntrySettingsDtoMapper.cs" />
-    <Compile Include="Mappers\InstrumentNodeDtoMapper.cs" />
-    <Compile Include="Mappers\InstrumentDtoMapper.cs" />
+    <Compile Include="Mappers\QuestionnaireNodeDtoMapper.cs" />
+    <Compile Include="Mappers\QuestionnaireDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IUserRoleDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IUserDtoMapper.cs" />
-    <Compile Include="Mappers\InstrumentStatusMapper.cs" />
+    <Compile Include="Mappers\QuestionnaireStatusMapper.cs" />
     <Compile Include="Mappers\UserRoleDtoMapper.cs" />
     <Compile Include="Mappers\ServerParkDtoMapper.cs" />
     <Compile Include="Mappers\UserDtoMapper.cs" />
@@ -170,16 +171,17 @@
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\HealthCheckService.cs" />
     <Compile Include="Interfaces\Services\IHealthCheckService.cs" />
-    <Compile Include="Interfaces\Services\IInstrumentInstallerService.cs" />
+    <Compile Include="Interfaces\Services\IQuestionnaireInstallerService.cs" />
     <Compile Include="Interfaces\Services\IFileService.cs" />
-    <Compile Include="Services\InstrumentDataService.cs" />
-    <Compile Include="Interfaces\Services\IInstrumentDataService.cs" />
-    <Compile Include="Services\InstrumentUninstallerService.cs" />
-    <Compile Include="Services\InstrumentInstallerService.cs" />
-    <Compile Include="Services\InstrumentService.cs" />
+    <Compile Include="Services\QuestionnaireDataService.cs" />
+    <Compile Include="Interfaces\Services\IQuestionnaireDataService.cs" />
+    <Compile Include="Services\QuestionnaireUninstallerService.cs" />
+    <Compile Include="Services\QuestionnaireInstallerService.cs" />
+    <Compile Include="Services\QuestionnaireService.cs" />
     <Compile Include="Interfaces\Services\IUserRoleService.cs" />
     <Compile Include="Interfaces\Services\IUserService.cs" />
     <Compile Include="Services\CaseService.cs" />
+    <Compile Include="Services\ReportingServiceV2.cs" />
     <Compile Include="Services\ReportingService.cs" />
     <Compile Include="Services\RetryService.cs" />
     <Compile Include="Services\UserRoleService.cs" />

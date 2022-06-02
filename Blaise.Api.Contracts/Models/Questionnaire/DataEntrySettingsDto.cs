@@ -1,4 +1,4 @@
-﻿namespace Blaise.Api.Contracts.Models.Instrument
+﻿namespace Blaise.Api.Contracts.Models.Questionnaire
 {
     public class DataEntrySettingsDto
     {

@@ -2,6 +2,6 @@
 {
     public interface INisraFileImportService
     {
-        void ImportNisraDatabaseFile(string databaseFilePath, string instrumentName, string serverParkName);
+        void ImportNisraDatabaseFile(string databaseFilePath, string questionnaireName, string serverParkName);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Blaise.Api.Contracts.Models.Instrument;
+using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Core.Mappers;
 using Blaise.Nuget.Api.Contracts.Models;
 using NUnit.Framework;

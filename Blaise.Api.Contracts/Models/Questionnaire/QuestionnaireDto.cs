@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Blaise.Api.Contracts.Models.Instrument
+namespace Blaise.Api.Contracts.Models.Questionnaire
 {
-    public class InstrumentDto
+    public class QuestionnaireDto
     {
-        public InstrumentDto()
+        public QuestionnaireDto()
         {
-            Nodes = new List<InstrumentNodeDto>();
+            Nodes = new List<QuestionnaireNodeDto>();
         }
 
         public string Name { get; set; }
@@ -18,6 +18,6 @@ namespace Blaise.Api.Contracts.Models.Instrument
         public int DataRecordCount { get; set; }
         public bool HasData => DataRecordCount > 0;
 
-        public IEnumerable<InstrumentNodeDto> Nodes { get; set; }
+        public IEnumerable<QuestionnaireNodeDto> Nodes { get; set; }
     }
 }

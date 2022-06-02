@@ -11,18 +11,18 @@ using NUnit.Framework;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
-    public class InstrumentInstallerServiceTests
+    public class QuestionnaireInstallerServiceTests
     {
-        private InstrumentInstallerService _sut;
+        private QuestionnaireInstallerService _sut;
 
-        private Mock<IBlaiseSurveyApi> _blaiseSurveyApiMock;
+        private Mock<IBlaiseQuestionnaireApi> _blaiseQuestionnaireApiMock;
         private Mock<IFileService> _fileServiceMock;
         private Mock<ICloudStorageService> _storageServiceMock;
         private MockSequence _mockSequence;
 
         private string _serverParkName;
-        private string _instrumentName;
-        private string _instrumentFile;
+        private string _questionnaireName;
+        private string _questionnaireFile;
         private string _tempPath;
 
         private InstrumentPackageDto _instrumentPackageDto;
@@ -30,23 +30,23 @@ namespace Blaise.Api.Tests.Unit.Services
         [SetUp]
         public void SetUpTests()
         {
-            _blaiseSurveyApiMock = new Mock<IBlaiseSurveyApi>(MockBehavior.Strict);
+            _blaiseQuestionnaireApiMock = new Mock<IBlaiseQuestionnaireApi>(MockBehavior.Strict);
             _fileServiceMock = new Mock<IFileService>(MockBehavior.Strict);
             _storageServiceMock = new Mock<ICloudStorageService>(MockBehavior.Strict);
             _mockSequence = new MockSequence();
 
-            _instrumentFile = "OPN2010A.zip";
+            _questionnaireFile = "OPN2010A.zip";
             _serverParkName = "ServerParkA";
-            _instrumentName = "OPN2010A";
+            _questionnaireName = "OPN2010A";
             _tempPath = @"c:\temp\GUID";
 
             _instrumentPackageDto = new InstrumentPackageDto
             {
-                InstrumentFile = _instrumentFile
+                InstrumentFile = _questionnaireFile
             };
 
-            _sut = new InstrumentInstallerService(
-                _blaiseSurveyApiMock.Object,
+            _sut = new QuestionnaireInstallerService(
+                _blaiseQuestionnaireApiMock.Object,
                 _fileServiceMock.Object,
                 _storageServiceMock.Object);
         }
@@ -57,17 +57,17 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             const string instrumentFilePath = "d:\\temp\\OPN1234.zip";
 
-            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadPackageFromInstrumentBucketAsync(
-                    _instrumentFile, _tempPath)).ReturnsAsync(instrumentFilePath);
+            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadPackageFromQuestionnaireBucketAsync(
+                    _questionnaireFile, _tempPath)).ReturnsAsync(instrumentFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(b => b
-                .UpdateInstrumentFileWithSqlConnection(instrumentFilePath));
+                .UpdateQuestionnaireFileWithSqlConnection(instrumentFilePath));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
-                .GetInstrumentNameFromFile(_instrumentFile)).Returns(_instrumentName);
+                .GetQuestionnaireNameFromFile(_questionnaireFile)).Returns(_questionnaireName);
 
-            _blaiseSurveyApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cati));
+            _blaiseQuestionnaireApiMock.InSequence(_mockSequence).Setup(b => b
+                .InstallQuestionnaire(_questionnaireName,_serverParkName, instrumentFilePath, QuestionnaireInterviewType.Cati));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .RemovePathAndFiles(_tempPath));
@@ -76,11 +76,11 @@ namespace Blaise.Api.Tests.Unit.Services
             await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto, _tempPath);
 
             //assert
-            _storageServiceMock.Verify(v => v.DownloadPackageFromInstrumentBucketAsync( _instrumentFile, _tempPath), Times.Once);
-            _fileServiceMock.Verify(v => v.UpdateInstrumentFileWithSqlConnection(instrumentFilePath), Times.Once);
-            _fileServiceMock.Verify(v => v.GetInstrumentNameFromFile(_instrumentFile), Times.Once);
-            _blaiseSurveyApiMock.Verify(v => v.InstallSurvey(_instrumentName, _serverParkName,
-                instrumentFilePath, SurveyInterviewType.Cati), Times.Once);
+            _storageServiceMock.Verify(v => v.DownloadPackageFromQuestionnaireBucketAsync( _questionnaireFile, _tempPath), Times.Once);
+            _fileServiceMock.Verify(v => v.UpdateQuestionnaireFileWithSqlConnection(instrumentFilePath), Times.Once);
+            _fileServiceMock.Verify(v => v.GetQuestionnaireNameFromFile(_questionnaireFile), Times.Once);
+            _blaiseQuestionnaireApiMock.Verify(v => v.InstallQuestionnaire(_questionnaireName, _serverParkName,
+                instrumentFilePath, QuestionnaireInterviewType.Cati), Times.Once);
         }
 
         [Test]
@@ -89,17 +89,17 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             const string instrumentFilePath = "d:\\temp\\OPN1234.zip";
 
-            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadPackageFromInstrumentBucketAsync(
-                    _instrumentFile, _tempPath)).ReturnsAsync(instrumentFilePath);
+            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadPackageFromQuestionnaireBucketAsync(
+                    _questionnaireFile, _tempPath)).ReturnsAsync(instrumentFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(b => b
-                .UpdateInstrumentFileWithSqlConnection(instrumentFilePath));
+                .UpdateQuestionnaireFileWithSqlConnection(instrumentFilePath));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
-                .GetInstrumentNameFromFile(_instrumentFile)).Returns(_instrumentName);
+                .GetQuestionnaireNameFromFile(_questionnaireFile)).Returns(_questionnaireName);
 
-            _blaiseSurveyApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cati));
+            _blaiseQuestionnaireApiMock.InSequence(_mockSequence).Setup(b => b
+                .InstallQuestionnaire(_questionnaireName,_serverParkName, instrumentFilePath, QuestionnaireInterviewType.Cati));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .RemovePathAndFiles(_tempPath));
@@ -110,7 +110,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<string>(result);
-            Assert.AreEqual(_instrumentName, result);
+            Assert.AreEqual(_questionnaireName, result);
         }
 
         [Test]

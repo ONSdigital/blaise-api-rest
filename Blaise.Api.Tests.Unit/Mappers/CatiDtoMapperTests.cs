@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Cati;
-using Blaise.Api.Contracts.Models.Instrument;
+using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Mappers;
 using Blaise.Nuget.Api.Contracts.Enums;
@@ -15,107 +15,107 @@ namespace Blaise.Api.Tests.Unit.Mappers
     public class CatiDtoMapperTests
     {
         private CatiDtoMapper _sut;
-        private Mock<IInstrumentStatusMapper> _statusMapperMock;
-        private Mock<IInstrumentNodeDtoMapper> _nodeDtoMapperMock;
+        private Mock<IQuestionnaireStatusMapper> _statusMapperMock;
+        private Mock<IQuestionnaireNodeDtoMapper> _nodeDtoMapperMock;
 
-        private string _instrumentName;
-        private Guid _instrumentId;
+        private string _questionnaireName;
+        private Guid _questionnaireId;
         private string _serverParkName;
         private DateTime _installDate;
-        private int _numberOfRecordForInstrument;
+        private int _numberOfRecordForQuestionnaire;
         private Mock<ISurvey> _surveyMock;
         private Mock<ISurveyReportingInfo> _surveyReportingInfoMock;
 
         [SetUp]
         public void SetupTests()
         {
-            _instrumentName = "OPN2010A";
-            _instrumentId = Guid.NewGuid();
+            _questionnaireName = "OPN2010A";
+            _questionnaireId = Guid.NewGuid();
             _serverParkName = "ServerParkA";
             _installDate = DateTime.Now;
-            _numberOfRecordForInstrument = 100;
+            _numberOfRecordForQuestionnaire = 100;
 
             _surveyMock = new Mock<ISurvey>();
-            _surveyMock.Setup(s => s.Name).Returns(_instrumentName);
-            _surveyMock.Setup(s => s.InstrumentID).Returns(_instrumentId);
+            _surveyMock.Setup(s => s.Name).Returns(_questionnaireName);
+            _surveyMock.Setup(s => s.InstrumentID).Returns(_questionnaireId);
             _surveyMock.Setup(s => s.ServerPark).Returns(_serverParkName);
             _surveyMock.Setup(s => s.InstallDate).Returns(_installDate);
 
             _surveyReportingInfoMock = new Mock<ISurveyReportingInfo>();
-            _surveyReportingInfoMock.Setup(r => r.DataRecordCount).Returns(_numberOfRecordForInstrument);
+            _surveyReportingInfoMock.Setup(r => r.DataRecordCount).Returns(_numberOfRecordForQuestionnaire);
             _surveyMock.As<ISurvey2>().Setup(s => s.GetReportingInfo()).Returns(_surveyReportingInfoMock.Object);
 
-            _statusMapperMock = new Mock<IInstrumentStatusMapper>();
-            _nodeDtoMapperMock = new Mock<IInstrumentNodeDtoMapper>();
+            _statusMapperMock = new Mock<IQuestionnaireStatusMapper>();
+            _nodeDtoMapperMock = new Mock<IQuestionnaireNodeDtoMapper>();
 
             _sut = new CatiDtoMapper(_statusMapperMock.Object, _nodeDtoMapperMock.Object);
         }
 
         [Test]
-        public void Given_An_Instrument_And_SurveyDays_When_I_Call_MapToCatiInstrumentDto_Then_A_CatiInstrumentDto_Is_Returned()
+        public void Given_A_Questionnaire_And_SurveyDays_When_I_Call_MapToCatiQuestionnaireDto_Then_A_CatiQuestionnaireDto_Is_Returned()
         {
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, new List<DateTime>());
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, new List<DateTime>());
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
         }
 
         [TestCase(20, true)]
         [TestCase(1, true)]
         [TestCase(0, false)]
-        public void Given_A_Survey_When_I_Call_MapToCatiInstrumentDto_Then_Properties_Are_Mapped_Correctly(int numberOfRecords,
+        public void Given_A_Survey_When_I_Call_MapToCatiQuestionnaireDto_Then_Properties_Are_Mapped_Correctly(int numberOfRecords,
             bool hasData)
         {
             //arrange
             _surveyReportingInfoMock.Setup(s => s.DataRecordCount)
                 .Returns(numberOfRecords);
 
-            _statusMapperMock.Setup(s => s.GetInstrumentStatus(_surveyMock.Object))
-                .Returns(SurveyStatusType.Active);
+            _statusMapperMock.Setup(s => s.GetQuestionnaireStatus(_surveyMock.Object))
+                .Returns(QuestionnaireStatusType.Active);
 
-            var nodeList = new List<InstrumentNodeDto>
+            var nodeList = new List<QuestionnaireNodeDto>
             {
-                new InstrumentNodeDto()
+                new QuestionnaireNodeDto()
             };
 
-            _nodeDtoMapperMock.Setup(n => n.MapToInstrumentNodeDtos(It.IsAny<IMachineConfigurationCollection>()))
+            _nodeDtoMapperMock.Setup(n => n.MapToQuestionnaireNodeDtos(It.IsAny<IMachineConfigurationCollection>()))
                 .Returns(nodeList);
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, new List<DateTime>());
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, new List<DateTime>());
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
-            Assert.AreEqual(_instrumentName, result.Name);
-            Assert.AreEqual(_instrumentId, result.Id);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
+            Assert.AreEqual(_questionnaireName, result.Name);
+            Assert.AreEqual(_questionnaireId, result.Id);
             Assert.AreEqual(_serverParkName, result.ServerParkName);
             Assert.AreEqual(_installDate, result.InstallDate);
             Assert.AreEqual(numberOfRecords, result.DataRecordCount);
-            Assert.AreEqual(SurveyStatusType.Active.ToString(), result.Status);
+            Assert.AreEqual(QuestionnaireStatusType.Active.ToString(), result.Status);
             Assert.AreEqual(hasData, result.HasData);
             Assert.AreSame(nodeList, result.Nodes);
         }
 
         [Test]
-        public void Given_No_Survey_Days_When_I_Call_MapToCatiInstrumentDto_Then_The_Instrument_Is_Not_Active()
+        public void Given_No_Survey_Days_When_I_Call_MapToCatiQuestionnaireDto_Then_The_Questionnaire_Is_Not_Active()
         {
             //arrange
             var surveyDays = new List<DateTime>();
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsFalse(result.Active);
         }
 
         [Test]
-        public void Given_All_SurveyDays_Are_In_The_Future_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Not_Active()
+        public void Given_All_SurveyDays_Are_In_The_Future_When_I_Call_MapToCatiQuestionnaireDto_Then_The_Questionnaire_Is_Not_Active()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -126,16 +126,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsFalse(result.Active);
         }
 
         [Test]
-        public void Given_SurveyDays_Have_All_Passed_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Not_Active()
+        public void Given_SurveyDays_Have_All_Passed_When_I_Call_MapToCatiQuestionnaireDto_Then_The_Questionnaire_Is_Not_Active()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -146,16 +146,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsFalse(result.Active);
         }
 
         [Test]
-        public void Given_There_Is_A_SurveyDay_In_The_Future_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Active()
+        public void Given_There_Is_A_SurveyDay_In_The_Future_When_I_Call_MapToCatiQuestionnaireDto_Then_The_Questionnaire_Is_Active()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -167,16 +167,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsTrue(result.Active);
         }
 
         [Test]
-        public void Given_There_A_SurveyDay_For_Today_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Active()
+        public void Given_There_A_SurveyDay_For_Today_When_I_Call_MapToCatiQuestionnaireDto_Then_The_Questionnaire_Is_Active()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -185,16 +185,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsTrue(result.Active);
         }
 
         [Test]
-        public void Given_There_A_SurveyDay_For_Today_At_A_Later_Time_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Active()
+        public void Given_There_A_SurveyDay_For_Today_At_A_Later_Time_When_I_Call_MapToCatiQuestionnaireDto_Then_The_Questionnaire_Is_Active()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -203,16 +203,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsTrue(result.Active);
         }
 
         [Test]
-        public void Given_No_Survey_For_Today_When_I_Call_MapToInstrumentDto_Then_The_ActiveToday_Field_Is_Marked_As_False()
+        public void Given_No_Survey_For_Today_When_I_Call_MapToCatiQuestionnaireDto_Then_The_ActiveToday_Field_Is_Marked_As_False()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -223,16 +223,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsFalse(result.ActiveToday);
         }
 
         [Test]
-        public void Given_There_Is_A_SurveyDay_For_Today_When_I_Call_MapToInstrumentDto_Then_The_ActiveToday_Field_Is_Marked_As_True()
+        public void Given_There_Is_A_SurveyDay_For_Today_When_I_Call_MapToCatiQuestionnaireDto_Then_The_ActiveToday_Field_Is_Marked_As_True()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -244,16 +244,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsTrue(result.ActiveToday);
         }
 
         [Test]
-        public void Given_There_A_SurveyDay_For_Today_At_A_Later_Time_When_I_Call_MapToInstrumentDto_Then_The_ActiveToday_Field_Is_Marked_As_True()
+        public void Given_There_A_SurveyDay_For_Today_At_A_Later_Time_When_I_Call_MapToCatiQuestionnaireDto_Then_The_ActiveToday_Field_Is_Marked_As_True()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -262,31 +262,31 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsTrue(result.ActiveToday);
         }
 
         [Test]
-        public void Given_No_Survey_Days_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_False()
+        public void Given_No_Survey_Days_When_I_Call_MapToCatiQuestionnaireDto_Then_DeliverData_Is_False()
         {
             //arrange
             var surveyDays = new List<DateTime>();
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsFalse(result.DeliverData);
         }
 
         [Test]
-        public void Given_All_SurveyDays_Are_In_The_Future_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_False()
+        public void Given_All_SurveyDays_Are_In_The_Future_When_I_Call_MapToCatiQuestionnaireDto_Then_DeliverData_Is_False()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -297,16 +297,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsFalse(result.DeliverData);
         }
 
         [Test]
-        public void Given_There_Is_A_SurveyDay_In_The_Future_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_True()
+        public void Given_There_Is_A_SurveyDay_In_The_Future_When_I_Call_MapToCatiQuestionnaireDto_Then_DeliverData_Is_True()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -318,16 +318,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsTrue(result.DeliverData);
         }
 
         [Test]
-        public void Given_There_A_SurveyDay_For_Today_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_True()
+        public void Given_There_A_SurveyDay_For_Today_When_I_Call_MapToCatiQuestionnaireDto_Then_DeliverData_Is_True()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -336,16 +336,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsTrue(result.DeliverData);
         }
 
         [Test]
-        public void Given_There_A_SurveyDay_For_Today_At_A_Later_Time_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_True()
+        public void Given_There_A_SurveyDay_For_Today_At_A_Later_Time_When_I_Call_MapToCatiQuestionnaireDto_Then_DeliverData_Is_True()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -354,16 +354,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsTrue(result.DeliverData);
         }
 
         [Test]
-        public void Given_The_Last_SurveyDay_Is_Yesterday_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_True_Due_To_DataDelivery_Requirements()
+        public void Given_The_Last_SurveyDay_Is_Yesterday_When_I_Call_MapToCatiQuestionnaireDto_Then_DeliverData_Is_True_Due_To_DataDelivery_Requirements()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -372,16 +372,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsTrue(result.DeliverData);
         }
 
         [Test]
-        public void Given_The_Last_SurveyDay_Is_Two_Days_Ago_Or_More_When_I_Call_MapToCatiInstrumentDto_Then_DeliverData_Is_False_Due_To_DataDelivery_Requirements()
+        public void Given_The_Last_SurveyDay_Is_Two_Days_Ago_Or_More_When_I_Call_MapToCatiQuestionnaireDto_Then_DeliverData_Is_False_Due_To_DataDelivery_Requirements()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -391,11 +391,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = _sut.MapToCatiInstrumentDto(_surveyMock.Object, surveyDays);
+            var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
             Assert.IsFalse(result.DeliverData);
         }
 

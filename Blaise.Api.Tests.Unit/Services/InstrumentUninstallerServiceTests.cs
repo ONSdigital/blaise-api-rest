@@ -6,74 +6,74 @@ using NUnit.Framework;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
-    public class InstrumentUninstallerServiceTests
+    public class QuestionnaireUninstallerServiceTests
     {
-        private InstrumentUninstallerService _sut;
+        private QuestionnaireUninstallerService _sut;
 
-        private Mock<IBlaiseSurveyApi> _blaiseSurveyApiMock;
+        private Mock<IBlaiseQuestionnaireApi> _blaiseQuestionnaireApiMock;
         private Mock<IBlaiseCaseApi> _blaiseCaseApiMock;
 
         private string _serverParkName;
-        private string _instrumentName;
+        private string _questionnaireName;
         
         [SetUp]
         public void SetUpTests()
         {
-            _blaiseSurveyApiMock = new Mock<IBlaiseSurveyApi>();
+            _blaiseQuestionnaireApiMock = new Mock<IBlaiseQuestionnaireApi>();
             _blaiseCaseApiMock = new Mock<IBlaiseCaseApi>();
 
             _serverParkName = "ServerParkA";
-            _instrumentName = "OPN2010A";
+            _questionnaireName = "OPN2010A";
 
-            _sut = new InstrumentUninstallerService(
-                _blaiseSurveyApiMock.Object,
+            _sut = new QuestionnaireUninstallerService(
+                _blaiseQuestionnaireApiMock.Object,
                 _blaiseCaseApiMock.Object);
         }
 
         [Test]
-        public void Given_I_Call_UninstallInstrument_Then_The_Correct_Services_Are_Called()
+        public void Given_I_Call_UninstallQuestionnaire_Then_The_Correct_Services_Are_Called()
         {
             //act
-            _sut.UninstallInstrument(_instrumentName, _serverParkName);
+            _sut.UninstallQuestionnaire(_questionnaireName, _serverParkName);
 
             //assert
-            _blaiseCaseApiMock.Verify(v => v.RemoveCases(_instrumentName, _serverParkName));
-            _blaiseSurveyApiMock.Verify(v => v.UninstallSurvey(_instrumentName, _serverParkName, false)
+            _blaiseCaseApiMock.Verify(v => v.RemoveCases(_questionnaireName, _serverParkName));
+            _blaiseQuestionnaireApiMock.Verify(v => v.UninstallQuestionnaire(_questionnaireName, _serverParkName, false)
                 , Times.Once);
         }
 
         [Test]
-        public void Given_An_Empty_InstrumentName_When_I_Call_UninstallInstrument_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_QuestionnaireName_When_I_Call_UninstallQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UninstallInstrument(string.Empty,
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UninstallQuestionnaire(string.Empty,
                 _serverParkName));
-            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
         [Test]
-        public void Given_A_Null_InstrumentName_When_I_Call_UninstallInstrument_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_QuestionnaireName_When_I_Call_UninstallQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UninstallInstrument(null,
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UninstallQuestionnaire(null,
                 _serverParkName));
-            Assert.AreEqual("instrumentName", exception.ParamName);
+            Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
         [Test]
-        public void Given_An_Empty_ServerParkName_When_I_Call_UninstallInstrument_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_ServerParkName_When_I_Call_UninstallQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UninstallInstrument(_instrumentName,
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UninstallQuestionnaire(_questionnaireName,
                 string.Empty));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
         [Test]
-        public void Given_A_Null_ServerParkName_When_I_Call_UninstallInstrument_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_ServerParkName_When_I_Call_UninstallQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UninstallInstrument(_instrumentName,
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UninstallQuestionnaire(_questionnaireName,
                 null));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }

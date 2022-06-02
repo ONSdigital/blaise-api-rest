@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.Instrument;
+using Blaise.Api.Contracts.Models.Questionnaire;
 
 namespace Blaise.Api.Contracts.Models.ServerPark
 {
@@ -7,14 +7,14 @@ namespace Blaise.Api.Contracts.Models.ServerPark
     {
         public ServerParkDto()
         {
-            Instruments = new List<InstrumentDto>();
+            Questionnaires = new List<QuestionnaireDto>();
         }
 
         public string Name { get; set; }
 
         public string LoadBalancer { get; set; }
         
-        public IEnumerable<InstrumentDto> Instruments { get; set; }
+        public IEnumerable<QuestionnaireDto> Questionnaires { get; set; }
 
         public IEnumerable<ServerDto> Servers { get; set; }
     }

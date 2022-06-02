@@ -8,13 +8,13 @@ using StatNeth.Blaise.API.ServerManager;
 
 namespace Blaise.Api.Tests.Behaviour.Stubs.Responses
 {
-    public static class InstrumentResponses
+    public static class QuestionnaireResponses
     {
         public static List<ISurvey2> ActiveQuestionnaires => new List<ISurvey2>
         {
             new Survey
             {
-                Name = BlaiseConfigurationHelper.InstrumentName,
+                Name = BlaiseConfigurationHelper.QuestionnaireName,
                 ServerPark = BlaiseConfigurationHelper.ServerParkName,
                 Status = "Active",
                 Configuration = new MachineConfigurationCollection
@@ -62,7 +62,7 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Responses
             {
                 Current = new KeyValuePair<string, IConfiguration>("", new Configuration
                 {
-                    InstrumentName = BlaiseConfigurationHelper.InstrumentName,
+                    InstrumentName = BlaiseConfigurationHelper.QuestionnaireName,
                     ServerParkName = BlaiseConfigurationHelper.ServerParkName,
                     Status = "Active"
                 })

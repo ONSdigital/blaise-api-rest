@@ -3,8 +3,8 @@ using StatNeth.Blaise.API.ServerManager;
 
 namespace Blaise.Api.Core.Interfaces.Mappers
 {
-    public interface IInstrumentStatusMapper
+    public interface IQuestionnaireStatusMapper
     {
-        SurveyStatusType GetInstrumentStatus(ISurvey instrument);
+        QuestionnaireStatusType GetQuestionnaireStatus(ISurvey questionnaire);
     }
 }

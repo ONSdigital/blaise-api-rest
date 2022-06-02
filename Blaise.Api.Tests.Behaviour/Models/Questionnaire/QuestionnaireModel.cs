@@ -2,10 +2,10 @@
 
 namespace Blaise.Api.Tests.Behaviour.Models.Questionnaire
 {
-    public class Questionnaire
+    public class QuestionnaireModel
     {
         public string Name { get; set; }
 
-        public SurveyStatusType Status { get; set; }
+        public QuestionnaireStatusType Status { get; set; }
     }
 }
