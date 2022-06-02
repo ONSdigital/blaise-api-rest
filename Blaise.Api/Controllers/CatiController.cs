@@ -26,12 +26,12 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("instruments")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(IEnumerable<CatiInstrumentDto>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(IEnumerable<CatiQuestionnaireDto>))]
         public IHttpActionResult GetInstruments()
         {
             _loggingService.LogInfo("Obtaining a list of instruments from Cati");
 
-            var instruments = _catiService.GetCatiInstruments().ToList();
+            var instruments = _catiService.GetCatiQuestionnaires().ToList();
 
             _loggingService.LogInfo($"Successfully received {instruments.Count} instruments from Cati");
 
@@ -40,14 +40,14 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("serverparks/{serverParkName}/instruments")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(IEnumerable<CatiInstrumentDto>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(IEnumerable<CatiQuestionnaireDto>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetInstruments([FromUri] string serverParkName)
         {
             _loggingService.LogInfo($"Obtaining a list of instruments from Cati for server park '{serverParkName}'");
 
-            var instruments = _catiService.GetCatiInstruments(serverParkName).ToList();
+            var instruments = _catiService.GetCatiQuestionnaires(serverParkName).ToList();
 
             _loggingService.LogInfo($"Successfully received {instruments.Count} instruments from Cati");
 
@@ -56,14 +56,14 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("serverparks/{serverParkName}/instruments/{instrumentName}")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(CatiInstrumentDto))]
+        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(CatiQuestionnaireDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             _loggingService.LogInfo($"Obtaining an instrument from Cati for server park '{serverParkName}'");
 
-            var instrument = _catiService.GetCatiInstrument(serverParkName, instrumentName);
+            var instrument = _catiService.GetCatiQuestionnaire(serverParkName, instrumentName);
 
             _loggingService.LogInfo("Successfully received an instrument from Cati");
 
@@ -111,7 +111,7 @@ namespace Blaise.Api.Controllers
         {
             _loggingService.LogInfo($"Check a daybatch exists today for instrument '{instrumentName}' on server park '{serverParkName}'");
 
-            var exists = _catiService.InstrumentHasADayBatchForToday(instrumentName, serverParkName);
+            var exists = _catiService.QuestionnaireHasADayBatchForToday(instrumentName, serverParkName);
 
             _loggingService.LogInfo($"Daybatch exists today for instrument'{instrumentName}' - '{exists}'");
 

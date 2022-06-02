@@ -11,12 +11,12 @@ namespace Blaise.Api.Controllers
     [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments/{instrumentName}/data")]
     public class InstrumentDataController : BaseController
     {
-        private readonly IInstrumentDataService _instrumentDataService;
+        private readonly IQuestionnaireDataService _instrumentDataService;
         private readonly ILoggingService _loggingService;
         private readonly IConfigurationProvider _configurationProvider;
 
         public InstrumentDataController(
-            IInstrumentDataService dataDeliveryService,
+            IQuestionnaireDataService dataDeliveryService,
             ILoggingService loggingService,
             IConfigurationProvider configurationProvider)
         {
