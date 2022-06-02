@@ -33,7 +33,7 @@ namespace Blaise.Api.Configuration
             UnityContainer.RegisterType<ILoggingService, EventLogging>();
 
             UnityContainer.RegisterType<IBlaiseServerParkApi, BlaiseServerParkApi>(new InjectionConstructor(connectionModel));
-            UnityContainer.RegisterType<IBlaiseSurveyApi, BlaiseSurveyApi>(new InjectionConstructor(connectionModel));
+            UnityContainer.RegisterType<IBlaiseQuestionnaireApi, BlaiseQuestionnaireApi>(new InjectionConstructor(connectionModel));
             UnityContainer.RegisterType<IBlaiseCatiApi, BlaiseCatiApi>(new InjectionConstructor(connectionModel));
             UnityContainer.RegisterType<IBlaiseHealthApi, BlaiseHealthApi>(new InjectionConstructor(connectionModel));
             UnityContainer.RegisterType<IBlaiseRoleApi, BlaiseRoleApi>(new InjectionConstructor(connectionModel));
@@ -48,20 +48,20 @@ namespace Blaise.Api.Configuration
 
             //core mappers
             UnityContainer.RegisterType<IServerParkDtoMapper, ServerParkDtoMapper>();
-            UnityContainer.RegisterType<IInstrumentDtoMapper, InstrumentDtoMapper>();
-            UnityContainer.RegisterType<IInstrumentNodeDtoMapper, InstrumentNodeDtoMapper>();
+            UnityContainer.RegisterType<IQuestionnaireDtoMapper, QuestionnaireDtoMapper>();
+            UnityContainer.RegisterType<IQuestionnaireNodeDtoMapper, QuestionnaireNodeDtoMapper>();
             UnityContainer.RegisterType<ICatiDtoMapper, CatiDtoMapper>();
             UnityContainer.RegisterType<IUserRoleDtoMapper, UserRoleDtoMapper>();
             UnityContainer.RegisterType<IUserDtoMapper, UserDtoMapper>();
-            UnityContainer.RegisterType<IInstrumentStatusMapper, InstrumentStatusMapper>();
+            UnityContainer.RegisterType<IQuestionnaireStatusMapper, QuestionnaireStatusMapper>();
             UnityContainer.RegisterType<IDataEntrySettingsDtoMapper, DataEntrySettingsDtoMapper>();
 
             //core services
             UnityContainer.RegisterType<IServerParkService, ServerParkService>();
-            UnityContainer.RegisterType<IInstrumentService, InstrumentService>();
-            UnityContainer.RegisterType<IInstrumentDataService, InstrumentDataService>();
-            UnityContainer.RegisterType<IInstrumentInstallerService, InstrumentInstallerService>();
-            UnityContainer.RegisterType<IInstrumentUninstallerService, InstrumentUninstallerService>();
+            UnityContainer.RegisterType<IQuestionnaireService, QuestionnaireService>();
+            UnityContainer.RegisterType<IQuestionnaireDataService, QuestionnaireDataService>();
+            UnityContainer.RegisterType<IQuestionnaireInstallerService, QuestionnaireInstallerService>();
+            UnityContainer.RegisterType<IQuestionnaireUninstallerService, QuestionnaireUninstallerService>();
             UnityContainer.RegisterType<ICatiService, CatiService>();
             UnityContainer.RegisterType<IHealthCheckService, HealthCheckService>();
             UnityContainer.RegisterType<IUserRoleService, UserRoleService>();
@@ -72,6 +72,7 @@ namespace Blaise.Api.Configuration
             UnityContainer.RegisterType<ICatiDataBlockService, CatiDataBlockService>();
             UnityContainer.RegisterType<INisraCaseComparisonService, NisraCaseComparisonService>();
             UnityContainer.RegisterType<IReportingService, ReportingService>();
+            UnityContainer.RegisterType<IReportingServiceV2, ReportingServiceV2>();
             UnityContainer.RegisterType<ICaseService, CaseService>();
             UnityContainer.RegisterType(typeof(IRetryService<>), typeof(RetryService<>));
 
