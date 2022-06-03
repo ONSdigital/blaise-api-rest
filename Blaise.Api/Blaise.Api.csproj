@@ -255,6 +255,7 @@
     <Compile Include="Controllers\CaseV2Controller.cs" />
     <Compile Include="Controllers\CaseController.cs" />
     <Compile Include="Controllers\CatiV2Controller.cs" />
+    <Compile Include="Controllers\HealthV2Controller.cs" />
     <Compile Include="Controllers\QuestionnaireDataController.cs" />
     <Compile Include="Controllers\QuestionnaireController.cs" />
     <Compile Include="Controllers\ReportingV2Controller.cs" />
