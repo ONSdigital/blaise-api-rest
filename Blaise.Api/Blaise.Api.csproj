@@ -261,6 +261,8 @@
     <Compile Include="Controllers\ReportingV2Controller.cs" />
     <Compile Include="Controllers\ReportingController.cs" />
     <Compile Include="Controllers\InstrumentDataController.cs" />
+    <Compile Include="Controllers\UserRoleV2Controller.cs" />
+    <Compile Include="Controllers\UserV2Controller.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserRoleController.cs" />
     <Compile Include="Controllers\HealthController.cs" />
