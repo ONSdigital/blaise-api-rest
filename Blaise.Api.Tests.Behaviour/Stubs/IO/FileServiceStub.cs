@@ -5,17 +5,17 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.IO
 {
     public class FileServiceStub : IFileService
     {
-        public void UpdateInstrumentFileWithSqlConnection(string instrumentFile)
+        public void UpdateQuestionnaireFileWithSqlConnection(string questionnaireFile)
         {
            
         }
 
-        public string GetInstrumentNameFromFile(string instrumentFile)
+        public string GetQuestionnaireNameFromFile(string questionnaireFile)
         {
             return "OpnTest";
         }
 
-        public string GetDatabaseFile(string filePath, string instrumentName)
+        public string GetDatabaseFile(string filePath, string questionnaireName)
         {
             throw new NotImplementedException();
         }

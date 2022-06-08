@@ -8,7 +8,6 @@ using Blaise.Api.Core.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Moq;
 using NUnit.Framework;
-using StatNeth.Blaise.API.DataLink;
 using StatNeth.Blaise.API.DataRecord;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Models;
@@ -20,10 +19,9 @@ namespace Blaise.Api.Tests.Unit.Services
         private ICaseService _sut;
 
         private Mock<IBlaiseCaseApi> _blaiseCaseApiMock;
-        private Mock<IDataSet> _dataSetMock;
         private Mock<IDataRecord> _dataRecordMock;
 
-        private string _instrumentName;
+        private string _questionnaireName;
         private string _serverParkName;
 
         [SetUp]
@@ -31,17 +29,16 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //Setup mocks
             _blaiseCaseApiMock = new Mock<IBlaiseCaseApi>();
-            _dataSetMock = new Mock<IDataSet>();
             _dataRecordMock = new Mock<IDataRecord>();
 
             _serverParkName = "LocalDevelopment";
-            _instrumentName = "OPN2101A";
+            _questionnaireName = "OPN2101A";
 
             _sut = new CaseService(_blaiseCaseApiMock.Object);
         }
 
         [Test]
-        public void Given_An_Instrument_Has_Two_Cases_When_I_Call_GetCaseIds_Then_I_Get_A_List_Containing_Two_CaseIds_Back()
+        public void Given_A_Questionnaire_Has_Two_Cases_When_I_Call_GetCaseIds_Then_I_Get_A_List_Containing_Two_CaseIds_Back()
         {
             //arrange
             var caseStatusModelList = new List<CaseStatusModel>
@@ -51,11 +48,11 @@ namespace Blaise.Api.Tests.Unit.Services
             };
 
 
-            _blaiseCaseApiMock.Setup(b => b.GetCaseStatusList(_instrumentName, _serverParkName))
+            _blaiseCaseApiMock.Setup(b => b.GetCaseStatusModelList(_questionnaireName, _serverParkName))
                 .Returns(caseStatusModelList);
 
             //act
-            var result = _sut.GetCaseIds(_serverParkName, _instrumentName);
+            var result = _sut.GetCaseIds(_serverParkName, _questionnaireName);
 
             //assert
             Assert.IsNotNull(result);
@@ -67,13 +64,13 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_An_Instrument_Has_No_Cases_When_I_Call_CaseIds_Then_I_Get_An_Empty_List_Back()
+        public void Given_A_Questionnaire_Has_No_Cases_When_I_Call_GetCaseIds_Then_I_Get_An_Empty_List_Back()
         {
-            _blaiseCaseApiMock.Setup(b => b.GetCaseStatusList(_instrumentName, _serverParkName))
+            _blaiseCaseApiMock.Setup(b => b.GetCaseStatusModelList(_questionnaireName, _serverParkName))
                 .Returns(new List<CaseStatusModel>());
 
             //act
-            var result = _sut.GetCaseIds(_serverParkName, _instrumentName);
+            var result = _sut.GetCaseIds(_serverParkName, _questionnaireName);
 
             //assert
             Assert.IsNotNull(result);
@@ -82,7 +79,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_An_Instrument_Has_Two_Cases_When_I_Call_GetCaseStatusList_Then_I_Get_A_List_Containing_Two_CaseStatusDtos_Back()
+        public void Given_A_Questionnaire_Has_Two_Cases_When_I_Call_GetCaseStatusList_Then_I_Get_A_List_Containing_Two_CaseStatusDtos_Back()
         {
             //arrange
             var caseStatusModelList = new List<CaseStatusModel>
@@ -92,11 +89,11 @@ namespace Blaise.Api.Tests.Unit.Services
             };
 
 
-            _blaiseCaseApiMock.Setup(b => b.GetCaseStatusList(_instrumentName, _serverParkName))
+            _blaiseCaseApiMock.Setup(b => b.GetCaseStatusModelList(_questionnaireName, _serverParkName))
                 .Returns(caseStatusModelList);
 
             //act
-            var result = _sut.GetCaseStatusList(_serverParkName, _instrumentName);
+            var result = _sut.GetCaseStatusList(_serverParkName, _questionnaireName);
 
             //assert
             Assert.IsNotNull(result);
@@ -108,14 +105,14 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_An_Instrument_Has_No_Cases_When_I_Call_GetCaseStatusList_Then_I_Get_An_Empty_List_Back()
+        public void Given_A_Questionnaire_Has_No_Cases_When_I_Call_GetCaseStatusList_Then_I_Get_An_Empty_List_Back()
         {
             //arrange
-            _blaiseCaseApiMock.Setup(b => b.GetCaseStatusList(_instrumentName, _serverParkName))
+            _blaiseCaseApiMock.Setup(b => b.GetCaseStatusModelList(_questionnaireName, _serverParkName))
                 .Returns(new List<CaseStatusModel>());
 
             //act
-            var result = _sut.GetCaseStatusList(_serverParkName, _instrumentName);
+            var result = _sut.GetCaseStatusList(_serverParkName, _questionnaireName);
 
             //assert
             Assert.IsNotNull(result);
@@ -132,11 +129,11 @@ namespace Blaise.Api.Tests.Unit.Services
             dataValueMock.Setup(dv => dv.ValueAsText).Returns(postCode);
 
             var caseId = "0000007";
-            _blaiseCaseApiMock.Setup(b => b.GetCase(caseId, _instrumentName, _serverParkName)).Returns(_dataRecordMock.Object);
+            _blaiseCaseApiMock.Setup(b => b.GetCase(caseId, _questionnaireName, _serverParkName)).Returns(_dataRecordMock.Object);
             _blaiseCaseApiMock.Setup(f => f.GetFieldValue(_dataRecordMock.Object, FieldNameType.PostCode)).Returns(dataValueMock.Object);
 
             //act
-            var result = _sut.GetPostCode(_serverParkName, _instrumentName, caseId);
+            var result = _sut.GetPostCode(_serverParkName, _questionnaireName, caseId);
 
             //assert
             Assert.IsNotNull(result);
@@ -150,7 +147,7 @@ namespace Blaise.Api.Tests.Unit.Services
             const string caseId = "1000001";
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            _blaiseCaseApiMock.Setup(c => c.GetCase(caseId, _instrumentName, _serverParkName))
+            _blaiseCaseApiMock.Setup(c => c.GetCase(caseId, _questionnaireName, _serverParkName))
                 .Returns(_dataRecordMock.Object);
 
             _blaiseCaseApiMock.Setup(c => c.GetPrimaryKeyValue(_dataRecordMock.Object)).Returns(caseId);
@@ -158,10 +155,10 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseCaseApiMock.Setup(c => c.GetRecordDataFields(_dataRecordMock.Object)).Returns(fieldData);
 
             //act
-            _sut.GetCase(_serverParkName, _instrumentName, caseId);
+            _sut.GetCase(_serverParkName, _questionnaireName, caseId);
 
             //assert
-            _blaiseCaseApiMock.Verify(v => v.GetCase(caseId, _instrumentName, _serverParkName), Times.Once);
+            _blaiseCaseApiMock.Verify(v => v.GetCase(caseId, _questionnaireName, _serverParkName), Times.Once);
         }
 
         [Test]
@@ -171,7 +168,7 @@ namespace Blaise.Api.Tests.Unit.Services
             const string caseId = "1000001";
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            _blaiseCaseApiMock.Setup(c => c.GetCase(caseId, _instrumentName, _serverParkName))
+            _blaiseCaseApiMock.Setup(c => c.GetCase(caseId, _questionnaireName, _serverParkName))
                 .Returns(_dataRecordMock.Object);
 
             _blaiseCaseApiMock.Setup(c => c.GetPrimaryKeyValue(_dataRecordMock.Object)).Returns(caseId);
@@ -179,7 +176,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseCaseApiMock.Setup(c => c.GetRecordDataFields(_dataRecordMock.Object)).Returns(fieldData);
 
             //act
-            var result = _sut.GetCase(_serverParkName, _instrumentName, caseId);
+            var result = _sut.GetCase(_serverParkName, _questionnaireName, caseId);
 
             //assert
             Assert.IsNotNull(result);
@@ -196,7 +193,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(string.Empty,
-                _instrumentName, caseId));
+                _questionnaireName, caseId));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -208,12 +205,12 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCase(null,
-                _instrumentName, caseId));
+                _questionnaireName, caseId));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
         [Test]
-        public void Given_An_Empty_InstrumentName_When_I_Call_GetCase_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_QuestionnaireName_When_I_Call_GetCase_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
             const string caseId = "1000001";
@@ -221,11 +218,11 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(_serverParkName,
                 string.Empty, caseId));
-            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
         [Test]
-        public void Given_A_Null_InstrumentName_When_I_Call_GetCase_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_QuestionnaireName_When_I_Call_GetCase_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
             const string caseId = "1000001";
@@ -233,7 +230,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCase(_serverParkName,
                 null, caseId));
-            Assert.AreEqual("instrumentName", exception.ParamName);
+            Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
         [Test]
@@ -243,7 +240,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(_serverParkName,
-                _instrumentName, string.Empty));
+                _questionnaireName, string.Empty));
             Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
         }
 
@@ -266,10 +263,10 @@ namespace Blaise.Api.Tests.Unit.Services
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
             //act
-            _sut.CreateCase(_serverParkName, _instrumentName, caseId, fieldData);
+            _sut.CreateCase(_serverParkName, _questionnaireName, caseId, fieldData);
 
             //assert
-            _blaiseCaseApiMock.Verify(v => v.CreateCase(caseId, fieldData, _instrumentName, _serverParkName), Times.Once);
+            _blaiseCaseApiMock.Verify(v => v.CreateCase(caseId, fieldData, _questionnaireName, _serverParkName), Times.Once);
         }
 
         [Test]
@@ -281,7 +278,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(string.Empty,
-                _instrumentName, caseId, fieldData));
+                _questionnaireName, caseId, fieldData));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -294,12 +291,12 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(null,
-                _instrumentName, caseId, fieldData));
+                _questionnaireName, caseId, fieldData));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
         [Test]
-        public void Given_An_Empty_InstrumentName_When_I_Call_CreateCase_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_QuestionnaireName_When_I_Call_CreateCase_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
             const string caseId = "1000001";
@@ -308,11 +305,11 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(_serverParkName,
                 string.Empty, caseId, fieldData));
-            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
         [Test]
-        public void Given_A_Null_InstrumentName_When_I_Call_CreateCase_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_QuestionnaireName_When_I_Call_CreateCase_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
             const string caseId = "1000001";
@@ -321,7 +318,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(_serverParkName,
                 null, caseId, fieldData));
-            Assert.AreEqual("instrumentName", exception.ParamName);
+            Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
         [Test]
@@ -332,7 +329,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(_serverParkName,
-                _instrumentName, string.Empty, fieldData));
+                _questionnaireName, string.Empty, fieldData));
             Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
         }
 
@@ -357,7 +354,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(_serverParkName,
-                _instrumentName, caseId, fieldData));
+                _questionnaireName, caseId, fieldData));
             Assert.AreEqual("A value for the argument 'fieldData' must be supplied", exception.Message);
         }
 
@@ -381,10 +378,10 @@ namespace Blaise.Api.Tests.Unit.Services
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
             //act
-            _sut.UpdateCase(_serverParkName, _instrumentName, caseId, fieldData);
+            _sut.UpdateCase(_serverParkName, _questionnaireName, caseId, fieldData);
 
             //assert
-            _blaiseCaseApiMock.Verify(v => v.UpdateCase(caseId, fieldData, _instrumentName, _serverParkName), Times.Once);
+            _blaiseCaseApiMock.Verify(v => v.UpdateCase(caseId, fieldData, _questionnaireName, _serverParkName), Times.Once);
         }
 
         [Test]
@@ -396,7 +393,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateCase(string.Empty,
-                _instrumentName, caseId, fieldData));
+                _questionnaireName, caseId, fieldData));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -409,12 +406,12 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateCase(null,
-                _instrumentName, caseId, fieldData));
+                _questionnaireName, caseId, fieldData));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
         [Test]
-        public void Given_An_Empty_InstrumentName_When_I_Call_UpdateCase_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_QuestionnaireName_When_I_Call_UpdateCase_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
             const string caseId = "1000001";
@@ -423,11 +420,11 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateCase(_serverParkName,
                 string.Empty, caseId, fieldData));
-            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
         [Test]
-        public void Given_A_Null_InstrumentName_When_I_Call_UpdateCase_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_QuestionnaireName_When_I_Call_UpdateCase_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
             const string caseId = "1000001";
@@ -436,7 +433,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateCase(_serverParkName,
                 null, caseId, fieldData));
-            Assert.AreEqual("instrumentName", exception.ParamName);
+            Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
         [Test]
@@ -447,7 +444,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateCase(_serverParkName,
-                _instrumentName, string.Empty, fieldData));
+                _questionnaireName, string.Empty, fieldData));
             Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
         }
 
@@ -472,7 +469,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateCase(_serverParkName,
-                _instrumentName, caseId, fieldData));
+                _questionnaireName, caseId, fieldData));
             Assert.AreEqual("A value for the argument 'fieldData' must be supplied", exception.Message);
         }
 
@@ -495,10 +492,10 @@ namespace Blaise.Api.Tests.Unit.Services
             const string caseId = "1000001";
 
             //act
-            _sut.DeleteCase(_serverParkName, _instrumentName, caseId);
+            _sut.DeleteCase(_serverParkName, _questionnaireName, caseId);
 
             //assert
-            _blaiseCaseApiMock.Verify(v => v.RemoveCase(caseId, _instrumentName, _serverParkName), Times.Once);
+            _blaiseCaseApiMock.Verify(v => v.RemoveCase(caseId, _questionnaireName, _serverParkName), Times.Once);
         }
 
         [Test]
@@ -509,7 +506,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(string.Empty,
-                _instrumentName, caseId));
+                _questionnaireName, caseId));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -521,12 +518,12 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(null,
-                _instrumentName, caseId));
+                _questionnaireName, caseId));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
         [Test]
-        public void Given_An_Empty_InstrumentName_When_I_Call_DeleteCase_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_QuestionnaireName_When_I_Call_DeleteCase_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
             const string caseId = "1000001";
@@ -534,11 +531,11 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(_serverParkName,
                 string.Empty, caseId));
-            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
         [Test]
-        public void Given_A_Null_InstrumentName_When_I_Call_DeleteCase_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_QuestionnaireName_When_I_Call_DeleteCase_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
             const string caseId = "1000001";
@@ -546,7 +543,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(_serverParkName,
                 null, caseId));
-            Assert.AreEqual("instrumentName", exception.ParamName);
+            Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
         [Test]
@@ -554,7 +551,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(_serverParkName,
-                _instrumentName, string.Empty));
+                _questionnaireName, string.Empty));
             Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
         }
 

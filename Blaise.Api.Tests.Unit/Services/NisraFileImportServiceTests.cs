@@ -27,7 +27,7 @@ namespace Blaise.Api.Tests.Unit.Services
         private readonly string _primaryKey;
         private readonly string _databaseFileName;
         private readonly string _serverParkName;
-        private readonly string _instrumentName;
+        private readonly string _questionnaireName;
 
         private readonly CaseStatusModel _nisraCaseStatusModel;
         private readonly CaseStatusModel _existingStatusModel;
@@ -40,7 +40,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             _primaryKey = "SN123";
             _serverParkName = "Park1";
-            _instrumentName = "OPN123";
+            _questionnaireName = "OPN123";
             _databaseFileName = "OPN123.bdbx";
 
             _nisraCaseStatusModel = new CaseStatusModel(_primaryKey, 110, DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture));
@@ -63,7 +63,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _blaiseApiMock = new Mock<IBlaiseCaseApi>();
             _blaiseApiMock.Setup(b => b.GetCases(_databaseFileName)).Returns(_dataSetMock.Object);
-            _blaiseApiMock.Setup(b => b.GetCaseStatusList(_instrumentName, _serverParkName)).Returns(_existingCaseStatusList);
+            _blaiseApiMock.Setup(b => b.GetCaseStatusModelList(_questionnaireName, _serverParkName)).Returns(_existingCaseStatusList);
             _blaiseApiMock.Setup(b => b.GetCaseStatus(_newDataRecordMock.Object)).Returns(_nisraCaseStatusModel);
 
             _caseComparisonServiceMock = new Mock<INisraCaseComparisonService>();
@@ -88,7 +88,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(true);
 
             //act
-            _sut.ImportNisraDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
+            _sut.ImportNisraDatabaseFile(_databaseFileName, _questionnaireName, _serverParkName);
 
             //assert
             _blaiseApiMock.Verify(v => v.GetCases(_databaseFileName), Times.Once);
@@ -107,18 +107,18 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(true);
 
             _caseComparisonServiceMock.Setup(c =>
-                    c.CaseNeedsToBeUpdated(_nisraCaseStatusModel, _existingStatusModel, _instrumentName))
+                    c.CaseNeedsToBeUpdated(_nisraCaseStatusModel, _existingStatusModel, _questionnaireName))
                 .Returns(true);
 
-            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _instrumentName, _serverParkName))
+            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _questionnaireName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
 
             //act
-            _sut.ImportNisraDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
+            _sut.ImportNisraDatabaseFile(_databaseFileName, _questionnaireName, _serverParkName);
 
             //assert
             _onlineCaseServiceMock.Verify(v => v.UpdateCase(_newDataRecordMock.Object, _existingDataRecordMock.Object,
-                _instrumentName, _serverParkName), Times.Once);
+                _questionnaireName, _serverParkName), Times.Once);
         }
 
         [Test]
@@ -131,14 +131,14 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(true);
 
             _caseComparisonServiceMock.Setup(c =>
-                    c.CaseNeedsToBeUpdated(_nisraCaseStatusModel, _existingStatusModel, _instrumentName))
+                    c.CaseNeedsToBeUpdated(_nisraCaseStatusModel, _existingStatusModel, _questionnaireName))
                 .Returns(false);
 
-            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _instrumentName, _serverParkName))
+            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _questionnaireName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
 
             //act
-            _sut.ImportNisraDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
+            _sut.ImportNisraDatabaseFile(_databaseFileName, _questionnaireName, _serverParkName);
 
             //assert
             _onlineCaseServiceMock.Verify(v => v.UpdateCase(It.IsAny<IDataRecord>(), It.IsAny<IDataRecord>(),
@@ -155,23 +155,23 @@ namespace Blaise.Api.Tests.Unit.Services
                 new CaseStatusModel("0", 110, DateTime.Now.ToString(CultureInfo.InvariantCulture))
             };
 
-            _blaiseApiMock.Setup(b => b.GetCaseStatusList(_instrumentName, _serverParkName)).Returns(existingCaseStatusList);
+            _blaiseApiMock.Setup(b => b.GetCaseStatusModelList(_questionnaireName, _serverParkName)).Returns(existingCaseStatusList);
 
             _dataSetMock.Setup(d => d.ActiveRecord).Returns(_newDataRecordMock.Object);
             _dataSetMock.SetupSequence(d => d.EndOfSet)
                 .Returns(false)
                 .Returns(true);
 
-            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _instrumentName, _serverParkName))
+            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _questionnaireName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
 
             //act
-            _sut.ImportNisraDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
+            _sut.ImportNisraDatabaseFile(_databaseFileName, _questionnaireName, _serverParkName);
 
             //assert
             _onlineCaseServiceMock.Verify(v => v.UpdateCase(It.IsAny<IDataRecord>(), It.IsAny<IDataRecord>(),
                 It.IsAny<string>(), It.IsAny<string>()), Times.Never);
-            _loggingServiceMock.Verify(l => l.LogWarn($"The nisra case '{_nisraCaseStatusModel.PrimaryKey}' does not exist in the database for the instrument '{_instrumentName}'"), Times.Once());
+            _loggingServiceMock.Verify(l => l.LogWarn($"The nisra case '{_nisraCaseStatusModel.PrimaryKey}' does not exist in the database for the questionnaire '{_questionnaireName}'"), Times.Once());
             _caseComparisonServiceMock.Verify(cc => cc.CaseNeedsToBeUpdated(It.IsAny<CaseStatusModel>(), It.IsAny<CaseStatusModel>(),
                 It.IsAny<string>()), Times.Never);
         }

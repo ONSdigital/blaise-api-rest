@@ -6,24 +6,24 @@ namespace Blaise.Api.Core.Interfaces.Services
 {
     public interface ICatiService
     {
-        List<CatiInstrumentDto> GetCatiInstruments();
+        List<CatiQuestionnaireDto> GetCatiQuestionnaires();
 
-        List<CatiInstrumentDto> GetCatiInstruments(string serverParkName);
+        List<CatiQuestionnaireDto> GetCatiQuestionnaires(string serverParkName);
 
-        CatiInstrumentDto GetCatiInstrument(string serverParkName, string instrumentName);
+        CatiQuestionnaireDto GetCatiQuestionnaire(string serverParkName, string questionnaireName);
 
-        DayBatchDto CreateDayBatch(string instrumentName, string serverParkName, CreateDayBatchDto createDayBatchDto);
+        DayBatchDto CreateDayBatch(string questionnaireName, string serverParkName, CreateDayBatchDto createDayBatchDto);
 
-        DayBatchDto GetDayBatch(string instrumentName, string serverParkName);
+        DayBatchDto GetDayBatch(string questionnaireName, string serverParkName);
 
-        bool InstrumentHasADayBatchForToday(string instrumentName, string serverParkName);
+        bool QuestionnaireHasADayBatchForToday(string questionnaireName, string serverParkName);
         
-        void AddCasesToDayBatch(string instrumentName, string serverParkName, List<string> caseIds);
+        void AddCasesToDayBatch(string questionnaireName, string serverParkName, List<string> caseIds);
 
-        List<DateTime> GetSurveyDays(string instrumentName, string serverParkName);
+        List<DateTime> GetSurveyDays(string questionnaireName, string serverParkName);
 
-        List<DateTime> AddSurveyDays(string instrumentName, string serverParkName, List<DateTime> surveyDays);
+        List<DateTime> AddSurveyDays(string questionnaireName, string serverParkName, List<DateTime> surveyDays);
 
-        void RemoveSurveyDays(string instrumentName, string serverParkName, List<DateTime> surveyDays);
+        void RemoveSurveyDays(string questionnaireName, string serverParkName, List<DateTime> surveyDays);
     }
 }

@@ -23,7 +23,7 @@ namespace Blaise.Api.Core.Services
             _catiDataService = catiDataService;
         }
 
-        public void UpdateCase(IDataRecord newDataRecord, IDataRecord existingDataRecord, string instrumentName, string serverParkName)
+        public void UpdateCase(IDataRecord newDataRecord, IDataRecord existingDataRecord, string questionnaireName, string serverParkName)
         {
             var primaryKey = _blaiseApi.GetPrimaryKeyValue(newDataRecord);
 
@@ -32,24 +32,24 @@ namespace Blaise.Api.Core.Services
                 if (_blaiseApi.CaseInUseInCati(existingDataRecord))
                 {
                     _loggingService.LogInfo(
-                        $"Not processed: NISRA case '{primaryKey}' as the case may be open in Cati for instrument '{instrumentName}'");
+                        $"Not processed: NISRA case '{primaryKey}' as the case may be open in Cati for questionnaire '{questionnaireName}'");
 
                     return;
                 }
 
                 var fieldData = GetFieldData(newDataRecord, existingDataRecord);
 
-                _blaiseApi.UpdateCase(existingDataRecord, fieldData, instrumentName, serverParkName);
+                _blaiseApi.UpdateCase(existingDataRecord, fieldData, questionnaireName, serverParkName);
 
-                if (RecordHasBeenUpdated(primaryKey, newDataRecord, instrumentName, serverParkName))
+                if (RecordHasBeenUpdated(primaryKey, newDataRecord, questionnaireName, serverParkName))
                 {
                     _loggingService.LogInfo(
-                        $"NISRA case '{primaryKey}' was successfully updated for instrument '{instrumentName}'");
+                        $"NISRA case '{primaryKey}' was successfully updated for questionnaire '{questionnaireName}'");
 
                     return;
                 }
 
-                _loggingService.LogWarn($"NISRA case '{primaryKey}' failed to update - potentially open in Cati at the time of the update for instrument '{instrumentName}'");
+                _loggingService.LogWarn($"NISRA case '{primaryKey}' failed to update - potentially open in Cati at the time of the update for questionnaire '{questionnaireName}'");
             }
             catch (Exception ex)
             {
@@ -79,9 +79,9 @@ namespace Blaise.Api.Core.Services
         }
 
         internal bool RecordHasBeenUpdated(string primaryKey, IDataRecord newDataRecord, 
-            string instrumentName, string serverParkName)
+            string questionnaireName, string serverParkName)
         {
-            var existingRecord = _blaiseApi.GetCase(primaryKey, instrumentName, serverParkName);
+            var existingRecord = _blaiseApi.GetCase(primaryKey, questionnaireName, serverParkName);
 
             return _blaiseApi.GetLastUpdatedAsString(existingRecord) == _blaiseApi.GetLastUpdatedAsString(newDataRecord);
         }

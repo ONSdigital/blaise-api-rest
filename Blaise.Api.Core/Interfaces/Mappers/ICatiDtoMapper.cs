@@ -8,7 +8,7 @@ namespace Blaise.Api.Core.Interfaces.Mappers
 {
     public interface ICatiDtoMapper
     {
-        CatiInstrumentDto MapToCatiInstrumentDto(ISurvey instrument, List<DateTime> surveyDays);
+        CatiQuestionnaireDto MapToCatiQuestionnaireDto(ISurvey questionnaire, List<DateTime> surveyDays);
 
         DayBatchDto MapToDayBatchDto(DayBatchModel dayBatchModel);
     }

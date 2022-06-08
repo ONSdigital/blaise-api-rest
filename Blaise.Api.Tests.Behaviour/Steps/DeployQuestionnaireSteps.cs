@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Behaviour.Helpers.Cloud;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
-using Blaise.Api.Tests.Behaviour.Helpers.Instrument;
+using Blaise.Api.Tests.Behaviour.Helpers.Questionnaire;
 using Blaise.Api.Tests.Behaviour.Helpers.RestApi;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -16,8 +16,8 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public async Task GivenIHaveAQuestionnaireIWantToInstall()
         {
             await CloudStorageHelper.GetInstance().UploadToBucketAsync(
-                BlaiseConfigurationHelper.InstrumentPackageBucket,
-                BlaiseConfigurationHelper.InstrumentPackagePath);
+                BlaiseConfigurationHelper.QuestionnairePackageBucket,
+                BlaiseConfigurationHelper.QuestionnairePackagePath);
 
         }
 
@@ -25,8 +25,8 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public async Task WhenTheApiIsCalledToInstallTheQuestionnaire()
         {
             var response = await RestApiHelper.GetInstance().DeployQuestionnaire(
-                RestApiConfigurationHelper.InstrumentsUrl,
-                BlaiseConfigurationHelper.InstrumentFile);
+                RestApiConfigurationHelper.QuestionnairesUrl,
+                BlaiseConfigurationHelper.QuestionnaireFile);
 
             Assert.AreEqual(HttpStatusCode.Created, response);
         }
@@ -34,19 +34,19 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [Then(@"the questionnaire is available to use")]
         public void ThenTheQuestionnaireIsAvailableToUse()
         {
-            var instrumentHasInstalled = InstrumentHelper.GetInstance().SurveyHasInstalled(60);
+            var questionnaireHasInstalled = QuestionnaireHelper.GetInstance().QuestionnaireHasInstalled(60);
 
-            Assert.IsTrue(instrumentHasInstalled, "The instrument has not been installed, or is not active");
+            Assert.IsTrue(questionnaireHasInstalled, "The questionnaire has not been installed, or is not active");
         }
 
         [AfterScenario("deploy")]
         public async Task CleanUpScenario()
         {
-            InstrumentHelper.GetInstance().UninstallSurvey();
+            QuestionnaireHelper.GetInstance().UninstallQuestionnaire();
            
             await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(
-                BlaiseConfigurationHelper.InstrumentPackageBucket,
-                BlaiseConfigurationHelper.InstrumentPackage);
+                BlaiseConfigurationHelper.QuestionnairePackageBucket,
+                BlaiseConfigurationHelper.QuestionnairePackage);
         }
     }
 }

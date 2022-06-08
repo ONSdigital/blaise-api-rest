@@ -11,27 +11,27 @@ namespace Blaise.Api.Core.Services
     public class ReportingService : IReportingService
     {
         private readonly IBlaiseCaseApi _blaiseCaseApi;
-        private readonly IBlaiseSurveyApi _blaiseSurveyApi;
+        private readonly IBlaiseQuestionnaireApi _blaiseQuestionnaireApi;
 
         public ReportingService(
             IBlaiseCaseApi blaiseCaseApi,
-            IBlaiseSurveyApi blaiseSurveyApi)
+            IBlaiseQuestionnaireApi blaiseQuestionnaireApi)
         {
             _blaiseCaseApi = blaiseCaseApi;
-            _blaiseSurveyApi = blaiseSurveyApi;
+            _blaiseQuestionnaireApi = blaiseQuestionnaireApi;
         }
 
         public ReportDto GetReportingData(string serverParkName, string instrumentName,
             List<string> fieldIds)
         {
-            var instrumentId = _blaiseSurveyApi.GetIdOfSurvey(instrumentName, serverParkName);
+            var instrumentId = _blaiseQuestionnaireApi.GetIdOfQuestionnaire(instrumentName, serverParkName);
 
             return BuildReportDto(serverParkName, instrumentName, instrumentId, fieldIds);
         }
 
         public ReportDto GetReportingData(string serverParkName, Guid instrumentId, List<string> fieldIds)
         {
-            var surveys = _blaiseSurveyApi.GetSurveys(serverParkName);
+            var surveys = _blaiseQuestionnaireApi.GetQuestionnaires(serverParkName);
             var instrumentName = surveys.First(s => s.InstrumentID == instrumentId).Name;
 
             return BuildReportDto(serverParkName, instrumentName, instrumentId, fieldIds);

@@ -10,7 +10,7 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
 {
     public class BlaiseCaseApiStub : IBlaiseCaseApi
     {
-        public bool CaseExists(string primaryKeyValue, string instrumentName, string serverParkName)
+        public bool CaseExists(string primaryKeyValue, string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
@@ -25,22 +25,22 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
             throw new NotImplementedException();
         }
 
-        public IDataSet GetCases(string instrumentName, string serverParkName)
+        public IDataSet GetCases(string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
 
-        public IDataRecord GetCase(string primaryKeyValue, string instrumentName, string serverParkName)
+        public IDataRecord GetCase(string primaryKeyValue, string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
 
-        public void CreateCase(string primaryKeyValue, Dictionary<string, string> fieldData, string instrumentName, string serverParkName)
+        public void CreateCase(string primaryKeyValue, Dictionary<string, string> fieldData, string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
 
-        public void CreateCase(IDataRecord dataRecord, string instrumentName, string serverParkName)
+        public void CreateCase(IDataRecord dataRecord, string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
@@ -50,22 +50,22 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
             throw new NotImplementedException();
         }
 
-        public void UpdateCase(string primaryKeyValue, Dictionary<string, string> fieldData, string instrumentName, string serverParkName)
+        public void UpdateCase(string primaryKeyValue, Dictionary<string, string> fieldData, string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateCase(IDataRecord dataRecord, Dictionary<string, string> fieldData, string instrumentName, string serverParkName)
+        public void UpdateCase(IDataRecord dataRecord, Dictionary<string, string> fieldData, string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
 
-        public bool FieldExists(string instrumentName, string serverParkName, FieldNameType fieldNameType)
+        public bool FieldExists(string questionnaireName, string serverParkName, FieldNameType fieldNameType)
         {
             throw new NotImplementedException();
         }
 
-        public bool FieldExists(string instrumentName, string serverParkName, string fieldName)
+        public bool FieldExists(string questionnaireName, string serverParkName, string fieldName)
         {
             throw new NotImplementedException();
         }
@@ -85,23 +85,23 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
             throw new NotImplementedException();
         }
 
-        public IDataValue GetFieldValue(string primaryKeyValue, string instrumentName, string serverParkName,
+        public IDataValue GetFieldValue(string primaryKeyValue, string questionnaireName, string serverParkName,
             FieldNameType fieldNameType)
         {
             throw new NotImplementedException();
         }
 
-        public void RemoveCase(string primaryKeyValue, string instrumentName, string serverParkName)
+        public void RemoveCase(string primaryKeyValue, string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
 
-        public void RemoveCases(string instrumentName, string serverParkName)
+        public void RemoveCases(string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
 
-        public int GetNumberOfCases(string instrumentName, string serverParkName)
+        public int GetNumberOfCases(string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
@@ -121,17 +121,17 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
             throw new NotImplementedException();
         }
 
-        public void LockDataRecord(string primaryKeyValue, string instrumentName, string serverParkName, string lockId)
+        public void LockDataRecord(string primaryKeyValue, string questionnaireName, string serverParkName, string lockId)
         {
             throw new NotImplementedException();
         }
 
-        public void UnLockDataRecord(string primaryKeyValue, string instrumentName, string serverParkName, string lockId)
+        public void UnLockDataRecord(string primaryKeyValue, string questionnaireName, string serverParkName, string lockId)
         {
             throw new NotImplementedException();
         }
 
-        public bool DataRecordIsLocked(string primaryKeyValue, string instrumentName, string serverParkName)
+        public bool DataRecordIsLocked(string primaryKeyValue, string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
@@ -156,7 +156,12 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CaseStatusModel> GetCaseStatusList(string instrumentName, string serverParkName)
+        public IEnumerable<CaseStatusModel> GetCaseStatusModelList(string questionnaireName, string serverParkName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CaseModel GetCaseModel(string primaryKeyValue, string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }

@@ -14,11 +14,11 @@ namespace Blaise.Api.Core.Services
         }
 
         public bool CaseNeedsToBeUpdated(CaseStatusModel nisraCaseStatusModel, CaseStatusModel existingCaseStatusModel, 
-            string instrumentName)
+            string questionnaireName)
         {
             if (nisraCaseStatusModel.Outcome == 0)
             {
-                _loggingService.LogInfo($"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (NISRA HOut = 0) for instrument '{instrumentName}'");
+                _loggingService.LogInfo($"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (NISRA HOut = 0) for questionnaire '{questionnaireName}'");
 
                 return false;
             }
@@ -26,15 +26,15 @@ namespace Blaise.Api.Core.Services
             if (existingCaseStatusModel.Outcome == 561 || existingCaseStatusModel.Outcome == 562)
             {
                 _loggingService.LogInfo(
-                    $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (Existing HOut = '{existingCaseStatusModel.Outcome}' for instrument '{instrumentName}'");
+                    $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (Existing HOut = '{existingCaseStatusModel.Outcome}' for questionnaire '{questionnaireName}'");
 
                 return false;
             }
 
-            if (NisraRecordHasAlreadyBeenProcessed(nisraCaseStatusModel, existingCaseStatusModel, instrumentName))
+            if (NisraRecordHasAlreadyBeenProcessed(nisraCaseStatusModel, existingCaseStatusModel, questionnaireName))
             {
                 _loggingService.LogInfo(
-                    $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' as is has already been updated on a previous run for instrument '{instrumentName}'");
+                    $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' as is has already been updated on a previous run for questionnaire '{questionnaireName}'");
 
                 return false;
             }
@@ -42,7 +42,7 @@ namespace Blaise.Api.Core.Services
             if (nisraCaseStatusModel.Outcome == 580 && existingCaseStatusModel.Outcome <= 210)
             {
                 _loggingService.LogInfo(
-                    $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (Existing HOut = '{existingCaseStatusModel.Outcome}' < '{nisraCaseStatusModel.Outcome}')  for instrument '{instrumentName}'");
+                    $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (Existing HOut = '{existingCaseStatusModel.Outcome}' < '{nisraCaseStatusModel.Outcome}')  for questionnaire '{questionnaireName}'");
 
                 return false;
             }
@@ -50,19 +50,19 @@ namespace Blaise.Api.Core.Services
             if (nisraCaseStatusModel.Outcome != 580 && existingCaseStatusModel.Outcome > 0 && existingCaseStatusModel.Outcome < nisraCaseStatusModel.Outcome)
             {
                 _loggingService.LogInfo(
-                    $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (Existing HOut = '{existingCaseStatusModel.Outcome}' < '{nisraCaseStatusModel.Outcome}')  for instrument '{instrumentName}'");
+                    $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (Existing HOut = '{existingCaseStatusModel.Outcome}' < '{nisraCaseStatusModel.Outcome}')  for questionnaire '{questionnaireName}'");
 
                 return false;
             }
 
             _loggingService.LogInfo(
-                $"processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (NISRA HOut = '{nisraCaseStatusModel.Outcome}' <= '{existingCaseStatusModel.Outcome}') or (Existing HOut = 0)' for instrument '{instrumentName}'");
+                $"processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (NISRA HOut = '{nisraCaseStatusModel.Outcome}' <= '{existingCaseStatusModel.Outcome}') or (Existing HOut = 0)' for questionnaire '{questionnaireName}'");
 
             return true;
         }
 
         internal bool NisraRecordHasAlreadyBeenProcessed(CaseStatusModel nisraCaseStatusModel, CaseStatusModel existingCaseStatusModel,
-            string instrumentName)
+            string questionnaireName)
         {
             var recordHasAlreadyBeenProcessed =
                 nisraCaseStatusModel.Outcome == existingCaseStatusModel.Outcome &&
@@ -71,7 +71,7 @@ namespace Blaise.Api.Core.Services
             _loggingService.LogInfo($"Check if NISRA case has already been processed previously '{nisraCaseStatusModel.PrimaryKey}': '{recordHasAlreadyBeenProcessed}' - " +
                                     $"(NISRA HOut = '{nisraCaseStatusModel.Outcome}' timestamp = '{nisraCaseStatusModel.LastUpdated}') " +
                                     $"(Existing HOut = '{existingCaseStatusModel.Outcome}' timestamp = '{existingCaseStatusModel.LastUpdated}')" +
-                                    $" for instrument '{instrumentName}'");
+                                    $" for questionnaire '{questionnaireName}'");
 
             return recordHasAlreadyBeenProcessed;
         }

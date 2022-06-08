@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.Instrument;
+using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Nuget.Api.Contracts.Models;
 
 namespace Blaise.Api.Core.Interfaces.Mappers

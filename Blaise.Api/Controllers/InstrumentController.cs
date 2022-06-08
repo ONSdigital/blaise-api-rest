@@ -8,6 +8,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Contracts.Models.Questionnaire;
 using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
@@ -15,17 +16,17 @@ namespace Blaise.Api.Controllers
     [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments")]
     public class InstrumentController : BaseController
     {
-        private readonly IInstrumentService _instrumentService;
-        private readonly IInstrumentInstallerService _installInstrumentService;
-        private readonly IInstrumentUninstallerService _uninstallInstrumentService;
+        private readonly IQuestionnaireService _instrumentService;
+        private readonly IQuestionnaireInstallerService _installInstrumentService;
+        private readonly IQuestionnaireUninstallerService _uninstallInstrumentService;
         private readonly ILoggingService _loggingService;
         private readonly IConfigurationProvider _configurationProvider;
         private readonly IRetryService<Exception> _retryService;
 
         public InstrumentController(
-            IInstrumentService instrumentService,
-            IInstrumentInstallerService installInstrumentService,
-            IInstrumentUninstallerService uninstallInstrumentService,
+            IQuestionnaireService instrumentService,
+            IQuestionnaireInstallerService installInstrumentService,
+            IQuestionnaireUninstallerService uninstallInstrumentService,
             ILoggingService loggingService,
             IConfigurationProvider configurationProvider, 
             IRetryService<Exception> retryService)
@@ -40,14 +41,14 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<InstrumentDto>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<QuestionnaireDto>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetInstruments(string serverParkName)
         {
             _loggingService.LogInfo("Obtaining a list of instruments for a server park");
 
-            var instruments = _retryService.Retry(_instrumentService.GetInstruments, serverParkName).ToList();
+            var instruments = _retryService.Retry(_instrumentService.GetQuestionnaires, serverParkName).ToList();
 
             _loggingService.LogInfo($"Successfully received {instruments.Count} instruments");
 
@@ -56,7 +57,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{instrumentName}")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(InstrumentDto))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(QuestionnaireDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
@@ -64,7 +65,7 @@ namespace Blaise.Api.Controllers
             _loggingService.LogInfo("Get an instrument for a server park");
 
             var instruments = _instrumentService
-                .GetInstrument(instrumentName, serverParkName);
+                .GetQuestionnaire(instrumentName, serverParkName);
 
             _loggingService.LogInfo($"Successfully retrieved an instrument '{instrumentName}'");
 
@@ -80,7 +81,7 @@ namespace Blaise.Api.Controllers
         {
             _loggingService.LogInfo($"Check that an instrument exists on server park '{serverParkName}'");
 
-            var exists = _instrumentService.InstrumentExists(instrumentName, serverParkName);
+            var exists = _instrumentService.QuestionnaireExists(instrumentName, serverParkName);
 
             _loggingService.LogInfo($"Instrument '{instrumentName}' exists = '{exists}' on '{serverParkName}'");
 
@@ -96,7 +97,7 @@ namespace Blaise.Api.Controllers
         {
             _loggingService.LogInfo($"Get the ID of an instrument on server park '{serverParkName}'");
 
-            var instrumentId = _instrumentService.GetInstrumentId(instrumentName, serverParkName);
+            var instrumentId = _instrumentService.GetQuestionnaireId(instrumentName, serverParkName);
 
             _loggingService.LogInfo($"Instrument ID '{instrumentId}' retrieved");
 
@@ -105,14 +106,14 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{instrumentName}/status")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(SurveyStatusType))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(QuestionnaireStatusType))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetInstrumentStatus([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             _loggingService.LogInfo($"Get the status of an instrument on server park '{serverParkName}'");
 
-            var status = _instrumentService.GetInstrumentStatus(instrumentName, serverParkName);
+            var status = _instrumentService.GetQuestionnaireStatus(instrumentName, serverParkName);
 
             _loggingService.LogInfo($"Instrument '{instrumentName}' has the status '{status}'");
 
@@ -146,7 +147,7 @@ namespace Blaise.Api.Controllers
         {
             _loggingService.LogInfo($"Attempting to uninstall instrument '{instrumentName}' on server park '{serverParkName}'");
 
-            _uninstallInstrumentService.UninstallInstrument(instrumentName, serverParkName);
+            _uninstallInstrumentService.UninstallQuestionnaire(instrumentName, serverParkName);
 
             _loggingService.LogInfo($"Instrument '{instrumentName}' has been uninstalled from server park '{serverParkName}'");
 
@@ -163,7 +164,7 @@ namespace Blaise.Api.Controllers
             _loggingService.LogInfo($"Activate instrument '{instrumentName}' on server park '{serverParkName}'");
 
             _instrumentService
-                .ActivateInstrument(instrumentName, serverParkName);
+                .ActivateQuestionnaire(instrumentName, serverParkName);
 
             _loggingService.LogInfo($"Successfully activated instrument '{instrumentName}'");
 
@@ -180,7 +181,7 @@ namespace Blaise.Api.Controllers
             _loggingService.LogInfo($"Deactivate instrument '{instrumentName}' on server park '{serverParkName}'");
 
             _instrumentService
-                .DeactivateInstrument(instrumentName, serverParkName);
+                .DeactivateQuestionnaire(instrumentName, serverParkName);
 
             _loggingService.LogInfo($"Successfully deactivated instrument '{instrumentName}'");
 

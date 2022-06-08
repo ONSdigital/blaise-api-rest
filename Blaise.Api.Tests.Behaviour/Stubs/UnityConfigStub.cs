@@ -27,7 +27,7 @@ namespace Blaise.Api.Tests.Behaviour.Stubs
             UnityContainer.RegisterSingleton<ILoggingService, ConsoleLogging>();
 
             UnityContainer.RegisterSingleton<IBlaiseServerParkApi, BlaiseServerParkApiStub>();
-            UnityContainer.RegisterSingleton<IBlaiseSurveyApi, BlaiseSurveyApiStub>();
+            UnityContainer.RegisterSingleton<IBlaiseQuestionnaireApi, BlaiseQuestionnaireApiStub>();
             UnityContainer.RegisterSingleton<IBlaiseCatiApi, BlaiseCatiApiStub>();
             UnityContainer.RegisterSingleton<IBlaiseHealthApi, BlaiseHealthApiStub>();
             UnityContainer.RegisterSingleton<IBlaiseRoleApi, BlaiseRoleApiStub>();
@@ -42,20 +42,20 @@ namespace Blaise.Api.Tests.Behaviour.Stubs
 
             //core mappers
             UnityContainer.RegisterType<IServerParkDtoMapper, ServerParkDtoMapper>();
-            UnityContainer.RegisterType<IInstrumentDtoMapper, InstrumentDtoMapper>();
-            UnityContainer.RegisterType<IInstrumentNodeDtoMapper, InstrumentNodeDtoMapper>();
+            UnityContainer.RegisterType<IQuestionnaireDtoMapper, QuestionnaireDtoMapper>();
+            UnityContainer.RegisterType<IQuestionnaireNodeDtoMapper, QuestionnaireNodeDtoMapper>();
             UnityContainer.RegisterType<ICatiDtoMapper, CatiDtoMapper>();
             UnityContainer.RegisterType<IUserRoleDtoMapper, UserRoleDtoMapper>();
             UnityContainer.RegisterType<IUserDtoMapper, UserDtoMapper>();
-            UnityContainer.RegisterType<IInstrumentStatusMapper, InstrumentStatusMapper>();
+            UnityContainer.RegisterType<IQuestionnaireStatusMapper, QuestionnaireStatusMapper>();
             UnityContainer.RegisterType<IDataEntrySettingsDtoMapper, DataEntrySettingsDtoMapper>();
 
             //core services
             UnityContainer.RegisterType<IServerParkService, ServerParkService>();
-            UnityContainer.RegisterType<IInstrumentService, InstrumentService>();
-            UnityContainer.RegisterType<IInstrumentDataService, InstrumentDataService>();
-            UnityContainer.RegisterType<IInstrumentInstallerService, InstrumentInstallerService>();
-            UnityContainer.RegisterType<IInstrumentUninstallerService, InstrumentUninstallerService>();
+            UnityContainer.RegisterType<IQuestionnaireService, QuestionnaireService>();
+            UnityContainer.RegisterType<IQuestionnaireDataService, QuestionnaireDataService>();
+            UnityContainer.RegisterType<IQuestionnaireInstallerService, QuestionnaireInstallerService>();
+            UnityContainer.RegisterType<IQuestionnaireUninstallerService, QuestionnaireUninstallerService>();
             UnityContainer.RegisterType<ICatiService, CatiService>();
             UnityContainer.RegisterType<IHealthCheckService, HealthCheckService>();
             UnityContainer.RegisterType<IUserRoleService, UserRoleService>();

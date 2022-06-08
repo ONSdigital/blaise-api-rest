@@ -79,7 +79,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
             var dataFields = BuildDataFieldsFromCaseModel(caseModel);
 
             _blaiseCaseApi.CreateCase(caseModel.PrimaryKey, dataFields,
-                BlaiseConfigurationHelper.InstrumentName, BlaiseConfigurationHelper.ServerParkName);
+                BlaiseConfigurationHelper.QuestionnaireName, BlaiseConfigurationHelper.ServerParkName);
         }
 
         public void CreateCaseInFile(string databaseFile, CaseModel caseModel)
@@ -107,7 +107,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
             var caseModels = new List<CaseModel>();
 
             var casesInDatabase = _blaiseCaseApi.GetCases(
-                BlaiseConfigurationHelper.InstrumentName, BlaiseConfigurationHelper.ServerParkName);
+                BlaiseConfigurationHelper.QuestionnaireName, BlaiseConfigurationHelper.ServerParkName);
 
             while (!casesInDatabase.EndOfSet)
             {
@@ -124,29 +124,29 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
 
         public void DeleteCases()
         {
-            var cases = _blaiseCaseApi.GetCases(BlaiseConfigurationHelper.InstrumentName,
+            var cases = _blaiseCaseApi.GetCases(BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
 
             while (!cases.EndOfSet)
             {
                 var primaryKey = _blaiseCaseApi.GetPrimaryKeyValue(cases.ActiveRecord);
 
-                _blaiseCaseApi.RemoveCase(primaryKey, BlaiseConfigurationHelper.InstrumentName,
+                _blaiseCaseApi.RemoveCase(primaryKey, BlaiseConfigurationHelper.QuestionnaireName,
                     BlaiseConfigurationHelper.ServerParkName);
 
                 cases.MoveNext();
             }
         }
 
-        public int NumberOfCasesInInstrument()
+        public int NumberOfCasesInQuestionnaire()
         {
-            return _blaiseCaseApi.GetNumberOfCases(BlaiseConfigurationHelper.InstrumentName,
+            return _blaiseCaseApi.GetNumberOfCases(BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
         }
 
         public ModeType GetMode(string primaryKey)
         {
-            var field = _blaiseCaseApi.GetFieldValue(primaryKey, BlaiseConfigurationHelper.InstrumentName,
+            var field = _blaiseCaseApi.GetFieldValue(primaryKey, BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName, FieldNameType.Mode);
 
             return (ModeType)field.EnumerationValue;
@@ -154,14 +154,14 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
 
         public void MarkCaseAsOpenInCati(string primaryKey)
         {
-            var dataRecord = _blaiseCaseApi.GetCase(primaryKey, BlaiseConfigurationHelper.InstrumentName,
+            var dataRecord = _blaiseCaseApi.GetCase(primaryKey, BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
 
             var fieldData = new Dictionary<string, string> {
                 {FieldNameType.LastUpdatedDate.FullName(), DateTime.Now.ToString("dd-MM-yyyy")},
                 {FieldNameType.LastUpdatedTime.FullName(), DateTime.Now.ToString("HH:mm:ss")}};
 
-            _blaiseCaseApi.UpdateCase(dataRecord, fieldData, BlaiseConfigurationHelper.InstrumentName,
+            _blaiseCaseApi.UpdateCase(dataRecord, fieldData, BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
         }
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Blaise.Api.Tests.Behaviour.Helpers.Case;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Api.Tests.Behaviour.Helpers.Files;
-using Blaise.Api.Tests.Behaviour.Helpers.Instrument;
+using Blaise.Api.Tests.Behaviour.Helpers.Questionnaire;
 using Blaise.Api.Tests.Behaviour.Helpers.RestApi;
 using Blaise.Api.Tests.Behaviour.Models.Case;
 using Blaise.Api.Tests.Behaviour.Models.Enums;
@@ -36,7 +36,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                 return;
             }
 
-            InstrumentHelper.GetInstance().InstallSurvey();
+            QuestionnaireHelper.GetInstance().InstallQuestionnaire();
         }
 
         [Given(@"there is a online file that contains the following cases")]
@@ -69,8 +69,8 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                 return;
             }
 
-            var statusCode = await RestApiHelper.GetInstance().ImportOnlineCases(RestApiConfigurationHelper.InstrumentDataUrl,
-                BlaiseConfigurationHelper.InstrumentName);
+            var statusCode = await RestApiHelper.GetInstance().ImportOnlineCases(RestApiConfigurationHelper.QuestionnaireDataUrl,
+                BlaiseConfigurationHelper.QuestionnaireName);
 
             Assert.AreEqual(HttpStatusCode.Created, statusCode);
         }
@@ -83,7 +83,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                 return;
             }
 
-            var numberOfCasesInDatabase = CaseHelper.GetInstance().NumberOfCasesInInstrument();
+            var numberOfCasesInDatabase = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
             var casesExpected = cases.ToList();
 
             if (casesExpected.Count != numberOfCasesInDatabase)
@@ -310,7 +310,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                 return;
             }
 
-            var numberOfCasesInBlaise = CaseHelper.GetInstance().NumberOfCasesInInstrument();
+            var numberOfCasesInBlaise = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
 
             Assert.AreEqual(numberOfCases, numberOfCasesInBlaise);
         }
@@ -331,7 +331,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [AfterFeature("onlinedata")]
         public static void CleanUpFeature()
         {
-            InstrumentHelper.GetInstance().UninstallSurvey();
+            QuestionnaireHelper.GetInstance().UninstallQuestionnaire();
         }
     }
 }
