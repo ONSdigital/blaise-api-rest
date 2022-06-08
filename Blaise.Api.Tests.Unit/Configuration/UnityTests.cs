@@ -18,7 +18,9 @@ namespace Blaise.Api.Tests.Unit.Configuration
         [TestCase(typeof(ReportingController))]
         [TestCase(typeof(ReportingV2Controller))]
         [TestCase(typeof(UserRoleController))]
+        [TestCase(typeof(UserRoleV2Controller))]
         [TestCase(typeof(UserController))]
+        [TestCase(typeof(UserV2Controller))]
         public void Given_A_Controller_Type_I_Resolve_The_Controller_Type_Then_All_Dependencies_Are_Resolved(Type controllerType)
         {
             //arrange
