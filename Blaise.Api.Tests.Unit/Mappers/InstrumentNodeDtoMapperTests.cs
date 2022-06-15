@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Blaise.Api.Contracts.Models.Instrument;
+using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Core.Mappers;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Moq;
@@ -9,30 +9,30 @@ using StatNeth.Blaise.API.ServerManager;
 
 namespace Blaise.Api.Tests.Unit.Mappers
 {
-    public class InstrumentNodeDtoMapperTests
+    public class QuestionnaireNodeDtoMapperTests
     {
-        private InstrumentNodeDtoMapper _sut;
+        private QuestionnaireNodeDtoMapper _sut;
 
         [SetUp]
         public void SetupTests()
         {
-            _sut = new InstrumentNodeDtoMapper();
+            _sut = new QuestionnaireNodeDtoMapper();
         }
         
         [Test]
-        public void Given_A_Multi_Node_Setup_When_I_Call_MapToInstrumentDto_Then_A_Populated_Node_List_Is_Returned()
+        public void Given_A_Multi_Node_Setup_When_I_Call_MapToQuestionnaireNodeDtos_Then_A_Populated_Node_List_Is_Returned()
         {
             //arrange
            
             //node 1
             const string node1Name = "data-management";
-            var node1Status = SurveyStatusType.Active.ToString();
+            var node1Status = QuestionnaireStatusType.Active.ToString();
             var iConfiguration1Mock = new Mock<IConfiguration>();
             iConfiguration1Mock.Setup(c => c.Status).Returns(node1Status);
 
             //node 2
             const string node2Name = "data-entry1";
-            var node2Status = SurveyStatusType.Installing.ToString();
+            var node2Status = QuestionnaireStatusType.Installing.ToString();
             var iConfiguration2Mock = new Mock<IConfiguration>();
             iConfiguration2Mock.Setup(c => c.Status).Returns(node2Status);
 
@@ -48,12 +48,12 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 .Returns(machineConfigurations.GetEnumerator());
             
             //act
-            var result = _sut.MapToInstrumentNodeDtos(machineConfigurationMock.Object)
+            var result = _sut.MapToQuestionnaireNodeDtos(machineConfigurationMock.Object)
                 .ToList();
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<IEnumerable<InstrumentNodeDto>>(result);
+            Assert.IsInstanceOf<IEnumerable<QuestionnaireNodeDto>>(result);
             Assert.IsNotEmpty(result);
             Assert.AreEqual(2, result.Count);
 

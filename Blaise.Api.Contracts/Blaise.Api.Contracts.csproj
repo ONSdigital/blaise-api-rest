@@ -52,7 +52,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Blaise.Nuget.Api.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2022.1.4.1\lib\net472\Blaise.Nuget.Api.Contracts.dll</HintPath>
+      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2022.6.1.1\lib\net472\Blaise.Nuget.Api.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -77,15 +77,18 @@
     <Compile Include="Interfaces\ILoggingService.cs" />
     <Compile Include="Models\Case\CaseStatusDto.cs" />
     <Compile Include="Models\Case\CaseDto.cs" />
-    <Compile Include="Models\Cati\CatiInstrumentDto.cs" />
+    <Compile Include="Models\Cati\CatiQuestionnaireDto.cs" />
     <Compile Include="Models\Cati\CreateDayBatchDto.cs" />
     <Compile Include="Models\Cati\DayBatchDto.cs" />
     <Compile Include="Models\Health\HealthCheckResultDto.cs" />
-    <Compile Include="Models\Instrument\DataEntrySettingsDto.cs" />
     <Compile Include="Models\Instrument\InstrumentDataDto.cs" />
-    <Compile Include="Models\Instrument\InstrumentNodeDto.cs" />
     <Compile Include="Models\Instrument\InstrumentPackageDto.cs" />
-    <Compile Include="Models\Instrument\InstrumentDto.cs" />
+    <Compile Include="Models\Questionnaire\DataEntrySettingsDto.cs" />
+    <Compile Include="Models\Questionnaire\QuestionnaireDataDto.cs" />
+    <Compile Include="Models\Questionnaire\QuestionnaireDto.cs" />
+    <Compile Include="Models\Questionnaire\QuestionnaireNodeDto.cs" />
+    <Compile Include="Models\Questionnaire\QuestionnairePackageDto.cs" />
+    <Compile Include="Models\Reports\ReportV2Dto.cs" />
     <Compile Include="Models\Reports\ReportDto.cs" />
     <Compile Include="Models\UserRole\UserRoleDto.cs" />
     <Compile Include="Models\ServerPark\ServerDto.cs" />

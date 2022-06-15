@@ -37,7 +37,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Cloud
             {
                 using (var fileStream = File.OpenRead(file))
                 {
-                    await storageClient.UploadObjectAsync(bucketPath, $"{BlaiseConfigurationHelper.InstrumentName}/{Path.GetFileName(file)}", null, fileStream);
+                    await storageClient.UploadObjectAsync(bucketPath, $"{BlaiseConfigurationHelper.QuestionnaireName}/{Path.GetFileName(file)}", null, fileStream);
                 }
             }          
         }

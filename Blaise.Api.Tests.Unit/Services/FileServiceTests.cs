@@ -16,8 +16,8 @@ namespace Blaise.Api.Tests.Unit.Services
 
         private IFileSystem _fileSystemMock;
         
-        private string _instrumentName;
-        private string _instrumentFile;
+        private string _questionnaireName;
+        private string _questionnaireFile;
 
         [SetUp]
         public void SetUpTests()
@@ -26,51 +26,51 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _fileSystemMock = new MockFileSystem();
 
-            _instrumentFile = "OPN2010A.zip";
-            _instrumentName = "OPN2010A";
+            _questionnaireFile = "OPN2010A.zip";
+            _questionnaireName = "OPN2010A";
 
             _sut = new FileService(_blaiseFileApiMock.Object, _fileSystemMock);
         }
 
         [Test]
-        public void Given_I_Call_UpdateInstrumentFileWithSqlConnection_Then_The_Correct_Services_Are_Called()
+        public void Given_I_Call_UpdateQuestionnaireFileWithSqlConnection_Then_The_Correct_Services_Are_Called()
         {
             //arrange
-            _blaiseFileApiMock.Setup(b => b.UpdateInstrumentFileWithSqlConnection(
-                _instrumentName, _instrumentFile));
+            _blaiseFileApiMock.Setup(b => b.UpdateQuestionnaireFileWithSqlConnection(
+                _questionnaireName, _questionnaireFile));
 
             //act
-            _sut.UpdateInstrumentFileWithSqlConnection(_instrumentFile);
+            _sut.UpdateQuestionnaireFileWithSqlConnection(_questionnaireFile);
 
             //assert
-            _blaiseFileApiMock.Verify(v => v.UpdateInstrumentFileWithSqlConnection(_instrumentName,
-                _instrumentFile), Times.Once);
+            _blaiseFileApiMock.Verify(v => v.UpdateQuestionnaireFileWithSqlConnection(_questionnaireName,
+                _questionnaireFile), Times.Once);
         }
 
         [Test]
-        public void Given_An_Empty_InstrumentFile_When_I_Call_UpdateInstrumentFileWithSqlConnection_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_QuestionnaireFile_When_I_Call_UpdateQuestionnaireFileWithSqlConnection_Then_An_ArgumentException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateInstrumentFileWithSqlConnection(string.Empty));
-            Assert.AreEqual("A value for the argument 'instrumentFile' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateQuestionnaireFileWithSqlConnection(string.Empty));
+            Assert.AreEqual("A value for the argument 'questionnaireFile' must be supplied", exception.Message);
         }
 
         [Test]
-        public void Given_A_Null_InstrumentFile_When_I_Call_UpdateInstrumentFileWithSqlConnection_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_QuestionnaireFile_When_I_Call_UpdateQuestionnaireFileWithSqlConnection_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateInstrumentFileWithSqlConnection(null));
-            Assert.AreEqual("instrumentFile", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateQuestionnaireFileWithSqlConnection(null));
+            Assert.AreEqual("questionnaireFile", exception.ParamName);
         }
 
         [Test]
-        public void Given_I_Call_GetInstrumentNameFromFile_Then_The_Correct_Name_Is_Returned()
+        public void Given_I_Call_GetQuestionnaireNameFromFile_Then_The_Correct_Name_Is_Returned()
         {
             //act
-            var result = _sut.GetInstrumentNameFromFile(_instrumentFile);
+            var result = _sut.GetQuestionnaireNameFromFile(_questionnaireFile);
 
             //assert
-            Assert.AreEqual(_instrumentName, result);
+            Assert.AreEqual(_questionnaireName, result);
         }
 
         [Test]
@@ -78,10 +78,10 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             var filePath = @"d:\test";
-            var expectedName = $@"{filePath}\{_instrumentName}.bdix";
+            var expectedName = $@"{filePath}\{_questionnaireName}.bdix";
 
             //act
-            var result = _sut.GetDatabaseFile(filePath, _instrumentName);
+            var result = _sut.GetDatabaseFile(filePath, _questionnaireName);
 
             //assert
             Assert.AreEqual(expectedName, result);

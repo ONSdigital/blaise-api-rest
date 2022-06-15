@@ -22,24 +22,24 @@ namespace Blaise.Api.Core.Services
             _fileSystem = fileSystem;
         }
 
-        public void UpdateInstrumentFileWithSqlConnection(string instrumentFile)
+        public void UpdateQuestionnaireFileWithSqlConnection(string questionnaireFile)
         {
-            instrumentFile.ThrowExceptionIfNullOrEmpty("instrumentFile");
-            var instrumentName = GetInstrumentNameFromFile(instrumentFile);
+            questionnaireFile.ThrowExceptionIfNullOrEmpty("questionnaireFile");
+            var questionnaireName = GetQuestionnaireNameFromFile(questionnaireFile);
 
-            _blaiseFileApi.UpdateInstrumentFileWithSqlConnection(
-                instrumentName,
-                instrumentFile);
+            _blaiseFileApi.UpdateQuestionnaireFileWithSqlConnection(
+                questionnaireName,
+                questionnaireFile);
         }
 
-        public string GetInstrumentNameFromFile(string instrumentFile)
+        public string GetQuestionnaireNameFromFile(string questionnaireFile)
         {
-            return _fileSystem.Path.GetFileNameWithoutExtension(instrumentFile);
+            return _fileSystem.Path.GetFileNameWithoutExtension(questionnaireFile);
         }
 
-        public string GetDatabaseFile(string filePath, string instrumentName)
+        public string GetDatabaseFile(string filePath, string questionnaireName)
         {
-            return _fileSystem.Path.Combine(filePath, $"{instrumentName}.bdix");
+            return _fileSystem.Path.Combine(filePath, $"{questionnaireName}.bdix");
         }
 
         public void RemovePathAndFiles(string path)

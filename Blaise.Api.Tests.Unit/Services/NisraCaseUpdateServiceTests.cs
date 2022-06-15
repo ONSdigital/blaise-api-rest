@@ -23,7 +23,7 @@ namespace Blaise.Api.Tests.Unit.Services
        
         private readonly string _primaryKey;
         private readonly string _serverParkName;
-        private readonly string _instrumentName;
+        private readonly string _questionnaireName;
         private readonly int _outcomeCode;
         private readonly string _lastUpdated;
 
@@ -37,7 +37,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             _primaryKey = "SN123";
             _serverParkName = "Park1";
-            _instrumentName = "OPN123";
+            _questionnaireName = "OPN123";
             _outcomeCode = 110;
             _lastUpdated = DateTime.Now.ToString(CultureInfo.InvariantCulture);
         }
@@ -86,11 +86,11 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.CaseInUseInCati(_existingDataRecordMock.Object)).Returns(true);
 
             //act
-            _sut.UpdateCase(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _instrumentName, _serverParkName);
+            _sut.UpdateCase(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _questionnaireName, _serverParkName);
 
             //assert
             _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _instrumentName, _serverParkName), Times.Never);
+                _questionnaireName, _serverParkName), Times.Never);
         }
 
         [Test]
@@ -105,10 +105,10 @@ namespace Blaise.Api.Tests.Unit.Services
             _catiDataMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(_newFieldData, _existingFieldData,
                 _outcomeCode));
             _blaiseApiMock.Setup(b => b.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _instrumentName, _serverParkName));
+                _questionnaireName, _serverParkName));
 
             //act
-            _sut.UpdateCase(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _instrumentName, _serverParkName);
+            _sut.UpdateCase(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _questionnaireName, _serverParkName);
 
             //assert
             _catiDataMock.Verify(v => v.RemoveCatiManaBlock(_newFieldData), Times.Once);
@@ -117,7 +117,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _catiDataMock.Verify(v => v.AddCatiManaCallItems(_newFieldData, _existingFieldData, _outcomeCode), Times.Once);
 
             _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _instrumentName, _serverParkName), Times.Once);
+                _questionnaireName, _serverParkName), Times.Once);
         }
 
         [Test]
@@ -126,7 +126,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             _blaiseApiMock.Setup(b => b.CaseInUseInCati(_existingDataRecordMock.Object)).Returns(false);
 
-            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _instrumentName, _serverParkName))
+            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _questionnaireName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
 
             var lastUpdated = DateTime.Now.ToString(CultureInfo.InvariantCulture);
@@ -139,13 +139,13 @@ namespace Blaise.Api.Tests.Unit.Services
             _catiDataMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(_newFieldData, _existingFieldData,
                 _outcomeCode));
             _blaiseApiMock.Setup(b => b.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _instrumentName, _serverParkName));
+                _questionnaireName, _serverParkName));
 
             //act
-            _sut.UpdateCase(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _instrumentName, _serverParkName);
+            _sut.UpdateCase(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _questionnaireName, _serverParkName);
 
             //assert
-            _loggingMock.Verify(v => v.LogInfo($"NISRA case '{_primaryKey}' was successfully updated for instrument '{_instrumentName}'"),
+            _loggingMock.Verify(v => v.LogInfo($"NISRA case '{_primaryKey}' was successfully updated for questionnaire '{_questionnaireName}'"),
                 Times.Once);
 
             _loggingMock.Verify(v => v.LogWarn(It.IsAny<string>()), Times.Never);
@@ -168,10 +168,10 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetLastUpdatedAsString(_nisraDataRecordMock.Object)).Returns(DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture));
 
             //act
-            _sut.UpdateCase(_nisraDataRecordMock.Object, _existingDataRecordMock.Object,_instrumentName, _serverParkName);
+            _sut.UpdateCase(_nisraDataRecordMock.Object, _existingDataRecordMock.Object,_questionnaireName, _serverParkName);
 
             //assert
-            _loggingMock.Verify(v => v.LogWarn($"NISRA case '{_primaryKey}' failed to update - potentially open in Cati at the time of the update for instrument '{_instrumentName}'"),
+            _loggingMock.Verify(v => v.LogWarn($"NISRA case '{_primaryKey}' failed to update - potentially open in Cati at the time of the update for questionnaire '{_questionnaireName}'"),
                 Times.Once);
         }
 
@@ -179,7 +179,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Record_Has_Updated_When_I_Call_RecordHasBeenUpdated_Then_True_Is_Returned()
         {
             //arrange
-            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _instrumentName, _serverParkName))
+            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _questionnaireName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
 
             var lastUpdated = DateTime.Now.ToString(CultureInfo.InvariantCulture);
@@ -187,7 +187,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetLastUpdatedAsString(_existingDataRecordMock.Object)).Returns(lastUpdated);
 
             //act
-            var result = _sut.RecordHasBeenUpdated(_primaryKey, _nisraDataRecordMock.Object, _instrumentName, _serverParkName);
+            var result = _sut.RecordHasBeenUpdated(_primaryKey, _nisraDataRecordMock.Object, _questionnaireName, _serverParkName);
 
             //assert
             Assert.IsNotNull(result);
@@ -198,7 +198,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Record_Has_Not_Updated_Due_To_Different_LastUpdated_dates_When_I_Call_RecordHasBeenUpdated_Then_False_Is_Returned()
         {
             //arrange
-            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _instrumentName, _serverParkName))
+            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _questionnaireName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
 
             var nisraLastUpdated = DateTime.Now.ToString(CultureInfo.InvariantCulture);
@@ -208,7 +208,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetLastUpdatedAsString(_existingDataRecordMock.Object)).Returns(existingLastUpdated);
 
             //act
-            var result = _sut.RecordHasBeenUpdated(_primaryKey, _nisraDataRecordMock.Object,  _instrumentName, _serverParkName);
+            var result = _sut.RecordHasBeenUpdated(_primaryKey, _nisraDataRecordMock.Object,  _questionnaireName, _serverParkName);
 
             //assert
             Assert.IsNotNull(result);

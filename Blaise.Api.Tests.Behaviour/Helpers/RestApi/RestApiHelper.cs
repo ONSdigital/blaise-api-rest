@@ -43,11 +43,11 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
             _webApp.Dispose();
         }
 
-        public async Task<List<Questionnaire>> GetAllActiveQuestionnaires()
+        public async Task<List<QuestionnaireModel>> GetAllActiveQuestionnaires()
         {
-            var questionnaires = await GetListOfObjectsASync<Questionnaire>(RestApiConfigurationHelper.InstrumentsUrl);
-            return questionnaires != null ? questionnaires.Where(q => q.Status == SurveyStatusType.Active).ToList()
-                : new List<Questionnaire>();
+            var questionnaires = await GetListOfObjectsASync<QuestionnaireModel>(RestApiConfigurationHelper.QuestionnairesUrl);
+            return questionnaires != null ? questionnaires.Where(q => q.Status == QuestionnaireStatusType.Active).ToList()
+                : new List<QuestionnaireModel>();
         }
 
         public async Task<HttpStatusCode> DeployQuestionnaire(string url, string instrumentFile)

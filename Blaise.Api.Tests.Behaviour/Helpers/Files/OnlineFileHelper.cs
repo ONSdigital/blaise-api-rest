@@ -23,34 +23,34 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
         public async Task CreateCasesInOnlineFileAsync(int numberOfCases, string path)
         {
-            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackagePath;
-            var extractedFilePath = ExtractPackageFiles(path, instrumentPackage);
-            var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
+            var questionnairePackage = BlaiseConfigurationHelper.QuestionnairePackagePath;
+            var extractedFilePath = ExtractPackageFiles(path, questionnairePackage);
+            var questionnaireDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.QuestionnaireName + ".bdix");
 
-            CaseHelper.GetInstance().CreateCasesInFile(instrumentDatabase, numberOfCases);
+            CaseHelper.GetInstance().CreateCasesInFile(questionnaireDatabase, numberOfCases);
 
             await UploadFilesToBucket(extractedFilePath);
         }
 
         public async Task CreateCasesInOnlineFileAsync(IEnumerable<CaseModel> caseModels, string path)
         {
-            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackagePath;
-            var extractedFilePath = ExtractPackageFiles(path, instrumentPackage);
-            var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
+            var questionnairePackage = BlaiseConfigurationHelper.QuestionnairePackagePath;
+            var extractedFilePath = ExtractPackageFiles(path, questionnairePackage);
+            var questionnaireDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.QuestionnaireName + ".bdix");
 
-            CaseHelper.GetInstance().CreateCasesInFile(instrumentDatabase, caseModels.ToList());
+            CaseHelper.GetInstance().CreateCasesInFile(questionnaireDatabase, caseModels.ToList());
 
             await UploadFilesToBucket(extractedFilePath);
         }
 
         public async Task<string> CreateCaseInOnlineFileAsync(int outcomeCode, string path)
         {
-            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackagePath;
-            var extractedFilePath = ExtractPackageFiles(path, instrumentPackage);
-            var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
+            var questionnairePackage = BlaiseConfigurationHelper.QuestionnairePackagePath;
+            var extractedFilePath = ExtractPackageFiles(path, questionnairePackage);
+            var questionnaireDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.QuestionnaireName + ".bdix");
 
             var caseModel = CaseHelper.GetInstance().CreateCaseModel(outcomeCode.ToString(), ModeType.Web, DateTime.Now.AddMinutes(-40));
-           CaseHelper.GetInstance().CreateCaseInFile(instrumentDatabase, caseModel);
+           CaseHelper.GetInstance().CreateCaseInFile(questionnaireDatabase, caseModel);
 
             await UploadFilesToBucket(extractedFilePath);
 
@@ -59,11 +59,11 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
         public async Task CreateCaseInOnlineFileAsync(CaseModel caseModel, string path)
         {
-            var instrumentPackage = BlaiseConfigurationHelper.InstrumentPackagePath;
-            var extractedFilePath = ExtractPackageFiles(path, instrumentPackage);
-            var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
+            var questionnairePackage = BlaiseConfigurationHelper.QuestionnairePackagePath;
+            var extractedFilePath = ExtractPackageFiles(path, questionnairePackage);
+            var questionnaireDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.QuestionnaireName + ".bdix");
 
-            CaseHelper.GetInstance().CreateCaseInFile(instrumentDatabase, caseModel);
+            CaseHelper.GetInstance().CreateCaseInFile(questionnaireDatabase, caseModel);
 
             await UploadFilesToBucket(extractedFilePath);
         }
@@ -71,14 +71,14 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
         public async Task CleanUpOnlineFiles()
         {
             await CloudStorageHelper.GetInstance().DeleteFilesInBucketAsync(BlaiseConfigurationHelper.OnlineFileBucket,
-                BlaiseConfigurationHelper.InstrumentName);
+                BlaiseConfigurationHelper.QuestionnaireName);
         }
 
-        private string ExtractPackageFiles(string path, string instrumentPackage)
+        private string ExtractPackageFiles(string path, string questionnairePackage)
         {
-            var extractedFilePath = Path.Combine(path, BlaiseConfigurationHelper.InstrumentName);
+            var extractedFilePath = Path.Combine(path, BlaiseConfigurationHelper.QuestionnaireName);
 
-            instrumentPackage.ExtractFiles(extractedFilePath);
+            questionnairePackage.ExtractFiles(extractedFilePath);
 
             return extractedFilePath;
         }

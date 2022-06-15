@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
-using Blaise.Api.Tests.Behaviour.Helpers.Instrument;
+using Blaise.Api.Tests.Behaviour.Helpers.Questionnaire;
 using Blaise.Api.Tests.Behaviour.Helpers.RestApi;
 using Blaise.Api.Tests.Behaviour.Models.Questionnaire;
 using NUnit.Framework;
@@ -22,16 +22,16 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         }
 
         [Given(@"there is a questionnaire installed on a Blaise environment")]
-        public void GivenThereIsAnInstrumentInstalledOnABlaiseEnvironment()
+        public void GivenThereIsAQuestionnaireInstalledOnABlaiseEnvironment()
         {
-            InstrumentHelper.GetInstance().InstallSurvey();
-            Assert.IsTrue(InstrumentHelper.GetInstance().SurveyHasInstalled(60));
+            QuestionnaireHelper.GetInstance().InstallQuestionnaire();
+            Assert.IsTrue(QuestionnaireHelper.GetInstance().QuestionnaireHasInstalled(60));
         }
 
         [Given(@"the questionnaire is active")]
         public void GivenTheQuestionnaireIsActive()
         {
-            var surveyIsActive = InstrumentHelper.GetInstance().SetSurveyAsActive(60);
+            var surveyIsActive = QuestionnaireHelper.GetInstance().SetQuestionnaireAsActive(60);
             Assert.IsTrue(surveyIsActive);
         }
 
@@ -45,14 +45,14 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [Then(@"the details of the questionnaire are returned")]
         public void ThenDetailsOfQuestionnaireAIsReturned()
         {
-            var listOfActiveQuestionnaires = _scenarioContext.Get<List<Questionnaire>>(ApiResponse);
-            Assert.IsTrue(listOfActiveQuestionnaires.Any(q => q.Name == BlaiseConfigurationHelper.InstrumentName));
+            var listOfActiveQuestionnaires = _scenarioContext.Get<List<QuestionnaireModel>>(ApiResponse);
+            Assert.IsTrue(listOfActiveQuestionnaires.Any(q => q.Name == BlaiseConfigurationHelper.QuestionnaireName));
         }
 
         [AfterFeature("questionnaires")]
         public static void CleanUpScenario()
         {
-            InstrumentHelper.GetInstance().UninstallSurvey();
+            QuestionnaireHelper.GetInstance().UninstallQuestionnaire();
         }
     }
 }

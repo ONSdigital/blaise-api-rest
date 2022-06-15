@@ -4,7 +4,7 @@ namespace Blaise.Api.Storage.Interfaces
 {
     public interface ICloudStorageService
     {
-        Task<string> DownloadPackageFromInstrumentBucketAsync(string fileName, string tempFilePath);
+        Task<string> DownloadPackageFromQuestionnaireBucketAsync(string fileName, string tempFilePath);
         Task DownloadDatabaseFilesFromNisraBucketAsync(string bucketPath, string tempFilePath);
     }
 }

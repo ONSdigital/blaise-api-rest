@@ -9,7 +9,7 @@ using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
 {
-    [RoutePrefix("api/v1/serverparks")]
+    [RoutePrefix("api/v2/serverparks")]
     public class ServerParkController : BaseController
     {
         private readonly IServerParkService _serverParkService;

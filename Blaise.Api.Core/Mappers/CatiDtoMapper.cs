@@ -10,28 +10,28 @@ namespace Blaise.Api.Core.Mappers
 {
     public class CatiDtoMapper : ICatiDtoMapper
     {
-        private readonly IInstrumentStatusMapper _statusMapper;
-        private readonly IInstrumentNodeDtoMapper _nodeDtoMapper;
+        private readonly IQuestionnaireStatusMapper _statusMapper;
+        private readonly IQuestionnaireNodeDtoMapper _nodeDtoMapper;
 
         public CatiDtoMapper(
-            IInstrumentStatusMapper statusMapper,
-            IInstrumentNodeDtoMapper nodeDtoMapper)
+            IQuestionnaireStatusMapper statusMapper,
+            IQuestionnaireNodeDtoMapper nodeDtoMapper)
         {
             _statusMapper = statusMapper;
             _nodeDtoMapper = nodeDtoMapper;
         }
 
-        public CatiInstrumentDto MapToCatiInstrumentDto(ISurvey instrument, List<DateTime> surveyDays)
+        public CatiQuestionnaireDto MapToCatiQuestionnaireDto(ISurvey questionnaire, List<DateTime> surveyDays)
         {
-            return new CatiInstrumentDto
+            return new CatiQuestionnaireDto
             {
-                Name = instrument.Name,
-                Id = instrument.InstrumentID,
-                ServerParkName = instrument.ServerPark,
-                InstallDate = instrument.InstallDate,
-                Status = _statusMapper.GetInstrumentStatus(instrument).ToString(),
-                Nodes = _nodeDtoMapper.MapToInstrumentNodeDtos(instrument.Configuration),
-                DataRecordCount = GetNumberOfDataRecords(instrument as ISurvey2),
+                Name = questionnaire.Name,
+                Id = questionnaire.InstrumentID,
+                ServerParkName = questionnaire.ServerPark,
+                InstallDate = questionnaire.InstallDate,
+                Status = _statusMapper.GetQuestionnaireStatus(questionnaire).ToString(),
+                Nodes = _nodeDtoMapper.MapToQuestionnaireNodeDtos(questionnaire.Configuration),
+                DataRecordCount = GetNumberOfDataRecords(questionnaire as ISurvey2),
                 SurveyDays = surveyDays,
                 Active = SurveyIsActive(surveyDays),
                 ActiveToday = SurveyIsActiveToday(surveyDays),
@@ -59,9 +59,9 @@ namespace Blaise.Api.Core.Mappers
             return surveyDays.Any(s => s.Date == DateTime.Today);
         }
 
-        private static int GetNumberOfDataRecords(ISurvey2 instrument)
+        private static int GetNumberOfDataRecords(ISurvey2 questionnaire)
         {
-            var reportingInfo = instrument.GetReportingInfo();
+            var reportingInfo = questionnaire.GetReportingInfo();
 
             return reportingInfo.DataRecordCount;
         }

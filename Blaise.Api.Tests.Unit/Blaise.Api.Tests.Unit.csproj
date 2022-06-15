@@ -55,13 +55,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Blaise.Nuget.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.2022.1.4.1\lib\net472\Blaise.Nuget.Api.dll</HintPath>
+      <HintPath>..\packages\Blaise.Nuget.Api.2022.6.1.1\lib\net472\Blaise.Nuget.Api.dll</HintPath>
     </Reference>
     <Reference Include="Blaise.Nuget.Api.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2022.1.4.1\lib\net472\Blaise.Nuget.Api.Contracts.dll</HintPath>
+      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2022.6.1.1\lib\net472\Blaise.Nuget.Api.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="Blaise.Nuget.Api.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.2022.1.4.1\lib\net472\Blaise.Nuget.Api.Core.dll</HintPath>
+      <HintPath>..\packages\Blaise.Nuget.Api.2022.6.1.1\lib\net472\Blaise.Nuget.Api.Core.dll</HintPath>
     </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
@@ -194,15 +194,15 @@
     <Compile Include="Mappers\CatiDtoMapperTests.cs" />
     <Compile Include="Mappers\DataEntrySettingsDtoMapperTests.cs" />
     <Compile Include="Mappers\InstrumentNodeDtoMapperTests.cs" />
-    <Compile Include="Mappers\InstrumentStatusMapperTests.cs" />
-    <Compile Include="Mappers\InstrumentDtoMapperTests.cs" />
+    <Compile Include="Mappers\QuestionnaireStatusMapperTests.cs" />
+    <Compile Include="Mappers\QuestionnaireDtoMapperTests.cs" />
     <Compile Include="Mappers\UserDtoMapperTests.cs" />
     <Compile Include="Mappers\UserRoleDtoMapperTests.cs" />
     <Compile Include="Mappers\ServerParkDtoMapperTests.cs" />
     <Compile Include="Providers\ConfigurationProviderTests.cs" />
     <Compile Include="Services\CaseServiceTests.cs" />
     <Compile Include="Services\FileServiceTests.cs" />
-    <Compile Include="Services\InstrumentDataServiceTests.cs" />
+    <Compile Include="Services\QuestionnaireDataServiceTests.cs" />
     <Compile Include="Services\InstrumentUninstallerServiceTests.cs" />
     <Compile Include="Services\NisraFileImportServiceTests.cs" />
     <Compile Include="Services\CatiDataBlockServiceTests.cs" />
@@ -212,8 +212,8 @@
     <Compile Include="Services\UserRoleServiceTests.cs" />
     <Compile Include="Services\CatiServiceTests.cs" />
     <Compile Include="Services\HealthCheckServiceTests.cs" />
-    <Compile Include="Services\InstrumentInstallerServiceTests.cs" />
-    <Compile Include="Services\InstrumentServiceTests.cs" />
+    <Compile Include="Services\QuestionnaireInstallerServiceTests.cs" />
+    <Compile Include="Services\QuestionnaireServiceTests.cs" />
     <Compile Include="Services\ServerParkServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\CloudStorageServiceTests.cs" />
