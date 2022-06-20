@@ -12,7 +12,7 @@ namespace Blaise.Api.Tests.Unit.Services
     {
         private Mock<ILoggingService> _loggingMock;
 
-        private readonly string _instrumentName;
+        private readonly string _questionnaireName;
         private readonly string _primaryKey;
         private readonly int _hOutComplete;
         private readonly int _hOutPartial;
@@ -25,7 +25,7 @@ namespace Blaise.Api.Tests.Unit.Services
         
         public NisraCaseComparisonServiceTests()
         {
-            _instrumentName = "OPN2101A";
+            _questionnaireName = "OPN2101A";
             _primaryKey = "900000";
             _hOutComplete = 110;
             _hOutPartial = 210;
@@ -53,7 +53,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutComplete, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsTrue(result);
@@ -68,7 +68,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutComplete, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsFalse(result);
@@ -83,7 +83,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutPartial, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsTrue(result);
@@ -104,7 +104,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, existingOutcome, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsTrue(result);
@@ -120,7 +120,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, existingOutcome, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsFalse(result);
@@ -135,7 +135,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutPartial, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsTrue(result);
@@ -156,7 +156,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, existingOutcome, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsTrue(result);
@@ -174,7 +174,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutNotStarted, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsTrue(result);
@@ -191,7 +191,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, outcomeCode, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsFalse(result);
@@ -208,7 +208,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, outcomeCode, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsFalse(result);
@@ -226,7 +226,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutComplete, _date1);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsFalse(result);
@@ -241,7 +241,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutIneligible, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsTrue(result);
@@ -262,7 +262,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, existingOutcome, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsTrue(result);
@@ -280,7 +280,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, existingOutcome, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsFalse(result);
@@ -295,7 +295,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutIneligible, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsTrue(result);
@@ -310,7 +310,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutIneligible, _date2);
 
             //act
-            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _instrumentName);
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             //assert
             Assert.IsTrue(result);
@@ -325,7 +325,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act
             var result = _sut.NisraRecordHasAlreadyBeenProcessed(nisraCaseStatusModel, existingCaseStatusModel,
-                _instrumentName);
+                _questionnaireName);
 
             //assert
             Assert.IsNotNull(result);
@@ -341,7 +341,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act
             var result = _sut.NisraRecordHasAlreadyBeenProcessed(nisraCaseStatusModel, existingCaseStatusModel,
-                _instrumentName);
+                _questionnaireName);
 
             //assert
             Assert.IsNotNull(result);
@@ -357,7 +357,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act
             var result = _sut.NisraRecordHasAlreadyBeenProcessed(nisraCaseStatusModel, existingCaseStatusModel,
-                _instrumentName);
+                _questionnaireName);
 
             //assert
             Assert.IsNotNull(result);

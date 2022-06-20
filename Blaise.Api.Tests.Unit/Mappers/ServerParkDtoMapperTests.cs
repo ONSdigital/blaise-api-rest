@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Blaise.Api.Contracts.Models.Instrument;
+using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Contracts.Models.ServerPark;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Mappers;
@@ -16,14 +16,14 @@ namespace Blaise.Api.Tests.Unit.Mappers
     public class ServerParkDtoMapperTests
     {
         private ServerParkDtoMapper _sut;
-        private Mock<IInstrumentDtoMapper> _instrumentDtoMapperMock;
+        private Mock<IQuestionnaireDtoMapper> _questionnaireDtoMapperMock;
 
         [SetUp]
         public void SetupTests()
         {
-            _instrumentDtoMapperMock = new Mock<IInstrumentDtoMapper>();
+            _questionnaireDtoMapperMock = new Mock<IQuestionnaireDtoMapper>();
 
-            _sut = new ServerParkDtoMapper(_instrumentDtoMapperMock.Object);
+            _sut = new ServerParkDtoMapper(_questionnaireDtoMapperMock.Object);
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         }
 
         [Test]
-        public void Given_A_ServerPark_Has_An_Instrument_When_I_Call_MapToServerParkDto_Then_The_Instrument_Is_Mapped()
+        public void Given_A_ServerPark_Has_A_Questionnaire_When_I_Call_MapToServerParkDto_Then_The_Questionnaire_Is_Mapped()
         {
             //arrange
             var serverPark = new Mock<IServerPark>();
@@ -132,39 +132,39 @@ namespace Blaise.Api.Tests.Unit.Mappers
             serverCollection.Setup(s => s.GetEnumerator()).Returns(new List<IServer>().GetEnumerator());
             serverPark.Setup(s => s.Servers).Returns(serverCollection.Object);
 
-            var instrument1Dto = new InstrumentDto
+            var questionnaire1Dto = new QuestionnaireDto
             {
                 Name = "OPN2010A",
                 ServerParkName = "ServerParkA",
                 InstallDate = DateTime.Today.AddDays(-2),
-                Status = SurveyStatusType.Inactive.FullName()
+                Status = QuestionnaireStatusType.Inactive.FullName()
             };
 
-            var instrument2Dto = new InstrumentDto
+            var questionnaire2Dto = new QuestionnaireDto
             {
                 Name = "OPN2010B",
                 ServerParkName = "ServerParkB",
                 InstallDate = DateTime.Today,
-                Status = SurveyStatusType.Inactive.FullName()
+                Status = QuestionnaireStatusType.Inactive.FullName()
             };
 
-            _instrumentDtoMapperMock.Setup(m => m.MapToInstrumentDtos(
+            _questionnaireDtoMapperMock.Setup(m => m.MapToQuestionnaireDtos(
                     It.IsAny<ISurveyCollection>()))
-                .Returns(new List<InstrumentDto> { instrument1Dto, instrument2Dto });
+                .Returns(new List<QuestionnaireDto> { questionnaire1Dto, questionnaire2Dto });
 
             //act
-            var result = _sut.MapToServerParkDto(serverPark.Object).Instruments.ToList();
+            var result = _sut.MapToServerParkDto(serverPark.Object).Questionnaires.ToList();
 
             //assert
-            Assert.IsInstanceOf<List<InstrumentDto>>(result);
+            Assert.IsInstanceOf<List<QuestionnaireDto>>(result);
             Assert.IsNotEmpty(result);
             Assert.AreEqual(2, result.Count);
 
-            Assert.True(result.Any(i => i.Name == instrument1Dto.Name && i.ServerParkName == instrument1Dto.ServerParkName && 
-                                        i.InstallDate == instrument1Dto.InstallDate && i.Status == instrument1Dto.Status));
+            Assert.True(result.Any(i => i.Name == questionnaire1Dto.Name && i.ServerParkName == questionnaire1Dto.ServerParkName && 
+                                        i.InstallDate == questionnaire1Dto.InstallDate && i.Status == questionnaire1Dto.Status));
 
-            Assert.True(result.Any(i => i.Name == instrument2Dto.Name && i.ServerParkName == instrument2Dto.ServerParkName && 
-                                        i.InstallDate == instrument2Dto.InstallDate && i.Status == instrument2Dto.Status));
+            Assert.True(result.Any(i => i.Name == questionnaire2Dto.Name && i.ServerParkName == questionnaire2Dto.ServerParkName && 
+                                        i.InstallDate == questionnaire2Dto.InstallDate && i.Status == questionnaire2Dto.Status));
         }
     }
 }

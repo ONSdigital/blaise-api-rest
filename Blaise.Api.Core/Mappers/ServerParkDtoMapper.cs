@@ -8,9 +8,9 @@ namespace Blaise.Api.Core.Mappers
 {
     public class ServerParkDtoMapper : IServerParkDtoMapper
     {
-        private readonly IInstrumentDtoMapper _mapper;
+        private readonly IQuestionnaireDtoMapper _mapper;
 
-        public ServerParkDtoMapper(IInstrumentDtoMapper mapper)
+        public ServerParkDtoMapper(IQuestionnaireDtoMapper mapper)
         {
             _mapper = mapper;
         }
@@ -33,7 +33,7 @@ namespace Blaise.Api.Core.Mappers
             {
                 Name = serverPark.Name,
                 LoadBalancer = serverPark.LoadBalancer,
-                Instruments = _mapper.MapToInstrumentDtos(serverPark.Surveys),
+                Questionnaires = _mapper.MapToQuestionnaireDtos(serverPark.Surveys),
                 Servers = MapToServerDtos(serverPark.Servers)
             };
         }

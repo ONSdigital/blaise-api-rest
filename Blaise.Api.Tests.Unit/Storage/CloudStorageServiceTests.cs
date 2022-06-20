@@ -35,7 +35,7 @@ namespace Blaise.Api.Tests.Unit.Storage
         }
 
         [Test]
-        public async Task Given_I_Call_DownloadPackageFromInstrumentBucketAsync_Then_The_Correct_File_Is_Downloaded()
+        public async Task Given_I_Call_DownloadPackageFromQuestionnaireBucketAsync_Then_The_Correct_File_Is_Downloaded()
         {
             //arrange
             const string bucketName = "DQS";
@@ -53,7 +53,7 @@ namespace Blaise.Api.Tests.Unit.Storage
                 .Returns(localFilePath);
 
             //act
-            await _sut.DownloadPackageFromInstrumentBucketAsync(bucketFilePath, tempFilePath);
+            await _sut.DownloadPackageFromQuestionnaireBucketAsync(bucketFilePath, tempFilePath);
 
             //assert
             _storageProviderMock.Verify(v => v.DownloadAsync(bucketName,

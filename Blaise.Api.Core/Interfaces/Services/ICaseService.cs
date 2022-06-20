@@ -5,19 +5,19 @@ namespace Blaise.Api.Core.Interfaces.Services
 {
     public interface ICaseService
     {
-        List<string> GetCaseIds(string serverParkName, string instrumentName);
+        List<string> GetCaseIds(string serverParkName, string questionnaireName);
 
-        List<CaseStatusDto> GetCaseStatusList(string serverParkName, string instrumentName);
+        List<CaseStatusDto> GetCaseStatusList(string serverParkName, string questionnaireName);
 
-        string GetPostCode(string serverParkName, string instrumentName, string caseId);
+        string GetPostCode(string serverParkName, string questionnaireName, string caseId);
 
-        CaseDto GetCase(string serverParkName, string instrumentName, string caseId);
+        CaseDto GetCase(string serverParkName, string questionnaireName, string caseId);
 
-        void CreateCase(string serverParkName, string instrumentName, string caseId,
+        void CreateCase(string serverParkName, string questionnaireName, string caseId,
             Dictionary<string, string> fieldData);
 
-        void UpdateCase(string serverParkName, string instrumentName, string caseId, Dictionary<string, string> fieldData);
+        void UpdateCase(string serverParkName, string questionnaireName, string caseId, Dictionary<string, string> fieldData);
         
-        void DeleteCase(string serverParkName, string instrumentName, string caseId);
+        void DeleteCase(string serverParkName, string questionnaireName, string caseId);
     }
 }

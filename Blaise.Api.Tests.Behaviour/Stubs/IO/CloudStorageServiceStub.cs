@@ -5,7 +5,7 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.IO
 {
     public class CloudStorageServiceStub : ICloudStorageService
     {
-        public Task<string> DownloadPackageFromInstrumentBucketAsync(string fileName, string tempFilePath)
+        public Task<string> DownloadPackageFromQuestionnaireBucketAsync(string fileName, string tempFilePath)
         {
             return Task.FromResult("OpnTest.bkpg");
         }

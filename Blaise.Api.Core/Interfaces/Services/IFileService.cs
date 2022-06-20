@@ -3,11 +3,11 @@ namespace Blaise.Api.Core.Interfaces.Services
 {
     public interface IFileService
     {
-        void UpdateInstrumentFileWithSqlConnection(string instrumentFile);
+        void UpdateQuestionnaireFileWithSqlConnection(string questionnaireFile);
 
-        string GetInstrumentNameFromFile(string instrumentFile);
+        string GetQuestionnaireNameFromFile(string questionnaireFile);
 
-        string GetDatabaseFile(string filePath, string instrumentName);
+        string GetDatabaseFile(string filePath, string questionnaireName);
 
         void RemovePathAndFiles(string path);
     }

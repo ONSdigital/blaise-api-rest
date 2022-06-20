@@ -27,9 +27,9 @@ namespace Blaise.Api.Core.Services
             _loggerService = loggerService;
         }
 
-        public void ImportNisraDatabaseFile(string databaseFilePath, string instrumentName, string serverParkName)
+        public void ImportNisraDatabaseFile(string databaseFilePath, string questionnaireName, string serverParkName)
         {
-            var existingTelCaseStatusModels = _blaiseApi.GetCaseStatusList(instrumentName, serverParkName).ToList();
+            var existingTelCaseStatusModels = _blaiseApi.GetCaseStatusModelList(questionnaireName, serverParkName).ToList();
             var nisraFileCaseRecords = _blaiseApi.GetCases(databaseFilePath);
 
             while (!nisraFileCaseRecords.EndOfSet)
@@ -39,12 +39,12 @@ namespace Blaise.Api.Core.Services
                 var nisraCaseStatusModel = GetNisraCaseStatusModel(nisraRecord);
                 var existingCaseStatusModel = GetExistingTelCaseStatusModel(nisraCaseStatusModel.PrimaryKey, existingTelCaseStatusModels);
 
-                if (CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, instrumentName))
+                if (CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, questionnaireName))
                 {
-                    var existingRecord = _blaiseApi.GetCase(nisraCaseStatusModel.PrimaryKey, instrumentName, serverParkName);
+                    var existingRecord = _blaiseApi.GetCase(nisraCaseStatusModel.PrimaryKey, questionnaireName, serverParkName);
 
                     _onlineCaseUpdateService.UpdateCase(nisraRecord, existingRecord,
-                        instrumentName, serverParkName);
+                        questionnaireName, serverParkName);
                 }
 
                 nisraFileCaseRecords.MoveNext();
@@ -62,15 +62,15 @@ namespace Blaise.Api.Core.Services
                 t.PrimaryKey == primaryKeyValue);
         }
         private bool CaseNeedsToBeUpdated(CaseStatusModel nisraCaseStatusModel, CaseStatusModel existingCaseStatusModel,
-                    string instrumentName)
+                    string questionnaireName)
         {
             if (existingCaseStatusModel == null)
             {
-                _loggerService.LogWarn($"The nisra case '{nisraCaseStatusModel.PrimaryKey}' does not exist in the database for the instrument '{instrumentName}'");
+                _loggerService.LogWarn($"The nisra case '{nisraCaseStatusModel.PrimaryKey}' does not exist in the database for the questionnaire '{questionnaireName}'");
                 return false;
             }
 
-            return _caseComparisonService.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, instrumentName);
+            return _caseComparisonService.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, questionnaireName);
         }
     }
 }
