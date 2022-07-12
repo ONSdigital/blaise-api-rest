@@ -108,7 +108,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             const string bucketName = "NISRA";
             const string tempPath = @"d:\Temp";
             const string bucketFilePath = "OPN1234";
-            var localFilePath = @"d:\temp\InstrumentFiles\GUID";
+            var localFilePath = @"d:\temp\QuestionnaireFiles\GUID";
 
             _storageProviderMock.Setup(s => s.GetListOfFiles(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(new List<string>());

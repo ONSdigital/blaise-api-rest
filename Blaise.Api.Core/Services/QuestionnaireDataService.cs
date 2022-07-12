@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
@@ -27,27 +26,11 @@ namespace Blaise.Api.Core.Services
             _loggingService = loggingService;
         }
 
-        public async Task ImportOnlineDataAsync(InstrumentDataDto instrumentDataDto, string serverParkName,
-            string instrumentName, string tempFilePath)
-        {
-            instrumentDataDto.ThrowExceptionIfNull("InstrumentDataDto");
-            instrumentDataDto.InstrumentDataPath.ThrowExceptionIfNullOrEmpty("instrumentDataDto.InstrumentDataPath");
-            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
-            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
-            tempFilePath.ThrowExceptionIfNullOrEmpty("tempFilePath");
-
-            await DownloadDatabaseFilesFromBucketAsync(instrumentDataDto.InstrumentDataPath, tempFilePath);
-            var databaseFile = _fileService.GetDatabaseFile(tempFilePath, instrumentName);
-
-            _nisraService.ImportNisraDatabaseFile(databaseFile, instrumentName, serverParkName);
-            _fileService.RemovePathAndFiles(tempFilePath);
-        }
-
         public async Task ImportOnlineDataAsync(QuestionnaireDataDto questionnaireDataDto, string serverParkName, string questionnaireName,
             string tempFilePath)
         {
-            questionnaireDataDto.ThrowExceptionIfNull("QuestionnaireDataDto");
-            questionnaireDataDto.QuestionnaireDataPath.ThrowExceptionIfNullOrEmpty("instrumentDataDto.QuestionnaireDataPath");
+            questionnaireDataDto.ThrowExceptionIfNull("questionnaireDataDto");
+            questionnaireDataDto.QuestionnaireDataPath.ThrowExceptionIfNullOrEmpty("questionnaireDataDto.QuestionnaireDataPath");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
             tempFilePath.ThrowExceptionIfNullOrEmpty("tempFilePath");
@@ -61,7 +44,7 @@ namespace Blaise.Api.Core.Services
 
         private async Task DownloadDatabaseFilesFromBucketAsync(string bucketPath, string tempFilePath)
         {
-            _loggingService.LogInfo($"Downloading instrument files from nisra bucket path '{bucketPath}'");
+            _loggingService.LogInfo($"Downloading questionnaire files from nisra bucket path '{bucketPath}'");
             await _storageService.DownloadDatabaseFilesFromNisraBucketAsync(bucketPath, tempFilePath);
         }
     }

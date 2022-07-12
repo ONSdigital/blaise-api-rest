@@ -21,31 +21,31 @@ namespace Blaise.Api.Core.Services
             _blaiseQuestionnaireApi = blaiseQuestionnaireApi;
         }
 
-        public ReportDto GetReportingData(string serverParkName, string instrumentName,
+        public ReportDto GetReportingData(string serverParkName, string questionnaireName,
             List<string> fieldIds)
         {
-            var instrumentId = _blaiseQuestionnaireApi.GetIdOfQuestionnaire(instrumentName, serverParkName);
+            var questionnaireId = _blaiseQuestionnaireApi.GetIdOfQuestionnaire(questionnaireName, serverParkName);
 
-            return BuildReportDto(serverParkName, instrumentName, instrumentId, fieldIds);
+            return BuildReportDto(serverParkName, questionnaireName, questionnaireId, fieldIds);
         }
 
-        public ReportDto GetReportingData(string serverParkName, Guid instrumentId, List<string> fieldIds)
+        public ReportDto GetReportingData(string serverParkName, Guid questionnaireId, List<string> fieldIds)
         {
             var surveys = _blaiseQuestionnaireApi.GetQuestionnaires(serverParkName);
-            var instrumentName = surveys.First(s => s.InstrumentID == instrumentId).Name;
+            var questionnaireName = surveys.First(s => s.InstrumentID == questionnaireId).Name;
 
-            return BuildReportDto(serverParkName, instrumentName, instrumentId, fieldIds);
+            return BuildReportDto(serverParkName, questionnaireName, questionnaireId, fieldIds);
         }
 
-        private ReportDto BuildReportDto(string serverParkName, string instrumentName, Guid instrumentId, List<string> fieldIds)
+        private ReportDto BuildReportDto(string serverParkName, string questionnaireName, Guid questionnaireId, List<string> fieldIds)
         {
             var reportDto = new ReportDto
             {
-                InstrumentName = instrumentName,
-                InstrumentId = instrumentId
+                QuestionnaireName = questionnaireName,
+                QuestionnaireId = questionnaireId
             };
 
-            var cases = _blaiseCaseApi.GetCases(instrumentName, serverParkName);
+            var cases = _blaiseCaseApi.GetCases(questionnaireName, serverParkName);
 
             while (!cases.EndOfSet)
             {

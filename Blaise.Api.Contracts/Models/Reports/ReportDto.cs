@@ -10,9 +10,9 @@ namespace Blaise.Api.Contracts.Models.Reports
             ReportingData = new List<Dictionary<string, string>>();
         }
 
-        public string InstrumentName { get; set; }
+        public string QuestionnaireName { get; set; }
 
-        public Guid InstrumentId { get; set; }
+        public Guid QuestionnaireId { get; set; }
 
         public List<Dictionary<string, string>> ReportingData { get; set; }
     }

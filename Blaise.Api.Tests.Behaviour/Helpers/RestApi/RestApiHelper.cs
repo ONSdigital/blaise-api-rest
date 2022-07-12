@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Blaise.Api.Contracts.Models.Instrument;
+using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Api.Tests.Behaviour.Models.Questionnaire;
 using Blaise.Api.Tests.Behaviour.Stubs;
@@ -50,11 +50,11 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
                 : new List<QuestionnaireModel>();
         }
 
-        public async Task<HttpStatusCode> DeployQuestionnaire(string url, string instrumentFile)
+        public async Task<HttpStatusCode> DeployQuestionnaire(string url, string questionnaireFile)
         {
-            var model = new InstrumentPackageDto
+            var model = new QuestionnairePackageDto
             {
-                InstrumentFile = instrumentFile
+                QuestionnaireFile = questionnaireFile
             };
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
@@ -63,11 +63,11 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
             return response.StatusCode;
         }
 
-        public async Task<HttpStatusCode> ImportOnlineCases(string url, string instrumentDataPath)
+        public async Task<HttpStatusCode> ImportOnlineCases(string url, string questionnaireDataPath)
         {
-            var model = new InstrumentDataDto
+            var model = new QuestionnaireDataDto
             {
-                InstrumentDataPath = instrumentDataPath
+                QuestionnaireDataPath = questionnaireDataPath
             };
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
