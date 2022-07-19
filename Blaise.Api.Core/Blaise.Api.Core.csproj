@@ -142,7 +142,7 @@
     <Compile Include="Interfaces\Services\IQuestionnaireService.cs" />
     <Compile Include="Interfaces\Mappers\IServerParkDtoMapper.cs" />
     <Compile Include="Interfaces\Services\ICaseService.cs" />
-    <Compile Include="Interfaces\Services\IReportingServiceV2.cs" />
+    <Compile Include="Interfaces\Services\IReportingService.cs" />
     <Compile Include="Interfaces\Services\IServerParkService.cs" />
     <Compile Include="Interfaces\Mappers\IQuestionnaireDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IQuestionnaireStatusMapper.cs" />
@@ -161,7 +161,6 @@
     <Compile Include="Interfaces\Services\INisraCaseUpdateService.cs" />
     <Compile Include="Interfaces\Services\INisraFileImportService.cs" />
     <Compile Include="Services\CatiDataBlockService.cs" />
-    <Compile Include="Interfaces\Services\IReportingService.cs" />
     <Compile Include="Interfaces\Services\IRetryService.cs" />
     <Compile Include="Services\NisraCaseComparisonService.cs" />
     <Compile Include="Interfaces\Services\INisraCaseComparisonService.cs" />
@@ -181,7 +180,6 @@
     <Compile Include="Interfaces\Services\IUserRoleService.cs" />
     <Compile Include="Interfaces\Services\IUserService.cs" />
     <Compile Include="Services\CaseService.cs" />
-    <Compile Include="Services\ReportingServiceV2.cs" />
     <Compile Include="Services\ReportingService.cs" />
     <Compile Include="Services\RetryService.cs" />
     <Compile Include="Services\UserRoleService.cs" />

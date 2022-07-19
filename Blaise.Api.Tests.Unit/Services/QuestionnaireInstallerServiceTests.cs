@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Blaise.Api.Contracts.Models.Instrument;
+using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
 using Blaise.Api.Storage.Interfaces;
@@ -25,7 +25,7 @@ namespace Blaise.Api.Tests.Unit.Services
         private string _questionnaireFile;
         private string _tempPath;
 
-        private InstrumentPackageDto _instrumentPackageDto;
+        private QuestionnairePackageDto _questionnairePackageDto;
 
         [SetUp]
         public void SetUpTests()
@@ -40,9 +40,9 @@ namespace Blaise.Api.Tests.Unit.Services
             _questionnaireName = "OPN2010A";
             _tempPath = @"c:\temp\GUID";
 
-            _instrumentPackageDto = new InstrumentPackageDto
+            _questionnairePackageDto = new QuestionnairePackageDto
             {
-                InstrumentFile = _questionnaireFile
+                QuestionnaireFile = _questionnaireFile
             };
 
             _sut = new QuestionnaireInstallerService(
@@ -52,60 +52,60 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public async Task Given_I_Call_InstallInstrument_Then_The_Correct_Services_Are_Called_In_The_Correct_Order()
+        public async Task Given_I_Call_InstallQuestionnaire_Then_The_Correct_Services_Are_Called_In_The_Correct_Order()
         {
             //arrange
-            const string instrumentFilePath = "d:\\temp\\OPN1234.zip";
+            const string questionnaireFilePath = "d:\\temp\\OPN1234.zip";
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadPackageFromQuestionnaireBucketAsync(
-                    _questionnaireFile, _tempPath)).ReturnsAsync(instrumentFilePath);
+                    _questionnaireFile, _tempPath)).ReturnsAsync(questionnaireFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(b => b
-                .UpdateQuestionnaireFileWithSqlConnection(instrumentFilePath));
+                .UpdateQuestionnaireFileWithSqlConnection(questionnaireFilePath));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .GetQuestionnaireNameFromFile(_questionnaireFile)).Returns(_questionnaireName);
 
             _blaiseQuestionnaireApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallQuestionnaire(_questionnaireName,_serverParkName, instrumentFilePath, QuestionnaireInterviewType.Cati));
+                .InstallQuestionnaire(_questionnaireName,_serverParkName, questionnaireFilePath, QuestionnaireInterviewType.Cati));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .RemovePathAndFiles(_tempPath));
 
             //act
-            await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto, _tempPath);
+            await _sut.InstallQuestionnaireAsync(_serverParkName, _questionnairePackageDto, _tempPath);
 
             //assert
             _storageServiceMock.Verify(v => v.DownloadPackageFromQuestionnaireBucketAsync( _questionnaireFile, _tempPath), Times.Once);
-            _fileServiceMock.Verify(v => v.UpdateQuestionnaireFileWithSqlConnection(instrumentFilePath), Times.Once);
+            _fileServiceMock.Verify(v => v.UpdateQuestionnaireFileWithSqlConnection(questionnaireFilePath), Times.Once);
             _fileServiceMock.Verify(v => v.GetQuestionnaireNameFromFile(_questionnaireFile), Times.Once);
             _blaiseQuestionnaireApiMock.Verify(v => v.InstallQuestionnaire(_questionnaireName, _serverParkName,
-                instrumentFilePath, QuestionnaireInterviewType.Cati), Times.Once);
+                questionnaireFilePath, QuestionnaireInterviewType.Cati), Times.Once);
         }
 
         [Test]
-        public async Task Given_I_Call_InstallInstrument_Then_The_The_Correct_Instrument_Name_Is_Returned()
+        public async Task Given_I_Call_InstallQuestionnaire_Then_The_The_Correct_Questionnaire_Name_Is_Returned()
         {
             //arrange
-            const string instrumentFilePath = "d:\\temp\\OPN1234.zip";
+            const string questionnaireFilePath = "d:\\temp\\OPN1234.zip";
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadPackageFromQuestionnaireBucketAsync(
-                    _questionnaireFile, _tempPath)).ReturnsAsync(instrumentFilePath);
+                    _questionnaireFile, _tempPath)).ReturnsAsync(questionnaireFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(b => b
-                .UpdateQuestionnaireFileWithSqlConnection(instrumentFilePath));
+                .UpdateQuestionnaireFileWithSqlConnection(questionnaireFilePath));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .GetQuestionnaireNameFromFile(_questionnaireFile)).Returns(_questionnaireName);
 
             _blaiseQuestionnaireApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallQuestionnaire(_questionnaireName,_serverParkName, instrumentFilePath, QuestionnaireInterviewType.Cati));
+                .InstallQuestionnaire(_questionnaireName,_serverParkName, questionnaireFilePath, QuestionnaireInterviewType.Cati));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .RemovePathAndFiles(_tempPath));
 
             //act
-            var result = await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto, _tempPath);
+            var result = await _sut.InstallQuestionnaireAsync(_serverParkName, _questionnairePackageDto, _tempPath);
 
             //assert
             Assert.IsNotNull(result);
@@ -114,38 +114,38 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_An_Empty_ServerParkName_When_I_Call_InstallInstrument_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_ServerParkName_When_I_Call_InstallQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.InstallInstrumentAsync(string.Empty, 
-                _instrumentPackageDto, _tempPath));
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.InstallQuestionnaireAsync(string.Empty, 
+                _questionnairePackageDto, _tempPath));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
         [Test]
-        public void Given_A_Null_ServerParkName_When_I_Call_InstallInstrument_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_ServerParkName_When_I_Call_InstallQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.InstallInstrumentAsync(null,
-                _instrumentPackageDto, _tempPath));
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.InstallQuestionnaireAsync(null,
+                _questionnairePackageDto, _tempPath));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
         [Test]
-        public void Given_An_Empty_TempFilePath_When_I_Call_InstallInstrument_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_TempFilePath_When_I_Call_InstallQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.InstallInstrumentAsync(_serverParkName, 
-                _instrumentPackageDto, string.Empty));
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.InstallQuestionnaireAsync(_serverParkName, 
+                _questionnairePackageDto, string.Empty));
             Assert.AreEqual("A value for the argument 'tempFilePath' must be supplied", exception.Message);
         }
 
         [Test]
-        public void Given_A_Null_TempFilePath_When_I_Call_InstallInstrument_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_TempFilePath_When_I_Call_InstallQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.InstallInstrumentAsync(_serverParkName,
-                _instrumentPackageDto, null));
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.InstallQuestionnaireAsync(_serverParkName,
+                _questionnairePackageDto, null));
             Assert.AreEqual("tempFilePath", exception.ParamName);
         }
     }

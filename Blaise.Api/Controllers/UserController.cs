@@ -8,7 +8,7 @@ using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
 {
-    [RoutePrefix("api/v1/users")]
+    [RoutePrefix("api/v2/users")]
     public class UserController : BaseController
     {
         private readonly IUserService _userService;

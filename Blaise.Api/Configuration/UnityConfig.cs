@@ -72,7 +72,6 @@ namespace Blaise.Api.Configuration
             UnityContainer.RegisterType<ICatiDataBlockService, CatiDataBlockService>();
             UnityContainer.RegisterType<INisraCaseComparisonService, NisraCaseComparisonService>();
             UnityContainer.RegisterType<IReportingService, ReportingService>();
-            UnityContainer.RegisterType<IReportingServiceV2, ReportingServiceV2>();
             UnityContainer.RegisterType<ICaseService, CaseService>();
             UnityContainer.RegisterType(typeof(IRetryService<>), typeof(RetryService<>));
 
