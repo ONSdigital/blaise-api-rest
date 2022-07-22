@@ -81,14 +81,11 @@
     <Compile Include="Models\Cati\CreateDayBatchDto.cs" />
     <Compile Include="Models\Cati\DayBatchDto.cs" />
     <Compile Include="Models\Health\HealthCheckResultDto.cs" />
-    <Compile Include="Models\Instrument\InstrumentDataDto.cs" />
-    <Compile Include="Models\Instrument\InstrumentPackageDto.cs" />
     <Compile Include="Models\Questionnaire\DataEntrySettingsDto.cs" />
     <Compile Include="Models\Questionnaire\QuestionnaireDataDto.cs" />
     <Compile Include="Models\Questionnaire\QuestionnaireDto.cs" />
     <Compile Include="Models\Questionnaire\QuestionnaireNodeDto.cs" />
     <Compile Include="Models\Questionnaire\QuestionnairePackageDto.cs" />
-    <Compile Include="Models\Reports\ReportV2Dto.cs" />
     <Compile Include="Models\Reports\ReportDto.cs" />
     <Compile Include="Models\UserRole\UserRoleDto.cs" />
     <Compile Include="Models\ServerPark\ServerDto.cs" />

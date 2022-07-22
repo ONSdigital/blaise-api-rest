@@ -61,7 +61,7 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
             throw new NotImplementedException();
         }
 
-        public void InstallQuestionnaire(string questionnaireName, string serverParkName, string instrumentFile,
+        public void InstallQuestionnaire(string questionnaireName, string serverParkName, string questionnaireFile,
             QuestionnaireInterviewType surveyInterviewType)
         {
             NameOfInstalledQuestionnaire = questionnaireName;

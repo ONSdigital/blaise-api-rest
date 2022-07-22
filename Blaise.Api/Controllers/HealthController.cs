@@ -9,7 +9,7 @@ using Blaise.Api.Core.Interfaces.Services;
 
 namespace Blaise.Api.Controllers
 {
-    [RoutePrefix("api/v1/health")]
+    [RoutePrefix("api/v2/health")]
     public class HealthController : BaseController
     {
         private readonly IHealthCheckService _healthService;

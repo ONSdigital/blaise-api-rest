@@ -10,7 +10,7 @@ using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
 {
-    [RoutePrefix("api/v1/cati")]
+    [RoutePrefix("api/v2/cati")]
     public class CatiController : BaseController
     {
         private readonly ICatiService _catiService;
@@ -25,159 +25,159 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("instruments")]
+        [Route("questionnaires")]
         [SwaggerResponse(HttpStatusCode.OK, Type=typeof(IEnumerable<CatiQuestionnaireDto>))]
-        public IHttpActionResult GetInstruments()
+        public IHttpActionResult GetQuestionnaires()
         {
-            _loggingService.LogInfo("Obtaining a list of instruments from Cati");
+            _loggingService.LogInfo("Obtaining a list of questionnaires from Cati");
 
-            var instruments = _catiService.GetCatiQuestionnaires().ToList();
+            var questionnaires = _catiService.GetCatiQuestionnaires().ToList();
 
-            _loggingService.LogInfo($"Successfully received {instruments.Count} instruments from Cati");
+            _loggingService.LogInfo($"Successfully received {questionnaires.Count} questionnaires from Cati");
 
-            return Ok(instruments);
+            return Ok(questionnaires);
         }
 
         [HttpGet]
-        [Route("serverparks/{serverParkName}/instruments")]
+        [Route("serverparks/{serverParkName}/questionnaires")]
         [SwaggerResponse(HttpStatusCode.OK, Type=typeof(IEnumerable<CatiQuestionnaireDto>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult GetInstruments([FromUri] string serverParkName)
+        public IHttpActionResult GetQuestionnaires([FromUri] string serverParkName)
         {
-            _loggingService.LogInfo($"Obtaining a list of instruments from Cati for server park '{serverParkName}'");
+            _loggingService.LogInfo($"Obtaining a list of questionnaires from Cati for server park '{serverParkName}'");
 
-            var instruments = _catiService.GetCatiQuestionnaires(serverParkName).ToList();
+            var questionnaires = _catiService.GetCatiQuestionnaires(serverParkName).ToList();
 
-            _loggingService.LogInfo($"Successfully received {instruments.Count} instruments from Cati");
+            _loggingService.LogInfo($"Successfully received {questionnaires.Count} questionnaires from Cati");
 
-            return Ok(instruments);
+            return Ok(questionnaires);
         }
 
         [HttpGet]
-        [Route("serverparks/{serverParkName}/instruments/{instrumentName}")]
+        [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}")]
         [SwaggerResponse(HttpStatusCode.OK, Type=typeof(CatiQuestionnaireDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult GetInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
+        public IHttpActionResult GetQuestionnaire([FromUri] string serverParkName, [FromUri] string questionnaireName)
         {
-            _loggingService.LogInfo($"Obtaining an instrument from Cati for server park '{serverParkName}'");
+            _loggingService.LogInfo($"Obtaining a questionnaire from Cati for server park '{serverParkName}'");
 
-            var instrument = _catiService.GetCatiQuestionnaire(serverParkName, instrumentName);
+            var questionnaires = _catiService.GetCatiQuestionnaire(serverParkName, questionnaireName);
 
-            _loggingService.LogInfo("Successfully received an instrument from Cati");
+            _loggingService.LogInfo("Successfully received a questionnaire from Cati");
 
-            return Ok(instrument);
+            return Ok(questionnaires);
         }
 
         [HttpGet]
-        [Route("serverparks/{serverParkName}/instruments/{instrumentName}/daybatch")]
+        [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}/daybatch")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(DayBatchDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult GetDayBatch([FromUri] string serverParkName, [FromUri] string instrumentName)
+        public IHttpActionResult GetDayBatch([FromUri] string serverParkName, [FromUri] string questionnaireName)
         {
-            _loggingService.LogInfo($"Get a daybatch for instrument '{instrumentName}' on server park '{serverParkName}'");
+            _loggingService.LogInfo($"Get a daybatch for questionnaire '{questionnaireName}' on server park '{serverParkName}'");
 
-            var dayBatchDto = _catiService.GetDayBatch(instrumentName, serverParkName);
+            var dayBatchDto = _catiService.GetDayBatch(questionnaireName, serverParkName);
 
-            _loggingService.LogInfo($"Daybatch retrieved for instrument '{instrumentName}' for '{dayBatchDto.DayBatchDate}'");
+            _loggingService.LogInfo($"Daybatch retrieved for questionnaire '{questionnaireName}' for '{dayBatchDto.DayBatchDate}'");
 
             return Ok(dayBatchDto);
         }
 
         [HttpPost]
-        [Route("serverparks/{serverParkName}/instruments/{instrumentName}/daybatch")]
+        [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}/daybatch")]
         [SwaggerResponse(HttpStatusCode.Created, Type= typeof(DayBatchDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult CreateDayBatch([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] CreateDayBatchDto createDayBatchDto)
+        public IHttpActionResult CreateDayBatch([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromBody] CreateDayBatchDto createDayBatchDto)
         {
-            _loggingService.LogInfo($"Create a daybatch for instrument '{instrumentName}' on server park '{serverParkName}' for '{createDayBatchDto.DayBatchDate}'");
+            _loggingService.LogInfo($"Create a daybatch for questionnaire '{questionnaireName}' on server park '{serverParkName}' for '{createDayBatchDto.DayBatchDate}'");
 
-            var dayBatchDto = _catiService.CreateDayBatch(instrumentName, serverParkName, createDayBatchDto);
+            var dayBatchDto = _catiService.CreateDayBatch(questionnaireName, serverParkName, createDayBatchDto);
 
-            _loggingService.LogInfo($"Daybatch created for instrument '{instrumentName}' on '{createDayBatchDto.DayBatchDate}'");
+            _loggingService.LogInfo($"Daybatch created for questionnaire '{questionnaireName}' on '{createDayBatchDto.DayBatchDate}'");
 
             return Created($"{Request.RequestUri}", dayBatchDto);
         }
 
         [HttpGet]
-        [Route("serverparks/{serverParkName}/instruments/{instrumentName}/daybatch/today")]
+        [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}/daybatch/today")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult HasDayBatchForToday([FromUri] string serverParkName, [FromUri] string instrumentName)
+        public IHttpActionResult HasDayBatchForToday([FromUri] string serverParkName, [FromUri] string questionnaireName)
         {
-            _loggingService.LogInfo($"Check a daybatch exists today for instrument '{instrumentName}' on server park '{serverParkName}'");
+            _loggingService.LogInfo($"Check a daybatch exists today for questionnaire '{questionnaireName}' on server park '{serverParkName}'");
 
-            var exists = _catiService.QuestionnaireHasADayBatchForToday(instrumentName, serverParkName);
+            var exists = _catiService.QuestionnaireHasADayBatchForToday(questionnaireName, serverParkName);
 
-            _loggingService.LogInfo($"Daybatch exists today for instrument'{instrumentName}' - '{exists}'");
+            _loggingService.LogInfo($"Daybatch exists today for questionnaire'{questionnaireName}' - '{exists}'");
 
             return Ok(exists);
         }
 
         [HttpPost]
-        [Route("serverparks/{serverParkName}/instruments/{instrumentName}/daybatch/add")]
+        [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}/daybatch/add")]
         [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult AddCasesToDayBatch([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] List<string> caseIds)
+        public IHttpActionResult AddCasesToDayBatch([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromBody] List<string> caseIds)
         {
-            _loggingService.LogInfo($"Add cases to the current daybatch for instrument '{instrumentName}' on server park '{serverParkName}'");
+            _loggingService.LogInfo($"Add cases to the current daybatch for questionnaire '{questionnaireName}' on server park '{serverParkName}'");
 
-            _catiService.AddCasesToDayBatch(instrumentName, serverParkName, caseIds);
+            _catiService.AddCasesToDayBatch(questionnaireName, serverParkName, caseIds);
 
-            _loggingService.LogInfo($"Cases added to daybatch to the current daybatch for instrument '{instrumentName}' on server park '{serverParkName}'");
+            _loggingService.LogInfo($"Cases added to daybatch to the current daybatch for questionnaire '{questionnaireName}' on server park '{serverParkName}'");
 
             return NoContent();
         }
 
         [HttpGet]
-        [Route("serverparks/{serverParkName}/instruments/{instrumentName}/surveydays")]
+        [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}/surveydays")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<DateTime>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult GetSurveyDays([FromUri] string serverParkName, [FromUri] string instrumentName)
+        public IHttpActionResult GetSurveyDays([FromUri] string serverParkName, [FromUri] string questionnaireName)
         {
-            _loggingService.LogInfo($"Get survey days for instrument '{instrumentName}' on server park '{serverParkName}'");
+            _loggingService.LogInfo($"Get survey days for questionnaire '{questionnaireName}' on server park '{serverParkName}'");
 
-            var surveyDays = _catiService.GetSurveyDays(instrumentName, serverParkName);
+            var surveyDays = _catiService.GetSurveyDays(questionnaireName, serverParkName);
 
-            _loggingService.LogInfo($"Survey days retrieved for instrument '{instrumentName}'");
+            _loggingService.LogInfo($"Survey days retrieved for questionnaire '{questionnaireName}'");
 
             return Ok(surveyDays);
         }
 
         [HttpPost]
-        [Route("serverparks/{serverParkName}/instruments/{instrumentName}/surveydays")]
+        [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}/surveydays")]
         [SwaggerResponse(HttpStatusCode.Created, Type = typeof(List<DateTime>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult AddSurveyDays([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] List<DateTime> surveyDays)
+        public IHttpActionResult AddSurveyDays([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromBody] List<DateTime> surveyDays)
         {
-            _loggingService.LogInfo($"Add survey days for instrument '{instrumentName}' on server park '{serverParkName}' for '{surveyDays}'");
+            _loggingService.LogInfo($"Add survey days for questionnaire '{questionnaireName}' on server park '{serverParkName}' for '{surveyDays}'");
 
-            surveyDays = _catiService.AddSurveyDays(instrumentName, serverParkName, surveyDays);
+            surveyDays = _catiService.AddSurveyDays(questionnaireName, serverParkName, surveyDays);
 
-            _loggingService.LogInfo($"Survey days added for instrument '{instrumentName}'");
+            _loggingService.LogInfo($"Survey days added for questionnaire '{questionnaireName}'");
 
             return Created($"{Request.RequestUri}", surveyDays);
         }
 
         [HttpDelete]
-        [Route("serverparks/{serverParkName}/instruments/{instrumentName}/surveydays")]
+        [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}/surveydays")]
         [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult RemoveSurveyDays([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] List<DateTime> surveyDays)
+        public IHttpActionResult RemoveSurveyDays([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromBody] List<DateTime> surveyDays)
         {
-            _loggingService.LogInfo($"Remove survey days for instrument '{instrumentName}' on server park '{serverParkName}' for '{surveyDays}'");
+            _loggingService.LogInfo($"Remove survey days for questionnaire '{questionnaireName}' on server park '{serverParkName}' for '{surveyDays}'");
 
-             _catiService.RemoveSurveyDays(instrumentName, serverParkName, surveyDays);
+             _catiService.RemoveSurveyDays(questionnaireName, serverParkName, surveyDays);
 
-            _loggingService.LogInfo($"Survey days Removed for instrument '{instrumentName}'");
+            _loggingService.LogInfo($"Survey days Removed for questionnaire '{questionnaireName}'");
 
             return NoContent();
         }

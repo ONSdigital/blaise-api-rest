@@ -8,7 +8,7 @@ using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
 {
-    [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments/{instrumentName}/cases")]
+    [RoutePrefix("api/v2/serverparks/{serverParkName}/questionnaires/{questionnaireName}/cases")]
     public class CaseController : BaseController
     {
         private readonly ICaseService _caseService;
@@ -27,9 +27,9 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<string>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult GetCaseIds([FromUri] string serverParkName, [FromUri] string instrumentName)
+        public IHttpActionResult GetCaseIds([FromUri] string serverParkName, [FromUri] string questionnaireName)
         {
-            var caseIds = _caseService.GetCaseIds(serverParkName, instrumentName);
+            var caseIds = _caseService.GetCaseIds(serverParkName, questionnaireName);
 
             return Ok(caseIds);
         }
@@ -39,9 +39,9 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<CaseStatusDto>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult GetStatusOfCases([FromUri] string serverParkName, [FromUri] string instrumentName)
+        public IHttpActionResult GetStatusOfCases([FromUri] string serverParkName, [FromUri] string questionnaireName)
         {
-            var caseStatusDtoList = _caseService.GetCaseStatusList(serverParkName, instrumentName);
+            var caseStatusDtoList = _caseService.GetCaseStatusList(serverParkName, questionnaireName);
 
             return Ok(caseStatusDtoList);
         }
@@ -51,9 +51,9 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(string))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult GetCaseIds([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId)
+        public IHttpActionResult GetCaseIds([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] string caseId)
         {
-            var postCode = _caseService.GetPostCode(serverParkName, instrumentName, caseId);
+            var postCode = _caseService.GetPostCode(serverParkName, questionnaireName, caseId);
 
             return Ok(postCode);
         }
@@ -63,11 +63,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(CaseDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult GetCase([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId)
+        public IHttpActionResult GetCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] string caseId)
         {
             _loggingService.LogInfo($"Attempting to get case '{caseId}'");
 
-            var caseDto = _caseService.GetCase(serverParkName, instrumentName, caseId);
+            var caseDto = _caseService.GetCase(serverParkName, questionnaireName, caseId);
 
             _loggingService.LogInfo($"Successfully got case '{caseId}'");
 
@@ -79,12 +79,12 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult CreateCase([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId, 
+        public IHttpActionResult CreateCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] string caseId, 
             [FromBody] Dictionary<string, string> fieldData)
         {
             _loggingService.LogInfo($"Attempting to create case '{caseId}'");
 
-            _caseService.CreateCase(serverParkName, instrumentName, caseId, fieldData);
+            _caseService.CreateCase(serverParkName, questionnaireName, caseId, fieldData);
 
             _loggingService.LogInfo($"Successfully created case '{caseId}'");
 
@@ -96,12 +96,12 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult UpdateCase([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId,
+        public IHttpActionResult UpdateCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] string caseId,
             [FromBody] Dictionary<string, string> fieldData)
         {
             _loggingService.LogInfo($"Attempting to update case '{caseId}'");
 
-            _caseService.UpdateCase(serverParkName, instrumentName, caseId, fieldData);
+            _caseService.UpdateCase(serverParkName, questionnaireName, caseId, fieldData);
 
             _loggingService.LogInfo($"Successfully updated case '{caseId}'");
 
@@ -113,11 +113,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult DeleteCase([FromUri] string serverParkName, [FromUri] string instrumentName, [FromUri] string caseId)
+        public IHttpActionResult DeleteCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] string caseId)
         {
             _loggingService.LogInfo($"Attempting to delete case '{caseId}'");
 
-            _caseService.DeleteCase(serverParkName, instrumentName, caseId);
+            _caseService.DeleteCase(serverParkName, questionnaireName, caseId);
 
             _loggingService.LogInfo($"Successfully deleted case '{caseId}'");
 
