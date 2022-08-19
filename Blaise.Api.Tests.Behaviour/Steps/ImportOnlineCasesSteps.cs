@@ -132,6 +132,17 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             await GivenThereIsAnOnlineFileThatContainsACaseWithTheOutcomeCodeAsync(210);
         }
 
+        [Given(@"there is a online file that contains a case that is ineligible")]
+        public async Task GivenThereIsAOnlineFileThatContainsACaseThatIsIneligible()
+        {
+            if (StubConfigurationHelper.UseStubs)
+            {
+                return;
+            }
+
+            await GivenThereIsAnOnlineFileThatContainsACaseWithTheOutcomeCodeAsync(580);
+        }
+
         [Given(@"there is a online file that contains a case that has not been started")]
         public async Task GivenThereIsAOnlineFileThatContainsACaseThatHasNotBeenStarted()
         {

@@ -348,6 +348,21 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.False(result);
         }
 
+        // Scenario 18
+        [Test]
+        public void Given_The_Nisra_Case_Has_An_Outcome_Of_Inelgible_And_Existing_Case_Has_An_Outcome_Of_Not_Started_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned()
+        {
+            //arrange
+            var nisraCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutIneligible, _date1);
+            var existingCaseStatusModel = new CaseStatusModel(_primaryKey, _hOutNotStarted, _date2);
+
+            //act
+            var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
+
+            //assert
+            Assert.IsTrue(result);
+        }
+
         [Test]
         public void Given_A_Record_Has_Not_Been_Processed_Before_Due_To_Different_LastUpdated_Dates_When_I_Call_NisraRecordHasAlreadyBeenProcessed_Then_False_Is_Returned()
         {
