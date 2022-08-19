@@ -168,7 +168,7 @@ Scenario: There is an online file available that contains cases that already exi
 	#scenario 17
 		| 900034     | 210     | Web  |
 	#scenario 18
-		| 900035     | 580     | tel  |
+		| 900035     | 580     | Web  |
 
 #Scenario 1 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file is complete and in Blaise it is complete, we take the online case
@@ -272,3 +272,11 @@ Scenario: A case in the online file has already been processed
 	Given there is a online file that contains a case that has previously been imported
 	When the online file is processed
 	Then the online case is not imported again
+
+
+#Scenario 18 
+Scenario: A case in the online file that is ineligible and in Blaise it marked as not started (0) we take the online case
+	Given there is a online file that contains a case that is ineligible
+	And the same case exists in Blaise with the outcome code '0'
+	When the online file is processed
+	Then the existing blaise case is overwritten with the online case
