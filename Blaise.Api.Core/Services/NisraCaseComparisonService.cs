@@ -39,7 +39,7 @@ namespace Blaise.Api.Core.Services
                 return false;
             }
 
-            if (nisraCaseStatusModel.Outcome == 580 && existingCaseStatusModel.Outcome <= 210)
+            if (nisraCaseStatusModel.Outcome == 580 && existingCaseStatusModel.Outcome != 0 && existingCaseStatusModel.Outcome <= 210)
             {
                 _loggingService.LogInfo(
                     $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (Existing HOut = '{existingCaseStatusModel.Outcome}' < '{nisraCaseStatusModel.Outcome}')  for questionnaire '{questionnaireName}'");
