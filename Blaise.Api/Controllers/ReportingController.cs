@@ -31,11 +31,11 @@ namespace Blaise.Api.Controllers
         public IHttpActionResult GetReportingData([FromUri] string serverParkName, [FromUri] string questionnaireName,
             [FromUri] List<string> fieldIds)
         {
-            _loggingService.LogInfo($"Obtaining the fields '{fieldIds}' of questionnaire '{questionnaireName}' for a server park '{serverParkName}'");
+            _loggingService.LogInfo($"Obtaining the fields '{string.Join(",", fieldIds)}' for questionnaire '{questionnaireName}' on server park '{serverParkName}'");
 
             var reportDto = _reportingService.GetReportingData(serverParkName, questionnaireName, fieldIds);
 
-            _loggingService.LogInfo($"Obtained the fields of questionnaire '{questionnaireName}' for a server park '{serverParkName}'");
+            _loggingService.LogInfo($"Obtained the fields for questionnaire '{questionnaireName}' on server park '{serverParkName}'");
 
             return Ok(reportDto);
         }
