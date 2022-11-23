@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.Reports;
 using Blaise.Api.Core.Interfaces.Services;
 using Swashbuckle.Swagger.Annotations;
@@ -12,10 +13,14 @@ namespace Blaise.Api.Controllers
     public class ReportingController : BaseController
     {
         private readonly IReportingService _reportingService;
+        private readonly ILoggingService _loggingService;
 
-        public ReportingController(IReportingService reportingService)
+        public ReportingController(
+            IReportingService reportingService,
+            ILoggingService loggingService)
         {
             _reportingService = reportingService;
+            _loggingService = loggingService;
         }
 
         [HttpGet]
@@ -26,7 +31,11 @@ namespace Blaise.Api.Controllers
         public IHttpActionResult GetReportingData([FromUri] string serverParkName, [FromUri] string questionnaireName,
             [FromUri] List<string> fieldIds)
         {
+            _loggingService.LogInfo($"Obtaining the fields '{fieldIds}' of questionnaire '{questionnaireName}' for a server park '{serverParkName}'");
+
             var reportDto = _reportingService.GetReportingData(serverParkName, questionnaireName, fieldIds);
+
+            _loggingService.LogInfo($"Obtained the fields of questionnaire '{questionnaireName}' for a server park '{serverParkName}'");
 
             return Ok(reportDto);
         }
