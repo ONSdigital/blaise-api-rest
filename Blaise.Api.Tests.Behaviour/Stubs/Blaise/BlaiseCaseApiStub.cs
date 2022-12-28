@@ -35,6 +35,11 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
             throw new NotImplementedException();
         }
 
+        public IDataRecord GetCase(string primaryKeyValue, string databaseFile)
+        {
+            throw new NotImplementedException();
+        }
+
         public void CreateCase(string primaryKeyValue, Dictionary<string, string> fieldData, string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
@@ -56,6 +61,11 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
         }
 
         public void UpdateCase(IDataRecord dataRecord, Dictionary<string, string> fieldData, string questionnaireName, string serverParkName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateCase(IDataRecord dataRecord, Dictionary<string, string> fieldData, string databaseFile)
         {
             throw new NotImplementedException();
         }
@@ -157,6 +167,11 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
         }
 
         public IEnumerable<CaseStatusModel> GetCaseStatusModelList(string questionnaireName, string serverParkName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<CaseStatusModel> GetCaseStatusModelList(string databaseFile)
         {
             throw new NotImplementedException();
         }
