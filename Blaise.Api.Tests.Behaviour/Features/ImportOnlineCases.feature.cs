@@ -544,11 +544,11 @@ this.ScenarioInitialize(scenarioInfo);
                 table3.AddRow(new string[] {
                             "900034",
                             "210",
-                            "tel"});
+                            "Web"});
                 table3.AddRow(new string[] {
                             "900035",
                             "580",
-                            "tel"});
+                            "Web"});
 #line 119
  testRunner.Then("blaise will contain the following cases", ((string)(null)), table3, "Then ");
 #line hidden
@@ -1108,6 +1108,51 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 274
  testRunner.Then("the online case is not imported again", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("A case in the online file that is ineligible and in Blaise it marked as not start" +
+            "ed (0) we take the online case")]
+        public virtual void ACaseInTheOnlineFileThatIsIneligibleAndInBlaiseItMarkedAsNotStarted0WeTakeTheOnlineCase()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file that is ineligible and in Blaise it marked as not start" +
+                    "ed (0) we take the online case", null, tagsOfScenario, argumentsOfScenario);
+#line 278
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 279
+ testRunner.Given("there is a online file that contains a case that is ineligible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 280
+ testRunner.And("the same case exists in Blaise with the outcome code \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 281
+ testRunner.When("the online file is processed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 282
+ testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
