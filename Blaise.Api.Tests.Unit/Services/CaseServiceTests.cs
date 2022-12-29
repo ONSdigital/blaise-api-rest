@@ -563,5 +563,100 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName, null));
             Assert.AreEqual("caseId", exception.ParamName);
         }
+
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_CaseExists_Then_The_Correct_Service_Is_Called()
+        {
+            //arrange
+            const string caseId = "1000001";
+
+            //act
+            _sut.CaseExists(_serverParkName, _questionnaireName, caseId);
+
+            //assert
+            _blaiseCaseApiMock.Verify(v => v.CaseExists(caseId, _questionnaireName, _serverParkName), Times.Once);
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Given_Valid_Arguments_When_I_Call_CaseExists_Then_The_Expected_Value_Is_Returned(bool exists)
+        {
+            //arrange
+            const string caseId = "1000001";
+            _blaiseCaseApiMock.Setup(c => c.CaseExists(caseId, _questionnaireName, _serverParkName))
+                .Returns(exists);
+
+            //act
+            var result = _sut.CaseExists(_serverParkName, _questionnaireName, caseId);
+
+            //assert
+            Assert.AreEqual(result, exists);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_CaseExists_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(string.Empty,
+                _questionnaireName, caseId));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_CaseExists_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(null,
+                _questionnaireName, caseId));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_QuestionnaireName_When_I_Call_CaseExists_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(_serverParkName,
+                string.Empty, caseId));
+            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_QuestionnaireName_When_I_Call_CaseExists_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string caseId = "1000001";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(_serverParkName,
+                null, caseId));
+            Assert.AreEqual("questionnaireName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_CaseId_When_I_Call_CaseExists_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(_serverParkName,
+                _questionnaireName, string.Empty));
+            Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_CaseId_When_I_Call_CaseExists_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(_serverParkName,
+                _serverParkName, null));
+            Assert.AreEqual("caseId", exception.ParamName);
+        }
     }
 }

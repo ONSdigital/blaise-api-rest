@@ -19,5 +19,6 @@ namespace Blaise.Api.Core.Interfaces.Services
         void UpdateCase(string serverParkName, string questionnaireName, string caseId, Dictionary<string, string> fieldData);
         
         void DeleteCase(string serverParkName, string questionnaireName, string caseId);
+        bool CaseExists(string serverParkName, string questionnaireName, string caseId);
     }
 }
