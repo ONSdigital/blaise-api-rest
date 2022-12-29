@@ -47,6 +47,18 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
+        [Route("{caseId}/exists")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetCaseExists([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] string caseId)
+        {
+            var exists = _caseService.CaseExists(serverParkName, questionnaireName, caseId);
+
+            return Ok(exists);
+        }
+
+        [HttpGet]
         [Route("{caseId}/postcode")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(string))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
