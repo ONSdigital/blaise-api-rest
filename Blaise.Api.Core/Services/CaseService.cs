@@ -95,5 +95,14 @@ namespace Blaise.Api.Core.Services
 
             _blaiseCaseApi.RemoveCase(caseId, questionnaireName, serverParkName);
         }
+
+        public bool CaseExists(string serverParkName, string questionnaireName, string caseId)
+        {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
+            caseId.ThrowExceptionIfNullOrEmpty("caseId");
+
+            return _blaiseCaseApi.CaseExists(caseId, questionnaireName, serverParkName);
+        }
     }
 }
