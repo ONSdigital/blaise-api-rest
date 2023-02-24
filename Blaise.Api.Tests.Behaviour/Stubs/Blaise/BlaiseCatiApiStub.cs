@@ -63,5 +63,16 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
         {
             throw new NotImplementedException();
         }
+
+        public int ClearAppointments(string questionnaireName, string serverParkName, List<string> primaryKeys)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CreateAppointment(string questionnaireName, string serverParkName, string primaryKey, DateTime appointmentDateTime,
+            string notes = null, int updateMode = 1, string toWhom = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
