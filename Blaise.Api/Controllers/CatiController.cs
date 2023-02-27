@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Principal;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
-using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Mappers;
-using Newtonsoft.Json;
-using StatNeth.Blaise.Logging.IServiceContract;
 using Swashbuckle.Swagger.Annotations;
 using ILoggingService = Blaise.Api.Contracts.Interfaces.ILoggingService;
 
@@ -206,10 +199,10 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpDelete]
-        [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}")]
+        [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}/appointments")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
-        [SwaggerResponse(HttpStatusCode.InternalServerError, Type = null)]
-        public IHttpActionResult ClearAppointments([FromUri] string serverParkName, [FromUri] string questionnaireName) 
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult ClearAppointments([FromUri] string serverParkName, [FromUri] string questionnaireName)
         {
             _loggingService.LogInfo(
                 $"Clearing appointments from '{questionnaireName}' on server park '{serverParkName}'");
@@ -218,7 +211,7 @@ namespace Blaise.Api.Controllers
             {
                 _loggingService.LogInfo(
                     $"Error clearing appointments for '{questionnaireName}' on server park '{serverParkName}'");
-                return StatusCode(HttpStatusCode.InternalServerError);
+                return StatusCode(HttpStatusCode.NotFound);
             }
 
             _loggingService.LogInfo(
@@ -227,25 +220,38 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpPost]
+        [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}/appointments")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.InternalServerError, Type = null)]
-        public async Task<IHttpActionResult> CreateAppointment()
+        public IHttpActionResult CreateAppointment([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromBody] AppointmentDto appointment)
         {
-            var appointmentDetail
-                = JsonConvert.DeserializeObject<AppointmentDto>(await Request.Content.ReadAsStringAsync());
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var appointmentFromBody = new AppointmentDto()
+            {
+                ServerPark = serverParkName,
+                Questionnaire = questionnaireName,
+                AppointmentDateTime = appointment.AppointmentDateTime,
+                PrimaryKey = appointment.PrimaryKey,
+                Notes = appointment.Notes
+            };
 
             _loggingService.LogInfo(
-                $"Creating appointment for '{appointmentDetail.Questionnaire}' on server park '{appointmentDetail.ServerPark}'");
+                    $"Creating appointment for '{appointmentFromBody.Questionnaire}' on server park '{appointmentFromBody.ServerPark}'");
 
-            if (_catiService.CreateAppointment(appointmentDetail) > 0)
+            if (_catiService.CreateAppointment(appointmentFromBody) > 0)
             {
                 _loggingService.LogInfo(
-                    $"Error creating appointment for '{appointmentDetail.Questionnaire}' on server park '{appointmentDetail.ServerPark}' with primarykey '{appointmentDetail.PrimaryKey}' at '{appointmentDetail.AppointmentDateTime.ToShortDateString()}'");
+                    $"Error creating appointment for '{appointmentFromBody.Questionnaire}' on server park '{appointmentFromBody.ServerPark}' with primarykey '{appointmentFromBody.PrimaryKey}' at '{appointmentFromBody.AppointmentDateTime.ToShortDateString()}'");
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
 
             _loggingService.LogInfo(
-                $"Successfully creating appointment for '{appointmentDetail.Questionnaire}' on server park '{appointmentDetail.ServerPark}' with primarykey '{appointmentDetail.PrimaryKey}' at '{appointmentDetail.AppointmentDateTime.ToShortDateString()}'");
+                $"Successfully creating appointment for '{appointmentFromBody.Questionnaire}' on server park '{appointmentFromBody.ServerPark}' with primarykey '{appointmentFromBody.PrimaryKey}' at '{appointmentFromBody.AppointmentDateTime.ToShortDateString()}'");
 
             return StatusCode(HttpStatusCode.OK);
         }
