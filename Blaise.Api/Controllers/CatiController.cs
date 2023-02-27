@@ -250,7 +250,7 @@ namespace Blaise.Api.Controllers
             _loggingService.LogInfo(
                     $"Creating appointment for '{appointmentFromBody.Questionnaire}' on server park '{appointmentFromBody.ServerPark}'");
 
-            if (_catiService.CreateAppointment(appointmentFromBody) > 0)
+            if (_catiService.CreateAppointment(appointmentFromBody) == 0)
             {
                 _loggingService.LogInfo(
                     $"Error creating appointment for '{appointmentFromBody.Questionnaire}' on server park '{appointmentFromBody.ServerPark}' with primarykey '{appointmentFromBody.PrimaryKey}' at '{appointmentFromBody.AppointmentDateTime.ToShortDateString()}'");
