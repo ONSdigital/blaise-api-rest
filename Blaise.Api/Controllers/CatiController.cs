@@ -202,7 +202,7 @@ namespace Blaise.Api.Controllers
         [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}/appointments")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult ClearAppointments([FromUri] string serverParkName, [FromUri] string questionnaireName)
+        public IHttpActionResult ClearAppointments(string serverParkName, string questionnaireName)
         {
             _loggingService.LogInfo(
                 $"Clearing appointments from '{questionnaireName}' on server park '{serverParkName}'");
@@ -221,13 +221,20 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("appointments")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(bool))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.InternalServerError, Type = null)]
         public IHttpActionResult CreateAppointment([FromBody] AppointmentDto appointment)
         {
+            if (appointment == null)
+            {
+                _loggingService.LogInfo("Appointment data is null.");
+                return BadRequest();
+            }
+
             if (!ModelState.IsValid)
             {
+                _loggingService.LogInfo($"Invalid appointment data: {ModelState}");
                 return BadRequest(ModelState);
             }
 
@@ -253,7 +260,7 @@ namespace Blaise.Api.Controllers
             _loggingService.LogInfo(
                 $"Successfully creating appointment for '{appointmentFromBody.Questionnaire}' on server park '{appointmentFromBody.ServerPark}' with primarykey '{appointmentFromBody.PrimaryKey}' at '{appointmentFromBody.AppointmentDateTime.ToShortDateString()}'");
 
-            return StatusCode(HttpStatusCode.OK);
+            return StatusCode(HttpStatusCode.Created);
         }
     }
 }
