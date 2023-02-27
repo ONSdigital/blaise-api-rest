@@ -220,11 +220,11 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpPost]
-        [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}/appointments")]
+        [Route("appointments")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.InternalServerError, Type = null)]
-        public IHttpActionResult CreateAppointment([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromBody] AppointmentDto appointment)
+        public IHttpActionResult CreateAppointment([FromBody] AppointmentDto appointment)
         {
             if (!ModelState.IsValid)
             {
@@ -233,8 +233,8 @@ namespace Blaise.Api.Controllers
 
             var appointmentFromBody = new AppointmentDto()
             {
-                ServerPark = serverParkName,
-                Questionnaire = questionnaireName,
+                ServerPark = appointment.ServerPark,
+                Questionnaire = appointment.Questionnaire,
                 AppointmentDateTime = appointment.AppointmentDateTime,
                 PrimaryKey = appointment.PrimaryKey,
                 Notes = appointment.Notes
