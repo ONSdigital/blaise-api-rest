@@ -21,7 +21,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         private int _numberOfRecordForQuestionnaire;
         private Mock<ISurvey> _surveyMock;
         private Mock<ISurveyReportingInfo> _surveyReportingInfoMock;
-        
+
         [SetUp]
         public void SetupTests()
         {
@@ -48,14 +48,24 @@ namespace Blaise.Api.Tests.Unit.Mappers
             const string questionnaire1Name = "OPN2010A";
             var questionnaire1Id = Guid.NewGuid();
             const string serverPark1Name = "ServerParkA";
+            const string BlaiseVersion = "5.9.9";
 
             const int numberOfRecordForQuestionnaire1 = 20;
+
+            var configurationMock = new Mock<IConfiguration2>();
+            configurationMock.Setup(c => c.BlaiseVersion).Returns(BlaiseVersion);
+
+            var configurations = new List<IConfiguration> { configurationMock.Object };
+
+            var configurationCollectionMock = new Mock<IMachineConfigurationCollection>();
+            configurationCollectionMock.Setup(cc => cc.Configurations).Returns(configurations);
 
             var survey1Mock = new Mock<ISurvey>();
             survey1Mock.As<ISurvey2>();
             survey1Mock.Setup(s => s.Name).Returns(questionnaire1Name);
             survey1Mock.Setup(s => s.InstrumentID).Returns(questionnaire1Id);
             survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1Name);
+            survey1Mock.Setup(s => s.Configuration).Returns(configurationCollectionMock.Object);
 
             var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
             surveyReportingInfoMock1.Setup(r => r.DataRecordCount).Returns(numberOfRecordForQuestionnaire1);
@@ -84,7 +94,54 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.AreEqual(numberOfRecordForQuestionnaire1, result.DataRecordCount);
             Assert.AreEqual(QuestionnaireStatusType.Active.ToString(), result.Status);
             Assert.True(result.HasData);
-            Assert.AreSame(nodeList, result.Nodes);
+            Assert.AreEqual(BlaiseVersion, result.BlaiseVersion);
+            Assert.AreSame(nodeList, result.Nodes);            
+        }
+
+        [Test]
+        public void Given_A_Survey_Has_No_Configuration_Available_When_I_Call_MapToQuestionnaireDto_Then_BlaiseVersion_Is_Set_To_Default()
+        {
+            //arrange
+            const string questionnaire1Name = "OPN2010A";
+            var questionnaire1Id = Guid.NewGuid();
+            const string serverPark1Name = "ServerParkA";
+
+            const int numberOfRecordForQuestionnaire1 = 20;
+
+            var configurations = new List<IConfiguration>();
+
+            var configurationCollectionMock = new Mock<IMachineConfigurationCollection>();
+            configurationCollectionMock.Setup(cc => cc.Configurations).Returns(configurations);
+
+            var survey1Mock = new Mock<ISurvey>();
+            survey1Mock.As<ISurvey2>();
+            survey1Mock.Setup(s => s.Name).Returns(questionnaire1Name);
+            survey1Mock.Setup(s => s.InstrumentID).Returns(questionnaire1Id);
+            survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1Name);
+            survey1Mock.Setup(s => s.Configuration).Returns(configurationCollectionMock.Object);
+
+            var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
+            surveyReportingInfoMock1.Setup(r => r.DataRecordCount).Returns(numberOfRecordForQuestionnaire1);
+            survey1Mock.As<ISurvey2>().Setup(s => s.GetReportingInfo()).Returns(surveyReportingInfoMock1.Object);
+
+            _statusMapperMock.Setup(s => s.GetQuestionnaireStatus(survey1Mock.Object))
+                .Returns(QuestionnaireStatusType.Active);
+
+            var nodeList = new List<QuestionnaireNodeDto>
+            {
+                new QuestionnaireNodeDto()
+            };
+
+            _nodeDtoMapperMock.Setup(n => n.MapToQuestionnaireNodeDtos(It.IsAny<IMachineConfigurationCollection>()))
+                .Returns(nodeList);
+
+            //act
+            var result = _sut.MapToQuestionnaireDto(survey1Mock.Object);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<QuestionnaireDto>(result);
+            Assert.AreEqual("Not Available", result.BlaiseVersion);
         }
 
         [Test]
@@ -103,21 +160,46 @@ namespace Blaise.Api.Tests.Unit.Mappers
             const int numberOfRecordForQuestionnaire1 = 20;
             const int numberOfRecordForQuestionnaire2 = 0;
 
+            const string questionnaire1BlaiseVersion = "5.9.9";
+            const string questionnaire2BlaiseVersion = "5.9.3";
+
             var survey1Mock = new Mock<ISurvey>();
+
+            var configuration1Mock = new Mock<IConfiguration2>();
+            configuration1Mock.Setup(c => c.BlaiseVersion).Returns(questionnaire1BlaiseVersion);
+
+            var configurations1 = new List<IConfiguration> { configuration1Mock.Object };
+
+            var configurationCollection1Mock = new Mock<IMachineConfigurationCollection>();
+            configurationCollection1Mock.Setup(cc => cc.Configurations).Returns(configurations1);
+
             survey1Mock.As<ISurvey2>();
             survey1Mock.Setup(s => s.Name).Returns(questionnaire1Name);
             survey1Mock.Setup(s => s.InstrumentID).Returns(questionnaire1Id);
             survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1Name);
+            survey1Mock.Setup(s => s.Configuration).Returns(configurationCollection1Mock.Object);            
 
             var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
             surveyReportingInfoMock1.Setup(r => r.DataRecordCount).Returns(numberOfRecordForQuestionnaire1);
             survey1Mock.As<ISurvey2>().Setup(s => s.GetReportingInfo()).Returns(surveyReportingInfoMock1.Object);
 
             var survey2Mock = new Mock<ISurvey>();
+
+            var configuration2Mock = new Mock<IConfiguration2>();
+            configuration2Mock.Setup(c => c.BlaiseVersion).Returns(questionnaire2BlaiseVersion);
+
+            var configurations2 = new List<IConfiguration> { configuration2Mock.Object };
+
+            var configurationCollection2Mock = new Mock<IMachineConfigurationCollection>();
+            configurationCollection2Mock.Setup(cc => cc.Configurations).Returns(configurations2);
+
+            configuration2Mock.Setup(c => c.BlaiseVersion).Returns(questionnaire2BlaiseVersion);
+
             survey2Mock.As<ISurvey2>();
             survey2Mock.Setup(s => s.Name).Returns(questionnaire2Name);
             survey2Mock.Setup(s => s.InstrumentID).Returns(questionnaire2Id);
             survey2Mock.Setup(s => s.ServerPark).Returns(serverPark2Name);
+            survey2Mock.Setup(s => s.Configuration).Returns(configurationCollection2Mock.Object);
 
             var surveyReportingInfoMock2 = new Mock<ISurveyReportingInfo>();
             surveyReportingInfoMock2.Setup(r => r.DataRecordCount).Returns(numberOfRecordForQuestionnaire2);
@@ -159,6 +241,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 i.DataRecordCount == numberOfRecordForQuestionnaire1 &&
                 i.Status == QuestionnaireStatusType.Active.ToString() &&
                 i.HasData &&
+                i.BlaiseVersion == questionnaire1BlaiseVersion &&
                 i.Nodes.Count() == 2));
 
             Assert.True(result.Any(i =>
@@ -168,6 +251,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 i.DataRecordCount == numberOfRecordForQuestionnaire2 &&
                 i.Status == QuestionnaireStatusType.Installing.ToString() &&
                 i.HasData == false &&
+                i.BlaiseVersion == questionnaire2BlaiseVersion &&
                 i.Nodes.Count() == 2));
         }
     }
