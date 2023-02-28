@@ -199,7 +199,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpDelete]
-        [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}/appointments")]
+        [Route("appointments")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult ClearAppointments(string serverParkName, string questionnaireName)
