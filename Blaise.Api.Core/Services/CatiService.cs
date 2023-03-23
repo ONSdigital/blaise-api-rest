@@ -6,6 +6,7 @@ using Blaise.Nuget.Api.Contracts.Interfaces;
 using StatNeth.Blaise.API.ServerManager;
 using System;
 using System.Collections.Generic;
+using Blaise.Api.Core.Mappers;
 using Blaise.Nuget.Api.Contracts.Exceptions;
 
 // ReSharper disable PossibleInvalidOperationException
@@ -159,6 +160,25 @@ namespace Blaise.Api.Core.Services
             var surveyDays = _blaiseCatiApi.GetSurveyDays(questionnaire.Name, questionnaire.ServerPark);
 
             return _mapper.MapToCatiQuestionnaireDto(questionnaire, surveyDays);
+        }
+
+        public int ClearAppointments(string questionnaireName, string serverParkName)
+        {
+            questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+
+            return _blaiseCatiApi.ClearAppointments(questionnaireName, serverParkName, null);
+        }
+
+        public int CreateAppointment(AppointmentDto appointment)
+        {
+            appointment.Questionnaire.ThrowExceptionIfNullOrEmpty("questionnaireName");
+            appointment.ServerPark.ThrowExceptionIfNullOrEmpty("serverParkName");
+            appointment.PrimaryKey.ThrowExceptionIfNullOrEmpty("primarykey");
+
+            return
+                _blaiseCatiApi.CreateAppointment(appointment.Questionnaire, appointment.ServerPark,
+                    appointment.PrimaryKey, appointment.AppointmentDateTime, appointment.Notes);
         }
     }
 }

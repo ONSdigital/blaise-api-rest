@@ -22,7 +22,7 @@ namespace Blaise.Api
         protected override void OnStart(string[] args)
         {
             var configurationProvider = new ConfigurationProvider();
-            _server = WebApp.Start<Startup>(configurationProvider.BaseUrl);
+            _server = WebApp.Start<Startup>(configurationProvider.BaseUrl); 
         }
 
         protected override void OnStop()

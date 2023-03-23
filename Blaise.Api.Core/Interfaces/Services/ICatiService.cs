@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Cati;
+using Blaise.Api.Core.Mappers;
 
 namespace Blaise.Api.Core.Interfaces.Services
 {
@@ -25,5 +26,9 @@ namespace Blaise.Api.Core.Interfaces.Services
         List<DateTime> AddSurveyDays(string questionnaireName, string serverParkName, List<DateTime> surveyDays);
 
         void RemoveSurveyDays(string questionnaireName, string serverParkName, List<DateTime> surveyDays);
+
+        int ClearAppointments(string questionnaireName, string serverParkName);
+
+        int CreateAppointment(AppointmentDto appointment);
     }
 }
