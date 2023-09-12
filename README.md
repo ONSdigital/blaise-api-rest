@@ -1,11 +1,11 @@
 # Blaise RESTful Web API
 
-This service provides a thin RESTful (representational state trasfer) wrapper around our custom Blaise API library.
+This service provides a thin RESTful (representational state transfer) wrapper around our custom Blaise API library.
 
 ## Blaise API library
 https://github.com/ONSdigital/blaise-nuget-api
 
-The Blaise API library offers an abstraction of the interfaces provided by the official Blaise API DLL library to offer a high level CRUD style interface that is easier to work with. This library is available internally to the ONS via a NUget repository and uses .Net framework.
+The Blaise API library offers an abstraction of the interfaces provided by the official Blaise API DLL library to offer a high level CRUD style interface that is easier to work with. This library is available internally to the ONS via a NuGet repository and uses .Net framework.
 
 ## Usage
 Where the API library is .Net framework specific, the RESTful web API provides a language and infrastructure agnostic approach to accessing Blaise resources.
@@ -27,10 +27,10 @@ This endpoint offers the ability to install and uninstall an questionnaire on a 
 This endpoint offers the ability to retrieve a list of server parks configured for a Blaise environment.
 
 ### User
-This endpoint offers the ability to create, update or delete a user in a Blaise envronment, as well as retrieving a list of exisiting users.
+This endpoint offers the ability to create, update or delete a user in a Blaise environment, as well as retrieving a list of existing users.
 
 ### User Role
-This endpoint offers the ability to create, update or delete roles for a user in a Blaise envronment, as well as retrieving a list of exisiting user roles.
+This endpoint offers the ability to create, update or delete roles for a user in a Blaise environment, as well as retrieving a list of existing user roles.
 
 ## Local setup
 
@@ -40,6 +40,6 @@ Swagger should now be available locally at http://localhost:90/swagger
 
 ## Tests
 
-Behaviour and unit tests are in a seperate top level "Tests" folder.
+Behaviour and unit tests are in a separate top level "Tests" folder.
 
 Behaviour tests need to be run in debug mode so that they use the stubs.

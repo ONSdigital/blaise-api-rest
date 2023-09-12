@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Web.Http;
-using Blaise.Api.Contracts.Interfaces;
+﻿using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.Case;
 using Blaise.Api.Core.Interfaces.Services;
 using Swashbuckle.Swagger.Annotations;
+using System.Collections.Generic;
+using System.Net;
+using System.Web.Http;
 
 namespace Blaise.Api.Controllers
 {
+    using Blaise.Nuget.Api.Contracts.Models;
+    using System.Linq;
+
     [RoutePrefix("api/v2/serverparks/{serverParkName}/questionnaires/{questionnaireName}/cases")]
     public class CaseController : BaseController
     {
@@ -91,7 +94,7 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult CreateCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] string caseId, 
+        public IHttpActionResult CreateCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] string caseId,
             [FromBody] Dictionary<string, string> fieldData)
         {
             _loggingService.LogInfo($"Attempting to create case '{caseId}'");
@@ -101,6 +104,27 @@ namespace Blaise.Api.Controllers
             _loggingService.LogInfo($"Successfully created case '{caseId}'");
 
             return Created($"{Request.RequestUri}/{caseId}", caseId);
+        }
+
+        [HttpPost]
+        [Route("")]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public HttpStatusCode CreateCases([FromUri] string serverParkName, [FromUri] string questionnaireName,
+                                          [FromBody] List<CaseModel> caseData)
+        {
+            if (caseData == null || !caseData.Any())
+            {
+                _loggingService.LogError("Error - Invalid JSON", null);
+                return HttpStatusCode.BadRequest;
+            }
+
+            _loggingService.LogInfo($"Attempting to create cases ({caseData.Count}) for server park {serverParkName} and questionnaire {questionnaireName}");
+
+            var result = _caseService.CreateCases(caseData, questionnaireName, serverParkName);
+            _loggingService.LogInfo($"Successfully created cases for server park {serverParkName} and questionnaire {questionnaireName}");
+            return HttpStatusCode.Created;
         }
 
         [HttpPatch]
