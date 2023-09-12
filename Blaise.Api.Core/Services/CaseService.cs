@@ -82,6 +82,8 @@ namespace Blaise.Api.Core.Services
 
         public int CreateCases(List<CaseModel> fieldData, string questionnaireName, string serverParkName)
         {
+            _blaiseCaseApi.RemoveCases(questionnaireName, serverParkName);
+
             // Calculate the number of batches (chunks)
             var batchSize = Properties.Settings.Default.MaxChunkSize;
             var totalItems = fieldData.Count;

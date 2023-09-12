@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Blaise.Api.Contracts.Models.Case;
+﻿using Blaise.Api.Contracts.Models.Case;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
+using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
+using Blaise.Nuget.Api.Contracts.Models;
 using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.DataRecord;
-using Blaise.Nuget.Api.Contracts.Enums;
-using Blaise.Nuget.Api.Contracts.Models;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
@@ -368,6 +368,126 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(_serverParkName,
                 _serverParkName, caseId, null));
             Assert.AreEqual("fieldData", exception.ParamName);
+        }
+
+        [Test]
+        public void CreateCases_Should_Remove_Existing_Cases_And_Create_New_Ones()
+        {
+            // Arrange
+            var caseModelList
+                = new List<CaseModel>
+                      {
+                          new CaseModel("1", new Dictionary<string, string>
+                                                 {
+                                                     { "Key1", "Value1" },
+                                                     { "Key2", "Value2" }
+                                                 }),
+                          new CaseModel("2", new Dictionary<string, string>
+                                                 {
+                                                     { "Key3", "Value3" },
+                                                     { "Key4", "Value4" }
+                                                 })
+                      };
+
+            // Set up the mock behavior for RemoveCases and CreateCases methods
+            _blaiseCaseApiMock.Setup(x => x.RemoveCases(_questionnaireName, _serverParkName));
+            _blaiseCaseApiMock.Setup(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName));
+
+            // Act
+            var result = _sut.CreateCases(caseModelList, _questionnaireName, _serverParkName);
+
+            // Assert
+            _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
+
+
+            var batchSize = 500;
+            var expectedCreateCalls = (int)Math.Ceiling((double)caseModelList.Count / batchSize);
+            _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Exactly(expectedCreateCalls));
+            Assert.AreEqual(caseModelList.Count, result);
+        }
+
+        [Test]
+        public void CreateCases_Should_Handle_Empty_Input_Data()
+        {
+            // Arrange
+            var fieldData = new List<CaseModel>();
+
+            // Act
+            var result = _sut.CreateCases(fieldData, _questionnaireName, _serverParkName);
+
+            // Assert
+            _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
+            _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Never);
+            Assert.AreEqual(0, result);
+        }
+
+
+        [Test]
+        public void CreateCases_Should_Handl_Small_Batch_Size()
+        {
+            // Arrange
+            var caseModelList
+                = new List<CaseModel>
+                      {
+                          new CaseModel("1", new Dictionary<string, string>
+                                                 {
+                                                     { "Key1", "Value1" },
+                                                     { "Key2", "Value2" }
+                                                 }),
+                          new CaseModel("2", new Dictionary<string, string>
+                                                 {
+                                                     { "Key3", "Value3" },
+                                                     { "Key4", "Value4" }
+                                                 })
+                      };
+
+            // Set a small batch size for testing
+            var maxChunkSize = 2;
+
+            // Act
+            var result = _sut.CreateCases(caseModelList, _questionnaireName, _serverParkName);
+
+            // Assert
+            _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
+
+            var expectedCreateCalls = (int)Math.Ceiling((double)caseModelList.Count / maxChunkSize);
+            _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Exactly(expectedCreateCalls));
+
+            Assert.AreEqual(caseModelList.Count, result);
+        }
+
+        [Test]
+        public void CreateCases_Should_Handl_Large_Batch_Size()
+        {
+            // Arrange
+            var caseModelList = new List<CaseModel>();
+
+            for (var iCounter = 1; iCounter <= 10000; iCounter++)
+            {
+                var caseId = iCounter.ToString();
+                var fieldData = new Dictionary<string, string>
+                                    {
+                                        { "Key1", $"Value{iCounter * 2 - 1}" },
+                                        { "Key2", $"Value{iCounter * 2}" }
+                                    };
+
+                var caseModel = new CaseModel(caseId, fieldData);
+                caseModelList.Add(caseModel);
+            }
+
+            // Set a large batch size for testing
+            var maxChunkSize = 500;
+
+            // Act
+            var result = _sut.CreateCases(caseModelList, _questionnaireName, _serverParkName);
+
+            // Assert
+            _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
+
+            var expectedCreateCalls = (int)Math.Ceiling((double)caseModelList.Count / maxChunkSize);
+            _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Exactly(expectedCreateCalls));
+
+            Assert.AreEqual(caseModelList.Count, result);
         }
 
         [Test]

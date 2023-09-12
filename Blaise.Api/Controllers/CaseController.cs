@@ -111,20 +111,25 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public HttpStatusCode CreateCases([FromUri] string serverParkName, [FromUri] string questionnaireName,
-                                          [FromBody] List<CaseModel> caseData)
+        public IHttpActionResult CreateCases([FromUri] string serverParkName, [FromUri] string questionnaireName,
+                                             [FromBody] List<CaseModel> caseData)
         {
             if (caseData == null || !caseData.Any())
             {
                 _loggingService.LogError("Error - Invalid JSON", null);
-                return HttpStatusCode.BadRequest;
+                return BadRequest();
             }
 
             _loggingService.LogInfo($"Attempting to create cases ({caseData.Count}) for server park {serverParkName} and questionnaire {questionnaireName}");
 
-            var result = _caseService.CreateCases(caseData, questionnaireName, serverParkName);
+            if (_caseService.CreateCases(caseData, questionnaireName, serverParkName) == 0)
+            {
+                _loggingService.LogInfo($"Error creating cases for server park {serverParkName} and questionnaire {questionnaireName}");
+                return BadRequest();
+            }
+
             _loggingService.LogInfo($"Successfully created cases for server park {serverParkName} and questionnaire {questionnaireName}");
-            return HttpStatusCode.Created;
+            return Created("", "");
         }
 
         [HttpPatch]
