@@ -15,7 +15,7 @@ namespace Blaise.Api.Core.Interfaces.Services
 
         CaseDto GetCase(string serverParkName, string questionnaireName, string caseId);
 
-        int CreateCases(List<CaseModel> fieldData, string questionnaireName, string serverParkName);
+        int CreateCases(List<CaseDto> fieldData, string questionnaireName, string serverParkName);
 
         void CreateCase(string serverParkName, string questionnaireName, string caseId,
             Dictionary<string, string> fieldData);

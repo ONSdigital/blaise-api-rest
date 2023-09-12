@@ -374,27 +374,24 @@ namespace Blaise.Api.Tests.Unit.Services
         public void CreateCases_Should_Remove_Existing_Cases_And_Create_New_Ones()
         {
             // Arrange
-            var caseModelList
-                = new List<CaseModel>
-                      {
-                          new CaseModel("1", new Dictionary<string, string>
-                                                 {
-                                                     { "Key1", "Value1" },
-                                                     { "Key2", "Value2" }
-                                                 }),
-                          new CaseModel("2", new Dictionary<string, string>
-                                                 {
-                                                     { "Key3", "Value3" },
-                                                     { "Key4", "Value4" }
-                                                 })
-                      };
+            var caseModelList = new List<CaseDto>();
+            var caseDto = new CaseDto { CaseId = "1" };
+            caseDto.FieldData.Add("qiD.Serial_Number", "9998");
+            caseDto.FieldData.Add("qDataBag.TLA", "LMS");
+            caseModelList.Add(caseDto);
+
+            caseDto = new CaseDto { CaseId = "2" };
+            caseDto.FieldData.Add("qiD.Serial_Number", "9999");
+            caseDto.FieldData.Add("qDataBag.TLA", "LMS");
+            caseModelList.Add(caseDto);
+
 
             // Set up the mock behavior for RemoveCases and CreateCases methods
             _blaiseCaseApiMock.Setup(x => x.RemoveCases(_questionnaireName, _serverParkName));
             _blaiseCaseApiMock.Setup(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName));
 
             // Act
-            var result = _sut.CreateCases(caseModelList, _questionnaireName, _serverParkName);
+            var result = _sut.CreateCases(caseModelList, this._questionnaireName, this._serverParkName);
 
             // Assert
             _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
@@ -410,10 +407,10 @@ namespace Blaise.Api.Tests.Unit.Services
         public void CreateCases_Should_Handle_Empty_Input_Data()
         {
             // Arrange
-            var fieldData = new List<CaseModel>();
+            var fieldData = new List<CaseDto>();
 
             // Act
-            var result = _sut.CreateCases(fieldData, _questionnaireName, _serverParkName);
+            var result = _sut.CreateCases(fieldData, this._questionnaireName, this._serverParkName);
 
             // Assert
             _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
@@ -426,26 +423,22 @@ namespace Blaise.Api.Tests.Unit.Services
         public void CreateCases_Should_Handl_Small_Batch_Size()
         {
             // Arrange
-            var caseModelList
-                = new List<CaseModel>
-                      {
-                          new CaseModel("1", new Dictionary<string, string>
-                                                 {
-                                                     { "Key1", "Value1" },
-                                                     { "Key2", "Value2" }
-                                                 }),
-                          new CaseModel("2", new Dictionary<string, string>
-                                                 {
-                                                     { "Key3", "Value3" },
-                                                     { "Key4", "Value4" }
-                                                 })
-                      };
+            var caseModelList = new List<CaseDto>();
+            var caseDto = new CaseDto { CaseId = "1" };
+            caseDto.FieldData.Add("qiD.Serial_Number", "9998");
+            caseDto.FieldData.Add("qDataBag.TLA", "LMS");
+            caseModelList.Add(caseDto);
+
+            caseDto = new CaseDto { CaseId = "2" };
+            caseDto.FieldData.Add("qiD.Serial_Number", "9999");
+            caseDto.FieldData.Add("qDataBag.TLA", "LMS");
+            caseModelList.Add(caseDto);
 
             // Set a small batch size for testing
             var maxChunkSize = 2;
 
             // Act
-            var result = _sut.CreateCases(caseModelList, _questionnaireName, _serverParkName);
+            var result = _sut.CreateCases(caseModelList, this._questionnaireName, this._serverParkName);
 
             // Assert
             _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
@@ -460,34 +453,42 @@ namespace Blaise.Api.Tests.Unit.Services
         public void CreateCases_Should_Handl_Large_Batch_Size()
         {
             // Arrange
-            var caseModelList = new List<CaseModel>();
+            var caseDtoList = new List<CaseDto>();
 
             for (var iCounter = 1; iCounter <= 10000; iCounter++)
             {
-                var caseId = iCounter.ToString();
-                var fieldData = new Dictionary<string, string>
-                                    {
-                                        { "Key1", $"Value{iCounter * 2 - 1}" },
-                                        { "Key2", $"Value{iCounter * 2}" }
-                                    };
-
-                var caseModel = new CaseModel(caseId, fieldData);
-                caseModelList.Add(caseModel);
+                var caseDto = GenerateRandomCaseDto(iCounter);
+                caseDtoList.Add(caseDto);
             }
 
             // Set a large batch size for testing
             var maxChunkSize = 500;
 
             // Act
-            var result = _sut.CreateCases(caseModelList, _questionnaireName, _serverParkName);
+            var result = _sut.CreateCases(caseDtoList, this._questionnaireName, this._serverParkName);
 
             // Assert
             _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
 
-            var expectedCreateCalls = (int)Math.Ceiling((double)caseModelList.Count / maxChunkSize);
+            var expectedCreateCalls = (int)Math.Ceiling((double)caseDtoList.Count / maxChunkSize);
             _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Exactly(expectedCreateCalls));
 
-            Assert.AreEqual(caseModelList.Count, result);
+            Assert.AreEqual(caseDtoList.Count, result);
+        }
+
+        static CaseDto GenerateRandomCaseDto(int caseId)
+        {
+            var caseDto = new CaseDto
+            {
+                CaseId = caseId.ToString(),
+                FieldData = new Dictionary<string, string>
+                                                  {
+                                                      { "qiD.Serial_Number", caseId.ToString() },
+                                                      {"qDataBag.TLA", "LMS"}
+                                                  }
+            };
+
+            return caseDto;
         }
 
         [Test]

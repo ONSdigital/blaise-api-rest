@@ -8,7 +8,6 @@ using System.Web.Http;
 
 namespace Blaise.Api.Controllers
 {
-    using Blaise.Nuget.Api.Contracts.Models;
     using System.Linq;
 
     [RoutePrefix("api/v2/serverparks/{serverParkName}/questionnaires/{questionnaireName}/cases")]
@@ -112,7 +111,7 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult CreateCases([FromUri] string serverParkName, [FromUri] string questionnaireName,
-                                             [FromBody] List<CaseModel> caseData)
+                                             [FromBody] List<CaseDto> caseData)
         {
             if (caseData == null || !caseData.Any())
             {

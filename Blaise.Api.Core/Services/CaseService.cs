@@ -80,7 +80,7 @@ namespace Blaise.Api.Core.Services
             _blaiseCaseApi.CreateCase(caseId, fieldData, questionnaireName, serverParkName);
         }
 
-        public int CreateCases(List<CaseModel> fieldData, string questionnaireName, string serverParkName)
+        public int CreateCases(List<CaseDto> fieldData, string questionnaireName, string serverParkName)
         {
             _blaiseCaseApi.RemoveCases(questionnaireName, serverParkName);
 
@@ -94,8 +94,9 @@ namespace Blaise.Api.Core.Services
                 // Get a chunk of data (batch) for processing
                 var batch = fieldData.Skip(batchIndex * batchSize).Take(batchSize).ToList();
 
-                _blaiseCaseApi.CreateCases(batch, questionnaireName, serverParkName);
-                Console.WriteLine($"Total cases written {batch.Count}");
+                var caseModelList = batch.Select(dto => new CaseModel(dto.CaseId, dto.FieldData)).ToList();
+
+                _blaiseCaseApi.CreateCases(caseModelList, questionnaireName, serverParkName);
             }
             return totalItems;
         }
