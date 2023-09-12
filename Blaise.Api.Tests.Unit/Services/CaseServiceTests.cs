@@ -378,11 +378,13 @@ namespace Blaise.Api.Tests.Unit.Services
             var caseDto = new CaseDto { CaseId = "1" };
             caseDto.FieldData.Add("qiD.Serial_Number", "9998");
             caseDto.FieldData.Add("qDataBag.TLA", "LMS");
+            caseDto.FieldData.Add("qDataBag.PostCode", "TO41 7GH");
             caseModelList.Add(caseDto);
 
             caseDto = new CaseDto { CaseId = "2" };
             caseDto.FieldData.Add("qiD.Serial_Number", "9999");
             caseDto.FieldData.Add("qDataBag.TLA", "LMS");
+            caseDto.FieldData.Add("qDataBag.PostCode", "TO41 7GH");
             caseModelList.Add(caseDto);
 
 
@@ -427,11 +429,13 @@ namespace Blaise.Api.Tests.Unit.Services
             var caseDto = new CaseDto { CaseId = "1" };
             caseDto.FieldData.Add("qiD.Serial_Number", "9998");
             caseDto.FieldData.Add("qDataBag.TLA", "LMS");
+            caseDto.FieldData.Add("qDataBag.PostCode", "TO41 7GH");
             caseModelList.Add(caseDto);
 
             caseDto = new CaseDto { CaseId = "2" };
             caseDto.FieldData.Add("qiD.Serial_Number", "9999");
             caseDto.FieldData.Add("qDataBag.TLA", "LMS");
+            caseDto.FieldData.Add("qDataBag.PostCode", "TO41 7GH");
             caseModelList.Add(caseDto);
 
             // Set a small batch size for testing
@@ -484,8 +488,9 @@ namespace Blaise.Api.Tests.Unit.Services
                 FieldData = new Dictionary<string, string>
                                                   {
                                                       { "qiD.Serial_Number", caseId.ToString() },
-                                                      {"qDataBag.TLA", "LMS"}
-                                                  }
+                                                      {"qDataBag.TLA", "LMS"},
+                                                      {"qDataBag.PostCode", "TO41 7GH"}
+        }
             };
 
             return caseDto;
