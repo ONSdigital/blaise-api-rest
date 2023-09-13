@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Models.Case;
+﻿using Blaise.Api.Contracts.Models.Case;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Blaise.Api.Core.Services
 {
+    using Blaise.Nuget.Api.Contracts.Models;
+    using System;
+
     public class CaseService : ICaseService
     {
         private readonly IBlaiseCaseApi _blaiseCaseApi;
@@ -75,6 +78,27 @@ namespace Blaise.Api.Core.Services
             fieldData.ThrowExceptionIfNullOrEmpty("fieldData");
 
             _blaiseCaseApi.CreateCase(caseId, fieldData, questionnaireName, serverParkName);
+        }
+
+        public int CreateCases(List<CaseDto> fieldData, string questionnaireName, string serverParkName)
+        {
+            _blaiseCaseApi.RemoveCases(questionnaireName, serverParkName);
+
+            // Calculate the number of batches (chunks)
+            var batchSize = Properties.Settings.Default.MaxChunkSize;
+            var totalItems = fieldData.Count;
+            var numBatches = (int)Math.Ceiling((double)totalItems / batchSize);
+
+            for (var batchIndex = 0; batchIndex < numBatches; batchIndex++)
+            {
+                // Get a chunk of data (batch) for processing
+                var batch = fieldData.Skip(batchIndex * batchSize).Take(batchSize).ToList();
+
+                var caseModelList = batch.Select(dto => new CaseModel(dto.CaseId, dto.FieldData)).ToList();
+
+                _blaiseCaseApi.CreateCases(caseModelList, questionnaireName, serverParkName);
+            }
+            return totalItems;
         }
 
         public void UpdateCase(string serverParkName, string questionnaireName, string caseId, Dictionary<string, string> fieldData)

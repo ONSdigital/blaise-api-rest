@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Blaise.Api.Contracts.Models.Case;
+﻿using Blaise.Api.Contracts.Models.Case;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
+using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
+using Blaise.Nuget.Api.Contracts.Models;
 using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.DataRecord;
-using Blaise.Nuget.Api.Contracts.Enums;
-using Blaise.Nuget.Api.Contracts.Models;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
@@ -368,6 +368,132 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(_serverParkName,
                 _serverParkName, caseId, null));
             Assert.AreEqual("fieldData", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_CreateCases_Then_The_Correct_Service_Is_Called()
+        {
+            // Arrange
+            var caseModelList = new List<CaseDto>();
+            var caseDto = new CaseDto { CaseId = "1" };
+            caseDto.FieldData.Add("qiD.Serial_Number", "9998");
+            caseDto.FieldData.Add("qDataBag.TLA", "LMS");
+            caseDto.FieldData.Add("qDataBag.PostCode", "TO41 7GH");
+            caseModelList.Add(caseDto);
+
+            caseDto = new CaseDto { CaseId = "2" };
+            caseDto.FieldData.Add("qiD.Serial_Number", "9999");
+            caseDto.FieldData.Add("qDataBag.TLA", "LMS");
+            caseDto.FieldData.Add("qDataBag.PostCode", "TO41 7GH");
+            caseModelList.Add(caseDto);
+
+
+            // Set up the mock behavior for RemoveCases and CreateCases methods
+            _blaiseCaseApiMock.Setup(x => x.RemoveCases(_questionnaireName, _serverParkName));
+            _blaiseCaseApiMock.Setup(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName));
+
+            // Act
+            var result = _sut.CreateCases(caseModelList, this._questionnaireName, this._serverParkName);
+
+            // Assert
+            _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
+
+
+            var batchSize = 500;
+            var expectedCreateCalls = (int)Math.Ceiling((double)caseModelList.Count / batchSize);
+            _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Exactly(expectedCreateCalls));
+            Assert.AreEqual(caseModelList.Count, result);
+        }
+
+        [Test]
+        public void Given_Empty_FieldData_When_I_Call_CreateCases_The_A_Bad_Request_Is_Returned()
+        {
+            // Arrange
+            var fieldData = new List<CaseDto>();
+
+            // Act
+            var result = _sut.CreateCases(fieldData, this._questionnaireName, this._serverParkName);
+
+            // Assert
+            _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
+            _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Never);
+            Assert.AreEqual(0, result);
+        }
+
+
+        [Test]
+        public void Given_A_Small_Batch_Size_When_I_Call_CreateCases_Then_The_Correct_Service_Is_Called()
+        {
+            // Arrange
+            var caseModelList = new List<CaseDto>();
+            var caseDto = new CaseDto { CaseId = "1" };
+            caseDto.FieldData.Add("qiD.Serial_Number", "9998");
+            caseDto.FieldData.Add("qDataBag.TLA", "LMS");
+            caseDto.FieldData.Add("qDataBag.PostCode", "TO41 7GH");
+            caseModelList.Add(caseDto);
+
+            caseDto = new CaseDto { CaseId = "2" };
+            caseDto.FieldData.Add("qiD.Serial_Number", "9999");
+            caseDto.FieldData.Add("qDataBag.TLA", "LMS");
+            caseDto.FieldData.Add("qDataBag.PostCode", "TO41 7GH");
+            caseModelList.Add(caseDto);
+
+            // Set a small batch size for testing
+            var maxChunkSize = 2;
+
+            // Act
+            var result = _sut.CreateCases(caseModelList, this._questionnaireName, this._serverParkName);
+
+            // Assert
+            _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
+
+            var expectedCreateCalls = (int)Math.Ceiling((double)caseModelList.Count / maxChunkSize);
+            _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Exactly(expectedCreateCalls));
+
+            Assert.AreEqual(caseModelList.Count, result);
+        }
+
+        [Test]
+        public void Given_A_Large_Batch_Size_When_I_Call_CreateCases_Then_The_Correct_Service_Is_Called()
+        {
+            // Arrange
+            var caseDtoList = new List<CaseDto>();
+
+            for (var iCounter = 1; iCounter <= 10000; iCounter++)
+            {
+                var caseDto = GenerateRandomCaseDto(iCounter);
+                caseDtoList.Add(caseDto);
+            }
+
+            // Set a large batch size for testing
+            var maxChunkSize = 500;
+
+            // Act
+            var result = _sut.CreateCases(caseDtoList, this._questionnaireName, this._serverParkName);
+
+            // Assert
+            _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
+
+            var expectedCreateCalls = (int)Math.Ceiling((double)caseDtoList.Count / maxChunkSize);
+            _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Exactly(expectedCreateCalls));
+
+            Assert.AreEqual(caseDtoList.Count, result);
+        }
+
+        static CaseDto GenerateRandomCaseDto(int caseId)
+        {
+            var caseDto = new CaseDto
+            {
+                CaseId = caseId.ToString(),
+                FieldData = new Dictionary<string, string>
+                                {
+                                    { "qiD.Serial_Number", caseId.ToString() },
+                                    {"qDataBag.TLA", "LMS"},
+                                    {"qDataBag.PostCode", "TO41 7GH"}
+                                }
+            };
+
+            return caseDto;
         }
 
         [Test]

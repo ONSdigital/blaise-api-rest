@@ -72,7 +72,7 @@ namespace Blaise.Api.Tests.Unit.Providers
             Assert.NotNull(result);
             Assert.AreEqual(@"nisra-bucket", result);
         }
-        
+
         [Test]
         public void Given_PackageExtension_Value_Is_Set_When_I_Call_PackageExtension_I_Get_The_Correct_Value_Back()
         {
