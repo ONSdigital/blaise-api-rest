@@ -371,7 +371,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void CreateCases_Should_Remove_Existing_Cases_And_Create_New_Ones()
+        public void Given_Valid_Arguments_When_I_Call_CreateCases_Then_The_Correct_Service_Is_Called()
         {
             // Arrange
             var caseModelList = new List<CaseDto>();
@@ -406,7 +406,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void CreateCases_Should_Handle_Empty_Input_Data()
+        public void Given_Empty_FieldData_When_I_Call_CreateCases_The_A_Bad_Request_Is_Returned()
         {
             // Arrange
             var fieldData = new List<CaseDto>();
@@ -422,7 +422,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
 
         [Test]
-        public void CreateCases_Should_Handl_Small_Batch_Size()
+        public void Given_A_Small_Batch_Size_When_I_Call_CreateCases_Then_The_Correct_Service_Is_Called()
         {
             // Arrange
             var caseModelList = new List<CaseDto>();
@@ -454,7 +454,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void CreateCases_Should_Handl_Large_Batch_Size()
+        public void Given_A_Large_Batch_Size_When_I_Call_CreateCases_Then_The_Correct_Service_Is_Called()
         {
             // Arrange
             var caseDtoList = new List<CaseDto>();
@@ -486,11 +486,11 @@ namespace Blaise.Api.Tests.Unit.Services
             {
                 CaseId = caseId.ToString(),
                 FieldData = new Dictionary<string, string>
-                                                  {
-                                                      { "qiD.Serial_Number", caseId.ToString() },
-                                                      {"qDataBag.TLA", "LMS"},
-                                                      {"qDataBag.PostCode", "TO41 7GH"}
-        }
+                                {
+                                    { "qiD.Serial_Number", caseId.ToString() },
+                                    {"qDataBag.TLA", "LMS"},
+                                    {"qDataBag.PostCode", "TO41 7GH"}
+                                }
             };
 
             return caseDto;
