@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Blaise.Nuget.Api.Contracts.Enums;
+﻿using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Blaise.Nuget.Api.Contracts.Models;
 using StatNeth.Blaise.API.DataLink;
 using StatNeth.Blaise.API.DataRecord;
+using System;
+using System.Collections.Generic;
 
 namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
 {
@@ -36,6 +36,11 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
         }
 
         public IDataRecord GetCase(string primaryKeyValue, string databaseFile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateCases(List<CaseModel> cases, string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
