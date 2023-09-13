@@ -26,7 +26,7 @@ namespace Blaise.Api.Tests.Unit.Providers
 
             //assert
             Assert.NotNull(result);
-            Assert.AreEqual(@"http://*:90/", result);
+            Assert.AreEqual(@"http://*:80/", result);
         }
 
         [Test]
