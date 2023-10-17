@@ -33,19 +33,11 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 
         public void InstallQuestionnaire()
         {
-            if (QuestionnaireDoesNotExist(BlaiseConfigurationHelper.QuestionnaireName, 60))
-            {
                 _blaiseQuestionnaireApi.InstallQuestionnaire(
                     BlaiseConfigurationHelper.QuestionnaireName,
                     BlaiseConfigurationHelper.ServerParkName,
                     BlaiseConfigurationHelper.QuestionnairePackagePath,
                     QuestionnaireInterviewType.Cati);
-
-                    return;
-            }
-
-            throw new Exception(
-                "There has been an issue where the instrument has not been cleared down, and still exists");
         }
 
         public bool QuestionnaireHasInstalled(int timeoutInSeconds)
@@ -59,6 +51,12 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
             _blaiseQuestionnaireApi.UninstallQuestionnaire(
                 BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
+
+            if (!QuestionnaireHasBeenUninstalled(BlaiseConfigurationHelper.QuestionnaireName, 120))
+            {
+                throw new Exception(
+                    "There has been an issue where the instrument has not been uninstalled, and still exists");
+            }
         }
 
         public bool SetQuestionnaireAsActive(int timeoutInSeconds)
@@ -106,7 +104,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
             return true;
         }
 
-        private bool QuestionnaireDoesNotExist(string questionnaireName, int timeoutInSeconds)
+        private bool QuestionnaireHasBeenUninstalled(string questionnaireName, int timeoutInSeconds)
         {
             var counter = 0;
             const int maxCount = 10;
