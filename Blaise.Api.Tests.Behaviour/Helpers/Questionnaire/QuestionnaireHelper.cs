@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Api.Tests.Behaviour.Stubs;
 using Blaise.Nuget.Api.Api;
@@ -32,11 +33,19 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 
         public void InstallQuestionnaire()
         {
-            _blaiseQuestionnaireApi.InstallQuestionnaire(
-                BlaiseConfigurationHelper.QuestionnaireName,
-                BlaiseConfigurationHelper.ServerParkName,
-                BlaiseConfigurationHelper.QuestionnairePackagePath,
-               QuestionnaireInterviewType.Cati);
+            if (QuestionnaireDoesNotExist(BlaiseConfigurationHelper.QuestionnaireName, 60))
+            {
+                _blaiseQuestionnaireApi.InstallQuestionnaire(
+                    BlaiseConfigurationHelper.QuestionnaireName,
+                    BlaiseConfigurationHelper.ServerParkName,
+                    BlaiseConfigurationHelper.QuestionnairePackagePath,
+                    QuestionnaireInterviewType.Cati);
+
+                    return;
+            }
+
+            throw new Exception(
+                "There has been an issue where the instrument has not been cleared down, and still exists");
         }
 
         public bool QuestionnaireHasInstalled(int timeoutInSeconds)
@@ -85,6 +94,24 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
             const int maxCount = 10;
 
             while (!_blaiseQuestionnaireApi.QuestionnaireExists(questionnaireName, BlaiseConfigurationHelper.ServerParkName))
+            {
+                Thread.Sleep(timeoutInSeconds % maxCount);
+
+                counter++;
+                if (counter == maxCount)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private bool QuestionnaireDoesNotExist(string questionnaireName, int timeoutInSeconds)
+        {
+            var counter = 0;
+            const int maxCount = 10;
+
+            while (_blaiseQuestionnaireApi.QuestionnaireExists(questionnaireName, BlaiseConfigurationHelper.ServerParkName))
             {
                 Thread.Sleep(timeoutInSeconds % maxCount);
 
