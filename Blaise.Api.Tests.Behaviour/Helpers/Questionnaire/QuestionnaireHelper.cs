@@ -51,14 +51,6 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
             _blaiseQuestionnaireApi.UninstallQuestionnaire(
                 BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
-
-            var startTime = DateTime.Now;
-            if (!QuestionnaireHasBeenUninstalled(BlaiseConfigurationHelper.QuestionnaireName, 60000))
-            {
-                var endTime = DateTime.Now;
-                throw new Exception(
-                    $"There has been an issue where the instrument has not been uninstalled, and still exists after {(endTime - startTime).TotalSeconds}");
-            }
         }
 
         public bool SetQuestionnaireAsActive(int timeoutInSeconds)
@@ -70,6 +62,12 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
             return QuestionnaireIsActive(BlaiseConfigurationHelper.QuestionnaireName, timeoutInSeconds);
         }
 
+        public bool QuestionnaireHasBeenUninstalled(int timeoutInSeconds)
+        {
+
+            return QuestionnaireHasBeenUninstalled(BlaiseConfigurationHelper.QuestionnaireName, timeoutInSeconds);
+        }
+
         private bool QuestionnaireIsActive(string questionnaireName, int timeoutInSeconds)
         {
             var counter = 0;
@@ -77,7 +75,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 
             while (GetQuestionnaireStatus(questionnaireName) == QuestionnaireStatusType.Installing)
             {
-                Thread.Sleep(timeoutInSeconds % maxCount);
+                Thread.Sleep((timeoutInSeconds * 1000) % maxCount);
 
                 counter++;
                 if (counter == maxCount)
@@ -95,7 +93,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 
             while (!_blaiseQuestionnaireApi.QuestionnaireExists(questionnaireName, BlaiseConfigurationHelper.ServerParkName))
             {
-                Thread.Sleep(timeoutInSeconds % maxCount);
+                Thread.Sleep((timeoutInSeconds * 1000) % maxCount);
 
                 counter++;
                 if (counter == maxCount)
@@ -113,7 +111,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 
             while (_blaiseQuestionnaireApi.QuestionnaireExists(questionnaireName, BlaiseConfigurationHelper.ServerParkName))
             {
-                Thread.Sleep(timeoutInSeconds % maxCount);
+                Thread.Sleep((timeoutInSeconds * 1000) % maxCount);
 
                 counter++;
                 if (counter == maxCount)

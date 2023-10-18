@@ -36,6 +36,13 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                 return;
             }
 
+            var startTime = DateTime.Now;
+            if (!QuestionnaireHelper.GetInstance().QuestionnaireHasBeenUninstalled(60))
+            {
+
+                throw new Exception($"It appears the questionnaire was not removed from the previous step {(DateTime.Now - startTime).TotalSeconds}");
+            }
+
             QuestionnaireHelper.GetInstance().InstallQuestionnaire();
         }
 
