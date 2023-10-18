@@ -40,7 +40,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             if (!QuestionnaireHelper.GetInstance().QuestionnaireHasBeenUninstalled(60))
             {
 
-                throw new Exception($"It appears the questionnaire was not removed from the previous step {(DateTime.Now - startTime).TotalSeconds}");
+                throw new Exception($"It appears the questionnaire was not removed from the previous step {(DateTime.Now - startTime).Seconds}");
             }
 
             QuestionnaireHelper.GetInstance().InstallQuestionnaire();
