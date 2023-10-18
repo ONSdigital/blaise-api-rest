@@ -57,7 +57,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
             {
                 var endTime = DateTime.Now;
                 throw new Exception(
-                    $"There has been an issue where the instrument has not been uninstalled, and still exists after {endTime - startTime}");
+                    $"There has been an issue where the instrument has not been uninstalled, and still exists after {(endTime - startTime).TotalSeconds}");
             }
         }
 
