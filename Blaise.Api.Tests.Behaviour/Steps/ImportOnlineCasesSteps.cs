@@ -342,6 +342,11 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [AfterFeature("onlinedata")]
         public static void CleanUpFeature()
         {
+            if (StubConfigurationHelper.UseStubs)
+            {
+                return;
+            }
+
             QuestionnaireHelper.GetInstance().UninstallQuestionnaire();
         }
     }
