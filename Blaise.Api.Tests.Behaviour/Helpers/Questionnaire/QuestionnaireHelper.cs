@@ -46,11 +46,17 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
                    QuestionnaireIsActive(BlaiseConfigurationHelper.QuestionnaireName, timeoutInSeconds);
         }
 
-        public void UninstallQuestionnaire()
+        public void UninstallQuestionnaire(int timeoutInSeconds)
         {
             _blaiseQuestionnaireApi.UninstallQuestionnaire(
                 BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
+
+            if (!QuestionnaireHasBeenUninstalled(BlaiseConfigurationHelper.QuestionnaireName, timeoutInSeconds))
+            {
+
+                throw new Exception($"It appears the questionnaire '{BlaiseConfigurationHelper.QuestionnaireName}' has not uninstalled successfully");
+            }
         }
 
         public bool SetQuestionnaireAsActive(int timeoutInSeconds)
@@ -60,12 +66,6 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
                 BlaiseConfigurationHelper.ServerParkName);
 
             return QuestionnaireIsActive(BlaiseConfigurationHelper.QuestionnaireName, timeoutInSeconds);
-        }
-
-        public bool QuestionnaireHasBeenUninstalled(int timeoutInSeconds)
-        {
-
-            return QuestionnaireHasBeenUninstalled(BlaiseConfigurationHelper.QuestionnaireName, timeoutInSeconds);
         }
 
         private bool QuestionnaireIsActive(string questionnaireName, int timeoutInSeconds)
