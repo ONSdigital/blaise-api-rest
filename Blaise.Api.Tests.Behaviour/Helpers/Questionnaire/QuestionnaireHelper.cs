@@ -109,7 +109,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
             var counter = 0;
             const int maxCount = 10;
 
-            while (QuestionnaireExists(questionnaireName, timeoutInSeconds))
+            while (_blaiseQuestionnaireApi.QuestionnaireExists(questionnaireName, BlaiseConfigurationHelper.ServerParkName))
             {
                 Thread.Sleep((timeoutInSeconds * 1000) % maxCount);
 
