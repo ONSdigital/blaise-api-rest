@@ -53,7 +53,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
                 BlaiseConfigurationHelper.ServerParkName);
 
             var startTime = DateTime.Now;
-            if (!QuestionnaireHasBeenUninstalled(BlaiseConfigurationHelper.QuestionnaireName, 60))
+            if (!QuestionnaireHasBeenUninstalled(BlaiseConfigurationHelper.QuestionnaireName, 60000))
             {
                 var endTime = DateTime.Now;
                 throw new Exception(
