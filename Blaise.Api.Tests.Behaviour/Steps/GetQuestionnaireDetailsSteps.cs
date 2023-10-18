@@ -49,7 +49,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             Assert.IsTrue(listOfActiveQuestionnaires.Any(q => q.Name == BlaiseConfigurationHelper.QuestionnaireName));
         }
 
-        [AfterFeature("questionnaires")]
+        [AfterScenario("questionnaires")]
         public static void CleanUpScenario()
         {
             QuestionnaireHelper.GetInstance().UninstallQuestionnaire();

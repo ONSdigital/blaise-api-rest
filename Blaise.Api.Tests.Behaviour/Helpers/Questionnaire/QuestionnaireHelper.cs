@@ -52,10 +52,12 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
                 BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
 
-            if (!QuestionnaireHasBeenUninstalled(BlaiseConfigurationHelper.QuestionnaireName, 120))
+            var startTime = DateTime.Now;
+            if (!QuestionnaireHasBeenUninstalled(BlaiseConfigurationHelper.QuestionnaireName, 60))
             {
+                var endTime = DateTime.Now;
                 throw new Exception(
-                    "There has been an issue where the instrument has not been uninstalled, and still exists");
+                    $"There has been an issue where the instrument has not been uninstalled, and still exists after {endTime - startTime}");
             }
         }
 
