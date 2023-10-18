@@ -42,7 +42,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [AfterScenario("deploy")]
         public async Task CleanUpScenario()
         {
-            QuestionnaireHelper.GetInstance().UninstallQuestionnaire();
+            QuestionnaireHelper.GetInstance().UninstallQuestionnaire(60);
            
             await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(
                 BlaiseConfigurationHelper.QuestionnairePackageBucket,
