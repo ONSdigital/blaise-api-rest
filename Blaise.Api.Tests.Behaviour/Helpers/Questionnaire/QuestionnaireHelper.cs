@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Api.Tests.Behaviour.Stubs;
 using Blaise.Nuget.Api.Api;
@@ -32,11 +33,11 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 
         public void InstallQuestionnaire()
         {
-            _blaiseQuestionnaireApi.InstallQuestionnaire(
-                BlaiseConfigurationHelper.QuestionnaireName,
-                BlaiseConfigurationHelper.ServerParkName,
-                BlaiseConfigurationHelper.QuestionnairePackagePath,
-               QuestionnaireInterviewType.Cati);
+                _blaiseQuestionnaireApi.InstallQuestionnaire(
+                    BlaiseConfigurationHelper.QuestionnaireName,
+                    BlaiseConfigurationHelper.ServerParkName,
+                    BlaiseConfigurationHelper.QuestionnairePackagePath,
+                    QuestionnaireInterviewType.Cati);
         }
 
         public bool QuestionnaireHasInstalled(int timeoutInSeconds)
@@ -45,11 +46,17 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
                    QuestionnaireIsActive(BlaiseConfigurationHelper.QuestionnaireName, timeoutInSeconds);
         }
 
-        public void UninstallQuestionnaire()
+        public void UninstallQuestionnaire(int timeoutInSeconds)
         {
             _blaiseQuestionnaireApi.UninstallQuestionnaire(
                 BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
+
+            if (!QuestionnaireHasBeenUninstalled(BlaiseConfigurationHelper.QuestionnaireName, timeoutInSeconds))
+            {
+
+                throw new Exception($"It appears the questionnaire '{BlaiseConfigurationHelper.QuestionnaireName}' has not uninstalled successfully");
+            }
         }
 
         public bool SetQuestionnaireAsActive(int timeoutInSeconds)
@@ -68,7 +75,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 
             while (GetQuestionnaireStatus(questionnaireName) == QuestionnaireStatusType.Installing)
             {
-                Thread.Sleep(timeoutInSeconds % maxCount);
+                Thread.Sleep((timeoutInSeconds * 1000) % maxCount);
 
                 counter++;
                 if (counter == maxCount)
@@ -86,7 +93,25 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 
             while (!_blaiseQuestionnaireApi.QuestionnaireExists(questionnaireName, BlaiseConfigurationHelper.ServerParkName))
             {
-                Thread.Sleep(timeoutInSeconds % maxCount);
+                Thread.Sleep(timeoutInSeconds * 1000 / maxCount);
+
+                counter++;
+                if (counter == maxCount)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private bool QuestionnaireHasBeenUninstalled(string questionnaireName, int timeoutInSeconds)
+        {
+            var counter = 0;
+            const int maxCount = 10;
+
+            while (_blaiseQuestionnaireApi.QuestionnaireExists(questionnaireName, BlaiseConfigurationHelper.ServerParkName))
+            {
+                Thread.Sleep(timeoutInSeconds * 1000 / maxCount);
 
                 counter++;
                 if (counter == maxCount)
