@@ -1,14 +1,15 @@
-﻿using Blaise.Api.Core.Interfaces.Services;
+﻿using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Contracts.Models.Questionnaire;
+using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Enums;
+using Swashbuckle.Swagger.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Contracts.Models.Questionnaire;
-using Swashbuckle.Swagger.Annotations;
+using System.Web.Http.Description;
 
 namespace Blaise.Api.Controllers
 {
@@ -27,7 +28,7 @@ namespace Blaise.Api.Controllers
             IQuestionnaireInstallerService questionnaireInstallerService,
             IQuestionnaireUninstallerService questionnaireUninstallerService,
             ILoggingService loggingService,
-            IConfigurationProvider configurationProvider, 
+            IConfigurationProvider configurationProvider,
             IRetryService<Exception> retryService)
         {
             _questionnaireService = questionnaireService;
@@ -137,6 +138,7 @@ namespace Blaise.Api.Controllers
             return Created($"{Request.RequestUri}/{questionnaireName}", questionnairePackageDto);
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpDelete]
         [Route("{questionnaireName}")]
         [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
