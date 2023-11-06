@@ -14,7 +14,7 @@ namespace Blaise.Api.Configuration
             config.EnableSwagger(c =>
                 {
                     c.SingleApiVersion("v1", "Blaise.Api")
-                        .Description("**Caution: Ensure that you are pairing when operating within the PRODUCTION environment.**");
+                        .Description("**Caution: Ensure that you are pairing when working in the PRODUCTION environment.**");
 
 
                 })
