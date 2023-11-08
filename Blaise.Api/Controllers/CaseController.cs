@@ -9,6 +9,7 @@ using System.Web.Http;
 namespace Blaise.Api.Controllers
 {
     using System.Linq;
+    using System.Web.Http.Description;
 
     [RoutePrefix("api/v2/serverparks/{serverParkName}/questionnaires/{questionnaireName}/cases")]
     public class CaseController : BaseController
@@ -148,6 +149,8 @@ namespace Blaise.Api.Controllers
             return NoContent();
         }
 
+
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpDelete]
         [Route("{caseId}")]
         [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]

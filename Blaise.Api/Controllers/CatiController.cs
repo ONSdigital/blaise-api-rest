@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Contracts.Models.Cati;
+using Blaise.Api.Core.Interfaces.Services;
+using Swashbuckle.Swagger.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Contracts.Models.Cati;
-using Blaise.Api.Core.Interfaces.Services;
-using Swashbuckle.Swagger.Annotations;
+using System.Web.Http.Description;
 
 namespace Blaise.Api.Controllers
 {
@@ -17,7 +18,7 @@ namespace Blaise.Api.Controllers
         private readonly ILoggingService _loggingService;
 
         public CatiController(
-            ICatiService catiService, 
+            ICatiService catiService,
             ILoggingService loggingService)
         {
             _catiService = catiService;
@@ -26,7 +27,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("questionnaires")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(IEnumerable<CatiQuestionnaireDto>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<CatiQuestionnaireDto>))]
         public IHttpActionResult GetQuestionnaires()
         {
             _loggingService.LogInfo("Obtaining a list of questionnaires from Cati");
@@ -40,7 +41,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("serverparks/{serverParkName}/questionnaires")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(IEnumerable<CatiQuestionnaireDto>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<CatiQuestionnaireDto>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetQuestionnaires([FromUri] string serverParkName)
@@ -56,7 +57,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(CatiQuestionnaireDto))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(CatiQuestionnaireDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetQuestionnaire([FromUri] string serverParkName, [FromUri] string questionnaireName)
@@ -88,7 +89,7 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}/daybatch")]
-        [SwaggerResponse(HttpStatusCode.Created, Type= typeof(DayBatchDto))]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(DayBatchDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult CreateDayBatch([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromBody] CreateDayBatchDto createDayBatchDto)
@@ -166,6 +167,7 @@ namespace Blaise.Api.Controllers
             return Created($"{Request.RequestUri}", surveyDays);
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpDelete]
         [Route("serverparks/{serverParkName}/questionnaires/{questionnaireName}/surveydays")]
         [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
@@ -175,7 +177,7 @@ namespace Blaise.Api.Controllers
         {
             _loggingService.LogInfo($"Remove survey days for questionnaire '{questionnaireName}' on server park '{serverParkName}' for '{surveyDays}'");
 
-             _catiService.RemoveSurveyDays(questionnaireName, serverParkName, surveyDays);
+            _catiService.RemoveSurveyDays(questionnaireName, serverParkName, surveyDays);
 
             _loggingService.LogInfo($"Survey days Removed for questionnaire '{questionnaireName}'");
 
