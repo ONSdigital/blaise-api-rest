@@ -3,6 +3,7 @@ using Blaise.Api.Tests.Behaviour.Stubs;
 using Blaise.Nuget.Api.Api;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
+using System;
 using System.Threading;
 
 namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
@@ -50,6 +51,12 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
             _blaiseQuestionnaireApi.UninstallQuestionnaire(
                 BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
+
+            if (!QuestionnaireHasBeenUninstalled(BlaiseConfigurationHelper.QuestionnaireName, timeoutInSeconds))
+            {
+
+                throw new Exception($"It appears the questionnaire '{BlaiseConfigurationHelper.QuestionnaireName}' has not uninstalled successfully");
+            }
         }
 
         public bool SetQuestionnaireAsActive(int timeoutInSeconds)
