@@ -21,6 +21,7 @@ namespace Blaise.Api.Tests.Behaviour.Features
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Get Questionnaire Details")]
+    [NUnit.Framework.CategoryAttribute("ignore")]
     [NUnit.Framework.CategoryAttribute("questionnaires")]
     public partial class GetQuestionnaireDetailsFeature
     {
@@ -28,6 +29,7 @@ namespace Blaise.Api.Tests.Behaviour.Features
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
+                "ignore",
                 "questionnaires"};
         
 #line 1 "GetQuestionnaireDetails.feature"
@@ -39,6 +41,7 @@ namespace Blaise.Api.Tests.Behaviour.Features
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Get Questionnaire Details", "\tAs a stakeholder\r\n\tI want to see a list of all questionnaires in Blaise\r\n\tSo tha" +
                     "t I can see that the restful API is working", ProgrammingLanguage.CSharp, new string[] {
+                        "ignore",
                         "questionnaires"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -79,10 +82,12 @@ namespace Blaise.Api.Tests.Behaviour.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Return a list of available questionnaires where a questionnaire is active")]
+        [NUnit.Framework.CategoryAttribute("ignore")]
         [NUnit.Framework.CategoryAttribute("smoke")]
         public virtual void ReturnAListOfAvailableQuestionnairesWhereAQuestionnaireIsActive()
         {
             string[] tagsOfScenario = new string[] {
+                    "ignore",
                     "smoke"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Return a list of available questionnaires where a questionnaire is active", null, tagsOfScenario, argumentsOfScenario);

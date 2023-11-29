@@ -21,6 +21,7 @@ namespace Blaise.Api.Tests.Behaviour.Features
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Deploy Questionnaire")]
+    [NUnit.Framework.CategoryAttribute("ignore")]
     [NUnit.Framework.CategoryAttribute("deploy")]
     public partial class DeployQuestionnaireFeature
     {
@@ -28,6 +29,7 @@ namespace Blaise.Api.Tests.Behaviour.Features
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
+                "ignore",
                 "deploy"};
         
 #line 1 "DeployQuestionnaire.feature"
@@ -39,6 +41,7 @@ namespace Blaise.Api.Tests.Behaviour.Features
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Deploy Questionnaire", "\tAs a stakeholder\r\n\tI want to be able to deploy a questionnaire to Blaise\r\n\tSo th" +
                     "at we can capture respondents data", ProgrammingLanguage.CSharp, new string[] {
+                        "ignore",
                         "deploy"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -79,10 +82,12 @@ namespace Blaise.Api.Tests.Behaviour.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Deploy a questionnaire")]
+        [NUnit.Framework.CategoryAttribute("ignore")]
         [NUnit.Framework.CategoryAttribute("smoke")]
         public virtual void DeployAQuestionnaire()
         {
             string[] tagsOfScenario = new string[] {
+                    "ignore",
                     "smoke"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy a questionnaire", null, tagsOfScenario, argumentsOfScenario);
