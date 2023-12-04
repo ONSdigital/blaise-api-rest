@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Models.ServerPark;
+﻿using Blaise.Api.Contracts.Models.ServerPark;
 using Blaise.Api.Core.Interfaces.Mappers;
 using StatNeth.Blaise.API.ServerManager;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Blaise.Api.Core.Mappers
 {
@@ -37,7 +37,7 @@ namespace Blaise.Api.Core.Mappers
                 Servers = MapToServerDtos(serverPark.Servers)
             };
         }
-        
+
         private static IEnumerable<ServerDto> MapToServerDtos(IServerCollection servers)
         {
             var serverDtoList = new List<ServerDto>();
@@ -47,7 +47,7 @@ namespace Blaise.Api.Core.Mappers
                 serverDtoList.Add(new ServerDto
                 {
                     Name = server.Name,
-                    BlaiseVersion = ((IServer2)server).BlaiseVersion.ToString(),
+                    BlaiseVersion = ((IServer2)server).BlaiseVersion?.ToString() ?? "",
                     LogicalServerName = server.LogicalRoot,
                     Roles = server.Roles.ToList()
                 });
