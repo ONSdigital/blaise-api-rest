@@ -296,10 +296,6 @@
       <Name>Blaise.Api.Storage</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="log4net.Ext.Json.LICENSE.txt" />
-    <Content Include="log4net.Ext.Json.README.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
