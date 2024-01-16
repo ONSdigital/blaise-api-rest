@@ -4,7 +4,10 @@ using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Storage.Interfaces;
 using Blaise.Nuget.Api.Contracts.Enums;
+using Blaise.Nuget.Api.Contracts.Extensions;
 using Blaise.Nuget.Api.Contracts.Interfaces;
+using Blaise.Nuget.Api.Contracts.Models;
+using StatNeth.Blaise.API.ServerManager;
 
 namespace Blaise.Api.Core.Services
 {
@@ -37,11 +40,19 @@ namespace Blaise.Api.Core.Services
 
             var questionnaireName = _fileService.GetQuestionnaireNameFromFile(questionnairePackageDto.QuestionnaireFile);
 
+            var installOptions = new InstallOptions
+            {
+                DataEntrySettingsName = QuestionnaireDataEntryType.StrictInterviewing.ToString(),
+                InitialAppLayoutSetGroupName = QuestionnaireInterviewType.Cati.FullName(),
+                LayoutSetGroupName = QuestionnaireInterviewType.Cati.FullName(),
+                OverwriteMode = DataOverwriteMode.Always,
+            };
+
             _blaiseQuestionnaireApi.InstallQuestionnaire(
                 questionnaireName,
                 serverParkName,
                 questionnaireFile,
-                QuestionnaireInterviewType.Cati);
+                installOptions);
 
             _fileService.RemovePathAndFiles(tempFilePath);
 
