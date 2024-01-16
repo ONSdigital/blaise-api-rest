@@ -51,14 +51,18 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
             throw new NotImplementedException();
         }
 
-        public QuestionnaireInterviewType GetQuestionnaireInterviewType(string questionnaireName, string serverParkName)
+        public Guid GetIdOfQuestionnaire(string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
 
-        public Guid GetIdOfQuestionnaire(string questionnaireName, string serverParkName)
+        public void InstallQuestionnaire(string questionnaireName, string serverParkName, string questionnaireFile,
+            IInstallOptions installOptions)
         {
-            throw new NotImplementedException();
+            NameOfInstalledQuestionnaire = questionnaireName;
+            ServerParkOfInstalledQuestionnaire = serverParkName;
+            QuestionnaireInstalled = true;
+            QuestionnaireStatus = QuestionnaireStatusType.Active;
         }
 
         public void UninstallQuestionnaire(string questionnaireName, string serverParkName, bool deleteCases = false)
