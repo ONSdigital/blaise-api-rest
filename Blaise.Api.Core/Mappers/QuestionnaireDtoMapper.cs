@@ -61,9 +61,10 @@ namespace Blaise.Api.Core.Mappers
 
         private static int GetNumberOfDataRecords(ISurvey2 questionnaire)
         {
-            var reportingInfo = questionnaire.GetReportingInfo();
+            return 0;
+            //var reportingInfo = questionnaire.GetReportingInfo();
 
-            return reportingInfo.DataRecordCount;
+            //return reportingInfo.DataRecordCount;
         }
     }
 }
