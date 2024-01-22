@@ -51,18 +51,13 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
             throw new NotImplementedException();
         }
 
-        public QuestionnaireInterviewType GetQuestionnaireInterviewType(string questionnaireName, string serverParkName)
-        {
-            throw new NotImplementedException();
-        }
-
         public Guid GetIdOfQuestionnaire(string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
 
         public void InstallQuestionnaire(string questionnaireName, string serverParkName, string questionnaireFile,
-            QuestionnaireInterviewType surveyInterviewType)
+            IInstallOptions installOptions)
         {
             NameOfInstalledQuestionnaire = questionnaireName;
             ServerParkOfInstalledQuestionnaire = serverParkName;
@@ -98,6 +93,11 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
         }
 
         public IEnumerable<DataEntrySettingsModel> GetQuestionnaireDataEntrySettings(string questionnaireName, string serverParkName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public QuestionnaireConfigurationModel GetQuestionnaireConfigurationModel(string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
         }
