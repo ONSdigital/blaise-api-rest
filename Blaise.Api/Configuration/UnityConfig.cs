@@ -40,6 +40,7 @@ namespace Blaise.Api.Configuration
             UnityContainer.RegisterType<IBlaiseUserApi, BlaiseUserApi>(new InjectionConstructor(connectionModel));
             UnityContainer.RegisterType<IBlaiseFileApi, BlaiseFileApi>(new InjectionConstructor(connectionModel));
             UnityContainer.RegisterType<IBlaiseCaseApi, BlaiseCaseApi>(new InjectionConstructor(connectionModel));
+            UnityContainer.RegisterType<IBlaiseSqlApi, BlaiseSqlApi>();
 
             //providers
             UnityContainer.RegisterType<IConfigurationProvider, ConfigurationProvider>();
