@@ -34,6 +34,7 @@ namespace Blaise.Api.Tests.Behaviour.Stubs
             UnityContainer.RegisterSingleton<IBlaiseUserApi, BlaiseUserApiStub>();
             UnityContainer.RegisterSingleton<IBlaiseFileApi, BlaiseFileApiStub>();
             UnityContainer.RegisterSingleton<IBlaiseCaseApi, BlaiseCaseApiStub>();
+            UnityContainer.RegisterSingleton<IBlaiseSqlApi, BlaiseSqlApiStub>();
 
             //providers
             UnityContainer.RegisterType<IConfigurationProvider, ConfigurationProvider>();

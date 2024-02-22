@@ -101,5 +101,10 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
         {
             throw new NotImplementedException();
         }
+
+        public void UninstallQuestionnaire(string questionnaireName, string serverParkName, bool deleteCases = false, bool clearCati = false, bool dropTables = false)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

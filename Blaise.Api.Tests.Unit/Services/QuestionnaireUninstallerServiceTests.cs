@@ -12,6 +12,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
         private Mock<IBlaiseQuestionnaireApi> _blaiseQuestionnaireApiMock;
         private Mock<IBlaiseCaseApi> _blaiseCaseApiMock;
+        private Mock<IBlaiseSqlApi> _blaiseSqlApiMock;
 
         private string _serverParkName;
         private string _questionnaireName;
@@ -21,13 +22,15 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             _blaiseQuestionnaireApiMock = new Mock<IBlaiseQuestionnaireApi>();
             _blaiseCaseApiMock = new Mock<IBlaiseCaseApi>();
+            _blaiseSqlApiMock = new Mock<IBlaiseSqlApi>();
 
             _serverParkName = "ServerParkA";
             _questionnaireName = "OPN2010A";
 
             _sut = new QuestionnaireUninstallerService(
                 _blaiseQuestionnaireApiMock.Object,
-                _blaiseCaseApiMock.Object);
+                _blaiseCaseApiMock.Object,
+                _blaiseSqlApiMock.Object);
         }
 
         [Test]
@@ -38,7 +41,9 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             _blaiseCaseApiMock.Verify(v => v.RemoveCases(_questionnaireName, _serverParkName));
-            _blaiseQuestionnaireApiMock.Verify(v => v.UninstallQuestionnaire(_questionnaireName, _serverParkName, false)
+            _blaiseQuestionnaireApiMock.Verify(v => v.UninstallQuestionnaire(_questionnaireName, _serverParkName, false, false, false)
+                , Times.Once);
+            _blaiseSqlApiMock.Verify(v => v.DropQuestionnaireTables(_questionnaireName)
                 , Times.Once);
         }
 

@@ -8,13 +8,16 @@ namespace Blaise.Api.Core.Services
     {
         private readonly IBlaiseQuestionnaireApi _blaiseQuestionnaireApi;
         private readonly IBlaiseCaseApi _blaiseCaseApi;
+        private readonly IBlaiseSqlApi _blaiseSqlApi;
 
         public QuestionnaireUninstallerService(
             IBlaiseQuestionnaireApi blaiseQuestionnaireApi, 
-            IBlaiseCaseApi blaiseCaseApi)
+            IBlaiseCaseApi blaiseCaseApi,
+            IBlaiseSqlApi blaiseSqlApi)
         {
             _blaiseQuestionnaireApi = blaiseQuestionnaireApi;
             _blaiseCaseApi = blaiseCaseApi;
+            _blaiseSqlApi = blaiseSqlApi;
         }
         public void UninstallQuestionnaire(string questionnaireName, string serverParkName)
         {
@@ -23,6 +26,8 @@ namespace Blaise.Api.Core.Services
 
             _blaiseCaseApi.RemoveCases(questionnaireName, serverParkName);
             _blaiseQuestionnaireApi.UninstallQuestionnaire(questionnaireName, serverParkName);
+            
+            _blaiseSqlApi.DropQuestionnaireTables(questionnaireName);
         }
     }
 }
