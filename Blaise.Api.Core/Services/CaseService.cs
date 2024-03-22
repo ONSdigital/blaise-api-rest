@@ -8,22 +8,31 @@ using System.Linq;
 
 namespace Blaise.Api.Core.Services
 {
+    using Blaise.Api.Contracts.Interfaces;
     using Blaise.Nuget.Api.Contracts.Models;
     using System;
 
     public class CaseService : ICaseService
     {
         private readonly IBlaiseCaseApi _blaiseCaseApi;
+        private readonly ILoggingService _loggingService;
 
-        public CaseService(IBlaiseCaseApi blaiseCaseApi)
+        public CaseService(
+            IBlaiseCaseApi blaiseCaseApi,
+            ILoggingService loggingService)
         {
             _blaiseCaseApi = blaiseCaseApi;
+            _loggingService = loggingService;
         }
 
         public List<string> GetCaseIds(string serverParkName, string questionnaireName)
         {
+            _loggingService.LogInfo("RESTAPI DEBUG: GetCaseIds() called");
+            _loggingService.LogInfo("RESTAPI DEBUG: Calling GetCaseStatusModelList...");
+
             var caseStatusList = _blaiseCaseApi.GetCaseStatusModelList(questionnaireName, serverParkName);
 
+            _loggingService.LogInfo($"RESTAPI DEBUG: Got: caseStatusList: {caseStatusList}");
             return caseStatusList.Select(caseStatus => caseStatus.PrimaryKey).ToList();
         }
 

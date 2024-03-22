@@ -1,4 +1,5 @@
-﻿using Blaise.Api.Contracts.Models.Case;
+﻿using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Contracts.Models.Case;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
 using Blaise.Nuget.Api.Contracts.Enums;
@@ -21,6 +22,8 @@ namespace Blaise.Api.Tests.Unit.Services
         private Mock<IBlaiseCaseApi> _blaiseCaseApiMock;
         private Mock<IDataRecord> _dataRecordMock;
 
+        private Mock<ILoggingService> _loggingService;
+
         private string _questionnaireName;
         private string _serverParkName;
 
@@ -31,10 +34,12 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseCaseApiMock = new Mock<IBlaiseCaseApi>();
             _dataRecordMock = new Mock<IDataRecord>();
 
+            _loggingService = new Mock<ILoggingService>();
+
             _serverParkName = "LocalDevelopment";
             _questionnaireName = "OPN2101A";
 
-            _sut = new CaseService(_blaiseCaseApiMock.Object);
+            _sut = new CaseService(_blaiseCaseApiMock.Object, _loggingService.Object);
         }
 
         [Test]
