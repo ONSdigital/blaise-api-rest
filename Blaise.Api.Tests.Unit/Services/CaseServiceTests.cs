@@ -1,6 +1,7 @@
 ﻿using Blaise.Api.Contracts.Models.Case;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
+using Blaise.Api.Tests.Unit.Helpers;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Blaise.Nuget.Api.Contracts.Models;
@@ -43,8 +44,9 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             var caseStatusModelList = new List<CaseStatusModel>
             {
-                new CaseStatusModel("0000007", 110, DateTime.Today.ToString(CultureInfo.InvariantCulture)),
-                new CaseStatusModel("0000008", 210, DateTime.Today.ToString(CultureInfo.InvariantCulture)),
+                
+                new CaseStatusModel(PrimaryKeyHelper.CreatePrimaryKeys("0000007"), 110, DateTime.Today.ToString(CultureInfo.InvariantCulture)),
+                new CaseStatusModel(PrimaryKeyHelper.CreatePrimaryKeys("0000008"), 210, DateTime.Today.ToString(CultureInfo.InvariantCulture)),
             };
 
 
@@ -84,8 +86,8 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             var caseStatusModelList = new List<CaseStatusModel>
             {
-                new CaseStatusModel("0000007", 110, DateTime.Today.ToString(CultureInfo.InvariantCulture)),
-                new CaseStatusModel("0000008", 210, DateTime.Today.ToString(CultureInfo.InvariantCulture))
+                new CaseStatusModel(PrimaryKeyHelper.CreatePrimaryKeys("0000007"), 110, DateTime.Today.ToString(CultureInfo.InvariantCulture)),
+                new CaseStatusModel(PrimaryKeyHelper.CreatePrimaryKeys("0000008"), 210, DateTime.Today.ToString(CultureInfo.InvariantCulture))
             };
 
 
@@ -129,7 +131,8 @@ namespace Blaise.Api.Tests.Unit.Services
             dataValueMock.Setup(dv => dv.ValueAsText).Returns(postCode);
 
             var caseId = "0000007";
-            _blaiseCaseApiMock.Setup(b => b.GetCase(caseId, _questionnaireName, _serverParkName)).Returns(_dataRecordMock.Object);
+            var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseId);
+            _blaiseCaseApiMock.Setup(b => b.GetCase(primaryKeys, _questionnaireName, _serverParkName)).Returns(_dataRecordMock.Object);
             _blaiseCaseApiMock.Setup(f => f.GetFieldValue(_dataRecordMock.Object, FieldNameType.PostCode)).Returns(dataValueMock.Object);
 
             //act
@@ -145,12 +148,13 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             const string caseId = "1000001";
+            var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseId);
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            _blaiseCaseApiMock.Setup(c => c.GetCase(caseId, _questionnaireName, _serverParkName))
+            _blaiseCaseApiMock.Setup(c => c.GetCase(primaryKeys, _questionnaireName, _serverParkName))
                 .Returns(_dataRecordMock.Object);
 
-            _blaiseCaseApiMock.Setup(c => c.GetPrimaryKeyValue(_dataRecordMock.Object)).Returns(caseId);
+            _blaiseCaseApiMock.Setup(c => c.GetPrimaryKeyValues(_dataRecordMock.Object)).Returns(primaryKeys);
 
             _blaiseCaseApiMock.Setup(c => c.GetRecordDataFields(_dataRecordMock.Object)).Returns(fieldData);
 
@@ -158,7 +162,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _sut.GetCase(_serverParkName, _questionnaireName, caseId);
 
             //assert
-            _blaiseCaseApiMock.Verify(v => v.GetCase(caseId, _questionnaireName, _serverParkName), Times.Once);
+            _blaiseCaseApiMock.Verify(v => v.GetCase(primaryKeys, _questionnaireName, _serverParkName), Times.Once);
         }
 
         [Test]
@@ -166,12 +170,13 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             const string caseId = "1000001";
+            var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseId);
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            _blaiseCaseApiMock.Setup(c => c.GetCase(caseId, _questionnaireName, _serverParkName))
+            _blaiseCaseApiMock.Setup(c => c.GetCase(primaryKeys, _questionnaireName, _serverParkName))
                 .Returns(_dataRecordMock.Object);
 
-            _blaiseCaseApiMock.Setup(c => c.GetPrimaryKeyValue(_dataRecordMock.Object)).Returns(caseId);
+            _blaiseCaseApiMock.Setup(c => c.GetPrimaryKeyValues(_dataRecordMock.Object)).Returns(primaryKeys);
 
             _blaiseCaseApiMock.Setup(c => c.GetRecordDataFields(_dataRecordMock.Object)).Returns(fieldData);
 
@@ -260,13 +265,14 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             const string caseId = "1000001";
+            var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseId);
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
             //act
             _sut.CreateCase(_serverParkName, _questionnaireName, caseId, fieldData);
 
             //assert
-            _blaiseCaseApiMock.Verify(v => v.CreateCase(caseId, fieldData, _questionnaireName, _serverParkName), Times.Once);
+            _blaiseCaseApiMock.Verify(v => v.CreateCase(primaryKeys, fieldData, _questionnaireName, _serverParkName), Times.Once);
         }
 
         [Test]
@@ -501,13 +507,14 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             const string caseId = "1000001";
+            var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseId);
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
             //act
             _sut.UpdateCase(_serverParkName, _questionnaireName, caseId, fieldData);
 
             //assert
-            _blaiseCaseApiMock.Verify(v => v.UpdateCase(caseId, fieldData, _questionnaireName, _serverParkName), Times.Once);
+            _blaiseCaseApiMock.Verify(v => v.UpdateCase(primaryKeys, fieldData, _questionnaireName, _serverParkName), Times.Once);
         }
 
         [Test]
@@ -616,12 +623,13 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             const string caseId = "1000001";
+            var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseId);
 
             //act
             _sut.DeleteCase(_serverParkName, _questionnaireName, caseId);
 
             //assert
-            _blaiseCaseApiMock.Verify(v => v.RemoveCase(caseId, _questionnaireName, _serverParkName), Times.Once);
+            _blaiseCaseApiMock.Verify(v => v.RemoveCase(primaryKeys, _questionnaireName, _serverParkName), Times.Once);
         }
 
         [Test]
@@ -695,12 +703,13 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             const string caseId = "1000001";
+            var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseId);
 
             //act
             _sut.CaseExists(_serverParkName, _questionnaireName, caseId);
 
             //assert
-            _blaiseCaseApiMock.Verify(v => v.CaseExists(caseId, _questionnaireName, _serverParkName), Times.Once);
+            _blaiseCaseApiMock.Verify(v => v.CaseExists(primaryKeys, _questionnaireName, _serverParkName), Times.Once);
         }
 
         [TestCase(true)]
@@ -709,7 +718,8 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             const string caseId = "1000001";
-            _blaiseCaseApiMock.Setup(c => c.CaseExists(caseId, _questionnaireName, _serverParkName))
+            var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseId);
+            _blaiseCaseApiMock.Setup(c => c.CaseExists(primaryKeys, _questionnaireName, _serverParkName))
                 .Returns(exists);
 
             //act

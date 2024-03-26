@@ -201,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\UnityTests.cs" />
+    <Compile Include="Helpers\PrimaryKeyHelper.cs" />
     <Compile Include="Mappers\CatiDtoMapperTests.cs" />
     <Compile Include="Mappers\DataEntrySettingsDtoMapperTests.cs" />
     <Compile Include="Mappers\InstrumentNodeDtoMapperTests.cs" />
