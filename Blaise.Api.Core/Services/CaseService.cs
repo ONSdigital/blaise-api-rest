@@ -49,7 +49,8 @@ namespace Blaise.Api.Core.Services
 
         public string GetPostCode(string serverParkName, string questionnaireName, string caseId)
         {
-            var caseRecord = _blaiseCaseApi.GetCase(caseId, questionnaireName, serverParkName);
+            var primaryKeyValues = new Dictionary<string, string>{ { "QID.Serial_Number", caseId } };
+            var caseRecord = _blaiseCaseApi.GetCase(primaryKeyValues, questionnaireName, serverParkName);
 
             return _blaiseCaseApi.GetFieldValue(caseRecord, FieldNameType.PostCode).ValueAsText;
         }
@@ -60,11 +61,12 @@ namespace Blaise.Api.Core.Services
             questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
             caseId.ThrowExceptionIfNullOrEmpty("caseId");
 
-            var caseRecord = _blaiseCaseApi.GetCase(caseId, questionnaireName, serverParkName);
+            var primaryKeyValues = new Dictionary<string, string> { { "QID.Serial_Number", caseId } };
+            var caseRecord = _blaiseCaseApi.GetCase(primaryKeyValues, questionnaireName, serverParkName);
 
             return new CaseDto
             {
-                CaseId = _blaiseCaseApi.GetPrimaryKeyValue(caseRecord),
+                CaseId = caseId,
                 FieldData = _blaiseCaseApi.GetRecordDataFields(caseRecord)
             };
         }
@@ -77,7 +79,8 @@ namespace Blaise.Api.Core.Services
             caseId.ThrowExceptionIfNullOrEmpty("caseId");
             fieldData.ThrowExceptionIfNullOrEmpty("fieldData");
 
-            _blaiseCaseApi.CreateCase(caseId, fieldData, questionnaireName, serverParkName);
+            var primaryKeyValues = new Dictionary<string, string> { { "QID.Serial_Number", caseId } };
+            _blaiseCaseApi.CreateCase(primaryKeyValues, fieldData, questionnaireName, serverParkName);
         }
 
         public int CreateCases(List<CaseDto> fieldData, string questionnaireName, string serverParkName)
