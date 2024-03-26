@@ -265,6 +265,7 @@
     <Compile Include="Helpers\Extensions\FileExtensions.cs" />
     <Compile Include="Helpers\Files\FileSystemHelper.cs" />
     <Compile Include="Helpers\Files\OnlineFileHelper.cs" />
+    <Compile Include="Helpers\PrimaryKey\PrimaryKeyHelper.cs" />
     <Compile Include="Helpers\Questionnaire\QuestionnaireHelper.cs" />
     <Compile Include="Helpers\RestApi\RestApiHelper.cs" />
     <Compile Include="Models\Case\CaseModel.cs" />

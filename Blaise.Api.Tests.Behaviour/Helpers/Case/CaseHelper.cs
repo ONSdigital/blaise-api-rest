@@ -1,6 +1,7 @@
 ﻿using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Api.Tests.Behaviour.Models.Case;
 using Blaise.Api.Tests.Behaviour.Models.Enums;
+using Blaise.Api.Tests.Unit.Helpers;
 using Blaise.Nuget.Api.Api;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Extensions;
@@ -78,16 +79,18 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
         public void CreateCaseInBlaise(CaseModel caseModel)
         {
             var dataFields = BuildDataFieldsFromCaseModel(caseModel);
-
-            _blaiseCaseApi.CreateCase(caseModel.PrimaryKey, dataFields,
+            var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseModel.PrimaryKey);
+            
+            _blaiseCaseApi.CreateCase(primaryKeys, dataFields,
                 BlaiseConfigurationHelper.QuestionnaireName, BlaiseConfigurationHelper.ServerParkName);
         }
 
         public void CreateCaseInFile(string databaseFile, CaseModel caseModel)
         {
             var dataFields = BuildDataFieldsFromCaseModel(caseModel);
+            var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseModel.PrimaryKey);
 
-            _blaiseCaseApi.CreateCase(databaseFile, caseModel.PrimaryKey, dataFields);
+            _blaiseCaseApi.CreateCase(databaseFile, primaryKeys, dataFields);
         }
 
         private Dictionary<string, string> BuildDataFieldsFromCaseModel(CaseModel caseModel)
@@ -113,10 +116,12 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
             while (!casesInDatabase.EndOfSet)
             {
                 var caseRecord = casesInDatabase.ActiveRecord;
+                var primaryKey = _blaiseCaseApi.GetPrimaryKeyValues(caseRecord)["QID.Serial_Number"];
+
                 var outcome = _blaiseCaseApi.GetFieldValue(caseRecord, FieldNameType.HOut).IntegerValue.ToString(CultureInfo.InvariantCulture);
                 var mode = _blaiseCaseApi.GetFieldValue(caseRecord, FieldNameType.Mode).EnumerationValue;
 
-                caseModels.Add(new CaseModel(_blaiseCaseApi.GetPrimaryKeyValue(caseRecord), outcome, (ModeType)mode, DateTime.Now));
+                caseModels.Add(new CaseModel(primaryKey, outcome, (ModeType)mode, DateTime.Now));
                 casesInDatabase.MoveNext();
             }
 
@@ -130,7 +135,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
 
             while (!cases.EndOfSet)
             {
-                var primaryKey = _blaiseCaseApi.GetPrimaryKeyValue(cases.ActiveRecord);
+                var primaryKey = _blaiseCaseApi.GetPrimaryKeyValues(cases.ActiveRecord);
 
                 _blaiseCaseApi.RemoveCase(primaryKey, BlaiseConfigurationHelper.QuestionnaireName,
                     BlaiseConfigurationHelper.ServerParkName);
@@ -147,7 +152,8 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
 
         public ModeType GetMode(string primaryKey)
         {
-            var field = _blaiseCaseApi.GetFieldValue(primaryKey, BlaiseConfigurationHelper.QuestionnaireName,
+            var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(primaryKey);
+            var field = _blaiseCaseApi.GetFieldValue(primaryKeys, BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName, FieldNameType.Mode);
 
             return (ModeType)field.EnumerationValue;
@@ -155,7 +161,8 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
 
         public void MarkCaseAsOpenInCati(string primaryKey)
         {
-            var dataRecord = _blaiseCaseApi.GetCase(primaryKey, BlaiseConfigurationHelper.QuestionnaireName,
+            var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(primaryKey);
+            var dataRecord = _blaiseCaseApi.GetCase(primaryKeys, BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
 
             var fieldData = new Dictionary<string, string> {
