@@ -130,18 +130,8 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
 
         public void DeleteCases()
         {
-            var cases = _blaiseCaseApi.GetCases(BlaiseConfigurationHelper.QuestionnaireName,
+            _blaiseCaseApi.RemoveCases(BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
-
-            while (!cases.EndOfSet)
-            {
-                var primaryKey = _blaiseCaseApi.GetPrimaryKeyValues(cases.ActiveRecord);
-
-                _blaiseCaseApi.RemoveCase(primaryKey, BlaiseConfigurationHelper.QuestionnaireName,
-                    BlaiseConfigurationHelper.ServerParkName);
-
-                cases.MoveNext();
-            }
         }
 
         public int NumberOfCasesInQuestionnaire()
