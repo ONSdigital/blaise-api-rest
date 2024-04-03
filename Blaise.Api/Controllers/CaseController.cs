@@ -89,6 +89,22 @@ namespace Blaise.Api.Controllers
             return Ok(caseDto);
         }
 
+        [HttpGet]
+        [Route("/multikey")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(CaseDto))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues)
+        {
+            // _loggingService.LogInfo($"Attempting to get case '{caseId}'");
+
+            var caseDto = _caseService.GetCase(serverParkName, questionnaireName, caseId);
+
+           // _loggingService.LogInfo($"Successfully got case '{caseId}'");
+
+            return Ok(caseDto);
+        }
+
         [HttpPost]
         [Route("{caseId}")]
         [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]

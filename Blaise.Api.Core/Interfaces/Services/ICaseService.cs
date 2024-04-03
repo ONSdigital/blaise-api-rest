@@ -13,7 +13,8 @@ namespace Blaise.Api.Core.Interfaces.Services
 
         string GetPostCode(string serverParkName, string questionnaireName, string caseId);
 
-        CaseDto GetCase(string serverParkName, string questionnaireName, string caseId);
+        CaseDto GetCase(string serverParkName, string questionnaireName, string caseId); 
+        CaseDto GetCase(string serverParkName, string questionnaireName, List<string> KeyNames, List<string> keyValues);
 
         int CreateCases(List<CaseDto> fieldData, string questionnaireName, string serverParkName);
 
