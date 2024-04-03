@@ -70,6 +70,11 @@ namespace Blaise.Api.Core.Services
             };
         }
 
+        public CaseDto GetCase(string serverParkName, string questionnaireName, List<string> KeyNames, List<string> keyValues)
+        {
+            throw new NotImplementedException();
+        }
+
         public void CreateCase(string serverParkName, string questionnaireName, string caseId,
             Dictionary<string, string> fieldData)
         {
