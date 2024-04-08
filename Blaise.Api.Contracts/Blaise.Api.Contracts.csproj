@@ -76,6 +76,7 @@
     <Compile Include="Enums\HealthStatusType.cs" />
     <Compile Include="Interfaces\IConfigurationProvider.cs" />
     <Compile Include="Interfaces\ILoggingService.cs" />
+    <Compile Include="Models\Case\CaseMultikeyDto.cs" />
     <Compile Include="Models\Case\CaseStatusDto.cs" />
     <Compile Include="Models\Case\CaseDto.cs" />
     <Compile Include="Models\Cati\CatiQuestionnaireDto.cs" />

@@ -70,9 +70,26 @@ namespace Blaise.Api.Core.Services
             };
         }
 
-        public CaseDto GetCase(string serverParkName, string questionnaireName, List<string> KeyNames, List<string> keyValues)
+        public CaseMultikeyDto GetCase(string serverParkName, string questionnaireName, List<string> keyNames, List<string> keyValues)
         {
-            throw new NotImplementedException();
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
+            keyNames.ThrowExceptionIfNullOrEmpty("keyNames");
+            keyValues.ThrowExceptionIfNullOrEmpty("keyValues");
+
+            var primaryKeyValues = new Dictionary<string, string>();
+            for (var i = 0; i < keyNames.Count; i++)
+            {
+                primaryKeyValues.Add(keyNames[i], keyValues[i]);
+            }
+
+            var caseRecord = _blaiseCaseApi.GetCase(primaryKeyValues, questionnaireName, serverParkName);
+
+            return new CaseMultikeyDto
+            {
+                PrimaryKeyValues = primaryKeyValues,
+                FieldData = _blaiseCaseApi.GetRecordDataFields(caseRecord)
+            };
         }
 
         public void CreateCase(string serverParkName, string questionnaireName, string caseId,

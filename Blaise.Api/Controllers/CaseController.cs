@@ -98,7 +98,7 @@ namespace Blaise.Api.Controllers
         {
             // _loggingService.LogInfo($"Attempting to get case '{caseId}'");
 
-            var caseDto = _caseService.GetCase(serverParkName, questionnaireName, caseId);
+            var caseDto = _caseService.GetCase(serverParkName, questionnaireName, keyNames, keyValues);
 
            // _loggingService.LogInfo($"Successfully got case '{caseId}'");
 
