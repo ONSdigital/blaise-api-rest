@@ -604,6 +604,246 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
+        public void Given_Valid_Arguments_When_I_Call_CreateCase_With_A_Multikey_Then_The_Correct_Service_Is_Called()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            var primaryKeyValues = new Dictionary<string, string>
+            {
+                { "mainSurveyId", "123-234343-343243" },
+                { "id", "9000001" }
+            };
+
+            //act
+            _sut.CreateCase(_serverParkName, _questionnaireName, keyNames, keyValues, fieldData);
+
+            //assert
+            _blaiseCaseApiMock.Verify(v => v.CreateCase(primaryKeyValues, fieldData, _questionnaireName, _serverParkName), Times.Once);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_CreateCase_With_A_Multikey_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(string.Empty,
+                _questionnaireName, keyNames, keyValues, fieldData));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_CreateCase_With_A_Multikey_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(null,
+                _questionnaireName, keyNames, keyValues, fieldData));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_QuestionnaireName_When_I_Call_CreateCase_With_A_Multikey_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(_serverParkName,
+                string.Empty, keyNames, keyValues, fieldData));
+            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_QuestionnaireName_When_I_Call_CreateCase_With_A_Multikey_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(_serverParkName,
+                null, keyNames, keyValues, fieldData));
+            Assert.AreEqual("questionnaireName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_Empty_FieldData_When_I_Call_CreateCase_With_A_Multikey_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string>();
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(_serverParkName,
+                _questionnaireName, keyNames, keyValues, fieldData));
+            Assert.AreEqual("A value for the argument 'fieldData' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_Null_FieldData_When_I_Call_CreateCase_With_A_Multikey_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(_serverParkName,
+                _serverParkName, keyNames, keyValues, null));
+            Assert.AreEqual("fieldData", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_Empty_keyNames_When_I_Call_CreateCase_With_A_Multikey_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+            var keyNames = new List<string>();
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(_serverParkName,
+                _questionnaireName, keyNames, keyValues, fieldData));
+            Assert.AreEqual("A value for the argument 'keyNames' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_Null_keyNames_When_I_Call_CreateCase_With_A_Multikey_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(_serverParkName,
+                _serverParkName, null, keyValues, fieldData));
+            Assert.AreEqual("keyNames", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_Empty_keyValues_When_I_Call_CreateCase_With_A_Multikey_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>();
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(_serverParkName,
+                _questionnaireName, keyNames, keyValues, fieldData));
+            Assert.AreEqual("A value for the argument 'keyValues' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_Null_keyValues_When_I_Call_CreateCase_With_A_Multikey_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(_serverParkName,
+                _serverParkName, keyNames, null, fieldData));
+            Assert.AreEqual("keyValues", exception.ParamName);
+        }
+
+        [Test]
         public void Given_Valid_Arguments_When_I_Call_CreateCases_Then_The_Correct_Service_Is_Called()
         {
             // Arrange

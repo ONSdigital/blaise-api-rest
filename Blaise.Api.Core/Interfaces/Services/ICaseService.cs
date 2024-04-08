@@ -1,5 +1,6 @@
 ﻿using Blaise.Api.Contracts.Models.Case;
 using System.Collections.Generic;
+using StatNeth.Blaise.API.Meta.Constants;
 
 namespace Blaise.Api.Core.Interfaces.Services
 {
@@ -19,6 +20,9 @@ namespace Blaise.Api.Core.Interfaces.Services
         int CreateCases(List<CaseDto> fieldData, string questionnaireName, string serverParkName);
 
         void CreateCase(string serverParkName, string questionnaireName, string caseId,
+            Dictionary<string, string> fieldData);
+
+        void CreateCase(string serverParkName, string questionnaireName, List<string> keyNames, List<string> keyValues,
             Dictionary<string, string> fieldData);
 
         void UpdateCase(string serverParkName, string questionnaireName, string caseId, Dictionary<string, string> fieldData);

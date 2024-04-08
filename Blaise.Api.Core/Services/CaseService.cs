@@ -104,6 +104,23 @@ namespace Blaise.Api.Core.Services
             _blaiseCaseApi.CreateCase(primaryKeyValues, fieldData, questionnaireName, serverParkName);
         }
 
+        public void CreateCase(string serverParkName, string questionnaireName, List<string> keyNames, List<string> keyValues,
+            Dictionary<string, string> fieldData)
+        {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
+            fieldData.ThrowExceptionIfNullOrEmpty("fieldData");
+            keyNames.ThrowExceptionIfNullOrEmpty("keyNames");
+            keyValues.ThrowExceptionIfNullOrEmpty("keyValues");
+
+            var primaryKeyValues = new Dictionary<string, string>();
+            for (var i = 0; i < keyNames.Count; i++)
+            {
+                primaryKeyValues.Add(keyNames[i], keyValues[i]);
+            }
+            _blaiseCaseApi.CreateCase(primaryKeyValues, fieldData, questionnaireName, serverParkName);
+        }
+
         public int CreateCases(List<CaseDto> fieldData, string questionnaireName, string serverParkName)
         {
             _blaiseCaseApi.RemoveCases(questionnaireName, serverParkName);
