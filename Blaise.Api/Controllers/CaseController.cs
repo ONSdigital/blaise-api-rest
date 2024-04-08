@@ -8,6 +8,7 @@ using System.Web.Http;
 
 namespace Blaise.Api.Controllers
 {
+    using StatNeth.Blaise.API.Meta.Constants;
     using System.Linq;
     using System.Web.Http.Description;
 
@@ -57,6 +58,19 @@ namespace Blaise.Api.Controllers
         public IHttpActionResult GetCaseExists([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] string caseId)
         {
             var exists = _caseService.CaseExists(serverParkName, questionnaireName, caseId);
+
+            return Ok(exists);
+        }
+
+
+        [HttpGet]
+        [Route("/multikey")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetCaseExists([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues)
+        {
+            var exists = _caseService.CaseExists(serverParkName, questionnaireName, keyNames, keyValues);
 
             return Ok(exists);
         }
@@ -123,6 +137,23 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpPost]
+        [Route("/multikey")]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult CreateCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues,
+            [FromBody] Dictionary<string, string> fieldData)
+        {
+            //_loggingService.LogInfo($"Attempting to create case '{caseId}'");
+
+            _caseService.CreateCase(serverParkName, questionnaireName, keyNames, keyValues, fieldData);
+
+            // _loggingService.LogInfo($"Successfully created case '{caseId}'");
+            var urlParams = "";
+            return Created($"{Request.RequestUri}/cases/multikey?{urlParams}", urlParams);
+        }
+
+        [HttpPost]
         [Route("")]
         [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
@@ -165,6 +196,22 @@ namespace Blaise.Api.Controllers
             return NoContent();
         }
 
+        [HttpPatch]
+        [Route("/multikey")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult UpdateCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues,
+            [FromBody] Dictionary<string, string> fieldData)
+        {
+            //_loggingService.LogInfo($"Attempting to update case '{caseId}'");
+
+            _caseService.UpdateCase(serverParkName, questionnaireName, keyNames, keyValues, fieldData);
+
+            //_loggingService.LogInfo($"Successfully updated case '{caseId}'");
+
+            return NoContent();
+        }
 
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpDelete]
@@ -179,6 +226,23 @@ namespace Blaise.Api.Controllers
             _caseService.DeleteCase(serverParkName, questionnaireName, caseId);
 
             _loggingService.LogInfo($"Successfully deleted case '{caseId}'");
+
+            return NoContent();
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [HttpDelete]
+        [Route("/multikey")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult DeleteCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues,)
+        {
+            //_loggingService.LogInfo($"Attempting to delete case '{caseId}'");
+
+            _caseService.DeleteCase(serverParkName, questionnaireName, keyNames, keyValues);
+
+            //_loggingService.LogInfo($"Successfully deleted case '{caseId}'");
 
             return NoContent();
         }
