@@ -187,6 +187,21 @@ namespace Blaise.Api.Core.Services
             _blaiseCaseApi.RemoveCase(primaryKeyValues, questionnaireName, serverParkName);
         }
 
+        public void DeleteCase(string serverParkName, string questionnaireName, List<string> keyNames, List<string> keyValues)
+        {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
+            keyNames.ThrowExceptionIfNullOrEmpty("keyNames");
+            keyValues.ThrowExceptionIfNullOrEmpty("keyValues");
+
+            var primaryKeyValues = new Dictionary<string, string>();
+            for (var i = 0; i < keyNames.Count; i++)
+            {
+                primaryKeyValues.Add(keyNames[i], keyValues[i]);
+            }
+            _blaiseCaseApi.RemoveCase(primaryKeyValues, questionnaireName, serverParkName);
+        }
+
         public bool CaseExists(string serverParkName, string questionnaireName, string caseId)
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");

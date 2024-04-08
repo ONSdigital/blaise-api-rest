@@ -26,7 +26,6 @@ namespace Blaise.Api.Tests.Unit.Services
 
         private string _questionnaireName;
         private string _serverParkName;
-        private object list;
 
         [SetUp]
         public void SetUpTests()
@@ -1108,7 +1107,6 @@ namespace Blaise.Api.Tests.Unit.Services
                 { "id", "9000001" }
             };
 
-
             //act
             _sut.UpdateCase(_serverParkName, _questionnaireName, keyNames, keyValues, fieldData);
 
@@ -1401,6 +1399,191 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(_serverParkName,
                 _serverParkName, null));
             Assert.AreEqual("caseId", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_DeleteCase_With_A_Multikey_Then_The_Correct_Service_Is_Called()
+        {
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+            var primaryKeyValues = new Dictionary<string, string>
+            {
+                { "mainSurveyId", "123-234343-343243" },
+                { "id", "9000001" }
+            };
+
+            //act
+            _sut.DeleteCase(_serverParkName, _questionnaireName, keyNames, keyValues);
+
+            //assert
+            _blaiseCaseApiMock.Verify(v => v.RemoveCase(primaryKeyValues, _questionnaireName, _serverParkName), Times.Once);
+        }
+
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_DeleteCase_With_A_Multikey_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(string.Empty,
+                _questionnaireName, keyNames, keyValues));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_DeleteCase_With_A_Multikey_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(null,
+                _questionnaireName, keyNames, keyValues));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_QuestionnaireName_When_I_Call_DeleteCase_With_A_Multikey_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(_serverParkName,
+                string.Empty, keyNames, keyValues));
+            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_QuestionnaireName_When_I_Call_DeleteCase_With_A_Multikey_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(_serverParkName,
+                null, keyNames, keyValues));
+            Assert.AreEqual("questionnaireName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_KeyNames_When_I_Call_DeleteCase_With_A_Multikey_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>();
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(_serverParkName,
+                string.Empty, keyNames, keyValues));
+            Assert.AreEqual("A value for the argument 'keyNames' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_KeyNames_When_I_Call_DeleteCase_With_A_Multikey_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(_serverParkName,
+                _questionnaireName, null, keyValues));
+            Assert.AreEqual("keyNames", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_KeyValues_When_I_Call_DeleteCase_With_A_Multikey_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>();
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(_serverParkName,
+                string.Empty, keyNames, keyValues));
+            Assert.AreEqual("A value for the argument 'keyValues' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_KeyValues_When_I_Call_DeleteCase_With_A_Multikey_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(_serverParkName,
+                _questionnaireName, keyNames, null));
+            Assert.AreEqual("keyValues", exception.ParamName);
         }
 
         [Test]
