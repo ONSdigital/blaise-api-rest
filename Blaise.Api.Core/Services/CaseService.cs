@@ -7,6 +7,7 @@ using System.Linq;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Blaise.Nuget.Api.Contracts.Models;
+using StatNeth.Blaise.API.Meta.Constants;
 
 namespace Blaise.Api.Core.Services
 {
@@ -155,6 +156,24 @@ namespace Blaise.Api.Core.Services
             fieldData.ThrowExceptionIfNullOrEmpty("fieldData");
 
             var primaryKeyValues = new Dictionary<string, string> { { "QID.Serial_Number", caseId } };
+            _blaiseCaseApi.UpdateCase(primaryKeyValues, fieldData, questionnaireName, serverParkName);
+        }
+
+
+        public void UpdateCase(string serverParkName, string questionnaireName, List<string> keyNames, List<string> keyValues, Dictionary<string, string> fieldData)
+        {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
+            fieldData.ThrowExceptionIfNullOrEmpty("fieldData");
+            keyNames.ThrowExceptionIfNullOrEmpty("keyNames");
+            keyValues.ThrowExceptionIfNullOrEmpty("keyValues");
+
+
+            var primaryKeyValues = new Dictionary<string, string>();
+            for (var i = 0; i < keyNames.Count; i++)
+            {
+                primaryKeyValues.Add(keyNames[i], keyValues[i]);
+            }
             _blaiseCaseApi.UpdateCase(primaryKeyValues, fieldData, questionnaireName, serverParkName);
         }
 
