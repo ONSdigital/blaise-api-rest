@@ -1682,5 +1682,191 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName, null));
             Assert.AreEqual("caseId", exception.ParamName);
         }
+
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Given_Valid_Arguments_When_I_Call_CaseExists__With_a_Multikey_Then_The_Expected_Value_Is_Returned(bool exists)
+        {
+            //arrange
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+            var primaryKeyValues = new Dictionary<string, string>
+            {
+                { "mainSurveyId", "123-234343-343243" },
+                { "id", "9000001" }
+            };
+
+            _blaiseCaseApiMock.Setup(c => c.CaseExists(primaryKeyValues, _questionnaireName, _serverParkName))
+                .Returns(exists);
+
+            //act
+            var result = _sut.CaseExists(_serverParkName, _questionnaireName, keyNames, keyValues);
+
+            //assert
+            Assert.AreEqual(result, exists);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_CaseExists_With_A_Multikey_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(string.Empty,
+                _questionnaireName, keyNames, keyValues));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_CaseExists_With_A_Multikey_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(null,
+                _questionnaireName, keyNames, keyValues));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_QuestionnaireName_When_I_Call_CaseExists_With_A_Multikey_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(_serverParkName, string.Empty,
+                keyNames, keyValues));
+            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_QuestionnaireName_When_I_Call_CaseExists_With_A_Multikey_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(_serverParkName ,null, keyNames, keyValues));
+            Assert.AreEqual("questionnaireName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_keyNames_When_I_Call_CaseExists_With_A_Multikey_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>();
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(_serverParkName, _questionnaireName,
+                keyNames, keyValues));
+            Assert.AreEqual("A value for the argument 'keyNames' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_keyNames_When_I_Call_CaseExists_With_A_Multikey_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(_serverParkName, _questionnaireName, null, keyValues));
+            Assert.AreEqual("keyNames", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_keyValues_When_I_Call_CaseExists_With_A_Multikey_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>();
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(_serverParkName, _questionnaireName,
+                keyNames, keyValues));
+            Assert.AreEqual("A value for the argument 'keyValues' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_keyValues_When_I_Call_CaseExists_With_A_Multikey_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(_serverParkName, _questionnaireName, keyNames, null));
+            Assert.AreEqual("keyValues", exception.ParamName);
+        }
     }
 }

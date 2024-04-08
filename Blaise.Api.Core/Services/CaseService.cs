@@ -211,5 +211,20 @@ namespace Blaise.Api.Core.Services
             var primaryKeyValues = new Dictionary<string, string> { { "QID.Serial_Number", caseId } };
             return _blaiseCaseApi.CaseExists(primaryKeyValues, questionnaireName, serverParkName);
         }
+
+        public bool CaseExists(string serverParkName, string questionnaireName, List<string> keyNames, List<string> keyValues)
+        {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
+            keyNames.ThrowExceptionIfNullOrEmpty("keyNames");
+            keyValues.ThrowExceptionIfNullOrEmpty("keyValues");
+
+            var primaryKeyValues = new Dictionary<string, string>();
+            for (var i = 0; i < keyNames.Count; i++)
+            {
+                primaryKeyValues.Add(keyNames[i], keyValues[i]);
+            }
+            return _blaiseCaseApi.CaseExists(primaryKeyValues, questionnaireName, serverParkName);
+        }
     }
 }
