@@ -64,7 +64,7 @@ namespace Blaise.Api.Controllers
 
 
         [HttpGet]
-        [Route("/multikey")]
+        [Route("exists/multikey")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
@@ -104,7 +104,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("/multikey")]
+        [Route("multikey")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(CaseDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
@@ -114,7 +114,7 @@ namespace Blaise.Api.Controllers
 
             var caseDto = _caseService.GetCase(serverParkName, questionnaireName, keyNames, keyValues);
 
-           // _loggingService.LogInfo($"Successfully got case '{caseId}'");
+            // _loggingService.LogInfo($"Successfully got case '{caseId}'");
 
             return Ok(caseDto);
         }
@@ -137,7 +137,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpPost]
-        [Route("/multikey")]
+        [Route("multikey")]
         [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
@@ -150,7 +150,7 @@ namespace Blaise.Api.Controllers
 
             // _loggingService.LogInfo($"Successfully created case '{caseId}'");
             var urlParams = "";
-            return Created($"{Request.RequestUri}/cases/multikey?{urlParams}", urlParams);
+            return Created($"{Request.RequestUri}", fieldData);
         }
 
         [HttpPost]
@@ -197,7 +197,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpPatch]
-        [Route("/multikey")]
+        [Route("multikey")]
         [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
@@ -230,13 +230,13 @@ namespace Blaise.Api.Controllers
             return NoContent();
         }
 
-        [ApiExplorerSettings(IgnoreApi = true)]
+        //[ApiExplorerSettings(IgnoreApi = true)]
         [HttpDelete]
-        [Route("/multikey")]
+        [Route("multikey")]
         [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult DeleteCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues,)
+        public IHttpActionResult DeleteCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues)
         {
             //_loggingService.LogInfo($"Attempting to delete case '{caseId}'");
 
