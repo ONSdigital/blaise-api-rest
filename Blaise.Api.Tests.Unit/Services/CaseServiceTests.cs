@@ -8,12 +8,10 @@ using Blaise.Nuget.Api.Contracts.Models;
 using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.DataRecord;
-using StatNeth.Blaise.API.Meta.Constants;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using StatNeth.Blaise.Data.Provider.JsonData;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
@@ -1397,7 +1395,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(_serverParkName,
-                _serverParkName, null));
+                _questionnaireName, null));
             Assert.AreEqual("caseId", exception.ParamName);
         }
 
@@ -1531,7 +1529,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(_serverParkName,
-                string.Empty, keyNames, keyValues));
+                _questionnaireName, keyNames, keyValues));
             Assert.AreEqual("A value for the argument 'keyNames' must be supplied", exception.Message);
         }
 
@@ -1565,7 +1563,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(_serverParkName,
-                string.Empty, keyNames, keyValues));
+                _questionnaireName, keyNames, keyValues));
             Assert.AreEqual("A value for the argument 'keyValues' must be supplied", exception.Message);
         }
 

@@ -7,7 +7,6 @@ using System.Linq;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Blaise.Nuget.Api.Contracts.Models;
-using StatNeth.Blaise.API.Meta.Constants;
 
 namespace Blaise.Api.Core.Services
 {

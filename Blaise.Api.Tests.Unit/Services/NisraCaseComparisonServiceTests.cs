@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Contracts.Models.Case;
 using Blaise.Api.Core.Services;
 using Blaise.Api.Tests.Unit.Helpers;
 using Blaise.Nuget.Api.Contracts.Models;

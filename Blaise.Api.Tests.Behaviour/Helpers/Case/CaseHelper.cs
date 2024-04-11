@@ -1,7 +1,6 @@
 ﻿using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Api.Tests.Behaviour.Models.Case;
 using Blaise.Api.Tests.Behaviour.Models.Enums;
-using Blaise.Api.Tests.Unit.Helpers;
 using Blaise.Nuget.Api.Api;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Extensions;
@@ -9,6 +8,7 @@ using Blaise.Nuget.Api.Contracts.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Blaise.Api.Tests.Behaviour.Helpers.PrimaryKey;
 
 namespace Blaise.Api.Tests.Behaviour.Helpers.Case
 {

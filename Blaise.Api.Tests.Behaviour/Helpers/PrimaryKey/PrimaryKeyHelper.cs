@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Blaise.Api.Tests.Unit.Helpers
+namespace Blaise.Api.Tests.Behaviour.Helpers.PrimaryKey
 {
     public static class PrimaryKeyHelper
     {

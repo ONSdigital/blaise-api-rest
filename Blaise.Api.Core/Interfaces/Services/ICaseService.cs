@@ -1,11 +1,8 @@
 ﻿using Blaise.Api.Contracts.Models.Case;
 using System.Collections.Generic;
-using StatNeth.Blaise.API.Meta.Constants;
 
 namespace Blaise.Api.Core.Interfaces.Services
 {
-    using Blaise.Nuget.Api.Contracts.Models;
-
     public interface ICaseService
     {
         List<string> GetCaseIds(string serverParkName, string questionnaireName);
