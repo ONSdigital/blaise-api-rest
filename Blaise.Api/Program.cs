@@ -1,4 +1,6 @@
-﻿namespace Blaise.Api
+﻿using System.ServiceProcess;
+
+namespace Blaise.Api
 {
     internal class Program
     {
