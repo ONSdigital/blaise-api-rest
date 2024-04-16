@@ -59,7 +59,7 @@ namespace Blaise.Api.Tests.Unit.Providers
 
             //assert
             Assert.NotNull(result);
-            Assert.AreEqual(@"dqs-bucket", result);
+            Assert.AreEqual("dqs-bucket", result);
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace Blaise.Api.Tests.Unit.Providers
 
             //assert
             Assert.NotNull(result);
-            Assert.AreEqual(@"nisra-bucket", result);
+            Assert.AreEqual("nisra-bucket", result);
         }
 
         [Test]

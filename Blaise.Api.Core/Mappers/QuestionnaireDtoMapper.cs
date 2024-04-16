@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Core.Interfaces.Mappers;

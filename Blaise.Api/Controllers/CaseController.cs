@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
 
+using System.Linq;
+using System.Web.Http.Description;
+
 namespace Blaise.Api.Controllers
 {
-    using System.Linq;
-    using System.Web.Http.Description;
-
     [RoutePrefix("api/v2/serverparks/{serverParkName}/questionnaires/{questionnaireName}/cases")]
     public class CaseController : BaseController
     {
@@ -61,6 +61,19 @@ namespace Blaise.Api.Controllers
             return Ok(exists);
         }
 
+
+        [HttpGet]
+        [Route("exists/multikey")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetCaseExists([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues)
+        {
+            var exists = _caseService.CaseExists(serverParkName, questionnaireName, keyNames, keyValues);
+
+            return Ok(exists);
+        }
+
         [HttpGet]
         [Route("{caseId}/postcode")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(string))]
@@ -89,6 +102,22 @@ namespace Blaise.Api.Controllers
             return Ok(caseDto);
         }
 
+        [HttpGet]
+        [Route("multikey")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(CaseDto))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues)
+        {
+             _loggingService.LogInfo($"Attempting to get case with multikey parameters' {keyNames} {keyValues}'");
+
+            var caseDto = _caseService.GetCase(serverParkName, questionnaireName, keyNames, keyValues);
+
+             _loggingService.LogInfo("Successfully got multikey case");
+
+            return Ok(caseDto);
+        }
+
         [HttpPost]
         [Route("{caseId}")]
         [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
@@ -103,7 +132,23 @@ namespace Blaise.Api.Controllers
 
             _loggingService.LogInfo($"Successfully created case '{caseId}'");
 
-            return Created($"{Request.RequestUri}/{caseId}", caseId);
+            return Created($"{Request.RequestUri}", fieldData);
+        }
+
+        [HttpPost]
+        [Route("multikey")]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult CreateCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues,
+            [FromBody] Dictionary<string, string> fieldData)
+        {
+            _loggingService.LogInfo($"Attempting to create case with multikey parameters '{keyNames} {keyValues}'");
+
+            _caseService.CreateCase(serverParkName, questionnaireName, keyNames, keyValues, fieldData);
+
+            _loggingService.LogInfo("Successfully created multikey case");
+            return Created($"{Request.RequestUri}", fieldData);
         }
 
         [HttpPost]
@@ -149,6 +194,22 @@ namespace Blaise.Api.Controllers
             return NoContent();
         }
 
+        [HttpPatch]
+        [Route("multikey")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult UpdateCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues,
+            [FromBody] Dictionary<string, string> fieldData)
+        {
+            _loggingService.LogInfo($"Attempting to update case with multikey parameters '{keyNames} {keyValues}'");
+
+            _caseService.UpdateCase(serverParkName, questionnaireName, keyNames, keyValues, fieldData);
+
+            _loggingService.LogInfo("Successfully updated multikey case");
+
+            return NoContent();
+        }
 
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpDelete]
@@ -163,6 +224,23 @@ namespace Blaise.Api.Controllers
             _caseService.DeleteCase(serverParkName, questionnaireName, caseId);
 
             _loggingService.LogInfo($"Successfully deleted case '{caseId}'");
+
+            return NoContent();
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [HttpDelete]
+        [Route("multikey")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult DeleteCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues)
+        {
+            _loggingService.LogInfo($"Attempting to delete case with multikey parameters '{keyNames} {keyValues}''");
+
+            _caseService.DeleteCase(serverParkName, questionnaireName, keyNames, keyValues);
+
+            _loggingService.LogInfo("Successfully deleted multikey case");
 
             return NoContent();
         }

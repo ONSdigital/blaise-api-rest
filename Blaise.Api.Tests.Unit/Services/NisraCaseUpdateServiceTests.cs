@@ -4,6 +4,7 @@ using System.Globalization;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
+using Blaise.Api.Tests.Unit.Helpers;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -22,6 +23,7 @@ namespace Blaise.Api.Tests.Unit.Services
         private Mock<IDataRecord> _existingDataRecordMock;
        
         private readonly string _primaryKey;
+        private readonly Dictionary<string, string> _primaryKeys;
         private readonly string _serverParkName;
         private readonly string _questionnaireName;
         private readonly int _outcomeCode;
@@ -36,6 +38,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public NisraCaseUpdateServiceTests()
         {
             _primaryKey = "SN123";
+            _primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(_primaryKey);
             _serverParkName = "Park1";
             _questionnaireName = "OPN123";
             _outcomeCode = 110;
@@ -52,7 +55,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _nisraDataRecordMock = new Mock<IDataRecord>();
             _newFieldData = new Dictionary<string, string>();
             _blaiseApiMock.Setup(b => b.GetRecordDataFields(_nisraDataRecordMock.Object)).Returns(_newFieldData);
-            _blaiseApiMock.Setup(b => b.GetPrimaryKeyValue(It.IsAny<IDataRecord>())).Returns(_primaryKey);
+            _blaiseApiMock.Setup(b => b.GetPrimaryKeyValues(It.IsAny<IDataRecord>())).Returns(_primaryKeys);
             _blaiseApiMock.Setup(b => b.GetOutcomeCode(It.IsAny<IDataRecord>())).Returns(_outcomeCode);
             _blaiseApiMock.Setup(b => b.GetLastUpdatedAsString(It.IsAny<IDataRecord>())).Returns(_lastUpdated);
 
@@ -126,7 +129,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             _blaiseApiMock.Setup(b => b.CaseInUseInCati(_existingDataRecordMock.Object)).Returns(false);
 
-            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _questionnaireName, _serverParkName))
+            _blaiseApiMock.Setup(b => b.GetCase(_primaryKeys, _questionnaireName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
 
             var lastUpdated = DateTime.Now.ToString(CultureInfo.InvariantCulture);
@@ -179,7 +182,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Record_Has_Updated_When_I_Call_RecordHasBeenUpdated_Then_True_Is_Returned()
         {
             //arrange
-            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _questionnaireName, _serverParkName))
+            _blaiseApiMock.Setup(b => b.GetCase(_primaryKeys, _questionnaireName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
 
             var lastUpdated = DateTime.Now.ToString(CultureInfo.InvariantCulture);
@@ -198,7 +201,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Record_Has_Not_Updated_Due_To_Different_LastUpdated_dates_When_I_Call_RecordHasBeenUpdated_Then_False_Is_Returned()
         {
             //arrange
-            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _questionnaireName, _serverParkName))
+            _blaiseApiMock.Setup(b => b.GetCase(_primaryKeys, _questionnaireName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
 
             var nisraLastUpdated = DateTime.Now.ToString(CultureInfo.InvariantCulture);

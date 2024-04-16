@@ -25,7 +25,8 @@ namespace Blaise.Api.Core.Services
 
         public void UpdateCase(IDataRecord newDataRecord, IDataRecord existingDataRecord, string questionnaireName, string serverParkName)
         {
-            var primaryKey = _blaiseApi.GetPrimaryKeyValue(newDataRecord);
+            var primaryKeyValues = _blaiseApi.GetPrimaryKeyValues(newDataRecord);
+            var primaryKey = primaryKeyValues["QID.Serial_Number"];
 
             try
             {
@@ -81,7 +82,8 @@ namespace Blaise.Api.Core.Services
         internal bool RecordHasBeenUpdated(string primaryKey, IDataRecord newDataRecord, 
             string questionnaireName, string serverParkName)
         {
-            var existingRecord = _blaiseApi.GetCase(primaryKey, questionnaireName, serverParkName);
+            var primaryKeyValues = new Dictionary<string, string> { { "QID.Serial_Number", primaryKey } };
+            var existingRecord = _blaiseApi.GetCase(primaryKeyValues, questionnaireName, serverParkName);
 
             return _blaiseApi.GetLastUpdatedAsString(existingRecord) == _blaiseApi.GetLastUpdatedAsString(newDataRecord);
         }

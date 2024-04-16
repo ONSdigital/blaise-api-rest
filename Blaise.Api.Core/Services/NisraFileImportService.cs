@@ -41,7 +41,8 @@ namespace Blaise.Api.Core.Services
 
                 if (CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, questionnaireName))
                 {
-                    var existingRecord = _blaiseApi.GetCase(nisraCaseStatusModel.PrimaryKey, questionnaireName, serverParkName);
+                    var primaryKeyValues = new Dictionary<string, string> { { "QID.Serial_Number", nisraCaseStatusModel.PrimaryKey } };
+                    var existingRecord = _blaiseApi.GetCase(primaryKeyValues, questionnaireName, serverParkName);
 
                     _onlineCaseUpdateService.UpdateCase(nisraRecord, existingRecord,
                         questionnaireName, serverParkName);
