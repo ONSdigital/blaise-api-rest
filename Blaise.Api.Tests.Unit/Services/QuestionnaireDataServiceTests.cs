@@ -84,7 +84,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Null_QuestionnaireDataDto_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.ImportOnlineDataAsync((QuestionnaireDataDto)null,_serverParkName,
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.ImportOnlineDataAsync(null, _serverParkName,
                 _questionnaireName, _tempPath));
             Assert.AreEqual("The argument 'questionnaireDataDto' must be supplied", exception.ParamName);
         }

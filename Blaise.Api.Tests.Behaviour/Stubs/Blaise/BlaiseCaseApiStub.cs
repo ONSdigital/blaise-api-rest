@@ -185,5 +185,70 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
         {
             throw new NotImplementedException();
         }
+
+        public bool CaseExists(Dictionary<string, string> primaryKeyValues, string questionnaireName, string serverParkName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, string> GetPrimaryKeyValues(IDataRecord dataRecord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDataRecord GetCase(Dictionary<string, string> primaryKeyValues, string questionnaireName, string serverParkName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDataRecord GetCase(Dictionary<string, string> primaryKeyValues, string databaseFile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateCase(Dictionary<string, string> primaryKeyValues, Dictionary<string, string> fieldData, string questionnaireName, string serverParkName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateCase(string databaseFile, Dictionary<string, string> primaryKeyValues, Dictionary<string, string> fieldData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateCase(Dictionary<string, string> primaryKeyValues, Dictionary<string, string> fieldData, string questionnaireName, string serverParkName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDataValue GetFieldValue(Dictionary<string, string> primaryKeyValues, string questionnaireName, string serverParkName, FieldNameType fieldNameType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveCase(Dictionary<string, string> primaryKeyValues, string questionnaireName, string serverParkName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LockDataRecord(Dictionary<string, string> primaryKeyValues, string questionnaireName, string serverParkName, string lockId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnLockDataRecord(Dictionary<string, string> primaryKeyValues, string questionnaireName, string serverParkName, string lockId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DataRecordIsLocked(Dictionary<string, string> primaryKeyValues, string questionnaireName, string serverParkName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CaseModel GetCaseModel(Dictionary<string, string> primaryKeyValues, string questionnaireName, string serverParkName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
