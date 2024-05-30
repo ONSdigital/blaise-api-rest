@@ -6,6 +6,12 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
 {
     public class BlaiseFileApiStub : IBlaiseFileApi
     {
+        public void UpdateQuestionnaireFileWithBatchedData(string questionnaireFile, string questionnaireName, string serverParkName,
+            int batchSize, bool addAudit = false)
+        {
+            throw new NotImplementedException();
+        }
+
         public void UpdateQuestionnaireFileWithSqlConnection(string questionnaireName, string questionnaireFile)
         {
             throw new NotImplementedException();
