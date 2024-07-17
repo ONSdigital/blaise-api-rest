@@ -48,12 +48,12 @@ namespace Blaise.Api.Tests.Unit.Mappers
             const string questionnaire1Name = "OPN2010A";
             var questionnaire1Id = Guid.NewGuid();
             const string serverPark1Name = "ServerParkA";
-            const string BlaiseVersion = "5.9.9";
+            const string blaiseVersion = "5.9.9";
 
             const int numberOfRecordForQuestionnaire1 = 20;
 
             var configurationMock = new Mock<IConfiguration2>();
-            configurationMock.Setup(c => c.BlaiseVersion).Returns(BlaiseVersion);
+            configurationMock.Setup(c => c.BlaiseVersion).Returns(blaiseVersion);
 
             var configurations = new List<IConfiguration> { configurationMock.Object };
 
@@ -94,7 +94,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.AreEqual(numberOfRecordForQuestionnaire1, result.DataRecordCount);
             Assert.AreEqual(QuestionnaireStatusType.Active.ToString(), result.Status);
             Assert.True(result.HasData);
-            Assert.AreEqual(BlaiseVersion, result.BlaiseVersion);
+            Assert.AreEqual(blaiseVersion, result.BlaiseVersion);
             Assert.AreSame(nodeList, result.Nodes);            
         }
 

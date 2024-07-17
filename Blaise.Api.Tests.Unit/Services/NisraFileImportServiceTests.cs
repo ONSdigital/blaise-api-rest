@@ -4,6 +4,7 @@ using System.Globalization;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
+using Blaise.Api.Tests.Unit.Helpers;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Blaise.Nuget.Api.Contracts.Models;
 using Moq;
@@ -43,8 +44,10 @@ namespace Blaise.Api.Tests.Unit.Services
             _questionnaireName = "OPN123";
             _databaseFileName = "OPN123.bdbx";
 
-            _nisraCaseStatusModel = new CaseStatusModel(_primaryKey, 110, DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture));
-            _existingStatusModel = new CaseStatusModel(_primaryKey, 210, DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture));
+            var primaryKeyValues = PrimaryKeyHelper.CreatePrimaryKeys(_primaryKey);
+
+            _nisraCaseStatusModel = new CaseStatusModel(primaryKeyValues, 110, DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture));
+            _existingStatusModel = new CaseStatusModel(primaryKeyValues, 210, DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture));
 
             _existingCaseStatusList = new List<CaseStatusModel>
             {
@@ -101,6 +104,8 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_The_Nisra_Record_Has_Updated_Data_When_I_Call_ImportNisraDatabaseFile_Then_The_Record_Is_Updated()
         {
             //arrange
+            var primaryKeyValues = PrimaryKeyHelper.CreatePrimaryKeys(_primaryKey);
+
             _dataSetMock.Setup(d => d.ActiveRecord).Returns(_newDataRecordMock.Object);
             _dataSetMock.SetupSequence(d => d.EndOfSet)
                 .Returns(false)
@@ -110,7 +115,7 @@ namespace Blaise.Api.Tests.Unit.Services
                     c.CaseNeedsToBeUpdated(_nisraCaseStatusModel, _existingStatusModel, _questionnaireName))
                 .Returns(true);
 
-            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _questionnaireName, _serverParkName))
+            _blaiseApiMock.Setup(b => b.GetCase(primaryKeyValues, _questionnaireName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
 
             //act
@@ -125,6 +130,8 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_The_Nisra_Record_Has_Updated_Data_When_I_Call_ImportNisraDatabaseFile_Then_The_Record_Is_Not_Updated()
         {
             //arrange
+            var primaryKeyValues = PrimaryKeyHelper.CreatePrimaryKeys(_primaryKey);
+
             _dataSetMock.Setup(d => d.ActiveRecord).Returns(_newDataRecordMock.Object);
             _dataSetMock.SetupSequence(d => d.EndOfSet)
                 .Returns(false)
@@ -134,7 +141,7 @@ namespace Blaise.Api.Tests.Unit.Services
                     c.CaseNeedsToBeUpdated(_nisraCaseStatusModel, _existingStatusModel, _questionnaireName))
                 .Returns(false);
 
-            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _questionnaireName, _serverParkName))
+            _blaiseApiMock.Setup(b => b.GetCase(primaryKeyValues, _questionnaireName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
 
             //act
@@ -150,9 +157,11 @@ namespace Blaise.Api.Tests.Unit.Services
             Given_A_Case_Exists_In_Nisra_But_Not_In_The_Database_When_I_Call_ImportNisraDatabaseFile_Then_Update_Is_Not_Called_And_A_Warning_Is_Logged()
         {
             //arrange
+            var primaryKeyValues = PrimaryKeyHelper.CreatePrimaryKeys(_primaryKey);
+
             var existingCaseStatusList = new List<CaseStatusModel>
             {
-                new CaseStatusModel("0", 110, DateTime.Now.ToString(CultureInfo.InvariantCulture))
+                new CaseStatusModel(PrimaryKeyHelper.CreatePrimaryKeys("0"), 110, DateTime.Now.ToString(CultureInfo.InvariantCulture))
             };
 
             _blaiseApiMock.Setup(b => b.GetCaseStatusModelList(_questionnaireName, _serverParkName)).Returns(existingCaseStatusList);
@@ -162,7 +171,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(false)
                 .Returns(true);
 
-            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _questionnaireName, _serverParkName))
+            _blaiseApiMock.Setup(b => b.GetCase(primaryKeyValues, _questionnaireName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
 
             //act

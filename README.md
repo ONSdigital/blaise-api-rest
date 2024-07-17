@@ -35,7 +35,7 @@ This endpoint offers the ability to create, update or delete roles for a user in
 ## Local setup
 
 Populate the App.config file accordingly, **never commit a populated App.config file!**
-Run the application.
+Run the application in admin mode.
 Swagger should now be available locally at http://localhost:90/swagger
 
 ## Tests
