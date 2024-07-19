@@ -41,6 +41,7 @@ namespace Blaise.Api.Core.Mappers
                 ServerParkName = questionnaire.ServerPark,
                 InstallDate = questionnaire.InstallDate,
                 FieldPeriod = GetFieldPeriod(questionnaire.Name),
+                SurveyTla = GetSurveyTla(questionnaire.Name),
                 Status = _statusMapper.GetQuestionnaireStatus(questionnaire).ToString(),
                 DataRecordCount = GetNumberOfDataRecords(questionnaire as ISurvey2),
                 BlaiseVersion = GetBlaiseVersion(questionnaire),
@@ -64,7 +65,12 @@ namespace Blaise.Api.Core.Mappers
             }
 
             return null;
-        } 
+        }
+
+        public static string GetSurveyTla(string questionnaireName)
+        {
+            return questionnaireName.Length < 3 ? null : questionnaireName.Substring(0, 3);
+        }
 
         private static string GetBlaiseVersion(ISurvey questionnaire)
         {
