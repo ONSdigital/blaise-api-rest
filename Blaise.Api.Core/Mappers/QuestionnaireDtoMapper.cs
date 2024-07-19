@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Core.Interfaces.Mappers;
@@ -39,6 +40,7 @@ namespace Blaise.Api.Core.Mappers
                 Id = questionnaire.InstrumentID,
                 ServerParkName = questionnaire.ServerPark,
                 InstallDate = questionnaire.InstallDate,
+                FieldPeriod = GetFieldPeriod(questionnaire.Name),
                 Status = _statusMapper.GetQuestionnaireStatus(questionnaire).ToString(),
                 DataRecordCount = GetNumberOfDataRecords(questionnaire as ISurvey2),
                 BlaiseVersion = GetBlaiseVersion(questionnaire),
@@ -46,9 +48,27 @@ namespace Blaise.Api.Core.Mappers
             };
         }
 
-        private string GetBlaiseVersion(ISurvey questionnaire)
+        public static DateTime? GetFieldPeriod(string questionnaireName)
         {
-            IConfiguration2 configuration = questionnaire.Configuration.Configurations.FirstOrDefault() as IConfiguration2;
+            if (questionnaireName.Length < 7)
+            {
+                return null;
+            }
+                
+            var yearPeriod =  questionnaireName.Substring(3, 2);
+            var monthPeriod = questionnaireName.Substring(5, 2);
+
+            if(int.TryParse(yearPeriod, out var year) && int.TryParse(monthPeriod, out var month))
+            {
+                return new DateTime(2000 + year, month, 1);
+            }
+
+            return null;
+        } 
+
+        private static string GetBlaiseVersion(ISurvey questionnaire)
+        {
+            var configuration = questionnaire.Configuration.Configurations.FirstOrDefault() as IConfiguration2;
 
             if (configuration == null)
             {
