@@ -48,6 +48,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             const string blaiseVersion = "5.9.9";
             var installDate = new DateTime(2024, 1, 1);
             var fieldPeriod = new DateTime(2024, 4, 1);
+            var surveyTla = "FRS";
 
             const int numberOfRecordForQuestionnaire1 = 20;
 
@@ -97,6 +98,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.AreEqual(blaiseVersion, result.BlaiseVersion);
             Assert.AreEqual(installDate, result.InstallDate);
             Assert.AreEqual(fieldPeriod, result.FieldPeriod);
+            Assert.AreEqual(surveyTla, result.SurveyTla);
             Assert.AreSame(nodeList, result.Nodes);            
         }
 
@@ -154,6 +156,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             const string questionnaire2Name = "OPN2010B";
 
             var fieldPeriod = new DateTime(2020, 10, 1);
+            const string surveyTla = "OPN";
 
             var questionnaire1Id = Guid.NewGuid();
             var questionnaire2Id = Guid.NewGuid();
@@ -253,6 +256,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 i.BlaiseVersion == questionnaire1BlaiseVersion &&
                 i.InstallDate == questionnaire1InstallDate &&
                 i.FieldPeriod == fieldPeriod &&
+                i.SurveyTla == surveyTla &&
                 i.Nodes.Count() == 2));
 
             Assert.True(result.Any(i =>
@@ -265,6 +269,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 i.BlaiseVersion == questionnaire2BlaiseVersion &&
                 i.InstallDate == questionnaire2InstallDate &&
                 i.FieldPeriod == fieldPeriod &&
+                i.SurveyTla == surveyTla &&
                 i.Nodes.Count() == 2));
         }
 
@@ -296,6 +301,29 @@ namespace Blaise.Api.Tests.Unit.Mappers
 
             // assert
             Assert.IsNull(fieldPeriod);
+        }
+
+        [TestCase("FRS2404a", "FRS")]
+        [TestCase("OPN2308a", "OPN")]
+        [TestCase("LMS2406_tl1", "LMS")]
+        public void Given_I_Call_GetFieldPeriod_With_A_Valid_QuestionnaireName_Then_The_Expected_FieldPeriod_Is_Returned(string questionnaireName, string expectedResult)
+        {
+            // act
+            var surveyTla = QuestionnaireDtoMapper.GetSurveyTla(questionnaireName);
+
+            // assert
+            Assert.AreEqual(expectedResult, surveyTla);
+        }
+
+        [TestCase("F")]
+        [TestCase("OP")]
+        public void Given_I_Call_GetSurveyTla_With_A_Invalid_QuestionnaireName_Then_Null_Is_Returned(string questionnaireName)
+        {
+            // act
+            var surveyTla = QuestionnaireDtoMapper.GetSurveyTla(questionnaireName);
+
+            // assert
+            Assert.IsNull(surveyTla);
         }
     }
 }
