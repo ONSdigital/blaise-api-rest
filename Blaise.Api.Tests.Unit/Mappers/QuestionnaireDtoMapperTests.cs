@@ -306,7 +306,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [TestCase("FRS2404a", "FRS")]
         [TestCase("OPN2308a", "OPN")]
         [TestCase("LMS2406_tl1", "LMS")]
-        public void Given_I_Call_GetFieldPeriod_With_A_Valid_QuestionnaireName_Then_The_Expected_FieldPeriod_Is_Returned(string questionnaireName, string expectedResult)
+        public void Given_I_Call_GetSurveyTla_With_A_Valid_QuestionnaireName_Then_The_Expected_FieldPeriod_Is_Returned(string questionnaireName, string expectedResult)
         {
             // act
             var surveyTla = QuestionnaireDtoMapper.GetSurveyTla(questionnaireName);
