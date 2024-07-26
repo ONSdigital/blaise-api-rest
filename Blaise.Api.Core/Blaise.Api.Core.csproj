@@ -135,9 +135,12 @@
   <ItemGroup>
     <Compile Include="Extensions\ArgumentValidationExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Mappers\EditingDtoMapper.cs" />
+    <Compile Include="Interfaces\Mappers\IEditingDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\ICatiDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IDataEntryDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IQuestionnaireNodeDtoMapper.cs" />
+    <Compile Include="Interfaces\Services\IEditingService.cs" />
     <Compile Include="Interfaces\Services\ICatiDataBlockService.cs" />
     <Compile Include="Interfaces\Services\IQuestionnaireUninstallerService.cs" />
     <Compile Include="Interfaces\Services\IQuestionnaireService.cs" />
@@ -166,6 +169,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Services\EditingService.cs" />
     <Compile Include="Services\CatiDataBlockService.cs" />
     <Compile Include="Interfaces\Services\IRetryService.cs" />
     <Compile Include="Services\NisraCaseComparisonService.cs" />
