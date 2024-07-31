@@ -119,7 +119,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.That(result, Is.EqualTo(new List<EditingDetailsDto> { editingDetailsDto1 , editingDetailsDto2 , editingDetailsDto3 }));
         }
         [Test]
-        public void Given_A_Null_QuestionnaireName_When_I_Call_GetCaseEditingDetailsList_Then_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_QuestionnaireName_When_I_Call_GetCaseEditingDetailsList_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
             //act
@@ -130,7 +130,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_A_Null_ServerParkName_When_I_Call_GetCaseEditingDetailsList_Then_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_ServerParkName_When_I_Call_GetCaseEditingDetailsList_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
             //act
@@ -141,7 +141,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_An_Empty_QuestionnaireName_When_I_Call_GetCaseEditingDetailsList_Then_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_QuestionnaireName_When_I_Call_GetCaseEditingDetailsList_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
             //act
@@ -152,7 +152,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_An_Empty_ServerParkName_When_I_Call_GetCaseEditingDetailsList_Then_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_ServerParkName_When_I_Call_GetCaseEditingDetailsList_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
             //act
