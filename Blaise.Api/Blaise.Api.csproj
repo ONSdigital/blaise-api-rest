@@ -258,6 +258,7 @@
     <Compile Include="Configuration\SwaggerConfig.cs" />
     <Compile Include="Configuration\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\EditingController.cs" />
     <Compile Include="Controllers\CaseController.cs" />
     <Compile Include="Controllers\CatiController.cs" />
     <Compile Include="Controllers\HealthController.cs" />
