@@ -3,8 +3,6 @@ using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using StatNeth.Blaise.API.DataRecord;
-using System;
-using System.Drawing.Text;
 
 namespace Blaise.Api.Core.Mappers
 {
