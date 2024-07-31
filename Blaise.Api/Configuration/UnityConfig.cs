@@ -56,6 +56,7 @@ namespace Blaise.Api.Configuration
             UnityContainer.RegisterType<IUserDtoMapper, UserDtoMapper>();
             UnityContainer.RegisterType<IQuestionnaireStatusMapper, QuestionnaireStatusMapper>();
             UnityContainer.RegisterType<IDataEntrySettingsDtoMapper, DataEntrySettingsDtoMapper>();
+            UnityContainer.RegisterType<IEditingDtoMapper, EditingDtoMapper>();
 
             //core services
             UnityContainer.RegisterType<IServerParkService, ServerParkService>();
@@ -74,6 +75,7 @@ namespace Blaise.Api.Configuration
             UnityContainer.RegisterType<INisraCaseComparisonService, NisraCaseComparisonService>();
             UnityContainer.RegisterType<IReportingService, ReportingService>();
             UnityContainer.RegisterType<ICaseService, CaseService>();
+            UnityContainer.RegisterType<IEditingService, EditingService>();
             UnityContainer.RegisterType(typeof(IRetryService<>), typeof(RetryService<>));
 
             //storage services
