@@ -204,6 +204,7 @@
     <Compile Include="Helpers\PrimaryKeyHelper.cs" />
     <Compile Include="Mappers\CatiDtoMapperTests.cs" />
     <Compile Include="Mappers\DataEntrySettingsDtoMapperTests.cs" />
+    <Compile Include="Mappers\EditingDtoMapperTests.cs" />
     <Compile Include="Mappers\InstrumentNodeDtoMapperTests.cs" />
     <Compile Include="Mappers\QuestionnaireStatusMapperTests.cs" />
     <Compile Include="Mappers\QuestionnaireDtoMapperTests.cs" />
