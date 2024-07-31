@@ -36,7 +36,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var caseRecord = new Mock<IDataRecord>();
 
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "QID.Serial_Number").StringValue).Returns("10001011");
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "Admin.HOut").IntegerValue).Returns((int)110);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "Admin.HOut").IntegerValue).Returns(110);
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "QEdit.AssignedTo").StringValue).Returns("Dr Doom");
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "QEdit.edited").StringValue).Returns("Complete");
 
@@ -50,23 +50,15 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 Interviewer = "",
             };
 
-            Console.WriteLine(expectedEditingDetailsDto.PrimaryKey);
-            Console.WriteLine(expectedEditingDetailsDto.Outcome);
-            Console.WriteLine(expectedEditingDetailsDto.AssignedTo);
-            Console.WriteLine(expectedEditingDetailsDto.EditedStatus);
-            Console.WriteLine(expectedEditingDetailsDto.ToString());
-
             //Act
             var editingDetailsDto = _sut.MapToEditingDetailsDto(caseRecord.Object);
 
-
-            Console.WriteLine(editingDetailsDto.PrimaryKey);
-            Console.WriteLine(editingDetailsDto.Outcome);
-            Console.WriteLine(editingDetailsDto.AssignedTo);
-            Console.WriteLine(editingDetailsDto.EditedStatus);
-            Console.WriteLine(editingDetailsDto.ToString());
             //Assert
-            Assert.AreEqual(expectedEditingDetailsDto, editingDetailsDto);
+            Assert.AreEqual(expectedEditingDetailsDto.PrimaryKey, editingDetailsDto.PrimaryKey);
+            Assert.AreEqual(expectedEditingDetailsDto.Outcome, editingDetailsDto.Outcome);
+            Assert.AreEqual(expectedEditingDetailsDto.AssignedTo, editingDetailsDto.AssignedTo);
+            Assert.AreEqual(expectedEditingDetailsDto.EditedStatus, editingDetailsDto.EditedStatus);
+            Assert.AreEqual(expectedEditingDetailsDto.Interviewer, editingDetailsDto.Interviewer);
         }
 
         [Test]
@@ -77,7 +69,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.MapToEditingDetailsDto(null));
 
             //assert
-            Assert.AreEqual("caseRecord", exception.ParamName);
+            Assert.AreEqual("The argument 'caseRecord' must be supplied", exception.ParamName);
         }
     }
 }
