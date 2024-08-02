@@ -1,4 +1,5 @@
-﻿using Blaise.Api.Contracts.Models.Edit;
+﻿using Blaise.Api.Contracts.Enums;
+using Blaise.Api.Contracts.Models.Edit;
 using Blaise.Api.Core.Mappers;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Moq;
@@ -29,8 +30,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
             _sut = new EditingDtoMapper(_blaiseCaseApiMock.Object);
         }
 
-        [Test]
-        public void Given_A_Valid_CaseRecord_When_I_Call_EditingDtoMapper_Then_A_Correct_EditingDetailsDto_Is_Returned()
+        [TestCase(0, EditedStatusType.NotStarted)]
+        [TestCase(1, EditedStatusType.Started)]
+        [TestCase(2, EditedStatusType.Query)]
+        [TestCase(3, EditedStatusType.Finished)]
+        public void Given_A_Valid_CaseRecord_When_I_Call_EditingDtoMapper_Then_A_Correct_EditingDetailsDto_Is_Returned(int editedStatus, EditedStatusType editedStatusType)
         {
             //Arrange
             var caseRecord = new Mock<IDataRecord>();
@@ -38,14 +42,14 @@ namespace Blaise.Api.Tests.Unit.Mappers
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "QID.Serial_Number").ValueAsText).Returns("10001011");
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "Admin.HOut").IntegerValue).Returns(110);
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "QEdit.AssignedTo").ValueAsText).Returns("Dr Doom");
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "QEdit.EditedStatus").IntegerValue).Returns(1);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "QEdit.EditedStatus").IntegerValue).Returns(editedStatus);
 
             var expectedEditingDetailsDto = new EditingDetailsDto
             {
                 PrimaryKey = "10001011",
                 Outcome = 110,
                 AssignedTo = "Dr Doom",
-                EditedStatus = 1,
+                EditedStatus = editedStatusType,
                 // TODO
                 Interviewer = "",
             };
