@@ -1,4 +1,6 @@
-﻿namespace Blaise.Api.Contracts.Models.Edit
+﻿using Blaise.Api.Contracts.Enums;
+
+namespace Blaise.Api.Contracts.Models.Edit
 {
     public class EditingDetailsDto
     {
@@ -8,7 +10,7 @@
 
         public string AssignedTo { get; set; }
 
-        public int EditedStatus { get; set; }
+        public EditedStatusType EditedStatus { get; set; }
 
         public string Interviewer { get; set; }
     }

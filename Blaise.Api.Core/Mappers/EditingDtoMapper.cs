@@ -1,4 +1,5 @@
-﻿using Blaise.Api.Contracts.Models.Edit;
+﻿using Blaise.Api.Contracts.Enums;
+using Blaise.Api.Contracts.Models.Edit;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Nuget.Api.Contracts.Interfaces;
@@ -23,7 +24,7 @@ namespace Blaise.Api.Core.Mappers
                 PrimaryKey = _blaiseCaseApi.GetFieldValue(caseRecord, "QID.Serial_Number").ValueAsText,
                 Outcome = (int)_blaiseCaseApi.GetFieldValue(caseRecord, "Admin.HOut").IntegerValue,
                 AssignedTo = _blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.AssignedTo").ValueAsText,
-                EditedStatus = (int)_blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.EditedStatus").IntegerValue,
+                EditedStatus = (EditedStatusType)_blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.EditedStatus").IntegerValue,
                 // TODO
                 Interviewer = "",
             };
