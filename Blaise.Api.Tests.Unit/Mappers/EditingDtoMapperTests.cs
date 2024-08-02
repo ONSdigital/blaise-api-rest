@@ -35,17 +35,17 @@ namespace Blaise.Api.Tests.Unit.Mappers
             //Arrange
             var caseRecord = new Mock<IDataRecord>();
 
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "QID.Serial_Number").StringValue).Returns("10001011");
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "QID.Serial_Number").ValueAsText).Returns("10001011");
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "Admin.HOut").IntegerValue).Returns(110);
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "QEdit.AssignedTo").StringValue).Returns("Dr Doom");
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "QEdit.edited").StringValue).Returns("Complete");
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "QEdit.AssignedTo").ValueAsText).Returns("Dr Doom");
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(caseRecord.Object, "QEdit.EditedStatus").IntegerValue).Returns(1);
 
             var expectedEditingDetailsDto = new EditingDetailsDto
             {
                 PrimaryKey = "10001011",
                 Outcome = 110,
                 AssignedTo = "Dr Doom",
-                EditedStatus = "Complete",
+                EditedStatus = 1,
                 // TODO
                 Interviewer = "",
             };

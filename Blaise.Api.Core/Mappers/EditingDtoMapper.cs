@@ -20,10 +20,10 @@ namespace Blaise.Api.Core.Mappers
 
             var editingDetailsDto = new EditingDetailsDto
             {
-                PrimaryKey = _blaiseCaseApi.GetFieldValue(caseRecord, "QID.Serial_Number").StringValue,
+                PrimaryKey = _blaiseCaseApi.GetFieldValue(caseRecord, "QID.Serial_Number").ValueAsText,
                 Outcome = (int)_blaiseCaseApi.GetFieldValue(caseRecord, "Admin.HOut").IntegerValue,
-                AssignedTo = _blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.AssignedTo").StringValue,
-                EditedStatus = _blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.edited").StringValue,
+                AssignedTo = _blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.AssignedTo").ValueAsText,
+                EditedStatus = (int)_blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.EditedStatus").IntegerValue,
                 // TODO
                 Interviewer = "",
             };
