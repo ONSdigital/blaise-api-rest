@@ -8,7 +8,7 @@
 
         public string AssignedTo { get; set; }
 
-        public string EditedStatus { get; set; }
+        public int EditedStatus { get; set; }
 
         public string Interviewer { get; set; }
     }
