@@ -1,10 +1,10 @@
-﻿using Blaise.Api.Contracts.Models.Edit;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Blaise.Api.Contracts.Models.Case;
 
 namespace Blaise.Api.Core.Interfaces.Services
 {
     public interface IEditingService
     {       
-        List<EditingDetailsDto> GetCaseEditingDetailsList(string serverParkName, string questionnaireName);
+        List<CaseEditInformationDto> GetCaseEditingDetailsList(string serverParkName, string questionnaireName);
     }
 }
