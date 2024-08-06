@@ -140,7 +140,6 @@
     <Compile Include="Interfaces\Mappers\ICatiDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IDataEntryDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IQuestionnaireNodeDtoMapper.cs" />
-    <Compile Include="Interfaces\Services\IEditingService.cs" />
     <Compile Include="Interfaces\Services\ICatiDataBlockService.cs" />
     <Compile Include="Interfaces\Services\IQuestionnaireUninstallerService.cs" />
     <Compile Include="Interfaces\Services\IQuestionnaireService.cs" />
