@@ -1,8 +1,8 @@
 ﻿using Blaise.Api.Contracts.Enums;
 
-namespace Blaise.Api.Contracts.Models.Edit
+namespace Blaise.Api.Contracts.Models.Case
 {
-    public class EditingDetailsDto
+    public class CaseEditInformationDto
     {
         public string PrimaryKey { get; set; }
 

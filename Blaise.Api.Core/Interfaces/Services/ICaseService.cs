@@ -32,5 +32,7 @@ namespace Blaise.Api.Core.Interfaces.Services
         bool CaseExists(string serverParkName, string questionnaireName, string caseId);
 
         bool CaseExists(string serverParkName, string questionnaireName, List<string> keyNames, List<string> keyValues);
+
+        List<CaseEditInformationDto> GetCaseEditInformationList(string serverParkName, string questionnaireName);
     }
 }
