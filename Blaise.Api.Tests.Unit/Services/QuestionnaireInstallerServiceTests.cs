@@ -6,8 +6,10 @@ using Blaise.Api.Core.Services;
 using Blaise.Api.Storage.Interfaces;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
+using Blaise.Nuget.Api.Contracts.Models;
 using Moq;
 using NUnit.Framework;
+using StatNeth.Blaise.API.ServerManager;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
@@ -67,7 +69,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .GetQuestionnaireNameFromFile(_questionnaireFile)).Returns(_questionnaireName);
 
             _blaiseQuestionnaireApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallQuestionnaire(_questionnaireName,_serverParkName, questionnaireFilePath, QuestionnaireInterviewType.Cati));
+                .InstallQuestionnaire(_questionnaireName,_serverParkName, questionnaireFilePath, It.IsAny<IInstallOptions>()));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .RemovePathAndFiles(_tempPath));
@@ -80,7 +82,11 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.Verify(v => v.UpdateQuestionnaireFileWithSqlConnection(questionnaireFilePath), Times.Once);
             _fileServiceMock.Verify(v => v.GetQuestionnaireNameFromFile(_questionnaireFile), Times.Once);
             _blaiseQuestionnaireApiMock.Verify(v => v.InstallQuestionnaire(_questionnaireName, _serverParkName,
-                questionnaireFilePath, QuestionnaireInterviewType.Cati), Times.Once);
+                questionnaireFilePath, It.Is<IInstallOptions>(i => 
+                i.DataEntrySettingsName == "StrictInterviewing" &&
+                i.InitialAppLayoutSetGroupName == "CATI" &&
+                i.LayoutSetGroupName == "CATI" &&
+                i.OverwriteMode == DataOverwriteMode.Always)), Times.Once);
         }
 
         [Test]
@@ -99,7 +105,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .GetQuestionnaireNameFromFile(_questionnaireFile)).Returns(_questionnaireName);
 
             _blaiseQuestionnaireApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallQuestionnaire(_questionnaireName,_serverParkName, questionnaireFilePath, QuestionnaireInterviewType.Cati));
+                .InstallQuestionnaire(_questionnaireName,_serverParkName, questionnaireFilePath, It.IsAny<IInstallOptions>()));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .RemovePathAndFiles(_tempPath));

@@ -46,8 +46,13 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
         public async Task<List<QuestionnaireModel>> GetAllActiveQuestionnaires()
         {
             var questionnaires = await GetListOfObjectsASync<QuestionnaireModel>(RestApiConfigurationHelper.QuestionnairesUrl);
-            return questionnaires != null ? questionnaires.Where(q => q.Status == QuestionnaireStatusType.Active).ToList()
+            Console.WriteLine($"GetAllActiveQuestionnaires: All questionnaires found {JsonConvert.SerializeObject(questionnaires)}");
+            var activeQuestionnaires = questionnaires != null ? questionnaires.Where(q => q.Status == QuestionnaireStatusType.Active).ToList()
                 : new List<QuestionnaireModel>();
+
+            Console.WriteLine($"GetAllActiveQuestionnaires: Active questionnaires returned {JsonConvert.SerializeObject(activeQuestionnaires)}");
+
+            return activeQuestionnaires;
         }
 
         public async Task<HttpStatusCode> DeployQuestionnaire(string url, string questionnaireFile)
