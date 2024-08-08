@@ -122,7 +122,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QID.Serial_Number").ValueAsText).Returns("10001011");
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "Admin.HOut").IntegerValue).Returns(110);
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.AssignedTo").ValueAsText).Returns("Dr Doom");
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.EditedStatus").IntegerValue).Returns(editedStatus);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.EditedStatus").EnumerationValue).Returns(editedStatus);
 
             var expectedCaseEditInformationDto = new CaseEditInformationDto
             {
