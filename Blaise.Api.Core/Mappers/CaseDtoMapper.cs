@@ -64,7 +64,7 @@ namespace Blaise.Api.Core.Mappers
                 PrimaryKey = _blaiseCaseApi.GetFieldValue(caseRecord, "QID.Serial_Number").ValueAsText,
                 Outcome = (int)_blaiseCaseApi.GetFieldValue(caseRecord, "Admin.HOut").IntegerValue,
                 AssignedTo = _blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.AssignedTo").ValueAsText,
-                EditedStatus = (EditedStatusType)_blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.EditedStatus").IntegerValue,
+                EditedStatus = (EditedStatusType)_blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.EditedStatus").EnumerationValue,
                 // TODO
                 Interviewer = "",
             };
