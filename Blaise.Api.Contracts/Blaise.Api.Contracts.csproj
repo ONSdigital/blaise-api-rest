@@ -72,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\OrganisationType.cs" />
     <Compile Include="Enums\EditedStatusType.cs" />
     <Compile Include="Enums\HealthCheckType.cs" />
     <Compile Include="Enums\HealthStatusType.cs" />
