@@ -15,16 +15,10 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
 
     public class CaseHelper
     {
-        private readonly IBlaiseCaseApi _blaiseCaseApi;
-        private int _primaryKey;
+        private readonly IBlaiseCaseApi _blaiseCaseApi = new BlaiseCaseApi();
+        private int _primaryKey = 900000;
 
         private static CaseHelper _currentInstance;
-
-        public CaseHelper()
-        {
-            _blaiseCaseApi = new BlaiseCaseApi();
-            _primaryKey = 900000;
-        }
 
         public static CaseHelper GetInstance()
         {

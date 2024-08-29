@@ -10,8 +10,10 @@ namespace Blaise.Api.Contracts.Models.Case
 
         public string AssignedTo { get; set; }
 
+        public string Interviewer { get; set; }
+
         public EditedStatusType EditedStatus { get; set; }
 
-        public string Interviewer { get; set; }
+        public OrganisationType Organisation { get; set; }
     }
 }

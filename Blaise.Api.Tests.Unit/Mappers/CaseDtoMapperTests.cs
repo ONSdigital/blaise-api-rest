@@ -110,11 +110,41 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.AreEqual(fieldData, result.FieldData);
         }
 
+        [Test]
+        public void Given_A_Valid_CaseRecord_When_I_Call_MapToCaseEditInformationDto_Then_A_Correct_CaseEditInformationDto_Is_Returned()
+        {
+            //Arrange
+            var primaryKey = "10001011";
+            var outcome = 110;
+            var assignedTo = "Dr Doom";
+            var editedStatus = EditedStatusType.Started;
+            var organisation = OrganisationType.ONS;
+
+            var dataRecordMock = new Mock<IDataRecord>();
+
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QID.Serial_Number").ValueAsText).Returns(primaryKey);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "Admin.HOut").IntegerValue).Returns(outcome);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.AssignedTo").ValueAsText).Returns(assignedTo);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.EditedStatus").EnumerationValue).Returns((int)editedStatus);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "orgID").EnumerationValue).Returns((int)organisation);
+
+            //Act
+            var result = _sut.MapToCaseEditInformationDto(dataRecordMock.Object);
+
+            //Assert
+            Assert.AreEqual(primaryKey, result.PrimaryKey);
+            Assert.AreEqual(outcome, result.Outcome);
+            Assert.AreEqual(assignedTo, result.AssignedTo);
+            Assert.AreEqual("", result.Interviewer); // TODO
+            Assert.AreEqual(editedStatus, result.EditedStatus);
+            Assert.AreEqual(organisation, result.Organisation);
+        }
+
         [TestCase(0, EditedStatusType.NotStarted)]
         [TestCase(1, EditedStatusType.Started)]
         [TestCase(2, EditedStatusType.Query)]
         [TestCase(3, EditedStatusType.Finished)]
-        public void Given_A_Valid_CaseRecord_When_I_Call_MapToCaseEditInformationDto_Then_A_Correct_CaseEditInformationDto_Is_Returned(int editedStatus, EditedStatusType editedStatusType)
+        public void Given_A_Valid_Edit_status_When_I_Call_MapToCaseEditInformationDto_Then_A_Correct_Enum_Is_Mapped(int editedStatus, EditedStatusType editedStatusType)
         {
             //Arrange
             var dataRecordMock = new Mock<IDataRecord>();
@@ -123,37 +153,45 @@ namespace Blaise.Api.Tests.Unit.Mappers
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "Admin.HOut").IntegerValue).Returns(110);
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.AssignedTo").ValueAsText).Returns("Dr Doom");
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.EditedStatus").EnumerationValue).Returns(editedStatus);
-
-            var expectedCaseEditInformationDto = new CaseEditInformationDto
-            {
-                PrimaryKey = "10001011",
-                Outcome = 110,
-                AssignedTo = "Dr Doom",
-                EditedStatus = editedStatusType,
-                // TODO
-                Interviewer = "",
-            };
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "orgID").EnumerationValue).Returns(1);
 
             //Act
-            var editingDetailsDto = _sut.MapToCaseEditInformationDto(dataRecordMock.Object);
+            var result = _sut.MapToCaseEditInformationDto(dataRecordMock.Object);
 
             //Assert
-            Assert.AreEqual(expectedCaseEditInformationDto.PrimaryKey, editingDetailsDto.PrimaryKey);
-            Assert.AreEqual(expectedCaseEditInformationDto.Outcome, editingDetailsDto.Outcome);
-            Assert.AreEqual(expectedCaseEditInformationDto.AssignedTo, editingDetailsDto.AssignedTo);
-            Assert.AreEqual(expectedCaseEditInformationDto.EditedStatus, editingDetailsDto.EditedStatus);
-            Assert.AreEqual(expectedCaseEditInformationDto.Interviewer, editingDetailsDto.Interviewer);
+            Assert.AreEqual(editedStatusType, result.EditedStatus);
+        }
+
+        [TestCase(1, OrganisationType.ONS)]
+        [TestCase(2, OrganisationType.NatCen)]
+        [TestCase(3, OrganisationType.Nisra)]
+        public void Given_A_Valid_Organisation_When_I_Call_MapToCaseEditInformationDto_Then_A_Correct_Enum_Is_Mapped(int organisation, OrganisationType organisationType)
+        {
+            //Arrange
+            var dataRecordMock = new Mock<IDataRecord>();
+
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QID.Serial_Number").ValueAsText).Returns("10001011");
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "Admin.HOut").IntegerValue).Returns(110);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.AssignedTo").ValueAsText).Returns("Dr Doom");
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.EditedStatus").EnumerationValue).Returns(1);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "orgID").EnumerationValue).Returns(organisation);
+
+            //Act
+            var result = _sut.MapToCaseEditInformationDto(dataRecordMock.Object);
+
+            //Assert
+            Assert.AreEqual(organisationType, result.Organisation);
         }
 
         [Test]
-        public void Given_A_Null_CaseRecord_When_I_Call_MapToCaseEditInformationDto_Then_A_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_CaseRecord_When_I_Call_MapToCaseEditInformationDto_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
             //act
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.MapToCaseEditInformationDto(null));
 
             //assert
-            Assert.AreEqual("The argument 'caseRecord' must be supplied", exception.ParamName);
+            Assert.AreEqual("The argument 'caseRecord' must be supplied", exception?.ParamName);
         }
     }
 }

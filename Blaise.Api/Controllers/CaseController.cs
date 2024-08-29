@@ -127,7 +127,7 @@ namespace Blaise.Api.Controllers
         {
             var ccCaseEditInformationDtos = _caseService.GetCaseEditInformationList(serverParkName, questionnaireName);
 
-            _loggingService.LogInfo($"Successfully got case edit information list");
+            _loggingService.LogInfo("Successfully got case edit information list");
 
             return Ok(ccCaseEditInformationDtos);
         }

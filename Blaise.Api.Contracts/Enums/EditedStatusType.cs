@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace Blaise.Api.Contracts.Enums
+﻿namespace Blaise.Api.Contracts.Enums
 {
     public enum EditedStatusType
     {
