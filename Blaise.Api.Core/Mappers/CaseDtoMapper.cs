@@ -65,8 +65,8 @@ namespace Blaise.Api.Core.Mappers
                 Outcome = (int)_blaiseCaseApi.GetFieldValue(caseRecord, "Admin.HOut").IntegerValue,
                 AssignedTo = _blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.AssignedTo").ValueAsText,
                 Interviewer = "", // TODO
-                EditedStatus = (EditedStatusType)_blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.EditedStatus").EnumerationValue,
-                Organisation = (OrganisationType)_blaiseCaseApi.GetFieldValue(caseRecord, "orgID").EnumerationValue,
+                EditedStatus = _blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.EditedStatus").EnumerationValue,
+                Organisation = _blaiseCaseApi.GetFieldValue(caseRecord, "orgID").EnumerationValue,
             };
         }
     }
