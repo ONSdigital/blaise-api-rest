@@ -1,6 +1,4 @@
-﻿using Blaise.Api.Contracts.Enums;
-
-namespace Blaise.Api.Contracts.Models.Case
+﻿namespace Blaise.Api.Contracts.Models.Case
 {
     public class CaseEditInformationDto
     {
@@ -12,8 +10,8 @@ namespace Blaise.Api.Contracts.Models.Case
 
         public string Interviewer { get; set; }
 
-        public EditedStatusType EditedStatus { get; set; }
+        public int EditedStatus { get; set; }
 
-        public OrganisationType Organisation { get; set; }
+        public int Organisation { get; set; }
     }
 }

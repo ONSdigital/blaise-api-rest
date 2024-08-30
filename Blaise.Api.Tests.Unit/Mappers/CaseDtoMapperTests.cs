@@ -117,8 +117,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var primaryKey = "10001011";
             var outcome = 110;
             var assignedTo = "Dr Doom";
-            var editedStatus = EditedStatusType.Started;
-            var organisation = OrganisationType.ONS;
+            var editedStatus = 2;
+            var organisation = 1;
 
             var dataRecordMock = new Mock<IDataRecord>();
 
@@ -138,49 +138,6 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.AreEqual("", result.Interviewer); // TODO
             Assert.AreEqual(editedStatus, result.EditedStatus);
             Assert.AreEqual(organisation, result.Organisation);
-        }
-
-        [TestCase(0, EditedStatusType.NotStarted)]
-        [TestCase(1, EditedStatusType.Started)]
-        [TestCase(2, EditedStatusType.Query)]
-        [TestCase(3, EditedStatusType.Finished)]
-        public void Given_A_Valid_Edit_status_When_I_Call_MapToCaseEditInformationDto_Then_A_Correct_Enum_Is_Mapped(int editedStatus, EditedStatusType editedStatusType)
-        {
-            //Arrange
-            var dataRecordMock = new Mock<IDataRecord>();
-
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QID.Serial_Number").ValueAsText).Returns("10001011");
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "Admin.HOut").IntegerValue).Returns(110);
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.AssignedTo").ValueAsText).Returns("Dr Doom");
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.EditedStatus").EnumerationValue).Returns(editedStatus);
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "orgID").EnumerationValue).Returns(1);
-
-            //Act
-            var result = _sut.MapToCaseEditInformationDto(dataRecordMock.Object);
-
-            //Assert
-            Assert.AreEqual(editedStatusType, result.EditedStatus);
-        }
-
-        [TestCase(1, OrganisationType.ONS)]
-        [TestCase(2, OrganisationType.NatCen)]
-        [TestCase(3, OrganisationType.Nisra)]
-        public void Given_A_Valid_Organisation_When_I_Call_MapToCaseEditInformationDto_Then_A_Correct_Enum_Is_Mapped(int organisation, OrganisationType organisationType)
-        {
-            //Arrange
-            var dataRecordMock = new Mock<IDataRecord>();
-
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QID.Serial_Number").ValueAsText).Returns("10001011");
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "Admin.HOut").IntegerValue).Returns(110);
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.AssignedTo").ValueAsText).Returns("Dr Doom");
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.EditedStatus").EnumerationValue).Returns(1);
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "orgID").EnumerationValue).Returns(organisation);
-
-            //Act
-            var result = _sut.MapToCaseEditInformationDto(dataRecordMock.Object);
-
-            //Assert
-            Assert.AreEqual(organisationType, result.Organisation);
         }
 
         [Test]
