@@ -62,9 +62,9 @@ namespace Blaise.Api.Core.Mappers
             return new CaseEditInformationDto
             {
                 PrimaryKey = _blaiseCaseApi.GetFieldValue(caseRecord, "QID.Serial_Number").ValueAsText,
-                Outcome = (int)_blaiseCaseApi.GetFieldValue(caseRecord, "Admin.HOut").IntegerValue,
+                Outcome = (int)_blaiseCaseApi.GetFieldValue(caseRecord, "QHAdmin.HOut").IntegerValue,
                 AssignedTo = _blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.AssignedTo").ValueAsText,
-                Interviewer = "", // TODO
+                Interviewer = _blaiseCaseApi.GetFieldValue(caseRecord, "QHAdmin.Interviewer[1]").ValueAsText,
                 EditedStatus = _blaiseCaseApi.GetFieldValue(caseRecord, "QEdit.EditedStatus").EnumerationValue,
                 Organisation = _blaiseCaseApi.GetFieldValue(caseRecord, "orgID").EnumerationValue,
             };
