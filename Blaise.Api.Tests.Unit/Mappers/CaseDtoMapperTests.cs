@@ -1,5 +1,4 @@
-﻿using Blaise.Api.Contracts.Enums;
-using Blaise.Api.Core.Mappers;
+﻿using Blaise.Api.Core.Mappers;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -117,14 +116,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var primaryKey = "10001011";
             var outcome = 110;
             var assignedTo = "Dr Doom";
+            var interviewer = "Mr fantastic";
             var editedStatus = 2;
             var organisation = 1;
 
             var dataRecordMock = new Mock<IDataRecord>();
 
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QID.Serial_Number").ValueAsText).Returns(primaryKey);
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "Admin.HOut").IntegerValue).Returns(outcome);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QHAdmin.HOut").IntegerValue).Returns(outcome);
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.AssignedTo").ValueAsText).Returns(assignedTo);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QHAdmin.Interviewer[1]").ValueAsText).Returns(interviewer);
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.EditedStatus").EnumerationValue).Returns((int)editedStatus);
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "orgID").EnumerationValue).Returns((int)organisation);
 
@@ -135,7 +136,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.AreEqual(primaryKey, result.PrimaryKey);
             Assert.AreEqual(outcome, result.Outcome);
             Assert.AreEqual(assignedTo, result.AssignedTo);
-            Assert.AreEqual("", result.Interviewer); // TODO
+            Assert.AreEqual(interviewer, result.Interviewer);
             Assert.AreEqual(editedStatus, result.EditedStatus);
             Assert.AreEqual(organisation, result.Organisation);
         }
