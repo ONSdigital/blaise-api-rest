@@ -69,7 +69,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .GetQuestionnaireNameFromFile(_questionnaireFile)).Returns(_questionnaireName);
 
             _blaiseQuestionnaireApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallQuestionnaire(_questionnaireName,_serverParkName, questionnaireFilePath, It.IsAny<IInstallOptions>()));
+                .InstallQuestionnaire(_questionnaireName,_serverParkName, questionnaireFilePath, It.IsAny<InstallOptions>()));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .RemovePathAndFiles(_tempPath));
@@ -82,7 +82,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.Verify(v => v.UpdateQuestionnaireFileWithSqlConnection(questionnaireFilePath), Times.Once);
             _fileServiceMock.Verify(v => v.GetQuestionnaireNameFromFile(_questionnaireFile), Times.Once);
             _blaiseQuestionnaireApiMock.Verify(v => v.InstallQuestionnaire(_questionnaireName, _serverParkName,
-                questionnaireFilePath, It.Is<IInstallOptions>(i => 
+                questionnaireFilePath, It.Is<InstallOptions>(i => 
                 i.DataEntrySettingsName == "StrictInterviewing" &&
                 i.InitialAppLayoutSetGroupName == "CATI" &&
                 i.LayoutSetGroupName == "CATI" &&
@@ -105,7 +105,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .GetQuestionnaireNameFromFile(_questionnaireFile)).Returns(_questionnaireName);
 
             _blaiseQuestionnaireApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallQuestionnaire(_questionnaireName,_serverParkName, questionnaireFilePath, It.IsAny<IInstallOptions>()));
+                .InstallQuestionnaire(_questionnaireName,_serverParkName, questionnaireFilePath, It.IsAny<InstallOptions>()));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .RemovePathAndFiles(_tempPath));

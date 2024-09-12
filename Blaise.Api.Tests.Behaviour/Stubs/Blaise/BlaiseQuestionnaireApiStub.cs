@@ -57,7 +57,7 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
         }
 
         public void InstallQuestionnaire(string questionnaireName, string serverParkName, string questionnaireFile,
-            IInstallOptions installOptions)
+            InstallOptions installOptions)
         {
             NameOfInstalledQuestionnaire = questionnaireName;
             ServerParkOfInstalledQuestionnaire = serverParkName;
