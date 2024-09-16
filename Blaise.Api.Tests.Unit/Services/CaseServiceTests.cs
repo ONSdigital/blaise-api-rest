@@ -1992,7 +1992,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var case2Mock = new Mock<IDataRecord>();
             var case3Mock = new Mock<IDataRecord>();
 
-            _blaiseSqlApiMock.Setup(z => z.GetCaseIds(_questionnaireName)).Returns(casesIds);
+            _blaiseSqlApiMock.Setup(z => z.GetEditingCaseIds(_questionnaireName)).Returns(casesIds);
             _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001011" } }, _questionnaireName, _serverParkName)).Returns(case1Mock.Object);
             _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001012" } }, _questionnaireName, _serverParkName)).Returns(case2Mock.Object);
             _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001013" } }, _questionnaireName, _serverParkName)).Returns(case3Mock.Object);
@@ -2001,7 +2001,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _sut.GetCaseEditInformationList(_serverParkName, _questionnaireName);
 
             //assert                
-            _blaiseSqlApiMock.Verify(b => b.GetCaseIds(_questionnaireName), Times.Once);
+            _blaiseSqlApiMock.Verify(b => b.GetEditingCaseIds(_questionnaireName), Times.Once);
             _blaiseCaseApiMock.Verify(b => b.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001011" } }, _questionnaireName, _serverParkName), Times.Once);
             _blaiseCaseApiMock.Verify(b => b.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001012" } }, _questionnaireName, _serverParkName), Times.Once);
             _blaiseCaseApiMock.Verify(b => b.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001013" } }, _questionnaireName, _serverParkName), Times.Once);
@@ -2024,7 +2024,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var case2Mock = new Mock<IDataRecord>();
             var case3Mock = new Mock<IDataRecord>();
 
-            _blaiseSqlApiMock.Setup(z => z.GetCaseIds(_questionnaireName)).Returns(casesIds);
+            _blaiseSqlApiMock.Setup(z => z.GetEditingCaseIds(_questionnaireName)).Returns(casesIds);
             _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001011" } }, _questionnaireName, _serverParkName)).Returns(case1Mock.Object);
             _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001012" } }, _questionnaireName, _serverParkName)).Returns(case2Mock.Object);
             _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001013" } }, _questionnaireName, _serverParkName)).Returns(case3Mock.Object);
