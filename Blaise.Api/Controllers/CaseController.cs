@@ -125,11 +125,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetCaseEditingDetailsList([FromUri] string serverParkName, [FromUri] string questionnaireName)
         {
-            var ccCaseEditInformationDtos = _caseService.GetCaseEditInformationList(serverParkName, questionnaireName);
+            var caseEditInformationDtos = _caseService.GetCaseEditInformationList(serverParkName, questionnaireName);
 
             _loggingService.LogInfo("Successfully got case edit information list");
 
-            return Ok(ccCaseEditInformationDtos);
+            return Ok(caseEditInformationDtos);
         }
 
         [HttpPost]

@@ -219,7 +219,7 @@ namespace Blaise.Api.Core.Services
             questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
 
             var caseEditInformationList = new List<CaseEditInformationDto>();
-            var caseIds = _blaiseSqlApi.GetCaseIds(questionnaireName);
+            var caseIds = _blaiseSqlApi.GetEditingCaseIds(questionnaireName);
 
             foreach (var caseId in caseIds)
             {
