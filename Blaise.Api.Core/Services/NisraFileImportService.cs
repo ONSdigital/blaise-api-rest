@@ -29,15 +29,22 @@ namespace Blaise.Api.Core.Services
 
         public void ImportNisraDatabaseFile(string databaseFilePath, string questionnaireName, string serverParkName)
         {
+            _loggerService.LogInfo("NisraFileImportService: ImportNisraDatabaseFile - start");
             var existingTelCaseStatusModels = _blaiseApi.GetCaseStatusModelList(questionnaireName, serverParkName).ToList();
+            _loggerService.LogInfo("NisraFileImportService: ImportNisraDatabaseFile - GetCaseStatusModelList");
             var nisraFileCaseRecords = _blaiseApi.GetCases(databaseFilePath);
+            _loggerService.LogInfo("NisraFileImportService: ImportNisraDatabaseFile - GetCases (Nisra)");
 
             while (!nisraFileCaseRecords.EndOfSet)
             {
+                _loggerService.LogInfo("NisraFileImportService: Read first Nisra file");
                 var nisraRecord = nisraFileCaseRecords.ActiveRecord;
+                _loggerService.LogInfo("NisraFileImportService: Got active record");
 
                 var nisraCaseStatusModel = GetNisraCaseStatusModel(nisraRecord);
+                _loggerService.LogInfo("NisraFileImportService: GetNisraCaseStatusModel");
                 var existingCaseStatusModel = GetExistingTelCaseStatusModel(nisraCaseStatusModel.PrimaryKey, existingTelCaseStatusModels);
+                _loggerService.LogInfo("NisraFileImportService: existingCaseStatusModel");
 
                 if (CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, questionnaireName))
                 {
