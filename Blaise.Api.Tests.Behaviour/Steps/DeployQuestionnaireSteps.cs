@@ -12,7 +12,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
     [Binding]
     public sealed class DeployQuestionnaireSteps
     {
-        [Given(@"I have a questionnaire I want to install")]
+        [Given("I have a questionnaire I want to install")]
         public async Task GivenIHaveAQuestionnaireIWantToInstall()
         {
             await CloudStorageHelper.GetInstance().UploadToBucketAsync(
@@ -21,7 +21,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
 
         }
 
-        [When(@"the API is called to install the questionnaire")]
+        [When("the API is called to install the questionnaire")]
         public async Task WhenTheApiIsCalledToInstallTheQuestionnaire()
         {
             var response = await RestApiHelper.GetInstance().DeployQuestionnaire(
@@ -31,7 +31,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             Assert.AreEqual(HttpStatusCode.Created, response);
         }
 
-        [Then(@"the questionnaire is available to use")]
+        [Then("the questionnaire is available to use")]
         public void ThenTheQuestionnaireIsAvailableToUse()
         {
             var questionnaireHasInstalled = QuestionnaireHelper.GetInstance().QuestionnaireHasInstalled(60);

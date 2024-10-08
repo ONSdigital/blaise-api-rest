@@ -4,6 +4,7 @@ using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
 using System.Collections.Generic;
 using System.Linq;
+using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Blaise.Nuget.Api.Contracts.Models;
@@ -13,10 +14,17 @@ namespace Blaise.Api.Core.Services
     public class CaseService : ICaseService
     {
         private readonly IBlaiseCaseApi _blaiseCaseApi;
+        private readonly ICaseDtoMapper _caseDtoMapper;
+        private readonly IBlaiseSqlApi _blaiseSqlApi;
 
-        public CaseService(IBlaiseCaseApi blaiseCaseApi)
+        public CaseService(
+            IBlaiseCaseApi blaiseCaseApi, 
+            ICaseDtoMapper caseDtoMapper, 
+            IBlaiseSqlApi blaiseSqlApi)
         {
             _blaiseCaseApi = blaiseCaseApi;
+            _caseDtoMapper = caseDtoMapper;
+            _blaiseSqlApi = blaiseSqlApi;
         }
 
         public List<string> GetCaseIds(string serverParkName, string questionnaireName)
@@ -28,22 +36,9 @@ namespace Blaise.Api.Core.Services
 
         public List<CaseStatusDto> GetCaseStatusList(string serverParkName, string questionnaireName)
         {
-            var caseStatusList = _blaiseCaseApi.GetCaseStatusModelList(questionnaireName, serverParkName);
-            var caseStatusDtoList = new List<CaseStatusDto>();
+            var caseStatusModelList = _blaiseCaseApi.GetCaseStatusModelList(questionnaireName, serverParkName);
 
-            foreach (var caseStatus in caseStatusList)
-            {
-                caseStatusDtoList.Add(
-
-                    new CaseStatusDto
-                    {
-                        PrimaryKey = caseStatus.PrimaryKey,
-                        Outcome = caseStatus.Outcome
-                    });
-
-            }
-
-            return caseStatusDtoList;
+            return _caseDtoMapper.MapToCaseStatusDtoList(caseStatusModelList);
         }
 
         public string GetPostCode(string serverParkName, string questionnaireName, string caseId)
@@ -63,11 +58,7 @@ namespace Blaise.Api.Core.Services
             var primaryKeyValues = new Dictionary<string, string> { { "QID.Serial_Number", caseId } };
             var caseRecord = _blaiseCaseApi.GetCase(primaryKeyValues, questionnaireName, serverParkName);
 
-            return new CaseDto
-            {
-                CaseId = caseId,
-                FieldData = _blaiseCaseApi.GetRecordDataFields(caseRecord)
-            };
+            return _caseDtoMapper.MapToCaseDto(caseId, caseRecord);
         }
 
         public CaseMultikeyDto GetCase(string serverParkName, string questionnaireName, List<string> keyNames, List<string> keyValues)
@@ -85,11 +76,7 @@ namespace Blaise.Api.Core.Services
 
             var caseRecord = _blaiseCaseApi.GetCase(primaryKeyValues, questionnaireName, serverParkName);
 
-            return new CaseMultikeyDto
-            {
-                PrimaryKeyValues = primaryKeyValues,
-                FieldData = _blaiseCaseApi.GetRecordDataFields(caseRecord)
-            };
+            return _caseDtoMapper.MapToCaseMultikeyDto(primaryKeyValues, caseRecord);
         }
 
         public void CreateCase(string serverParkName, string questionnaireName, string caseId,
@@ -224,6 +211,25 @@ namespace Blaise.Api.Core.Services
                 primaryKeyValues.Add(keyNames[i], keyValues[i]);
             }
             return _blaiseCaseApi.CaseExists(primaryKeyValues, questionnaireName, serverParkName);
+        }
+
+        public List<CaseEditInformationDto> GetCaseEditInformationList(string serverParkName, string questionnaireName)
+        {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
+
+            var caseEditInformationList = new List<CaseEditInformationDto>();
+            var caseIds = _blaiseSqlApi.GetEditingCaseIds(questionnaireName);
+
+            foreach (var caseId in caseIds)
+            {
+                var primaryKeyValues = new Dictionary<string, string> { { "QID.Serial_Number", caseId } };
+                var caseRecord = _blaiseCaseApi.GetCase(primaryKeyValues, questionnaireName, serverParkName);
+
+                caseEditInformationList.Add(_caseDtoMapper.MapToCaseEditInformationDto(caseRecord));
+            }
+
+            return caseEditInformationList;
         }
     }
 }

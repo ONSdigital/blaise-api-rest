@@ -13,29 +13,16 @@ namespace Blaise.Api.Tests.Unit.Services
     {
         private Mock<ILoggingService> _loggingMock;
 
-        private readonly string _questionnaireName;
-        private readonly string _primaryKey;
-        private readonly int _hOutComplete;
-        private readonly int _hOutPartial;
-        private readonly int _hOutIneligible;
-        private readonly int _hOutNotStarted;
-        private readonly string _date1;
-        private readonly string _date2;
+        private readonly string _questionnaireName = "OPN2101A";
+        private readonly string _primaryKey = "900000";
+        private readonly int _hOutComplete = 110;
+        private readonly int _hOutPartial = 210;
+        private readonly int _hOutIneligible = 580;
+        private readonly int _hOutNotStarted = 0;
+        private readonly string _date1 = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
+        private readonly string _date2 = DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture);
 
         private NisraCaseComparisonService _sut;
-        
-        public NisraCaseComparisonServiceTests()
-        {
-            _questionnaireName = "OPN2101A";
-            _primaryKey = "900000";
-            _hOutComplete = 110;
-            _hOutPartial = 210;
-            _hOutNotStarted = 0;
-            _hOutIneligible = 580;
-
-            _date1 = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
-            _date2 = DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture);
-        }
 
         [SetUp]
         public void SetUpTests()
