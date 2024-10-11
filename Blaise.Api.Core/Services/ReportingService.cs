@@ -22,22 +22,23 @@ namespace Blaise.Api.Core.Services
         }
 
         public ReportDto GetReportingData(string serverParkName, string questionnaireName,
-            List<string> fieldIds)
+            List<string> fieldIds, string filter)
         {
             var questionnaireId = _blaiseQuestionnaireApi.GetIdOfQuestionnaire(questionnaireName, serverParkName);
 
-            return BuildReportDto(serverParkName, questionnaireName, questionnaireId, fieldIds);
+            return BuildReportDto(serverParkName, questionnaireName, questionnaireId, fieldIds, filter);
         }
 
-        public ReportDto GetReportingData(string serverParkName, Guid questionnaireId, List<string> fieldIds)
+        public ReportDto GetReportingData(string serverParkName, Guid questionnaireId, List<string> fieldIds, string filter)
         {
             var surveys = _blaiseQuestionnaireApi.GetQuestionnaires(serverParkName);
             var questionnaireName = surveys.First(s => s.InstrumentID == questionnaireId).Name;
 
-            return BuildReportDto(serverParkName, questionnaireName, questionnaireId, fieldIds);
+            return BuildReportDto(serverParkName, questionnaireName, questionnaireId, fieldIds, filter);
         }
 
-        private ReportDto BuildReportDto(string serverParkName, string questionnaireName, Guid questionnaireId, List<string> fieldIds)
+        private ReportDto BuildReportDto(string serverParkName, string questionnaireName, Guid questionnaireId, 
+            List<string> fieldIds, string filter)
         {
             var reportDto = new ReportDto
             {
@@ -45,7 +46,9 @@ namespace Blaise.Api.Core.Services
                 QuestionnaireId = questionnaireId
             };
 
-            var cases = _blaiseCaseApi.GetCases(questionnaireName, serverParkName);
+            var cases = filter == null 
+                ? _blaiseCaseApi.GetCases(questionnaireName, serverParkName) 
+                : _blaiseCaseApi.GetFilteredCases(questionnaireName, serverParkName, filter);
 
             while (!cases.EndOfSet)
             {

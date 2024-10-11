@@ -29,11 +29,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetReportingData([FromUri] string serverParkName, [FromUri] string questionnaireName,
-            [FromUri] List<string> fieldIds)
+            [FromUri] List<string> fieldIds, [FromUri] string filter = null)
         {
             _loggingService.LogInfo($"Obtaining the fields '{string.Join(",", fieldIds)}' for questionnaire '{questionnaireName}' on server park '{serverParkName}'");
 
-            var reportDto = _reportingService.GetReportingData(serverParkName, questionnaireName, fieldIds);
+            var reportDto = _reportingService.GetReportingData(serverParkName, questionnaireName, fieldIds, filter);
 
             _loggingService.LogInfo($"Obtained the fields for questionnaire '{questionnaireName}' on server park '{serverParkName}'");
 
@@ -46,9 +46,9 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetReportingData([FromUri] string serverParkName, [FromUri] Guid questionnaireId,
-            [FromUri] List<string> fieldIds)
+            [FromUri] List<string> fieldIds, [FromUri] string filter = null)
         {
-            var reportDto = _reportingService.GetReportingData(serverParkName, questionnaireId, fieldIds);
+            var reportDto = _reportingService.GetReportingData(serverParkName, questionnaireId, fieldIds, filter);
 
             return Ok(reportDto);
         }
