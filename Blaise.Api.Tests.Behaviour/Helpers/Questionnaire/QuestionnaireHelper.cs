@@ -5,6 +5,9 @@ using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using System;
 using System.Threading;
+using Blaise.Nuget.Api.Contracts.Extensions;
+using Blaise.Nuget.Api.Contracts.Models;
+using StatNeth.Blaise.API.ServerManager;
 
 namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 {
@@ -33,11 +36,19 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 
         public void InstallQuestionnaire()
         {
+            var installOptions = new InstallOptions
+            {
+                DataEntrySettingsName = QuestionnaireDataEntryType.StrictInterviewing.ToString(),
+                InitialAppLayoutSetGroupName = QuestionnaireInterviewType.Cati.FullName(),
+                LayoutSetGroupName = QuestionnaireInterviewType.Cati.FullName(),
+                OverwriteMode = DataOverwriteMode.Always,
+            };
+
             _blaiseQuestionnaireApi.InstallQuestionnaire(
                 BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName,
                 BlaiseConfigurationHelper.QuestionnairePackagePath,
-                QuestionnaireInterviewType.Cati);
+                installOptions);
         }
 
         public bool QuestionnaireHasInstalled(int timeoutInSeconds)
