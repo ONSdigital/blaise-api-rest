@@ -37,14 +37,14 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             _blaiseFileApiMock.Setup(b => b.UpdateQuestionnaireFileWithSqlConnection(
-                _questionnaireName, _questionnaireFile));
+                _questionnaireName, _questionnaireFile, true));
 
             //act
             _sut.UpdateQuestionnaireFileWithSqlConnection(_questionnaireFile);
 
             //assert
             _blaiseFileApiMock.Verify(v => v.UpdateQuestionnaireFileWithSqlConnection(_questionnaireName,
-                _questionnaireFile), Times.Once);
+                _questionnaireFile, true), Times.Once);
         }
 
         [Test]

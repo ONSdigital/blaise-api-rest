@@ -250,5 +250,10 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
         {
             throw new NotImplementedException();
         }
+
+        public IDataSet GetFilteredCases(string questionnaireName, string serverParkName, string filter)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
