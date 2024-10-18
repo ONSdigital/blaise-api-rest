@@ -61,6 +61,12 @@ namespace Blaise.Api.Core.Mappers
 
             if(int.TryParse(yearPeriod, out var year) && int.TryParse(monthPeriod, out var month))
             {
+
+                if (month < 1 || month > 12)
+                {
+                    return null;
+                }
+                    
                 return new DateTime(2000 + year, month, 1);
             }
 

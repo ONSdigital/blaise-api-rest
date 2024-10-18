@@ -102,6 +102,61 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.AreSame(nodeList, result.Nodes);            
         }
 
+
+        [TestCase(24, 0)]
+        [TestCase(24, 13)]
+        public void Given_A_Survey_With_An_Invalid_Field_Period_In_The_Name_When_I_Call_MapToQuestionnaireDto_Then_The_Field_Period_Is_Set_To_Null(int year, int month)
+        {
+            //arrange
+            var questionnaire1Name = $"FRS{year}{month}T";
+            var questionnaire1Id = Guid.NewGuid();
+            const string serverPark1Name = "ServerParkA";
+            const string blaiseVersion = "5.9.9";
+            var installDate = new DateTime(2024, 2, 2);
+            var surveyTla = "FRS";
+
+            const int numberOfRecordForQuestionnaire1 = 20;
+
+            var configurationMock = new Mock<IConfiguration2>();
+            configurationMock.Setup(c => c.BlaiseVersion).Returns(blaiseVersion);
+
+            var configurations = new List<IConfiguration> { configurationMock.Object };
+
+            var configurationCollectionMock = new Mock<IMachineConfigurationCollection>();
+            configurationCollectionMock.Setup(cc => cc.Configurations).Returns(configurations);
+
+            var survey1Mock = new Mock<ISurvey>();
+            survey1Mock.As<ISurvey2>();
+            survey1Mock.Setup(s => s.Name).Returns(questionnaire1Name);
+            survey1Mock.Setup(s => s.InstrumentID).Returns(questionnaire1Id);
+            survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1Name);
+            survey1Mock.Setup(s => s.InstallDate).Returns(installDate);
+            survey1Mock.Setup(s => s.Configuration).Returns(configurationCollectionMock.Object);
+
+            var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
+            surveyReportingInfoMock1.Setup(r => r.DataRecordCount).Returns(numberOfRecordForQuestionnaire1);
+            survey1Mock.As<ISurvey2>().Setup(s => s.GetReportingInfo()).Returns(surveyReportingInfoMock1.Object);
+
+            _statusMapperMock.Setup(s => s.GetQuestionnaireStatus(survey1Mock.Object))
+                .Returns(QuestionnaireStatusType.Active);
+
+            var nodeList = new List<QuestionnaireNodeDto>
+            {
+                new QuestionnaireNodeDto()
+            };
+
+            _nodeDtoMapperMock.Setup(n => n.MapToQuestionnaireNodeDtos(It.IsAny<IMachineConfigurationCollection>()))
+                .Returns(nodeList);
+
+            //act
+            var result = _sut.MapToQuestionnaireDto(survey1Mock.Object);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<QuestionnaireDto>(result);
+            Assert.IsNull(result.FieldPeriod);
+        }
+
         [Test]
         public void Given_A_Survey_Has_No_Configuration_Available_When_I_Call_MapToQuestionnaireDto_Then_BlaiseVersion_Is_Set_To_Default()
         {
