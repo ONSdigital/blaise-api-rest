@@ -40,10 +40,5 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
         {
             throw new NotImplementedException();
         }
-
-        public void UpdateQuestionnaireFileWithSqlConnection(string questionnaireName, string questionnaireFile, bool overwriteExistingData = true)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

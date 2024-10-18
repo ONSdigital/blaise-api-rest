@@ -102,11 +102,6 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
             throw new NotImplementedException();
         }
 
-        public void InstallQuestionnaire(string questionnaireName, string serverParkName, string questionnaireFile, IInstallOptions installOptions)
-        {
-            throw new NotImplementedException();
-        }
-
         public QuestionnaireConfigurationModel GetQuestionnaireConfigurationModel(string questionnaireName, string serverParkName)
         {
             throw new NotImplementedException();
