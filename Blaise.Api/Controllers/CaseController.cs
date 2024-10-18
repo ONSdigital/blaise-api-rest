@@ -118,6 +118,20 @@ namespace Blaise.Api.Controllers
             return Ok(caseDto);
         }
 
+        [HttpGet]
+        [Route("edit")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<string>))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult GetCaseEditingDetailsList([FromUri] string serverParkName, [FromUri] string questionnaireName)
+        {
+            var caseEditInformationDtos = _caseService.GetCaseEditInformationList(serverParkName, questionnaireName);
+
+            _loggingService.LogInfo("Successfully got case edit information list");
+
+            return Ok(caseEditInformationDtos);
+        }
+
         [HttpPost]
         [Route("{caseId}")]
         [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]

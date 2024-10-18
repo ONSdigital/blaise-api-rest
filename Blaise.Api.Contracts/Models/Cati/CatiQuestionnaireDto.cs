@@ -6,12 +6,7 @@ namespace Blaise.Api.Contracts.Models.Cati
 {
     public class CatiQuestionnaireDto : QuestionnaireDto
     {
-        public CatiQuestionnaireDto()
-        {
-            SurveyDays = new List<DateTime>();
-        }
-
-        public List<DateTime> SurveyDays;
+        public List<DateTime> SurveyDays = new List<DateTime>();
 
         public bool Active;
 

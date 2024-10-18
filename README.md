@@ -43,3 +43,5 @@ Swagger should now be available locally at http://localhost:90/swagger
 Behaviour and unit tests are in a separate top level "Tests" folder.
 
 Behaviour tests need to be run in debug mode so that they use the stubs.
+
+### Note: the behaviour tests will fail until BLAIS5-4046 is completed as the stubs are not working

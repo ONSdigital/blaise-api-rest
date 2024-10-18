@@ -21,28 +21,28 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             _scenarioContext = scenarioContext;
         }
 
-        [Given(@"there is a questionnaire installed on a Blaise environment")]
+        [Given("there is a questionnaire installed on a Blaise environment")]
         public void GivenThereIsAQuestionnaireInstalledOnABlaiseEnvironment()
         {
             QuestionnaireHelper.GetInstance().InstallQuestionnaire();
             Assert.IsTrue(QuestionnaireHelper.GetInstance().QuestionnaireHasInstalled(60));
         }
 
-        [Given(@"the questionnaire is active")]
+        [Given("the questionnaire is active")]
         public void GivenTheQuestionnaireIsActive()
         {
             var surveyIsActive = QuestionnaireHelper.GetInstance().SetQuestionnaireAsActive(60);
             Assert.IsTrue(surveyIsActive);
         }
 
-        [When(@"the API is queried to return all active questionnaires")]
+        [When("the API is queried to return all active questionnaires")]
         public async Task WhenTheApiIsQueriedToReturnAllActiveQuestionnairesAsync()
         {
             var listOfActiveQuestionnaires = await RestApiHelper.GetInstance().GetAllActiveQuestionnaires();
             _scenarioContext.Set(listOfActiveQuestionnaires, ApiResponse);
         }
 
-        [Then(@"the details of the questionnaire are returned")]
+        [Then("the details of the questionnaire are returned")]
         public void ThenDetailsOfQuestionnaireAIsReturned()
         {
             var listOfActiveQuestionnaires = _scenarioContext.Get<List<QuestionnaireModel>>(ApiResponse);
