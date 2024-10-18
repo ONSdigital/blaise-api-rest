@@ -1,4 +1,5 @@
 ﻿using Blaise.Api.Contracts.Models.Case;
+using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
 using Blaise.Api.Tests.Unit.Helpers;
@@ -11,7 +12,6 @@ using StatNeth.Blaise.API.DataRecord;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
@@ -20,6 +20,8 @@ namespace Blaise.Api.Tests.Unit.Services
         private ICaseService _sut;
 
         private Mock<IBlaiseCaseApi> _blaiseCaseApiMock;
+        private Mock<ICaseDtoMapper> _mapperMock;
+        private Mock<IBlaiseSqlApi> _blaiseSqlApiMock;
         private Mock<IDataRecord> _dataRecordMock;
 
         private string _questionnaireName;
@@ -30,12 +32,14 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //Setup mocks
             _blaiseCaseApiMock = new Mock<IBlaiseCaseApi>();
+            _mapperMock = new Mock<ICaseDtoMapper>();
+            _blaiseSqlApiMock = new Mock<IBlaiseSqlApi>();
             _dataRecordMock = new Mock<IDataRecord>();
 
             _serverParkName = "LocalDevelopment";
             _questionnaireName = "OPN2101A";
 
-            _sut = new CaseService(_blaiseCaseApiMock.Object);
+            _sut = new CaseService(_blaiseCaseApiMock.Object, _mapperMock.Object, _blaiseSqlApiMock.Object);
         }
 
         [Test]
@@ -81,18 +85,17 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_A_Questionnaire_Has_Two_Cases_When_I_Call_GetCaseStatusList_Then_I_Get_A_List_Containing_Two_CaseStatusDtos_Back()
+        public void Given_A_Questionnaire_Has_Two_Cases_When_I_Call_GetCaseStatusList_Then_The_Expected_List_Of_CaseStatusDtos_Are_Returned()
         {
             //arrange
-            var caseStatusModelList = new List<CaseStatusModel>
-            {
-                new CaseStatusModel(PrimaryKeyHelper.CreatePrimaryKeys("0000007"), 110, DateTime.Today.ToString(CultureInfo.InvariantCulture)),
-                new CaseStatusModel(PrimaryKeyHelper.CreatePrimaryKeys("0000008"), 210, DateTime.Today.ToString(CultureInfo.InvariantCulture))
-            };
+            var caseStatusModelList = new List<CaseStatusModel> { new CaseStatusModel(), new CaseStatusModel() };
+            var caseStatusDtoList = new List<CaseStatusDto> { new CaseStatusDto(), new CaseStatusDto() };
 
 
             _blaiseCaseApiMock.Setup(b => b.GetCaseStatusModelList(_questionnaireName, _serverParkName))
                 .Returns(caseStatusModelList);
+
+            _mapperMock.Setup(m => m.MapToCaseStatusDtoList(caseStatusModelList)).Returns(caseStatusDtoList);
 
             //act
             var result = _sut.GetCaseStatusList(_serverParkName, _questionnaireName);
@@ -100,18 +103,39 @@ namespace Blaise.Api.Tests.Unit.Services
             //assert
             Assert.IsNotNull(result);
             Assert.IsNotEmpty(result);
-            Assert.IsInstanceOf<IEnumerable<CaseStatusDto>>(result);
-            Assert.AreEqual(2, result.Count);
-            Assert.IsTrue(result.Any(r => r.PrimaryKey == "0000007" && r.Outcome == 110));
-            Assert.IsTrue(result.Any(r => r.PrimaryKey == "0000008" && r.Outcome == 210));
+            Assert.AreSame(caseStatusDtoList, result);
+        }
+
+        [Test]
+        public void Given_A_Questionnaire_Has_Two_Cases_When_I_Call_GetCaseStatusList_Then_It_Calls_The_Expected_Services()
+        {
+            //arrange
+            var caseStatusModelList = new List<CaseStatusModel> { new CaseStatusModel(), new CaseStatusModel() };
+            var caseStatusDtoList = new List<CaseStatusDto> { new CaseStatusDto(), new CaseStatusDto() };
+
+
+            _blaiseCaseApiMock.Setup(b => b.GetCaseStatusModelList(_questionnaireName, _serverParkName))
+                .Returns(caseStatusModelList);
+
+            _mapperMock.Setup(m => m.MapToCaseStatusDtoList(caseStatusModelList)).Returns(caseStatusDtoList);
+
+            //act
+            _sut.GetCaseStatusList(_serverParkName, _questionnaireName);
+
+            //assert
+            _blaiseCaseApiMock.Verify(v => v.GetCaseStatusModelList(_questionnaireName, _serverParkName), Times.Once);
+            _mapperMock.Verify(v => v.MapToCaseStatusDtoList(caseStatusModelList), Times.Once);
         }
 
         [Test]
         public void Given_A_Questionnaire_Has_No_Cases_When_I_Call_GetCaseStatusList_Then_I_Get_An_Empty_List_Back()
         {
             //arrange
+            var caseStatusModelList = new List<CaseStatusModel>();
             _blaiseCaseApiMock.Setup(b => b.GetCaseStatusModelList(_questionnaireName, _serverParkName))
-                .Returns(new List<CaseStatusModel>());
+                .Returns(caseStatusModelList);
+
+            _mapperMock.Setup(m => m.MapToCaseStatusDtoList(caseStatusModelList)).Returns(new List<CaseStatusDto>());
 
             //act
             var result = _sut.GetCaseStatusList(_serverParkName, _questionnaireName);
@@ -166,28 +190,49 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_Valid_Arguments_When_I_Call_GetCase_Then_The_Correct_CaseDto_Is_Returned()
+        public void Given_Valid_Arguments_When_I_Call_GetCase_Then_The_Expected_CaseDto_Is_Returned()
         {
             //arrange
             const string caseId = "1000001";
             var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseId);
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+            var caseDto = new CaseDto();
 
             _blaiseCaseApiMock.Setup(c => c.GetCase(primaryKeys, _questionnaireName, _serverParkName))
                 .Returns(_dataRecordMock.Object);
 
-            _blaiseCaseApiMock.Setup(c => c.GetPrimaryKeyValues(_dataRecordMock.Object)).Returns(primaryKeys);
 
             _blaiseCaseApiMock.Setup(c => c.GetRecordDataFields(_dataRecordMock.Object)).Returns(fieldData);
+            _mapperMock.Setup(m => m.MapToCaseDto(caseId, _dataRecordMock.Object)).Returns(caseDto);
 
             //act
             var result = _sut.GetCase(_serverParkName, _questionnaireName, caseId);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CaseDto>(result);
-            Assert.AreEqual(caseId, result.CaseId);
-            Assert.AreEqual(fieldData, result.FieldData);
+            Assert.AreSame(caseDto, result);
+        }
+
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_GetCase_Then_The_Expected_Services_Are_Called()
+        {
+            //arrange
+            const string caseId = "1000001";
+            var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseId);
+            var caseDto = new CaseDto();
+
+            _blaiseCaseApiMock.Setup(c => c.GetCase(primaryKeys, _questionnaireName, _serverParkName))
+                .Returns(_dataRecordMock.Object);
+
+
+            _mapperMock.Setup(m => m.MapToCaseDto(caseId, _dataRecordMock.Object)).Returns(caseDto);
+
+            //act
+            _sut.GetCase(_serverParkName, _questionnaireName, caseId);
+
+            //assert
+            _blaiseCaseApiMock.Verify(v => v.GetCase(primaryKeys, _questionnaireName, _serverParkName), Times.Once);
+            _mapperMock.Verify(v => v.MapToCaseDto(caseId, _dataRecordMock.Object), Times.Once);
         }
 
         [Test]
@@ -291,7 +336,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_Multikey_Arguments_When_I_Call_GetCase_Then_A_Correct_Case_Multikey_Dto_Is_Returned()
+        public void Given_Multikey_Arguments_When_I_Call_GetCase_Then_An_Expected_Case_Multikey_Dto_Is_Returned()
         {
             //arrange
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
@@ -314,10 +359,19 @@ namespace Blaise.Api.Tests.Unit.Services
                 { "id", "9000001" }
             };
 
+            var multiKeyDto = new CaseMultikeyDto
+            {
+                PrimaryKeyValues = primaryKeyValues,
+                FieldData = fieldData
+            };
+
             _blaiseCaseApiMock.Setup(c => c.GetCase(primaryKeyValues, _questionnaireName, _serverParkName))
                 .Returns(_dataRecordMock.Object);
 
             _blaiseCaseApiMock.Setup(c => c.GetRecordDataFields(_dataRecordMock.Object)).Returns(fieldData);
+
+            _mapperMock.Setup(m => m.MapToCaseMultikeyDto(primaryKeyValues, _dataRecordMock.Object))
+                .Returns(multiKeyDto);
 
 
             //act
@@ -325,9 +379,53 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CaseMultikeyDto>(result);
-            Assert.AreEqual(primaryKeyValues, result.PrimaryKeyValues);
-            Assert.AreEqual(fieldData, result.FieldData);
+            Assert.AreSame(multiKeyDto, result);
+        }
+
+        [Test]
+        public void Given_Multikey_Arguments_When_I_Call_GetCase_Then_The_Correct_services_Are_Called()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string> { { "yo", "man" } };
+
+            var keyNames = new List<string>
+            {
+                "mainSurveyId",
+                "id"
+            };
+
+            var keyValues = new List<string>
+            {
+                "123-234343-343243",
+                "9000001"
+            };
+
+            var primaryKeyValues = new Dictionary<string, string>
+            {
+                { "mainSurveyId", "123-234343-343243" },
+                { "id", "9000001" }
+            };
+
+            var multiKeyDto = new CaseMultikeyDto
+            {
+                PrimaryKeyValues = primaryKeyValues,
+                FieldData = fieldData
+            };
+
+            _blaiseCaseApiMock.Setup(c => c.GetCase(primaryKeyValues, _questionnaireName, _serverParkName))
+                .Returns(_dataRecordMock.Object);
+
+
+            _mapperMock.Setup(m => m.MapToCaseMultikeyDto(primaryKeyValues, _dataRecordMock.Object))
+                .Returns(multiKeyDto);
+
+
+            //act
+           _sut.GetCase(_serverParkName, _questionnaireName, keyNames, keyValues);
+
+            //assert
+            _blaiseCaseApiMock.Verify(v => v.GetCase(primaryKeyValues, _questionnaireName, _serverParkName), Times.Once);
+            _mapperMock.Verify(v => v.MapToCaseMultikeyDto(primaryKeyValues, _dataRecordMock.Object), Times.Once);
         }
 
         [Test]
@@ -1865,6 +1963,129 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(_serverParkName, _questionnaireName, keyNames, null));
             Assert.AreEqual("keyValues", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_GetCaseEditInformationList_Then_I_Get_A_List_Of_CaseEditingDetailsDto_Back()
+        {
+            //arrange
+            //act
+            var result = _sut.GetCaseEditInformationList(_serverParkName, _questionnaireName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<List<CaseEditInformationDto>>(result);
+        }
+
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_GetCaseEditInformationList_Then_The_Correct_Services_Are_Called()
+        {
+            //arrange
+            var casesIds = new List<string>
+            {
+                "10001011",
+                "10001012",
+                "10001013"
+            };
+
+            var case1Mock = new Mock<IDataRecord>();
+            var case2Mock = new Mock<IDataRecord>();
+            var case3Mock = new Mock<IDataRecord>();
+
+            _blaiseSqlApiMock.Setup(z => z.GetEditingCaseIds(_questionnaireName)).Returns(casesIds);
+            _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001011" } }, _questionnaireName, _serverParkName)).Returns(case1Mock.Object);
+            _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001012" } }, _questionnaireName, _serverParkName)).Returns(case2Mock.Object);
+            _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001013" } }, _questionnaireName, _serverParkName)).Returns(case3Mock.Object);
+
+            //act
+            _sut.GetCaseEditInformationList(_serverParkName, _questionnaireName);
+
+            //assert                
+            _blaiseSqlApiMock.Verify(b => b.GetEditingCaseIds(_questionnaireName), Times.Once);
+            _blaiseCaseApiMock.Verify(b => b.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001011" } }, _questionnaireName, _serverParkName), Times.Once);
+            _blaiseCaseApiMock.Verify(b => b.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001012" } }, _questionnaireName, _serverParkName), Times.Once);
+            _blaiseCaseApiMock.Verify(b => b.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001013" } }, _questionnaireName, _serverParkName), Times.Once);
+            _mapperMock.Verify(b => b.MapToCaseEditInformationDto(case1Mock.Object), Times.Once);
+            _mapperMock.Verify(b => b.MapToCaseEditInformationDto(case2Mock.Object), Times.Once);
+            _mapperMock.Verify(b => b.MapToCaseEditInformationDto(case3Mock.Object), Times.Once);
+        }
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_GetCaseEditInformationList_Then_An_Expected_List_Of_EditingDetailsDto_Are_Returned()
+        {
+            //arrange
+            var casesIds = new List<string>
+            {
+                "10001011",
+                "10001012",
+                "10001013"
+            };
+
+            var case1Mock = new Mock<IDataRecord>();
+            var case2Mock = new Mock<IDataRecord>();
+            var case3Mock = new Mock<IDataRecord>();
+
+            _blaiseSqlApiMock.Setup(z => z.GetEditingCaseIds(_questionnaireName)).Returns(casesIds);
+            _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001011" } }, _questionnaireName, _serverParkName)).Returns(case1Mock.Object);
+            _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001012" } }, _questionnaireName, _serverParkName)).Returns(case2Mock.Object);
+            _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001013" } }, _questionnaireName, _serverParkName)).Returns(case3Mock.Object);
+
+            var editingDetailsDto1 = new CaseEditInformationDto();
+            var editingDetailsDto2 = new CaseEditInformationDto();
+            var editingDetailsDto3 = new CaseEditInformationDto();
+
+            _mapperMock.Setup(z => z.MapToCaseEditInformationDto(case1Mock.Object)).Returns(editingDetailsDto1);
+            _mapperMock.Setup(z => z.MapToCaseEditInformationDto(case2Mock.Object)).Returns(editingDetailsDto2);
+            _mapperMock.Setup(z => z.MapToCaseEditInformationDto(case3Mock.Object)).Returns(editingDetailsDto3);
+
+            //act
+            var result = _sut.GetCaseEditInformationList(_serverParkName, _questionnaireName);
+
+            //assert                
+            Assert.NotNull(result);
+            Assert.That(result, Is.EqualTo(new List<CaseEditInformationDto> { editingDetailsDto1, editingDetailsDto2, editingDetailsDto3 }));
+        }
+        [Test]
+        public void Given_A_Null_QuestionnaireName_When_I_Call_GetCaseEditInformationList_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            //act
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCaseEditInformationList(_serverParkName, null));
+
+            //assert
+            Assert.AreEqual("questionnaireName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_GetCaseEditInformationList_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            //act
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCaseEditInformationList(null, _questionnaireName));
+
+            //assert
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_QuestionnaireName_When_I_Call_GetCaseEditInformationList_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            //act
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetCaseEditInformationList(_serverParkName, ""));
+
+            //assert
+            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_GetCaseEditInformationList_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            //act
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetCaseEditInformationList("", _questionnaireName));
+
+            //assert
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
     }
 }

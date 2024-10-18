@@ -17,7 +17,6 @@ namespace Blaise.Api.Tests.Unit.Mappers
         private Mock<IQuestionnaireStatusMapper> _statusMapperMock;
         private Mock<IQuestionnaireNodeDtoMapper> _nodeDtoMapperMock;
 
-        private DateTime _installDate;
         private int _numberOfRecordForQuestionnaire;
         private Mock<ISurvey> _surveyMock;
         private Mock<ISurveyReportingInfo> _surveyReportingInfoMock;
@@ -25,12 +24,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [SetUp]
         public void SetupTests()
         {
-            _installDate = DateTime.Now;
             _numberOfRecordForQuestionnaire = 100;
 
             _surveyMock = new Mock<ISurvey>();
-            _surveyMock.Setup(s => s.InstallDate).Returns(_installDate);
-
+            
             _surveyReportingInfoMock = new Mock<ISurveyReportingInfo>();
             _surveyReportingInfoMock.Setup(r => r.DataRecordCount).Returns(_numberOfRecordForQuestionnaire);
             _surveyMock.As<ISurvey2>().Setup(s => s.GetReportingInfo()).Returns(_surveyReportingInfoMock.Object);
@@ -45,10 +42,13 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_Survey_When_I_Call_MapToQuestionnaireDto_Then_Properties_Are_Mapped_Correctly()
         {
             //arrange
-            const string questionnaire1Name = "OPN2010A";
+            const string questionnaire1Name = "FRS2404a";
             var questionnaire1Id = Guid.NewGuid();
             const string serverPark1Name = "ServerParkA";
             const string blaiseVersion = "5.9.9";
+            var installDate = new DateTime(2024, 1, 1);
+            var fieldPeriod = new DateTime(2024, 4, 1);
+            var surveyTla = "FRS";
 
             const int numberOfRecordForQuestionnaire1 = 20;
 
@@ -65,6 +65,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             survey1Mock.Setup(s => s.Name).Returns(questionnaire1Name);
             survey1Mock.Setup(s => s.InstrumentID).Returns(questionnaire1Id);
             survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1Name);
+            survey1Mock.Setup(s => s.InstallDate).Returns(installDate);
             survey1Mock.Setup(s => s.Configuration).Returns(configurationCollectionMock.Object);
 
             var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
@@ -95,7 +96,65 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.AreEqual(QuestionnaireStatusType.Active.ToString(), result.Status);
             Assert.True(result.HasData);
             Assert.AreEqual(blaiseVersion, result.BlaiseVersion);
+            Assert.AreEqual(installDate, result.InstallDate);
+            Assert.AreEqual(fieldPeriod, result.FieldPeriod);
+            Assert.AreEqual(surveyTla, result.SurveyTla);
             Assert.AreSame(nodeList, result.Nodes);            
+        }
+
+
+        [TestCase(24, 0)]
+        [TestCase(24, 13)]
+        public void Given_A_Survey_With_An_Invalid_Field_Period_In_The_Name_When_I_Call_MapToQuestionnaireDto_Then_The_Field_Period_Is_Set_To_Null(int year, int month)
+        {
+            //arrange
+            var questionnaire1Name = $"FRS{year}{month}T";
+            var questionnaire1Id = Guid.NewGuid();
+            const string serverPark1Name = "ServerParkA";
+            const string blaiseVersion = "5.9.9";
+            var installDate = new DateTime(2024, 2, 2);
+            var surveyTla = "FRS";
+
+            const int numberOfRecordForQuestionnaire1 = 20;
+
+            var configurationMock = new Mock<IConfiguration2>();
+            configurationMock.Setup(c => c.BlaiseVersion).Returns(blaiseVersion);
+
+            var configurations = new List<IConfiguration> { configurationMock.Object };
+
+            var configurationCollectionMock = new Mock<IMachineConfigurationCollection>();
+            configurationCollectionMock.Setup(cc => cc.Configurations).Returns(configurations);
+
+            var survey1Mock = new Mock<ISurvey>();
+            survey1Mock.As<ISurvey2>();
+            survey1Mock.Setup(s => s.Name).Returns(questionnaire1Name);
+            survey1Mock.Setup(s => s.InstrumentID).Returns(questionnaire1Id);
+            survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1Name);
+            survey1Mock.Setup(s => s.InstallDate).Returns(installDate);
+            survey1Mock.Setup(s => s.Configuration).Returns(configurationCollectionMock.Object);
+
+            var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
+            surveyReportingInfoMock1.Setup(r => r.DataRecordCount).Returns(numberOfRecordForQuestionnaire1);
+            survey1Mock.As<ISurvey2>().Setup(s => s.GetReportingInfo()).Returns(surveyReportingInfoMock1.Object);
+
+            _statusMapperMock.Setup(s => s.GetQuestionnaireStatus(survey1Mock.Object))
+                .Returns(QuestionnaireStatusType.Active);
+
+            var nodeList = new List<QuestionnaireNodeDto>
+            {
+                new QuestionnaireNodeDto()
+            };
+
+            _nodeDtoMapperMock.Setup(n => n.MapToQuestionnaireNodeDtos(It.IsAny<IMachineConfigurationCollection>()))
+                .Returns(nodeList);
+
+            //act
+            var result = _sut.MapToQuestionnaireDto(survey1Mock.Object);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<QuestionnaireDto>(result);
+            Assert.IsNull(result.FieldPeriod);
         }
 
         [Test]
@@ -151,6 +210,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             const string questionnaire1Name = "OPN2010A";
             const string questionnaire2Name = "OPN2010B";
 
+            var fieldPeriod = new DateTime(2020, 10, 1);
+            const string surveyTla = "OPN";
+
             var questionnaire1Id = Guid.NewGuid();
             var questionnaire2Id = Guid.NewGuid();
 
@@ -162,6 +224,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
 
             const string questionnaire1BlaiseVersion = "5.9.9";
             const string questionnaire2BlaiseVersion = "5.9.3";
+
+            var questionnaire1InstallDate = new DateTime(2024, 1, 1);
+            var questionnaire2InstallDate = new DateTime(2024, 2, 1);
 
             var survey1Mock = new Mock<ISurvey>();
 
@@ -177,6 +242,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             survey1Mock.Setup(s => s.Name).Returns(questionnaire1Name);
             survey1Mock.Setup(s => s.InstrumentID).Returns(questionnaire1Id);
             survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1Name);
+            survey1Mock.Setup(s => s.InstallDate).Returns(questionnaire1InstallDate);
             survey1Mock.Setup(s => s.Configuration).Returns(configurationCollection1Mock.Object);            
 
             var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
@@ -198,6 +264,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             survey2Mock.As<ISurvey2>();
             survey2Mock.Setup(s => s.Name).Returns(questionnaire2Name);
             survey2Mock.Setup(s => s.InstrumentID).Returns(questionnaire2Id);
+            survey2Mock.Setup(s => s.InstallDate).Returns(questionnaire2InstallDate);
             survey2Mock.Setup(s => s.ServerPark).Returns(serverPark2Name);
             survey2Mock.Setup(s => s.Configuration).Returns(configurationCollection2Mock.Object);
 
@@ -242,6 +309,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 i.Status == QuestionnaireStatusType.Active.ToString() &&
                 i.HasData &&
                 i.BlaiseVersion == questionnaire1BlaiseVersion &&
+                i.InstallDate == questionnaire1InstallDate &&
+                i.FieldPeriod == fieldPeriod &&
+                i.SurveyTla == surveyTla &&
                 i.Nodes.Count() == 2));
 
             Assert.True(result.Any(i =>
@@ -252,7 +322,63 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 i.Status == QuestionnaireStatusType.Installing.ToString() &&
                 i.HasData == false &&
                 i.BlaiseVersion == questionnaire2BlaiseVersion &&
+                i.InstallDate == questionnaire2InstallDate &&
+                i.FieldPeriod == fieldPeriod &&
+                i.SurveyTla == surveyTla &&
                 i.Nodes.Count() == 2));
+        }
+
+        [Test]
+        public void Given_I_Call_GetFieldPeriod_With_A_Valid_QuestionnaireName_Then_The_Expected_FieldPeriod_Is_Returned()
+        {
+            // arrange
+            var tests = new Dictionary<string, DateTime>()
+            {
+                { "FRS2404a", new DateTime(2024, 04, 1) },
+                { "OPN2308a", new DateTime(2023, 08, 1) }
+            };
+
+            // act && assert
+            foreach (var test in tests)
+            {
+                var fieldPeriod = QuestionnaireDtoMapper.GetFieldPeriod(test.Key);
+                Assert.AreEqual(test.Value, fieldPeriod);
+            }
+        }
+
+        [TestCase("FRSL404a")]
+        [TestCase("OPNTESTa")]
+        [TestCase("LMS20B")]
+        public void Given_I_Call_GetFieldPeriod_With_A_Invalid_QuestionnaireName_Then_Null_Is_Returned(string questionnaireName)
+        {
+            // act
+            var fieldPeriod = QuestionnaireDtoMapper.GetFieldPeriod(questionnaireName);
+
+            // assert
+            Assert.IsNull(fieldPeriod);
+        }
+
+        [TestCase("FRS2404a", "FRS")]
+        [TestCase("OPN2308a", "OPN")]
+        [TestCase("LMS2406_tl1", "LMS")]
+        public void Given_I_Call_GetSurveyTla_With_A_Valid_QuestionnaireName_Then_The_Expected_FieldPeriod_Is_Returned(string questionnaireName, string expectedResult)
+        {
+            // act
+            var surveyTla = QuestionnaireDtoMapper.GetSurveyTla(questionnaireName);
+
+            // assert
+            Assert.AreEqual(expectedResult, surveyTla);
+        }
+
+        [TestCase("F")]
+        [TestCase("OP")]
+        public void Given_I_Call_GetSurveyTla_With_A_Invalid_QuestionnaireName_Then_Null_Is_Returned(string questionnaireName)
+        {
+            // act
+            var surveyTla = QuestionnaireDtoMapper.GetSurveyTla(questionnaireName);
+
+            // assert
+            Assert.IsNull(surveyTla);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             QuestionnaireHelper.GetInstance().InstallQuestionnaire();
         }
 
-        [Given(@"there is a online file that contains the following cases")]
+        [Given("there is a online file that contains the following cases")]
         public async Task GivenThereIsAOnlineFileThatContainsTheFollowingCases(IEnumerable<CaseModel> cases)
         {
             if (StubConfigurationHelper.UseStubs)
@@ -50,7 +50,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             await OnlineFileHelper.GetInstance().CreateCasesInOnlineFileAsync(cases, _tempFilePath);
         }
 
-        [Given(@"blaise contains the following cases")]
+        [Given("blaise contains the following cases")]
         public void GivenBlaiseContainsTheFollowingCases(IEnumerable<CaseModel> cases)
         {
             if (StubConfigurationHelper.UseStubs)
@@ -61,7 +61,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             CaseHelper.GetInstance().CreateCasesInBlaise(cases);
         }
 
-        [When(@"the online file is processed")]
+        [When("the online file is processed")]
         public async Task WhenTheOnlineFileIsProcessed()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -75,7 +75,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             Assert.AreEqual(HttpStatusCode.Created, statusCode);
         }
 
-        [Then(@"blaise will contain the following cases")]
+        [Then("blaise will contain the following cases")]
         public void ThenBlaiseWillContainTheFollowingCases(IEnumerable<CaseModel> cases)
         {
             if (StubConfigurationHelper.UseStubs)
@@ -110,7 +110,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             }
         }
 
-        [Given(@"there is a online file that contains a case that is complete")]
+        [Given("there is a online file that contains a case that is complete")]
         public async Task GivenThereIsAOnlineDataFileThatContainsACaseThatIsCompleteAsync()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -121,7 +121,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             await GivenThereIsAnOnlineFileThatContainsACaseWithTheOutcomeCodeAsync(110);
         }
 
-        [Given(@"there is a online file that contains a case that is partially complete")]
+        [Given("there is a online file that contains a case that is partially complete")]
         public async Task GivenThereIsAOnlineFileThatContainsACaseThatIsPartiallyComplete()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -132,7 +132,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             await GivenThereIsAnOnlineFileThatContainsACaseWithTheOutcomeCodeAsync(210);
         }
 
-        [Given(@"there is a online file that contains a case that is ineligible")]
+        [Given("there is a online file that contains a case that is ineligible")]
         public async Task GivenThereIsAOnlineFileThatContainsACaseThatIsIneligible()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -143,7 +143,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             await GivenThereIsAnOnlineFileThatContainsACaseWithTheOutcomeCodeAsync(580);
         }
 
-        [Given(@"there is a online file that contains a case that has not been started")]
+        [Given("there is a online file that contains a case that has not been started")]
         public async Task GivenThereIsAOnlineFileThatContainsACaseThatHasNotBeenStarted()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -154,7 +154,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             await GivenThereIsAnOnlineFileThatContainsACaseWithTheOutcomeCodeAsync(0);
         }
 
-        [Given(@"there is an online file that contains a case with the outcome code '(.*)'")]
+        [Given("there is an online file that contains a case with the outcome code '(.*)'")]
         public async Task GivenThereIsAnOnlineFileThatContainsACaseWithTheOutcomeCodeAsync(int outcomeCode)
         {
             if (StubConfigurationHelper.UseStubs)
@@ -166,7 +166,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             _scenarioContext.Set(primaryKey,"primaryKey");
         }
 
-        [Given(@"the same case exists in Blaise that is complete")]
+        [Given("the same case exists in Blaise that is complete")]
         public void GivenTheSameCaseExistsInBlaiseThatIsComplete()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -177,7 +177,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             GivenTheSameCaseExistsInBlaiseWithTheOutcomeCode(110);
         }
 
-        [Given(@"the same case exists in Blaise that is partially complete")]
+        [Given("the same case exists in Blaise that is partially complete")]
         public void GivenTheSameCaseExistsInBlaiseThatIsPartiallyComplete()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -188,7 +188,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             GivenTheSameCaseExistsInBlaiseWithTheOutcomeCode(210);
         }
 
-        [Given(@"there is a online file that contains a case that has previously been imported")]
+        [Given("there is a online file that contains a case that has previously been imported")]
         public async Task GivenThereIsAOnlineFileThatContainsACaseThatHasPreviouslyBeenImported()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -205,7 +205,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             _scenarioContext.Set(caseModel.PrimaryKey,"primaryKey");
         }
         
-        [Given(@"the same case exists in Blaise with the outcome code '(.*)'")]
+        [Given("the same case exists in Blaise with the outcome code '(.*)'")]
         public void GivenTheSameCaseExistsInBlaiseWithTheOutcomeCode(int outcomeCode)
         {
             if (StubConfigurationHelper.UseStubs)
@@ -218,7 +218,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             CaseHelper.GetInstance().CreateCaseInBlaise(caseModel);
         }
 
-        [Given(@"the case has been updated within the past 30 minutes")]
+        [Given("the case has been updated within the past 30 minutes")]
         public void GivenTheCaseIsCurrentlyOpenInCati()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -230,7 +230,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             CaseHelper.GetInstance().MarkCaseAsOpenInCati(primaryKey);
         }
 
-        [Then(@"the existing blaise case is overwritten with the online case")]
+        [Then("the existing blaise case is overwritten with the online case")]
         public void ThenTheExistingBlaiseCaseIsOverwrittenWithTheOnlineCase()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -243,7 +243,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             Assert.AreEqual(ModeType.Web, modeType);
         }
 
-        [Then(@"the existing blaise case is kept")]
+        [Then("the existing blaise case is kept")]
         public void ThenTheExistingBlaiseCaseIsKept()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -256,7 +256,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             Assert.AreEqual(ModeType.Tel, modeType);
         }
 
-        [Then(@"the online case is not imported again")]
+        [Then("the online case is not imported again")]
         public void ThenTheOnlineCaseIsNotImportedAgain()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -269,7 +269,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             Assert.AreEqual(ModeType.Web, modeType);
         }
 
-        [Given(@"there is a online file that contains '(.*)' cases")]
+        [Given("there is a online file that contains '(.*)' cases")]
         public async Task GivenThereIsAOnlineFileThatContainsCases(int numberOfCases)
         {
             if (StubConfigurationHelper.UseStubs)
@@ -280,7 +280,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             await OnlineFileHelper.GetInstance().CreateCasesInOnlineFileAsync(numberOfCases, _tempFilePath);
         }
         
-        [Given(@"blaise contains no cases")]
+        [Given("blaise contains no cases")]
         public void GivenTheBlaiseDatabaseIsEmpty()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -291,7 +291,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             CaseHelper.GetInstance().DeleteCases();
         }
 
-        [Given(@"blaise contains '(.*)' cases")]
+        [Given("blaise contains '(.*)' cases")]
         public void GivenBlaiseContainsCases(int numberOfCases)
         {
             if (StubConfigurationHelper.UseStubs)
@@ -302,7 +302,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             CaseHelper.GetInstance().CreateCasesInBlaise(numberOfCases);
         }
         
-        [Then(@"blaise will contain no cases")]
+        [Then("blaise will contain no cases")]
         public void ThenBlaiseWillContainNoCases()
         {
             if (StubConfigurationHelper.UseStubs)
@@ -313,7 +313,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             ThenCasesWillBeImportedIntoBlaise(0);
         }
 
-        [Then(@"blaise will contain '(.*)' cases")]
+        [Then("blaise will contain '(.*)' cases")]
         public void ThenCasesWillBeImportedIntoBlaise(int numberOfCases)
         {
             if (StubConfigurationHelper.UseStubs)

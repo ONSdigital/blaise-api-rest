@@ -53,10 +53,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Blaise.Nuget.Api.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2024.10.11.3\lib\net48\Blaise.Nuget.Api.Contracts.dll</HintPath>
+      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2024.10.18.2\lib\net48\Blaise.Nuget.Api.Contracts.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="StatNeth.Blaise.API, Version=5.0.0.0, Culture=neutral, PublicKeyToken=ad2ddd432cb2a452, processorArchitecture=MSIL">
       <HintPath>..\packages\StatNeth.Blaise.API.x64.5.9.7\lib\net472\StatNeth.Blaise.API.dll</HintPath>
@@ -77,6 +77,7 @@
     <Compile Include="Interfaces\IConfigurationProvider.cs" />
     <Compile Include="Interfaces\ILoggingService.cs" />
     <Compile Include="Models\Case\CaseMultikeyDto.cs" />
+    <Compile Include="Models\Case\CaseEditInformationDto.cs" />
     <Compile Include="Models\Case\CaseStatusDto.cs" />
     <Compile Include="Models\Case\CaseDto.cs" />
     <Compile Include="Models\Cati\CatiQuestionnaireDto.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Blaise.Api.Contracts.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
