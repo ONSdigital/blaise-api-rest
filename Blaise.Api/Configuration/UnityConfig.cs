@@ -56,6 +56,7 @@ namespace Blaise.Api.Configuration
             UnityContainer.RegisterType<IUserDtoMapper, UserDtoMapper>();
             UnityContainer.RegisterType<IQuestionnaireStatusMapper, QuestionnaireStatusMapper>();
             UnityContainer.RegisterType<IDataEntrySettingsDtoMapper, DataEntrySettingsDtoMapper>();
+            UnityContainer.RegisterType<ICaseDtoMapper, CaseDtoMapper>();
 
             //core services
             UnityContainer.RegisterType<IServerParkService, ServerParkService>();

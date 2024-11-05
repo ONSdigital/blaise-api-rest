@@ -255,5 +255,10 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
         {
             throw new NotImplementedException();
         }
+
+        public bool FieldExists(IDataRecord dataRecord, string fieldName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

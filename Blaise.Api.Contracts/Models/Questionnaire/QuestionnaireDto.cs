@@ -5,11 +5,6 @@ namespace Blaise.Api.Contracts.Models.Questionnaire
 {
     public class QuestionnaireDto
     {
-        public QuestionnaireDto()
-        {
-            Nodes = new List<QuestionnaireNodeDto>();
-        }
-
         public string Name { get; set; }
         public Guid Id { get; set; }
         public string ServerParkName { get; set; }
@@ -18,7 +13,9 @@ namespace Blaise.Api.Contracts.Models.Questionnaire
         public int DataRecordCount { get; set; }
         public bool HasData => DataRecordCount > 0;
         public string BlaiseVersion { get; set; }
+        public DateTime? FieldPeriod { get; set; }
+        public string SurveyTla { get; set; }
 
-        public IEnumerable<QuestionnaireNodeDto> Nodes { get; set; }
+        public IEnumerable<QuestionnaireNodeDto> Nodes { get; set; } = new List<QuestionnaireNodeDto>();
     }
 }
