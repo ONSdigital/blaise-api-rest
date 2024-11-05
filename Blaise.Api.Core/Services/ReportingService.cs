@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.Reports;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
@@ -12,13 +13,16 @@ namespace Blaise.Api.Core.Services
     {
         private readonly IBlaiseCaseApi _blaiseCaseApi;
         private readonly IBlaiseQuestionnaireApi _blaiseQuestionnaireApi;
+        private readonly ILoggingService _loggingService;
 
         public ReportingService(
             IBlaiseCaseApi blaiseCaseApi,
-            IBlaiseQuestionnaireApi blaiseQuestionnaireApi)
+            IBlaiseQuestionnaireApi blaiseQuestionnaireApi, 
+            ILoggingService loggingService)
         {
             _blaiseCaseApi = blaiseCaseApi;
             _blaiseQuestionnaireApi = blaiseQuestionnaireApi;
+            _loggingService = loggingService;
         }
 
         public ReportDto GetReportingData(string serverParkName, string questionnaireName,
@@ -52,7 +56,7 @@ namespace Blaise.Api.Core.Services
 
             while (!cases.EndOfSet)
             {
-                var caseData = GetReportFieldData(fieldIds, cases.ActiveRecord);
+                var caseData = GetReportFieldData(questionnaireName, fieldIds, cases.ActiveRecord);
 
                 reportDto.ReportingData.Add(caseData);
 
@@ -62,12 +66,18 @@ namespace Blaise.Api.Core.Services
             return reportDto;
         }
 
-        private Dictionary<string, string> GetReportFieldData(IEnumerable<string> fieldIds, IDataRecord caseRecord)
+        private Dictionary<string, string> GetReportFieldData(string questionnaireName, IEnumerable<string> fieldIds, IDataRecord caseRecord)
         {
             var reportingData = new Dictionary<string, string>();
 
             foreach (var fieldId in fieldIds)
             {
+                if (!_blaiseCaseApi.FieldExists(caseRecord, fieldId))
+                {
+                    _loggingService.LogWarn($"The field '{fieldId}' was not found in the questionnaire '{questionnaireName}'");
+                    continue;
+                }
+
                 reportingData.Add(fieldId, _blaiseCaseApi.GetFieldValue(caseRecord, fieldId).ValueAsText);
             }
 

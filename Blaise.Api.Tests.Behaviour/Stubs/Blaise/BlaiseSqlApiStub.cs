@@ -22,6 +22,11 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.Blaise
             throw new NotImplementedException();
         }
 
+        public IEnumerable<string> GetEditingCaseIds(string questionnaireName)
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetPostCode(string questionnaireName, string primaryKey)
         {
             throw new NotImplementedException();
