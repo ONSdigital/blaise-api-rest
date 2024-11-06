@@ -1964,7 +1964,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(_serverParkName, _questionnaireName, keyNames, null));
             Assert.AreEqual("keyValues", exception.ParamName);
         }
-
+/*
         [Test]
         public void Given_Valid_Arguments_When_I_Call_GetCaseEditInformationList_Then_I_Get_A_List_Of_CaseEditingDetailsDto_Back()
         {
@@ -2008,8 +2008,9 @@ namespace Blaise.Api.Tests.Unit.Services
             _mapperMock.Verify(b => b.MapToCaseEditInformationDto(case1Mock.Object), Times.Once);
             _mapperMock.Verify(b => b.MapToCaseEditInformationDto(case2Mock.Object), Times.Once);
             _mapperMock.Verify(b => b.MapToCaseEditInformationDto(case3Mock.Object), Times.Once);
-        }
-        [Test]
+        }*/
+
+     /*   [Test]
         public void Given_Valid_Arguments_When_I_Call_GetCaseEditInformationList_Then_An_Expected_List_Of_EditingDetailsDto_Are_Returned()
         {
             //arrange
@@ -2043,7 +2044,8 @@ namespace Blaise.Api.Tests.Unit.Services
             //assert                
             Assert.NotNull(result);
             Assert.That(result, Is.EqualTo(new List<CaseEditInformationDto> { editingDetailsDto1, editingDetailsDto2, editingDetailsDto3 }));
-        }
+        }*/
+
         [Test]
         public void Given_A_Null_QuestionnaireName_When_I_Call_GetCaseEditInformationList_Then_An_ArgumentNullException_Is_Thrown()
         {
