@@ -8,9 +8,6 @@ using Blaise.Nuget.Api.Contracts.Models;
 using StatNeth.Blaise.API.ServerManager;
 using System;
 using System.Threading;
-using Blaise.Nuget.Api.Contracts.Extensions;
-using Blaise.Nuget.Api.Contracts.Models;
-using StatNeth.Blaise.API.ServerManager;
 
 namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 {
