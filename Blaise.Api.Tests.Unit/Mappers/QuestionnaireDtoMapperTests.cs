@@ -113,7 +113,6 @@ namespace Blaise.Api.Tests.Unit.Mappers
             const string serverPark1Name = "ServerParkA";
             const string blaiseVersion = "5.9.9";
             var installDate = new DateTime(2024, 2, 2);
-            var surveyTla = "FRS";
 
             const int numberOfRecordForQuestionnaire1 = 20;
 
