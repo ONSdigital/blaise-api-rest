@@ -12,6 +12,7 @@ using StatNeth.Blaise.API.DataRecord;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using StatNeth.Blaise.API.DataLink;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
@@ -23,6 +24,7 @@ namespace Blaise.Api.Tests.Unit.Services
         private Mock<ICaseDtoMapper> _mapperMock;
         private Mock<IBlaiseSqlApi> _blaiseSqlApiMock;
         private Mock<IDataRecord> _dataRecordMock;
+        private Mock<IDataSet> _dataSetMock;
 
         private string _questionnaireName;
         private string _serverParkName;
@@ -35,6 +37,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _mapperMock = new Mock<ICaseDtoMapper>();
             _blaiseSqlApiMock = new Mock<IBlaiseSqlApi>();
             _dataRecordMock = new Mock<IDataRecord>();
+            _dataSetMock = new Mock<IDataSet>();
 
             _serverParkName = "LocalDevelopment";
             _questionnaireName = "OPN2101A";
@@ -1969,6 +1972,24 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_Valid_Arguments_When_I_Call_GetCaseEditInformationList_Then_I_Get_A_List_Of_CaseEditingDetailsDto_Back()
         {
             //arrange
+            var casesIds = new List<string>
+            {
+                "10001011",
+            };
+
+            var case1Mock = new Mock<IDataRecord>();
+
+            _blaiseSqlApiMock.Setup(z => z.GetEditingCaseIds(_questionnaireName)).Returns(casesIds);
+
+            _dataSetMock.SetupSequence(d => d.EndOfSet)
+                .Returns(true);
+
+            _dataSetMock.SetupSequence(d => d.ActiveRecord)
+                .Returns(case1Mock.Object);
+
+            _blaiseCaseApiMock.Setup(b => b.GetCases(_questionnaireName, _serverParkName)).Returns(_dataSetMock.Object);
+            _blaiseCaseApiMock.Setup(b => b.GetPrimaryKeyValues(case1Mock.Object)).Returns(new Dictionary<string, string> { { "QID.Serial_Number", "10001011" } });
+
             //act
             var result = _sut.GetCaseEditInformationList(_serverParkName, _questionnaireName);
 
@@ -1984,7 +2005,6 @@ namespace Blaise.Api.Tests.Unit.Services
             var casesIds = new List<string>
             {
                 "10001011",
-                "10001012",
                 "10001013"
             };
 
@@ -1993,30 +2013,42 @@ namespace Blaise.Api.Tests.Unit.Services
             var case3Mock = new Mock<IDataRecord>();
 
             _blaiseSqlApiMock.Setup(z => z.GetEditingCaseIds(_questionnaireName)).Returns(casesIds);
-            _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001011" } }, _questionnaireName, _serverParkName)).Returns(case1Mock.Object);
-            _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001012" } }, _questionnaireName, _serverParkName)).Returns(case2Mock.Object);
-            _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001013" } }, _questionnaireName, _serverParkName)).Returns(case3Mock.Object);
+
+            _dataSetMock.SetupSequence(d => d.EndOfSet)
+                .Returns(false)
+                .Returns(false)
+                .Returns(false)
+                .Returns(true);
+
+            _dataSetMock.SetupSequence(d => d.ActiveRecord)
+                            .Returns(case1Mock.Object)
+                            .Returns(case2Mock.Object)
+                            .Returns(case3Mock.Object);
+
+            _blaiseCaseApiMock.Setup(b => b.GetCases(_questionnaireName, _serverParkName)).Returns(_dataSetMock.Object);
+            _blaiseCaseApiMock.Setup(b => b.GetPrimaryKeyValues(case1Mock.Object)).Returns(new Dictionary<string, string> { { "QID.Serial_Number", "10001011" } });
+            _blaiseCaseApiMock.Setup(b => b.GetPrimaryKeyValues(case2Mock.Object)).Returns(new Dictionary<string, string> { { "QID.Serial_Number", "10001012" } });
+            _blaiseCaseApiMock.Setup(b => b.GetPrimaryKeyValues(case3Mock.Object)).Returns(new Dictionary<string, string> { { "QID.Serial_Number", "10001013" } });
+
 
             //act
             _sut.GetCaseEditInformationList(_serverParkName, _questionnaireName);
 
             //assert                
             _blaiseSqlApiMock.Verify(b => b.GetEditingCaseIds(_questionnaireName), Times.Once);
-            _blaiseCaseApiMock.Verify(b => b.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001011" } }, _questionnaireName, _serverParkName), Times.Once);
-            _blaiseCaseApiMock.Verify(b => b.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001012" } }, _questionnaireName, _serverParkName), Times.Once);
-            _blaiseCaseApiMock.Verify(b => b.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001013" } }, _questionnaireName, _serverParkName), Times.Once);
+            _blaiseCaseApiMock.Verify(b => b.GetCases(_questionnaireName, _serverParkName), Times.Once);
             _mapperMock.Verify(b => b.MapToCaseEditInformationDto(case1Mock.Object), Times.Once);
-            _mapperMock.Verify(b => b.MapToCaseEditInformationDto(case2Mock.Object), Times.Once);
+            _mapperMock.Verify(b => b.MapToCaseEditInformationDto(case2Mock.Object), Times.Never);
             _mapperMock.Verify(b => b.MapToCaseEditInformationDto(case3Mock.Object), Times.Once);
         }
-        [Test]
+
+       [Test]
         public void Given_Valid_Arguments_When_I_Call_GetCaseEditInformationList_Then_An_Expected_List_Of_EditingDetailsDto_Are_Returned()
         {
             //arrange
             var casesIds = new List<string>
             {
                 "10001011",
-                "10001012",
                 "10001013"
             };
 
@@ -2025,16 +2057,27 @@ namespace Blaise.Api.Tests.Unit.Services
             var case3Mock = new Mock<IDataRecord>();
 
             _blaiseSqlApiMock.Setup(z => z.GetEditingCaseIds(_questionnaireName)).Returns(casesIds);
-            _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001011" } }, _questionnaireName, _serverParkName)).Returns(case1Mock.Object);
-            _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001012" } }, _questionnaireName, _serverParkName)).Returns(case2Mock.Object);
-            _blaiseCaseApiMock.Setup(z => z.GetCase(new Dictionary<string, string> { { "QID.Serial_Number", "10001013" } }, _questionnaireName, _serverParkName)).Returns(case3Mock.Object);
+
+            _dataSetMock.SetupSequence(d => d.EndOfSet)
+                .Returns(false)
+                .Returns(false)
+                .Returns(false)
+                .Returns(true);
+
+            _dataSetMock.SetupSequence(d => d.ActiveRecord)
+                .Returns(case1Mock.Object)
+                .Returns(case2Mock.Object)
+                .Returns(case3Mock.Object);
+
+            _blaiseCaseApiMock.Setup(b => b.GetCases(_questionnaireName, _serverParkName)).Returns(_dataSetMock.Object);
+            _blaiseCaseApiMock.Setup(b => b.GetPrimaryKeyValues(case1Mock.Object)).Returns(new Dictionary<string, string> { { "QID.Serial_Number", "10001011" } });
+            _blaiseCaseApiMock.Setup(b => b.GetPrimaryKeyValues(case2Mock.Object)).Returns(new Dictionary<string, string> { { "QID.Serial_Number", "10001012" } });
+            _blaiseCaseApiMock.Setup(b => b.GetPrimaryKeyValues(case3Mock.Object)).Returns(new Dictionary<string, string> { { "QID.Serial_Number", "10001013" } });
 
             var editingDetailsDto1 = new CaseEditInformationDto();
-            var editingDetailsDto2 = new CaseEditInformationDto();
             var editingDetailsDto3 = new CaseEditInformationDto();
 
             _mapperMock.Setup(z => z.MapToCaseEditInformationDto(case1Mock.Object)).Returns(editingDetailsDto1);
-            _mapperMock.Setup(z => z.MapToCaseEditInformationDto(case2Mock.Object)).Returns(editingDetailsDto2);
             _mapperMock.Setup(z => z.MapToCaseEditInformationDto(case3Mock.Object)).Returns(editingDetailsDto3);
 
             //act
@@ -2042,8 +2085,9 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert                
             Assert.NotNull(result);
-            Assert.That(result, Is.EqualTo(new List<CaseEditInformationDto> { editingDetailsDto1, editingDetailsDto2, editingDetailsDto3 }));
+            Assert.That(result, Is.EqualTo(new List<CaseEditInformationDto> { editingDetailsDto1, editingDetailsDto3 }));
         }
+
         [Test]
         public void Given_A_Null_QuestionnaireName_When_I_Call_GetCaseEditInformationList_Then_An_ArgumentNullException_Is_Thrown()
         {
