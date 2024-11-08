@@ -219,15 +219,23 @@ namespace Blaise.Api.Core.Services
             questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
 
             var caseEditInformationList = new List<CaseEditInformationDto>();
-            var caseIds = _blaiseSqlApi.GetEditingCaseIds(questionnaireName);
+            var caseIds = _blaiseSqlApi.GetEditingCaseIds(questionnaireName).ToList();
 
-            foreach (var caseId in caseIds)
+            var caseRecords = _blaiseCaseApi.GetCases(questionnaireName, serverParkName);
+
+            while (!caseRecords.EndOfSet)
             {
-                var primaryKeyValues = new Dictionary<string, string> { { "QID.Serial_Number", caseId } };
-                var caseRecord = _blaiseCaseApi.GetCase(primaryKeyValues, questionnaireName, serverParkName);
+                var caseRecord = caseRecords.ActiveRecord;
+                var primaryKeyValues = _blaiseCaseApi.GetPrimaryKeyValues(caseRecord);
 
-                caseEditInformationList.Add(_caseDtoMapper.MapToCaseEditInformationDto(caseRecord));
+                if (caseIds.Contains(primaryKeyValues.First().Value))
+                {
+                    caseEditInformationList.Add(_caseDtoMapper.MapToCaseEditInformationDto(caseRecord));
+                }
+
+                caseRecords.MoveNext(); 
             }
+
 
             return caseEditInformationList;
         }
