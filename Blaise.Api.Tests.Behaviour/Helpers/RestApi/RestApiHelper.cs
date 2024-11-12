@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Blaise.Api.Contracts.Models.Ingest;
 using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Api.Tests.Behaviour.Models.Questionnaire;
@@ -74,6 +75,16 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
             {
                 QuestionnaireDataPath = questionnaireDataPath
             };
+
+            var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(url, stringContent);
+            return response.StatusCode;
+        }
+
+        public async Task<HttpStatusCode> IngestData(string url, string ingestDataPath)
+        {
+            var model = new IngestDataDto(BlaiseConfigurationHelper.OnlineFileBucket, ingestDataPath);
+
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(url, stringContent);
