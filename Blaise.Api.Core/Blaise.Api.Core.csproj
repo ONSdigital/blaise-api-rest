@@ -135,6 +135,7 @@
   <ItemGroup>
     <Compile Include="Extensions\ArgumentValidationExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Interfaces\Services\IIngestService.cs" />
     <Compile Include="Mappers\CaseDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\ICaseDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\ICatiDtoMapper.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Interfaces\Services\IHealthCheckService.cs" />
     <Compile Include="Interfaces\Services\IQuestionnaireInstallerService.cs" />
     <Compile Include="Interfaces\Services\IFileService.cs" />
+    <Compile Include="Services\IngestService.cs" />
     <Compile Include="Services\QuestionnaireDataService.cs" />
     <Compile Include="Interfaces\Services\IQuestionnaireDataService.cs" />
     <Compile Include="Services\QuestionnaireUninstallerService.cs" />
