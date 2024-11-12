@@ -14,5 +14,10 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.IO
         {
             return Task.FromResult("");
         }
+
+        public Task DownloadFilesFromBucketAsync(string bucketName, string bucketPath, string tempFilePath)
+        {
+            return Task.FromResult("");
+        }
     }
 }

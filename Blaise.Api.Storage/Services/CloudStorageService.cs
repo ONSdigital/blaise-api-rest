@@ -34,23 +34,28 @@ namespace Blaise.Api.Storage.Services
             return await DownloadFromBucketAsync(_configurationProvider.DqsBucket, fileName, tempFilePath);
         }
 
-        public async Task DownloadDatabaseFilesFromNisraBucketAsync(string bucketPath, string tempFilePath)
+        public async Task DownloadFilesFromBucketAsync(string bucketName, string bucketPath, string tempFilePath)
         {
-            var bucketFiles = (await _cloudStorageClient.GetListOfFiles(_configurationProvider.NisraBucket, bucketPath)).ToList();
+            var bucketFiles = (await _cloudStorageClient.GetListOfFiles(bucketName, bucketPath)).ToList();
 
             if (!bucketFiles.Any())
             {
-                throw new DataNotFoundException($"No files were found for bucket path '{bucketPath}' in bucket '{_configurationProvider.NisraBucket}'");
+                throw new DataNotFoundException($"No files were found for bucket path '{bucketPath}' in bucket '{bucketName}'");
             }
 
-            _loggingService.LogInfo($"Attempting to Download '{bucketFiles.Count}' files from bucket '{_configurationProvider.NisraBucket}'");
+            _loggingService.LogInfo($"Attempting to Download '{bucketFiles.Count}' files from bucket '{bucketName}'");
 
             foreach (var bucketFile in bucketFiles)
             {
-                await DownloadFromBucketAsync(_configurationProvider.NisraBucket, bucketFile, tempFilePath);
+                await DownloadFromBucketAsync(bucketName, bucketFile, tempFilePath);
             }
 
-            _loggingService.LogInfo($"Downloaded '{bucketFiles.Count}' files from bucket '{_configurationProvider.NisraBucket}'");
+            _loggingService.LogInfo($"Downloaded '{bucketFiles.Count}' files from bucket '{bucketName}'");
+        }
+
+        public async Task DownloadDatabaseFilesFromNisraBucketAsync(string bucketPath, string tempFilePath)
+        {
+            await DownloadFilesFromBucketAsync(_configurationProvider.NisraBucket, bucketPath, tempFilePath);
         }
 
         public async Task<string> DownloadFromBucketAsync(string bucketName, string bucketFilePath, string tempFilePath)

@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Contracts.Models.Questionnaire;
+using Blaise.Api.Contracts.Models.Ingest;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Storage.Interfaces;
+using StatNeth.Blaise.API.DataRecord;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Blaise.Nuget.Api.Contracts.Models;
-using StatNeth.Blaise.API.DataRecord;
-using StatNeth.Blaise.Layout.Types;
 
 namespace Blaise.Api.Core.Services
 {
@@ -31,16 +30,17 @@ namespace Blaise.Api.Core.Services
             _loggingService = loggingService;
         }
 
-        public async Task IngestDataAsync(QuestionnaireDataDto questionnaireDataDto, string serverParkName, string questionnaireName,
+        public async Task IngestDataAsync(IngestDataDto ingestDataDto, string serverParkName, string questionnaireName,
             string tempFilePath)
         {
-            questionnaireDataDto.ThrowExceptionIfNull("questionnaireDataDto");
-            questionnaireDataDto.QuestionnaireDataPath.ThrowExceptionIfNullOrEmpty("questionnaireDataDto.QuestionnaireDataPath");
+            ingestDataDto.ThrowExceptionIfNull("ingestDataDto");
+            ingestDataDto.BucketName.ThrowExceptionIfNullOrEmpty("ingestDataDto.BucketName");
+            ingestDataDto.BucketPath.ThrowExceptionIfNullOrEmpty("ingestDataDto.BucketPath");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
             tempFilePath.ThrowExceptionIfNullOrEmpty("tempFilePath");
 
-            await DownloadDatabaseFilesFromBucketAsync(questionnaireDataDto.QuestionnaireDataPath, tempFilePath);
+            await DownloadFilesFromBucketAsync(ingestDataDto, tempFilePath);
             var databaseFile = _fileService.GetDatabaseFile(tempFilePath, questionnaireName);
 
             IngestQuestionnaireData(databaseFile, questionnaireName, serverParkName);
@@ -72,10 +72,10 @@ namespace Blaise.Api.Core.Services
                 _blaiseApi.GetRecordDataFields(dataRecord));
         }
 
-        private async Task DownloadDatabaseFilesFromBucketAsync(string bucketPath, string tempFilePath)
+        private async Task DownloadFilesFromBucketAsync(IngestDataDto ingestDataDto, string tempFilePath)
         {
-            _loggingService.LogInfo($"Downloading questionnaire files from nisra bucket path '{bucketPath}'");
-            await _storageService.DownloadDatabaseFilesFromNisraBucketAsync(bucketPath, tempFilePath);
+            _loggingService.LogInfo($"Downloading questionnaire files from '{ingestDataDto.BucketName}' bucket path '{ingestDataDto.BucketPath}'");
+            await _storageService.DownloadFilesFromBucketAsync(ingestDataDto.BucketName, ingestDataDto.BucketPath, tempFilePath);
         }
     }
 }
