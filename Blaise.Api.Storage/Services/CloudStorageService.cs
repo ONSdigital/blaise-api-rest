@@ -43,7 +43,7 @@ namespace Blaise.Api.Storage.Services
                 throw new DataNotFoundException($"No files were found for bucket path '{bucketPath}' in bucket '{bucketName}'");
             }
 
-            _loggingService.LogInfo($"Attempting to Download '{bucketFiles.Count}' files from bucket '{bucketName}'");
+            _loggingService.LogInfo($"Attempting to Download '{bucketFiles.Count}' files '{string.Join(", ", bucketFiles)}' from bucket '{bucketName}'");
 
             foreach (var bucketFile in bucketFiles)
             {
@@ -67,6 +67,8 @@ namespace Blaise.Api.Storage.Services
 
             var fileName = _fileSystem.Path.GetFileName(bucketFilePath);
             var downloadedFile = _fileSystem.Path.Combine(tempFilePath, fileName);
+
+            _loggingService.LogInfo($"Attempting to Download '{downloadedFile}' file from '{bucketFilePath}'");
 
             await _cloudStorageClient.DownloadAsync(bucketName, bucketFilePath, downloadedFile);
 
