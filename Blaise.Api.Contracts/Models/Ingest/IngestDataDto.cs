@@ -3,13 +3,11 @@ namespace Blaise.Api.Contracts.Models.Ingest
 {
     public class IngestDataDto
     {
-        public IngestDataDto(string bucketName, string bucketPath)
+        public IngestDataDto(string bucketFilePath)
         {
-            BucketName = bucketName;
-            BucketPath = bucketPath;
+            BucketFilePath = bucketFilePath;
         }
 
-        public string BucketName { get; set; }
-        public string BucketPath { get; set; }
+        public string BucketFilePath { get; set; }
     }
 }

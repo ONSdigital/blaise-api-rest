@@ -81,11 +81,10 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
             return response.StatusCode;
         }
 
-        public async Task<HttpStatusCode> IngestData(string url, string ingestDataPath)
+        public async Task<HttpStatusCode> IngestData(string url, string ingestFilePath)
         {
-            var model = new IngestDataDto(BlaiseConfigurationHelper.OnlineFileBucket, ingestDataPath);
-
-
+            var model = new IngestDataDto(ingestFilePath);
+            
             var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(url, stringContent);
             return response.StatusCode;

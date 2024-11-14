@@ -26,12 +26,23 @@ namespace Blaise.Api.Storage.Services
             _loggingService = loggingService;
         }
 
-        public async Task<string> DownloadPackageFromQuestionnaireBucketAsync(string fileName, string tempFilePath)
+        public async Task<string> DownloadFileFromQuestionnaireBucketAsync(string filePath, string tempFilePath)
         {
 
-            _loggingService.LogInfo($"Attempting to download package '{fileName}' from bucket '{_configurationProvider.DqsBucket}'");
+            _loggingService.LogInfo($"Attempting to download package '{filePath}' from bucket '{_configurationProvider.DqsBucket}'");
 
-            return await DownloadFromBucketAsync(_configurationProvider.DqsBucket, fileName, tempFilePath);
+            return await DownloadFileFromBucketAsync(_configurationProvider.DqsBucket, filePath, tempFilePath);
+        }
+
+        public async Task DownloadFileFromIngestBucketAsync(string filePath, string tempFilePath)
+        {
+            //await DownloadFileFromBucketAsync(_configurationProvider.IngestBucket, filePath, tempFilePath);
+            await DownloadFilesFromBucketAsync(_configurationProvider.IngestBucket, filePath, tempFilePath);
+        }
+
+        public async Task DownloadFilesFromNisraBucketAsync(string folderPath, string tempFilePath)
+        {
+            await DownloadFilesFromBucketAsync(_configurationProvider.NisraBucket, folderPath, tempFilePath);
         }
 
         public async Task DownloadFilesFromBucketAsync(string bucketName, string bucketPath, string tempFilePath)
@@ -47,18 +58,13 @@ namespace Blaise.Api.Storage.Services
 
             foreach (var bucketFile in bucketFiles)
             {
-                await DownloadFromBucketAsync(bucketName, bucketFile, tempFilePath);
+                await DownloadFileFromBucketAsync(bucketName, bucketFile, tempFilePath);
             }
 
             _loggingService.LogInfo($"Downloaded '{bucketFiles.Count}' files from bucket '{bucketName}'");
         }
-
-        public async Task DownloadDatabaseFilesFromNisraBucketAsync(string bucketPath, string tempFilePath)
-        {
-            await DownloadFilesFromBucketAsync(_configurationProvider.NisraBucket, bucketPath, tempFilePath);
-        }
-
-        public async Task<string> DownloadFromBucketAsync(string bucketName, string bucketFilePath, string tempFilePath)
+        
+        public async Task<string> DownloadFileFromBucketAsync(string bucketName, string bucketFilePath, string tempFilePath)
         {
             if (!_fileSystem.Directory.Exists(tempFilePath))
             {

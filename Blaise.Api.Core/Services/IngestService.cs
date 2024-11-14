@@ -34,8 +34,7 @@ namespace Blaise.Api.Core.Services
             string tempFilePath)
         {
             ingestDataDto.ThrowExceptionIfNull("ingestDataDto");
-            ingestDataDto.BucketName.ThrowExceptionIfNullOrEmpty("ingestDataDto.BucketName");
-            ingestDataDto.BucketPath.ThrowExceptionIfNullOrEmpty("ingestDataDto.BucketPath");
+            ingestDataDto.BucketFilePath.ThrowExceptionIfNullOrEmpty("ingestDataDto.BucketFilePath");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
             tempFilePath.ThrowExceptionIfNullOrEmpty("tempFilePath");
@@ -74,8 +73,8 @@ namespace Blaise.Api.Core.Services
 
         private async Task DownloadFilesFromBucketAsync(IngestDataDto ingestDataDto, string tempFilePath)
         {
-            _loggingService.LogInfo($"Downloading questionnaire files from '{ingestDataDto.BucketName}' bucket path '{ingestDataDto.BucketPath}'");
-            await _storageService.DownloadFilesFromBucketAsync(ingestDataDto.BucketName, ingestDataDto.BucketPath, tempFilePath);
+            _loggingService.LogInfo($"Downloading file '{ingestDataDto.BucketFilePath}' from ingest bucket");
+            await _storageService.DownloadFileFromIngestBucketAsync(ingestDataDto.BucketFilePath, tempFilePath);
         }
     }
 }
