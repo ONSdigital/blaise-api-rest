@@ -39,7 +39,7 @@ namespace Blaise.Api.Core.Services
             questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
             tempFilePath.ThrowExceptionIfNullOrEmpty("tempFilePath");
 
-            await DownloadFilesFromBucketAsync(ingestDataDto, tempFilePath);
+            await DownloadFileFromBucketAndExtractAsync(ingestDataDto.BucketFilePath, tempFilePath);
             var databaseFile = _fileService.GetDatabaseFile(tempFilePath, questionnaireName);
 
             IngestQuestionnaireData(databaseFile, questionnaireName, serverParkName);
@@ -71,10 +71,13 @@ namespace Blaise.Api.Core.Services
                 _blaiseApi.GetRecordDataFields(dataRecord));
         }
 
-        private async Task DownloadFilesFromBucketAsync(IngestDataDto ingestDataDto, string tempFilePath)
+        private async Task DownloadFileFromBucketAndExtractAsync(string filePath, string tempFilePath)
         {
-            _loggingService.LogInfo($"Downloading file '{ingestDataDto.BucketFilePath}' from ingest bucket");
-            await _storageService.DownloadFileFromIngestBucketAsync(ingestDataDto.BucketFilePath, tempFilePath);
+            _loggingService.LogInfo($"Downloading file '{filePath}' from ingest bucket");
+            await _storageService.DownloadFileFromIngestBucketAsync(filePath, tempFilePath);
+
+            _loggingService.LogInfo($"Extracting file '{filePath}'");
+            _fileService.UnzipFile(filePath, tempFilePath);
         }
     }
 }

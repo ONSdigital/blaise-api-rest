@@ -36,8 +36,7 @@ namespace Blaise.Api.Storage.Services
 
         public async Task DownloadFileFromIngestBucketAsync(string filePath, string tempFilePath)
         {
-            //await DownloadFileFromBucketAsync(_configurationProvider.IngestBucket, filePath, tempFilePath);
-            await DownloadFilesFromBucketAsync(_configurationProvider.IngestBucket, filePath, tempFilePath);
+            await DownloadFileFromBucketAsync(_configurationProvider.IngestBucket, filePath, tempFilePath);
         }
 
         public async Task DownloadFilesFromNisraBucketAsync(string folderPath, string tempFilePath)

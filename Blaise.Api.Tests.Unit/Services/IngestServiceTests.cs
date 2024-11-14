@@ -82,6 +82,8 @@ namespace Blaise.Api.Tests.Unit.Services
             _storageServiceMock.InSequence(_mockSequence).Setup(s =>
                 s.DownloadFileFromIngestBucketAsync( _bucketPath, _tempPath)).Returns(Task.FromResult(0));
 
+            _fileServiceMock.InSequence(_mockSequence).Setup(f => f.UnzipFile(It.IsAny<string>(), It.IsAny<string>()));
+
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f.GetDatabaseFile(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(databaseFile);
 
@@ -94,6 +96,9 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             _storageServiceMock.Verify(v => v.DownloadFileFromIngestBucketAsync( _bucketPath, _tempPath), Times.Once);
+
+            _fileServiceMock.InSequence(_mockSequence).Setup(f => f
+                .UnzipFile(_bucketPath, _tempPath));
 
             _fileServiceMock.Verify(v => v.GetDatabaseFile(_tempPath, _questionnaireName), Times.Once);
 

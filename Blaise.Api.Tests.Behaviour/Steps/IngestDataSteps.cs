@@ -44,7 +44,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                 return;
             }
 
-            await OnlineFileHelper.GetInstance().CreateCasesInOnlineFileAsync(cases, _tempFilePath);
+            await IngestFileHelper.GetInstance().CreateCasesInIngestFileAsync(cases, _tempFilePath);
         }
 
         [Given("blaise contains the existing cases")]
@@ -116,7 +116,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             }
 
             CaseHelper.GetInstance().DeleteCases();
-            await OnlineFileHelper.GetInstance().CleanUpOnlineFiles();
+            await IngestFileHelper.GetInstance().CleanUpIngestFiles();
             FileSystemHelper.GetInstance().CleanUpTempFiles(_tempFilePath);
         }
         

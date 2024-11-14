@@ -15,7 +15,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [Given("I have a questionnaire I want to install")]
         public async Task GivenIHaveAQuestionnaireIWantToInstall()
         {
-            await CloudStorageHelper.GetInstance().UploadToBucketAsync(
+            await CloudStorageHelper.GetInstance().UploadFileToBucketAsync(
                 BlaiseConfigurationHelper.QuestionnairePackageBucket,
                 BlaiseConfigurationHelper.QuestionnairePackagePath);
 

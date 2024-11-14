@@ -264,6 +264,7 @@
     <Compile Include="Helpers\Extensions\ConfigurationExtensions.cs" />
     <Compile Include="Helpers\Extensions\FileExtensions.cs" />
     <Compile Include="Helpers\Files\FileSystemHelper.cs" />
+    <Compile Include="Helpers\Files\IngestFileHelper.cs" />
     <Compile Include="Helpers\Files\OnlineFileHelper.cs" />
     <Compile Include="Helpers\PrimaryKey\PrimaryKeyHelper.cs" />
     <Compile Include="Helpers\Questionnaire\QuestionnaireHelper.cs" />
