@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,11 +24,11 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
         {
             var questionnairePackage = BlaiseConfigurationHelper.QuestionnairePackagePath;
             var extractedFilePath = ExtractPackageFiles(path, questionnairePackage);
-            var questionnaireDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.QuestionnaireName + ".bdix");
+            var questionnaireDatabase = Path.Combine(extractedFilePath, $"{BlaiseConfigurationHelper.QuestionnaireName}.bdix");
 
             CaseHelper.GetInstance().CreateCasesInFile(questionnaireDatabase, caseModels.ToList());
 
-            string filePath = Path.Combine(path, BlaiseConfigurationHelper.QuestionnaireName, ".zip");
+            string filePath = Path.Combine(path, $"{BlaiseConfigurationHelper.QuestionnaireName}.zip");
             extractedFilePath.ZipFiles(filePath);
             await UploadFileToBucket(filePath);
         }
@@ -37,7 +37,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
         public async Task CleanUpIngestFiles()
         {
             await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(BlaiseConfigurationHelper.IngestBucket,
-                BlaiseConfigurationHelper.QuestionnaireName);
+                $"{BlaiseConfigurationHelper.QuestionnaireName}.zip");
         }
 
         private string ExtractPackageFiles(string path, string questionnairePackage)
