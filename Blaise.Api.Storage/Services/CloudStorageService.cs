@@ -73,7 +73,7 @@ namespace Blaise.Api.Storage.Services
             var fileName = _fileSystem.Path.GetFileName(bucketFilePath);
             var downloadedFile = _fileSystem.Path.Combine(tempFilePath, fileName);
 
-            _loggingService.LogInfo($"Attempting to Download '{downloadedFile}' file from '{bucketFilePath}'");
+            _loggingService.LogInfo($"Attempting to Download file '{downloadedFile}' file from bucket '{bucketFilePath}'");
 
             await _cloudStorageClient.DownloadAsync(bucketName, bucketFilePath, downloadedFile);
 

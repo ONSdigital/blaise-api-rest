@@ -14,6 +14,8 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
     public class IngestFileHelper
     {
         private static IngestFileHelper _currentInstance;
+        public static string IngestDatabaseFile = $"{BlaiseConfigurationHelper.QuestionnaireName}.bdix";
+        public static string IngestFile = $"{BlaiseConfigurationHelper.QuestionnaireName}.zip";
 
         public static IngestFileHelper GetInstance()
         {
@@ -24,11 +26,11 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
         {
             var questionnairePackage = BlaiseConfigurationHelper.QuestionnairePackagePath;
             var extractedFilePath = ExtractPackageFiles(path, questionnairePackage);
-            var questionnaireDatabase = Path.Combine(extractedFilePath, $"{BlaiseConfigurationHelper.QuestionnaireName}.bdix");
+            var questionnaireDatabase = Path.Combine(extractedFilePath, IngestDatabaseFile);
 
             CaseHelper.GetInstance().CreateCasesInFile(questionnaireDatabase, caseModels.ToList());
 
-            string filePath = Path.Combine(path, $"{BlaiseConfigurationHelper.QuestionnaireName}.zip");
+            string filePath = Path.Combine(path, IngestFile);
             extractedFilePath.ZipFiles(filePath);
             await UploadFileToBucket(filePath);
         }
@@ -37,7 +39,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
         public async Task CleanUpIngestFiles()
         {
             await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(BlaiseConfigurationHelper.IngestBucket,
-                $"{BlaiseConfigurationHelper.QuestionnaireName}.zip");
+                IngestFile);
         }
 
         private string ExtractPackageFiles(string path, string questionnairePackage)

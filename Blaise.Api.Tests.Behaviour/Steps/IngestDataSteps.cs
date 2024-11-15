@@ -67,7 +67,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             }
 
             var statusCode = await RestApiHelper.GetInstance().IngestData(RestApiConfigurationHelper.IngestDataUrl,
-                BlaiseConfigurationHelper.QuestionnaireName);
+                IngestFileHelper.IngestFile);
 
             Assert.AreEqual(HttpStatusCode.Created, statusCode);
         }
