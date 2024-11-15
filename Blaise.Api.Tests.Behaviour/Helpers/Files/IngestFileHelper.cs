@@ -1,9 +1,8 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Blaise.Api.Logging.Services;
 using Blaise.Api.Tests.Behaviour.Helpers.Case;
 using Blaise.Api.Tests.Behaviour.Helpers.Cloud;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
@@ -15,6 +14,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
     public class IngestFileHelper
     {
         private static IngestFileHelper _currentInstance;
+        private readonly EventLogging _logging = new EventLogging();
         public static string IngestDatabaseFile = $"{BlaiseConfigurationHelper.QuestionnaireName}.bdix";
         public static string IngestFile = $"{BlaiseConfigurationHelper.QuestionnaireName}.zip";
 
@@ -25,28 +25,32 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
         public async Task CreateCasesInIngestFileAsync(IEnumerable<CaseModel> caseModels, string path)
         {
+            _logging.LogInfo("CreateCasesInIngestFileAsync");
             var questionnairePackage = BlaiseConfigurationHelper.QuestionnairePackagePath;
             var extractedFilePath = ExtractPackageFiles(path, questionnairePackage);
             var questionnaireDatabase = Path.Combine(extractedFilePath, IngestDatabaseFile);
 
+            _logging.LogInfo($"CreateCasesInIngestFileAsync - create cases in {questionnaireDatabase}");
             CaseHelper.GetInstance().CreateCasesInFile(questionnaireDatabase, caseModels.ToList());
 
-            string filePath = Path.Combine(path, IngestFile);
+            var filePath = Path.Combine(path, IngestFile);
+            _logging.LogInfo($"CreateCasesInIngestFileAsync - ingest file = {filePath}");
             extractedFilePath.ZipFiles(filePath);
+
             await UploadFileToBucket(filePath);
         }
 
 
         public async Task CleanUpIngestFiles()
         {
-            Console.WriteLine($"IngestFileHelper - clean up file '{IngestFile}' from '{BlaiseConfigurationHelper.IngestBucket}'");
+            _logging.LogInfo($"CreateCasesInIngestFileAsync - cleanup remove file '{IngestFile}' from bucket '{BlaiseConfigurationHelper.IngestBucket}'");
             await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(BlaiseConfigurationHelper.IngestBucket,
                 IngestFile);
         }
 
         private string ExtractPackageFiles(string path, string questionnairePackage)
         {
-            Console.WriteLine($"IngestFileHelper - extract file '{questionnairePackage}' to '{path}'");
+            _logging.LogInfo($"CreateCasesInIngestFileAsync - extract file '{questionnairePackage}' to  '{path}'");
             var extractedFilePath = Path.Combine(path, BlaiseConfigurationHelper.QuestionnaireName);
 
             questionnairePackage.ExtractFiles(extractedFilePath);
@@ -56,7 +60,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
         private async Task UploadFileToBucket(string filePath)
         {
-            Console.WriteLine($"IngestFileHelper - Upload file '{filePath}' to '{BlaiseConfigurationHelper.IngestBucket}'");
+            _logging.LogInfo($"CreateCasesInIngestFileAsync - upload file '{filePath}' to bucket '{BlaiseConfigurationHelper.IngestBucket}'");
             await CloudStorageHelper.GetInstance().UploadFileToBucketAsync(
                 BlaiseConfigurationHelper.IngestBucket, 
                 filePath);
