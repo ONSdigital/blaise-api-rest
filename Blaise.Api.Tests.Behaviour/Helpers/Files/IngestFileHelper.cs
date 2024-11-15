@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,12 +39,14 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
         public async Task CleanUpIngestFiles()
         {
+            Console.WriteLine($"IngestFileHelper - clean up file '{IngestFile}' from '{BlaiseConfigurationHelper.IngestBucket}'");
             await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(BlaiseConfigurationHelper.IngestBucket,
                 IngestFile);
         }
 
         private string ExtractPackageFiles(string path, string questionnairePackage)
         {
+            Console.WriteLine($"IngestFileHelper - extract file '{questionnairePackage}' to '{path}'");
             var extractedFilePath = Path.Combine(path, BlaiseConfigurationHelper.QuestionnaireName);
 
             questionnairePackage.ExtractFiles(extractedFilePath);
@@ -53,6 +56,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
         private async Task UploadFileToBucket(string filePath)
         {
+            Console.WriteLine($"IngestFileHelper - Upload file '{filePath}' to '{BlaiseConfigurationHelper.IngestBucket}'");
             await CloudStorageHelper.GetInstance().UploadFileToBucketAsync(
                 BlaiseConfigurationHelper.IngestBucket, 
                 filePath);
