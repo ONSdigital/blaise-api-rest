@@ -76,8 +76,9 @@ namespace Blaise.Api.Core.Services
             _loggingService.LogInfo($"Downloading file '{filePath}' from ingest bucket");
             await _storageService.DownloadFileFromIngestBucketAsync(filePath, tempFilePath);
 
-            _loggingService.LogInfo($"Extracting file '{filePath}'");
-            _fileService.UnzipFile(filePath, tempFilePath);
+            var downloadedFile = $@"{tempFilePath}\{filePath}";
+            _loggingService.LogInfo($"Extracting file '{downloadedFile}'");
+            _fileService.UnzipFile(downloadedFile, tempFilePath);
         }
     }
 }
