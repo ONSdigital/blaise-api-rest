@@ -39,8 +39,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
             await UploadFileToBucket(filePath);
         }
-
-
+        
         public async Task CleanUpIngestFiles()
         {
             _logging.LogInfo($"CreateCasesInIngestFileAsync - cleanup remove file '{IngestFile}' from bucket '{BlaiseConfigurationHelper.IngestBucket}'");
@@ -50,7 +49,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
         private string ExtractPackageFiles(string path, string questionnairePackage)
         {
-            _logging.LogInfo($"CreateCasesInIngestFileAsync - extract file '{questionnairePackage}' to  '{path}'");
+            _logging.LogInfo($"CreateCasesInIngestFileAsync - extract file '{questionnairePackage}' to '{path}'");
             var extractedFilePath = Path.Combine(path, BlaiseConfigurationHelper.QuestionnaireName);
 
             questionnairePackage.ExtractFiles(extractedFilePath);
