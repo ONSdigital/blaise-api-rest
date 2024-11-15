@@ -80,7 +80,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetRecordDataFields(dataRecordMock.Object)).Returns(fieldData);
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s =>
-                s.DownloadFileFromIngestBucketAsync( _bucketPath, _tempPath)).Returns(Task.FromResult(0));
+                s.DownloadFileFromIngestBucketAsync( _bucketPath, _tempPath)).Returns(Task.FromResult(It.IsAny<string>()));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f.UnzipFile(It.IsAny<string>(), It.IsAny<string>()));
 

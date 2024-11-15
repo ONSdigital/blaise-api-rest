@@ -74,9 +74,8 @@ namespace Blaise.Api.Core.Services
         private async Task DownloadFileFromBucketAndExtractAsync(string filePath, string tempFilePath)
         {
             _loggingService.LogInfo($"Downloading file '{filePath}' from ingest bucket");
-            await _storageService.DownloadFileFromIngestBucketAsync(filePath, tempFilePath);
+            var downloadedFile = await _storageService.DownloadFileFromIngestBucketAsync(filePath, tempFilePath);
 
-            var downloadedFile = $@"{tempFilePath}\{filePath}";
             _loggingService.LogInfo($"Extracting file '{downloadedFile}'");
             _fileService.UnzipFile(downloadedFile, tempFilePath);
         }
