@@ -14,7 +14,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
     public class IngestFileHelper
     {
         private static IngestFileHelper _currentInstance;
-        private readonly EventLogging _logging = new EventLogging();
+        private readonly TestEventLogging _logging = new TestEventLogging();
         public static string IngestDatabaseFile = $"{BlaiseConfigurationHelper.QuestionnaireName}.bdix";
         public static string IngestFile = $"{BlaiseConfigurationHelper.QuestionnaireName}.zip";
 
