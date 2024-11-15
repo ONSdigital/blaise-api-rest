@@ -15,9 +15,9 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.IO
             return Task.FromResult("");
         }
 
-        public Task DownloadFileFromIngestBucketAsync(string filePath, string tempFilePath)
+        public Task<string> DownloadFileFromIngestBucketAsync(string filePath, string tempFilePath)
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult("");
         }
     }
 }
