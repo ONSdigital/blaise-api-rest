@@ -45,7 +45,7 @@ namespace Blaise.Api.Core.Services
         private async Task DownloadDatabaseFilesFromBucketAsync(string bucketPath, string tempFilePath)
         {
             _loggingService.LogInfo($"Downloading questionnaire files from nisra bucket path '{bucketPath}'");
-            await _storageService.DownloadDatabaseFilesFromNisraBucketAsync(bucketPath, tempFilePath);
+            await _storageService.DownloadFilesFromNisraBucketAsync(bucketPath, tempFilePath);
         }
     }
 }

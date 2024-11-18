@@ -21,7 +21,7 @@ namespace Blaise.Api.Storage.Providers
             using (var storageClient = await StorageClient.CreateAsync())
             {
                 var files = new List<string>();
-                var storageObjects = storageClient.ListObjects(bucketName, bucketPath);
+                var storageObjects = storageClient.ListObjects(bucketName, $"{bucketPath}/");
 
                 foreach (var storageObject in storageObjects)
                 {

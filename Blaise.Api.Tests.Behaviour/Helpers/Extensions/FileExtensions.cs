@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.IO.Compression;
+using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Tests.Behaviour.Helpers.Extensions
 {
@@ -15,6 +16,13 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Extensions
             ZipFile.ExtractToDirectory(sourceFilePath, destinationFilePath);
 
             return destinationFilePath;
+        }
+
+        public static void ZipFiles(this string sourceFilePath, string destinationFilePath)
+        {
+            var logging = new TestEventLogging();
+            logging.LogInfo($"Create zip '{destinationFilePath}' from '{sourceFilePath}'");
+            ZipFile.CreateFromDirectory(sourceFilePath, destinationFilePath);
         }
     }
 }

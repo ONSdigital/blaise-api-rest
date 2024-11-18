@@ -57,7 +57,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var dataBaseFilePath = $@"d:\OPN\{_questionnaireName}.bdix";
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s =>
-                s.DownloadDatabaseFilesFromNisraBucketAsync(_bucketPath, _tempPath)).Returns(Task.FromResult(0));
+                s.DownloadFilesFromNisraBucketAsync(_bucketPath, _tempPath)).Returns(Task.FromResult(0));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f.GetDatabaseFile(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(dataBaseFilePath);
@@ -70,7 +70,7 @@ namespace Blaise.Api.Tests.Unit.Services
           await _sut.ImportOnlineDataAsync(_questionnaireDataDto, _serverParkName, _questionnaireName, _tempPath);
 
             //assert
-            _storageServiceMock.Verify(v => v.DownloadDatabaseFilesFromNisraBucketAsync(_bucketPath, _tempPath), Times.Once);
+            _storageServiceMock.Verify(v => v.DownloadFilesFromNisraBucketAsync(_bucketPath, _tempPath), Times.Once);
 
             _fileServiceMock.Verify(v => v.GetDatabaseFile(_tempPath, _questionnaireName), Times.Once);
 
