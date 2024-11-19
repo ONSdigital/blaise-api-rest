@@ -21,10 +21,13 @@ namespace Blaise.Api.Storage.Providers
             using (var storageClient = await StorageClient.CreateAsync())
             {
                 var files = new List<string>();
-                var storageObjects = storageClient.ListObjects(bucketName, $"{bucketPath}/");
+                var prefix = $"{bucketPath}/";
+                var storageObjects = storageClient.ListObjects(bucketName, prefix);
 
                 foreach (var storageObject in storageObjects)
                 {
+                    if(storageObject.Name == prefix) continue; // if the folder has been created it becomes its own object
+
                     files.Add(storageObject.Name);
                 }
 
