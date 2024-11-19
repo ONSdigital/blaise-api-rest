@@ -84,6 +84,7 @@
     <Compile Include="Models\Cati\CreateDayBatchDto.cs" />
     <Compile Include="Models\Cati\DayBatchDto.cs" />
     <Compile Include="Models\Health\HealthCheckResultDto.cs" />
+    <Compile Include="Models\Ingest\IngestDataDto.cs" />
     <Compile Include="Models\Questionnaire\DataEntrySettingsDto.cs" />
     <Compile Include="Models\Questionnaire\QuestionnaireDataDto.cs" />
     <Compile Include="Models\Questionnaire\QuestionnaireDto.cs" />
