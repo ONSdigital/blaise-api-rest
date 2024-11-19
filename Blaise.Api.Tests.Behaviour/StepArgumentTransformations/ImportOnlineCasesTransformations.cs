@@ -6,7 +6,7 @@ using TechTalk.SpecFlow.Assist;
 namespace Blaise.Api.Tests.Behaviour.StepArgumentTransformations
 {
     [Binding]
-    public class ImportOnlineCasesTransformations
+    public class TableTransformations
     {
         [StepArgumentTransformation]
         public IEnumerable<CaseModel> TransformCasesTableIntoListOfCaseModels(Table table)

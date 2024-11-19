@@ -15,5 +15,6 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Configuration
         public static string QuestionnairePackageBucket => ConfigurationExtensions.GetVariable("ENV_BLAISE_DQS_BUCKET");
         public static string TempPath => ConfigurationExtensions.GetVariable("TEMP_PATH");
         public static string OnlineFileBucket => ConfigurationExtensions.GetVariable("ENV_BLAISE_NISRA_BUCKET");
+        public static string IngestBucket => ConfigurationExtensions.GetVariable("ENV_BLAISE_INGEST_BUCKET");
     }
 }

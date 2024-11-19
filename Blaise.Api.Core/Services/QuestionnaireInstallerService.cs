@@ -34,7 +34,7 @@ namespace Blaise.Api.Core.Services
             questionnairePackageDto.QuestionnaireFile.ThrowExceptionIfNullOrEmpty("QuestionnairePackageDto.ThrowExceptionIfNullOrEmpty");
             tempFilePath.ThrowExceptionIfNullOrEmpty("tempFilePath");
 
-            var questionnaireFile = await _storageService.DownloadPackageFromQuestionnaireBucketAsync(questionnairePackageDto.QuestionnaireFile, tempFilePath);
+            var questionnaireFile = await _storageService.DownloadFileFromQuestionnaireBucketAsync(questionnairePackageDto.QuestionnaireFile, tempFilePath);
 
             _fileService.UpdateQuestionnaireFileWithSqlConnection(questionnaireFile);
 

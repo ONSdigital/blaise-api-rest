@@ -15,7 +15,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Cloud
             return _currentInstance ?? (_currentInstance = new CloudStorageHelper());
         }
 
-        public async Task UploadToBucketAsync(string bucketPath, string filePath)
+        public async Task UploadFileToBucketAsync(string bucketPath, string filePath)
         {
             if (StubConfigurationHelper.UseStubs)
             {

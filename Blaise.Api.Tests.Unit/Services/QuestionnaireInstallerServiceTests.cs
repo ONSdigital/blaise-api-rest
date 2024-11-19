@@ -57,7 +57,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             const string questionnaireFilePath = "d:\\temp\\OPN1234.zip";
 
-            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadPackageFromQuestionnaireBucketAsync(
+            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFileFromQuestionnaireBucketAsync(
                     _questionnaireFile, _tempPath)).ReturnsAsync(questionnaireFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(b => b
@@ -76,7 +76,7 @@ namespace Blaise.Api.Tests.Unit.Services
             await _sut.InstallQuestionnaireAsync(_serverParkName, _questionnairePackageDto, _tempPath);
 
             //assert
-            _storageServiceMock.Verify(v => v.DownloadPackageFromQuestionnaireBucketAsync( _questionnaireFile, _tempPath), Times.Once);
+            _storageServiceMock.Verify(v => v.DownloadFileFromQuestionnaireBucketAsync( _questionnaireFile, _tempPath), Times.Once);
             _fileServiceMock.Verify(v => v.UpdateQuestionnaireFileWithSqlConnection(questionnaireFilePath), Times.Once);
             _fileServiceMock.Verify(v => v.GetQuestionnaireNameFromFile(_questionnaireFile), Times.Once);
             _blaiseQuestionnaireApiMock.Verify(v => v.InstallQuestionnaire(_questionnaireName, _serverParkName,
@@ -93,7 +93,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             const string questionnaireFilePath = "d:\\temp\\OPN1234.zip";
 
-            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadPackageFromQuestionnaireBucketAsync(
+            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFileFromQuestionnaireBucketAsync(
                     _questionnaireFile, _tempPath)).ReturnsAsync(questionnaireFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(b => b

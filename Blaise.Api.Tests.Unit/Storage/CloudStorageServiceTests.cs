@@ -53,7 +53,7 @@ namespace Blaise.Api.Tests.Unit.Storage
                 .Returns(localFilePath);
 
             //act
-            await _sut.DownloadPackageFromQuestionnaireBucketAsync(bucketFilePath, tempFilePath);
+            await _sut.DownloadFileFromQuestionnaireBucketAsync(bucketFilePath, tempFilePath);
 
             //assert
             _storageProviderMock.Verify(v => v.DownloadAsync(bucketName,
@@ -89,7 +89,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(f => f.Directory.Exists(tempFilePath)).Returns(true);
 
             //act
-            await _sut.DownloadDatabaseFilesFromNisraBucketAsync(bucketFilePath, tempFilePath);
+            await _sut.DownloadFilesFromNisraBucketAsync(bucketFilePath, tempFilePath);
 
             //assert
             _storageProviderMock.Verify(v => v.GetListOfFiles(bucketName,
@@ -122,7 +122,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(f => f.Directory.Exists(localFilePath)).Returns(true);
 
             //act && assert
-            var exception = Assert.ThrowsAsync<DataNotFoundException>(async () => await _sut.DownloadDatabaseFilesFromNisraBucketAsync(bucketFilePath, tempPath));
+            var exception = Assert.ThrowsAsync<DataNotFoundException>(async () => await _sut.DownloadFilesFromNisraBucketAsync(bucketFilePath, tempPath));
             Assert.AreEqual($"No files were found for bucket path '{bucketFilePath}' in bucket '{bucketName}'", exception.Message);
         }
 
@@ -143,7 +143,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            await _sut.DownloadFromBucketAsync(bucketName, bucketFilePath, filePath);
+            await _sut.DownloadFileFromBucketAsync(bucketName, bucketFilePath, filePath);
 
             //assert
             _storageProviderMock.Verify(v => v.DownloadAsync(bucketName,
@@ -167,7 +167,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            var result = await _sut.DownloadFromBucketAsync(bucketName, bucketFilePath, filePath);
+            var result = await _sut.DownloadFileFromBucketAsync(bucketName, bucketFilePath, filePath);
 
             //arrange
             Assert.AreEqual(destinationFilePath, result);
@@ -191,7 +191,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            await _sut.DownloadFromBucketAsync(bucketName, fileName, filePath);
+            await _sut.DownloadFileFromBucketAsync(bucketName, fileName, filePath);
 
             //arrange
             _fileSystemMock.Verify(v => v.Directory.CreateDirectory(filePath), Times.Once);

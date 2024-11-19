@@ -98,6 +98,12 @@
     <Reference Include="System.IO.Abstractions.TestingHelpers, Version=12.0.0.0, Culture=neutral, PublicKeyToken=96bf224d23c43e59, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Abstractions.TestingHelpers.12.0.5\lib\net461\System.IO.Abstractions.TestingHelpers.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
@@ -135,6 +141,7 @@
   <ItemGroup>
     <Compile Include="Extensions\ArgumentValidationExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Interfaces\Services\IIngestService.cs" />
     <Compile Include="Mappers\CaseDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\ICaseDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\ICatiDtoMapper.cs" />
@@ -180,6 +187,7 @@
     <Compile Include="Interfaces\Services\IHealthCheckService.cs" />
     <Compile Include="Interfaces\Services\IQuestionnaireInstallerService.cs" />
     <Compile Include="Interfaces\Services\IFileService.cs" />
+    <Compile Include="Services\IngestService.cs" />
     <Compile Include="Services\QuestionnaireDataService.cs" />
     <Compile Include="Interfaces\Services\IQuestionnaireDataService.cs" />
     <Compile Include="Services\QuestionnaireUninstallerService.cs" />

@@ -3,6 +3,7 @@ using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using System.IO.Abstractions;
+using System.IO.Compression;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
@@ -56,6 +57,11 @@ namespace Blaise.Api.Core.Services
             }
 
             CleanUpFiles(path);
+        }
+
+        public void UnzipFile(string filePath, string destinationPath)
+        {
+            ZipFile.ExtractToDirectory(filePath, destinationPath);
         }
 
         private void CleanUpFiles(string path)

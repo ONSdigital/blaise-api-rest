@@ -264,6 +264,7 @@
     <Compile Include="Helpers\Extensions\ConfigurationExtensions.cs" />
     <Compile Include="Helpers\Extensions\FileExtensions.cs" />
     <Compile Include="Helpers\Files\FileSystemHelper.cs" />
+    <Compile Include="Helpers\Files\IngestFileHelper.cs" />
     <Compile Include="Helpers\Files\OnlineFileHelper.cs" />
     <Compile Include="Helpers\PrimaryKey\PrimaryKeyHelper.cs" />
     <Compile Include="Helpers\Questionnaire\QuestionnaireHelper.cs" />
@@ -273,6 +274,7 @@
     <Compile Include="Models\Questionnaire\QuestionnaireModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StepArgumentTransformations\ImportOnlineCasesTransformations.cs" />
+    <Compile Include="Steps\IngestDataSteps.cs" />
     <Compile Include="Steps\SharedSteps.cs" />
     <Compile Include="Steps\DeployQuestionnaireSteps.cs" />
     <Compile Include="Steps\GetQuestionnaireDetailsSteps.cs" />
@@ -296,6 +298,7 @@
     <None Include="App.config" />
     <None Include="Features\DeployQuestionnaire.feature" />
     <None Include="Features\GetQuestionnaireDetails.feature" />
+    <None Include="Features\IngestData.feature" />
     <None Include="Features\ImportOnlineCases.feature" />
     <None Include="packages.config" />
   </ItemGroup>

@@ -26,34 +26,44 @@ namespace Blaise.Api.Storage.Services
             _loggingService = loggingService;
         }
 
-        public async Task<string> DownloadPackageFromQuestionnaireBucketAsync(string fileName, string tempFilePath)
+        public async Task<string> DownloadFileFromQuestionnaireBucketAsync(string filePath, string tempFilePath)
         {
 
-            _loggingService.LogInfo($"Attempting to download package '{fileName}' from bucket '{_configurationProvider.DqsBucket}'");
+            _loggingService.LogInfo($"Attempting to download package '{filePath}' from bucket '{_configurationProvider.DqsBucket}'");
 
-            return await DownloadFromBucketAsync(_configurationProvider.DqsBucket, fileName, tempFilePath);
+            return await DownloadFileFromBucketAsync(_configurationProvider.DqsBucket, filePath, tempFilePath);
         }
 
-        public async Task DownloadDatabaseFilesFromNisraBucketAsync(string bucketPath, string tempFilePath)
+        public async Task<string> DownloadFileFromIngestBucketAsync(string filePath, string tempFilePath)
         {
-            var bucketFiles = (await _cloudStorageClient.GetListOfFiles(_configurationProvider.NisraBucket, bucketPath)).ToList();
+            return await DownloadFileFromBucketAsync(_configurationProvider.IngestBucket, filePath, tempFilePath);
+        }
+
+        public async Task DownloadFilesFromNisraBucketAsync(string folderPath, string tempFilePath)
+        {
+            await DownloadFilesFromBucketAsync(_configurationProvider.NisraBucket, folderPath, tempFilePath);
+        }
+
+        public async Task DownloadFilesFromBucketAsync(string bucketName, string bucketPath, string tempFilePath)
+        {
+            var bucketFiles = (await _cloudStorageClient.GetListOfFiles(bucketName, bucketPath)).ToList();
 
             if (!bucketFiles.Any())
             {
-                throw new DataNotFoundException($"No files were found for bucket path '{bucketPath}' in bucket '{_configurationProvider.NisraBucket}'");
+                throw new DataNotFoundException($"No files were found for bucket path '{bucketPath}' in bucket '{bucketName}'");
             }
 
-            _loggingService.LogInfo($"Attempting to Download '{bucketFiles.Count}' files from bucket '{_configurationProvider.NisraBucket}'");
+            _loggingService.LogInfo($"Attempting to Download '{bucketFiles.Count}' files '{string.Join(", ", bucketFiles)}' from bucket '{bucketName}'");
 
             foreach (var bucketFile in bucketFiles)
             {
-                await DownloadFromBucketAsync(_configurationProvider.NisraBucket, bucketFile, tempFilePath);
+                await DownloadFileFromBucketAsync(bucketName, bucketFile, tempFilePath);
             }
 
-            _loggingService.LogInfo($"Downloaded '{bucketFiles.Count}' files from bucket '{_configurationProvider.NisraBucket}'");
+            _loggingService.LogInfo($"Downloaded '{bucketFiles.Count}' files from bucket '{bucketName}'");
         }
-
-        public async Task<string> DownloadFromBucketAsync(string bucketName, string bucketFilePath, string tempFilePath)
+        
+        public async Task<string> DownloadFileFromBucketAsync(string bucketName, string bucketFilePath, string tempFilePath)
         {
             if (!_fileSystem.Directory.Exists(tempFilePath))
             {
@@ -62,6 +72,8 @@ namespace Blaise.Api.Storage.Services
 
             var fileName = _fileSystem.Path.GetFileName(bucketFilePath);
             var downloadedFile = _fileSystem.Path.Combine(tempFilePath, fileName);
+
+            _loggingService.LogInfo($"Attempting to Download file '{bucketFilePath}' file from bucket '{bucketName}' to {downloadedFile}");
 
             await _cloudStorageClient.DownloadAsync(bucketName, bucketFilePath, downloadedFile);
 

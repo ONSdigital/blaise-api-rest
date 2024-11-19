@@ -23,5 +23,10 @@ namespace Blaise.Api.Tests.Behaviour.Stubs.IO
         public void RemovePathAndFiles(string path)
         {
         }
+
+        public void UnzipFile(string filePath, string destinationPath)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

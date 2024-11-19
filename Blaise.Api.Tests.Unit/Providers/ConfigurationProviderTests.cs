@@ -74,6 +74,17 @@ namespace Blaise.Api.Tests.Unit.Providers
         }
 
         [Test]
+        public void Given_IngestBucket_Value_Is_Set_When_I_Call_NisraBucket_I_Get_The_Correct_Value_Back()
+        {
+            //act
+            var result = _sut.IngestBucket;
+
+            //assert
+            Assert.NotNull(result);
+            Assert.AreEqual("ingest-bucket", result);
+        }
+
+        [Test]
         public void Given_PackageExtension_Value_Is_Set_When_I_Call_PackageExtension_I_Get_The_Correct_Value_Back()
         {
             //act
