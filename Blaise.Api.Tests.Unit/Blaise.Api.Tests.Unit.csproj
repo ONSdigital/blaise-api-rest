@@ -214,6 +214,7 @@
     <Compile Include="Providers\ConfigurationProviderTests.cs" />
     <Compile Include="Services\CaseServiceTests.cs" />
     <Compile Include="Services\FileServiceTests.cs" />
+    <Compile Include="Services\IngestServiceTests.cs" />
     <Compile Include="Services\QuestionnaireDataServiceTests.cs" />
     <Compile Include="Services\QuestionnaireUninstallerServiceTests.cs" />
     <Compile Include="Services\NisraFileImportServiceTests.cs" />

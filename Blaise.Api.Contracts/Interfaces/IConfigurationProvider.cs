@@ -7,5 +7,7 @@
         string PackageExtension { get; }
         string DqsBucket { get; }
         string NisraBucket { get; }
+
+        string IngestBucket { get; }
     }
 }

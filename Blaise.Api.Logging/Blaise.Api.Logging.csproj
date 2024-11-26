@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Services\ConsoleLogging.cs" />
+    <Compile Include="Services\TestEventLogging.cs" />
     <Compile Include="Services\EventLogging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -261,6 +261,7 @@
     <Compile Include="Controllers\CaseController.cs" />
     <Compile Include="Controllers\CatiController.cs" />
     <Compile Include="Controllers\HealthController.cs" />
+    <Compile Include="Controllers\IngestController.cs" />
     <Compile Include="Controllers\QuestionnaireDataController.cs" />
     <Compile Include="Controllers\QuestionnaireController.cs" />
     <Compile Include="Controllers\ReportingController.cs" />

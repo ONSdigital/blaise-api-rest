@@ -13,5 +13,8 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Configuration
 
         public static string QuestionnaireDataUrl =>
             $"/api/v2/serverparks/{BlaiseConfigurationHelper.ServerParkName}/questionnaires/{BlaiseConfigurationHelper.QuestionnaireName}/data";
+
+        public static string IngestDataUrl =>
+            $"/api/v2/serverparks/{BlaiseConfigurationHelper.ServerParkName}/questionnaires/{BlaiseConfigurationHelper.QuestionnaireName}/ingest";
     }
 }
