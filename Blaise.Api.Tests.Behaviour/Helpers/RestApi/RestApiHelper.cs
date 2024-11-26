@@ -10,7 +10,6 @@ using Blaise.Api.Contracts.Models.Ingest;
 using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Api.Tests.Behaviour.Models.Questionnaire;
-using Blaise.Api.Tests.Behaviour.Stubs;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Microsoft.Owin.Hosting;
 using Newtonsoft.Json;
@@ -32,16 +31,6 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
         public static RestApiHelper GetInstance()
         {
             return _currentInstance ?? (_currentInstance = new RestApiHelper());
-        }
-
-        public void StartWebApi()
-        {
-            _webApp = WebApp.Start<StartupStub>("http://localhost:9443/");
-        }
-
-        public void StopWebApi()
-        {
-            _webApp.Dispose();
         }
 
         public async Task<List<QuestionnaireModel>> GetAllActiveQuestionnaires()

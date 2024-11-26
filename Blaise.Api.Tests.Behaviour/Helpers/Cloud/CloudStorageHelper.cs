@@ -17,11 +17,6 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Cloud
 
         public async Task UploadFileToBucketAsync(string bucketPath, string filePath)
         {
-            if (StubConfigurationHelper.UseStubs)
-            {
-                return;
-            }
-
             var storageClient = GetStorageClient();
             using (var fileStream = File.OpenRead(filePath))
             {
@@ -44,11 +39,6 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Cloud
 
         public async Task DeleteFileInBucketAsync(string bucketPath, string fileName)
         {
-            if (StubConfigurationHelper.UseStubs)
-            {
-                return;
-            }
-
             var storageClient = GetStorageClient();
             await storageClient.DeleteObjectAsync(bucketPath, fileName);
         }
