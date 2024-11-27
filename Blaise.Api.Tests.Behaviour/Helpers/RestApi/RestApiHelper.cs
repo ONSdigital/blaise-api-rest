@@ -11,7 +11,6 @@ using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Api.Tests.Behaviour.Models.Questionnaire;
 using Blaise.Nuget.Api.Contracts.Enums;
-using Microsoft.Owin.Hosting;
 using Newtonsoft.Json;
 
 namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
@@ -20,7 +19,6 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
     {
         private static HttpClient _httpClient;
         private static RestApiHelper _currentInstance;
-        private static IDisposable _webApp;
 
         public RestApiHelper()
         {
