@@ -28,44 +28,24 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [BeforeFeature("ingest")]
         public static void SetupUpFeature()
         {
-            if (StubConfigurationHelper.UseStubs)
-            {
-                return;
-            }
-
             QuestionnaireHelper.GetInstance().InstallQuestionnaire();
         }
 
         [Given("there is an ingest file that contains the following cases")]
         public async Task GivenThereIsAnIngestFileThatContainsTheFollowingCases(IEnumerable<CaseModel> cases)
         {
-            if (StubConfigurationHelper.UseStubs)
-            {
-                return;
-            }
-
             await IngestFileHelper.GetInstance().CreateCasesInIngestFileAsync(cases, _tempFilePath);
         }
 
         [Given("blaise contains the existing cases")]
         public void GivenBlaiseContainsTheFollowingCases(IEnumerable<CaseModel> cases)
         {
-            if (StubConfigurationHelper.UseStubs)
-            {
-                return;
-            }
-
             CaseHelper.GetInstance().CreateCasesInBlaise(cases);
         }
 
         [When("the ingest file is processed")]
         public async Task WhenTheIngestFileIsProcessed()
         {
-            if (StubConfigurationHelper.UseStubs)
-            {
-                return;
-            }
-
             var statusCode = await RestApiHelper.GetInstance().IngestData(RestApiConfigurationHelper.IngestDataUrl,
                 IngestFileHelper.IngestFile);
 
@@ -75,11 +55,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [Then("blaise will contain the cases")]
         public void ThenBlaiseWillContainTheFollowingCases(IEnumerable<CaseModel> cases)
         {
-            if (StubConfigurationHelper.UseStubs)
-            {
-                return;
-            }
-
             var numberOfCasesInDatabase = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
             var casesExpected = cases.ToList();
 
@@ -110,11 +85,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [AfterScenario("ingest")]
         public static async Task CleanUpScenario()
         {
-            if (StubConfigurationHelper.UseStubs)
-            {
-                return;
-            }
-
             CaseHelper.GetInstance().DeleteCases();
             await IngestFileHelper.GetInstance().CleanUpIngestFiles();
             FileSystemHelper.GetInstance().CleanUpTempFiles(_tempFilePath);
@@ -123,11 +93,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [AfterFeature("ingest")]
         public static void CleanUpFeature()
         {
-            if (StubConfigurationHelper.UseStubs)
-            {
-                return;
-            }
-
             QuestionnaireHelper.GetInstance().UninstallQuestionnaire(60);
         }
     }

@@ -1,5 +1,4 @@
 ﻿using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
-using Blaise.Api.Tests.Behaviour.Stubs;
 using Blaise.Nuget.Api.Api;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Extensions;
@@ -19,13 +18,6 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 
         public QuestionnaireHelper()
         {
-            if (StubConfigurationHelper.UseStubs)
-            {
-                _blaiseQuestionnaireApi = UnityConfigStub.Resolve<IBlaiseQuestionnaireApi>();
-
-                return;
-            }
-
             _blaiseQuestionnaireApi = new BlaiseQuestionnaireApi();
         }
 

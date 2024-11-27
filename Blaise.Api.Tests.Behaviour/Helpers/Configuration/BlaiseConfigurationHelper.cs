@@ -4,10 +4,9 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Configuration
 {
     public static class BlaiseConfigurationHelper
     {
-        public static bool UseStubs => StubConfigurationHelper.UseStubs;
-        public static string ServerParkName => UseStubs ? "gustyTest" : ConfigurationExtensions.GetEnvironmentVariable("ServerParkName");
-        public static string QuestionnaireName => UseStubs ? "opnTest" : ConfigurationExtensions.GetEnvironmentVariable("InstrumentName");
-        public static string QuestionnaireFile => UseStubs ? "questionnaireFileTest.bkpg" : $"{QuestionnaireName}.{QuestionnaireExtension}";
+        public static string ServerParkName => ConfigurationExtensions.GetEnvironmentVariable("ServerParkName");
+        public static string QuestionnaireName => ConfigurationExtensions.GetEnvironmentVariable("InstrumentName");
+        public static string QuestionnaireFile => $"{QuestionnaireName}.{QuestionnaireExtension}";
         public static string QuestionnairePath => ConfigurationExtensions.GetEnvironmentVariable("InstrumentPath");
         public static string QuestionnairePackage => $"{QuestionnaireName}.{QuestionnaireExtension}";
         public static string QuestionnaireExtension => ConfigurationExtensions.GetVariable("PACKAGE_EXTENSION");
