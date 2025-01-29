@@ -39,13 +39,6 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
             await UploadFileToBucket(filePath);
         }
-        
-        public async Task CleanUpIngestFiles()
-        {
-            _logging.LogInfo($"CreateCasesInIngestFileAsync - cleanup remove file '{IngestFile}' from bucket '{BlaiseConfigurationHelper.IngestBucket}'");
-            await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(BlaiseConfigurationHelper.IngestBucket,
-                IngestFile);
-        }
 
         private string ExtractPackageFiles(string path, string questionnairePackage)
         {

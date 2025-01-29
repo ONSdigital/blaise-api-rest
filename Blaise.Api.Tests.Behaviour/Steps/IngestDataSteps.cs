@@ -83,10 +83,9 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         }
 
         [AfterScenario("ingest")]
-        public static async Task CleanUpScenario()
+        public static void CleanUpScenario()
         {
             CaseHelper.GetInstance().DeleteCases();
-            await IngestFileHelper.GetInstance().CleanUpIngestFiles();
             FileSystemHelper.GetInstance().CleanUpTempFiles(_tempFilePath);
         }
         
