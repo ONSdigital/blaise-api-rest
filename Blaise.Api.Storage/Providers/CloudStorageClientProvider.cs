@@ -45,5 +45,13 @@ namespace Blaise.Api.Storage.Providers
                 }
             }
         }
+
+        public async Task DeleteAsync(string bucketName, string fileName)
+        {
+            using (var storageClient = await StorageClient.CreateAsync())
+            {
+                await storageClient.DeleteObjectAsync(bucketName, fileName);
+            }
+        }
     }
 }

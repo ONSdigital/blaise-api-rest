@@ -39,6 +39,11 @@ namespace Blaise.Api.Storage.Services
             return await DownloadFileFromBucketAsync(_configurationProvider.IngestBucket, filePath, tempFilePath);
         }
 
+        public async Task DeleteFileFromIngestBucketAsync(string filePath)
+        {
+            await DeleteFileFromBucketAsync(_configurationProvider.IngestBucket, filePath);
+        }
+
         public async Task DownloadFilesFromNisraBucketAsync(string folderPath, string tempFilePath)
         {
             await DownloadFilesFromBucketAsync(_configurationProvider.NisraBucket, folderPath, tempFilePath);
@@ -80,6 +85,19 @@ namespace Blaise.Api.Storage.Services
             _loggingService.LogInfo($"Downloaded '{fileName}' from bucket '{bucketName}' to '{tempFilePath}'");
 
             return downloadedFile;
+        }
+
+
+
+        public async Task DeleteFileFromBucketAsync(string bucketName, string bucketFilePath)
+        {
+            var fileName = _fileSystem.Path.GetFileName(bucketFilePath);
+
+            _loggingService.LogInfo($"Attempting to Delete file '{bucketFilePath}' file from bucket '{bucketName}'");
+
+            await _cloudStorageClient.DeleteAsync(bucketName, bucketFilePath);
+
+            _loggingService.LogInfo($"Deleted '{fileName}' from bucket '{bucketName}'");
         }
     }
 }

@@ -44,6 +44,8 @@ namespace Blaise.Api.Core.Services
 
             IngestQuestionnaireData(databaseFile, questionnaireName, serverParkName);
             _fileService.RemovePathAndFiles(tempFilePath);
+
+            await DeleteFileFromBucketAsync(ingestDataDto.BucketFilePath);
         }
 
         private void IngestQuestionnaireData(string databaseFile, string questionnaireName, string serverParkName)
@@ -78,6 +80,12 @@ namespace Blaise.Api.Core.Services
 
             _loggingService.LogInfo($"Extracting file '{downloadedFile}'");
             _fileService.UnzipFile(downloadedFile, tempFilePath);
+        }
+
+        private async Task DeleteFileFromBucketAsync(string filePath)
+        {
+            _loggingService.LogInfo($"Deleting file '{filePath}' from ingest bucket");
+            await _storageService.DeleteFileFromIngestBucketAsync(filePath);
         }
     }
 }
