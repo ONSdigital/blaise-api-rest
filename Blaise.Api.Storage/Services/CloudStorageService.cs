@@ -1,9 +1,12 @@
-﻿using System.IO.Abstractions;
+﻿using System;
+using System.IO.Abstractions;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Storage.Interfaces;
 using Blaise.Nuget.Api.Contracts.Exceptions;
+using Google;
 
 namespace Blaise.Api.Storage.Services
 {
@@ -95,9 +98,27 @@ namespace Blaise.Api.Storage.Services
 
             _loggingService.LogInfo($"Attempting to Delete file '{bucketFilePath}' file from bucket '{bucketName}'");
 
-            await _cloudStorageClient.DeleteAsync(bucketName, bucketFilePath);
+            try
+            {
+                await _cloudStorageClient.DeleteAsync(bucketName, bucketFilePath);
+                _loggingService.LogInfo($"Deleted '{fileName}' from bucket '{bucketName}'");
+            }
+            catch (GoogleApiException apiEx)
+            {
+                if (apiEx.Error.Code == 404)
+                {
+                    _loggingService.LogWarn($"'{bucketFilePath}' not found in bucket '{bucketName}'. Skipping deletion.");
+                }
+                else
+                {
+                    _loggingService.LogError($"Error deleting '{bucketName}' from bucket '{bucketName}'.", apiEx);
+                }
+            }
+            catch (Exception ex)
+            {
+                _loggingService.LogError($"Unexpected error occurred while trying to delete '{bucketFilePath}' from bucket '{bucketName}'.", ex);
+            }
 
-            _loggingService.LogInfo($"Deleted '{fileName}' from bucket '{bucketName}'");
         }
     }
 }
