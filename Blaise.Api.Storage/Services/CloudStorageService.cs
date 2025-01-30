@@ -1,9 +1,12 @@
-﻿using System.IO.Abstractions;
+﻿using System;
+using System.IO.Abstractions;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Storage.Interfaces;
 using Blaise.Nuget.Api.Contracts.Exceptions;
+using Google;
 
 namespace Blaise.Api.Storage.Services
 {
@@ -37,6 +40,11 @@ namespace Blaise.Api.Storage.Services
         public async Task<string> DownloadFileFromIngestBucketAsync(string filePath, string tempFilePath)
         {
             return await DownloadFileFromBucketAsync(_configurationProvider.IngestBucket, filePath, tempFilePath);
+        }
+
+        public async Task DeleteFileFromIngestBucketAsync(string filePath)
+        {
+            await DeleteFileFromBucketAsync(_configurationProvider.IngestBucket, filePath);
         }
 
         public async Task DownloadFilesFromNisraBucketAsync(string folderPath, string tempFilePath)
@@ -80,6 +88,37 @@ namespace Blaise.Api.Storage.Services
             _loggingService.LogInfo($"Downloaded '{fileName}' from bucket '{bucketName}' to '{tempFilePath}'");
 
             return downloadedFile;
+        }
+
+
+
+        public async Task DeleteFileFromBucketAsync(string bucketName, string bucketFilePath)
+        {
+            var fileName = _fileSystem.Path.GetFileName(bucketFilePath);
+
+            _loggingService.LogInfo($"Attempting to Delete file '{bucketFilePath}' file from bucket '{bucketName}'");
+
+            try
+            {
+                await _cloudStorageClient.DeleteAsync(bucketName, bucketFilePath);
+                _loggingService.LogInfo($"Deleted '{fileName}' from bucket '{bucketName}'");
+            }
+            catch (GoogleApiException apiEx)
+            {
+                if (apiEx.Error.Code == 404)
+                {
+                    _loggingService.LogWarn($"'{bucketFilePath}' not found in bucket '{bucketName}'. Skipping deletion.");
+                }
+                else
+                {
+                    _loggingService.LogError($"Error deleting '{bucketName}' from bucket '{bucketName}'.", apiEx);
+                }
+            }
+            catch (Exception ex)
+            {
+                _loggingService.LogError($"Unexpected error occurred while trying to delete '{bucketFilePath}' from bucket '{bucketName}'.", ex);
+            }
+
         }
     }
 }

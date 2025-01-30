@@ -8,5 +8,7 @@ namespace Blaise.Api.Storage.Interfaces
         Task<IEnumerable<string>> GetListOfFiles(string bucketName, string bucketPath);
 
         Task DownloadAsync(string bucketPath, string fileName, string destinationFilePath);
+
+        Task DeleteAsync(string bucketPath, string fileName);
     }
 }

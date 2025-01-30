@@ -89,6 +89,9 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f.RemovePathAndFiles(It.IsAny<string>()));
 
+            _storageServiceMock.InSequence(_mockSequence).Setup(s =>
+                s.DeleteFileFromIngestBucketAsync(_bucketPath)).Returns(Task.CompletedTask);
+
             //act
             await _sut.IngestDataAsync(_ingestDataDto, _serverParkName, _questionnaireName, _tempPath);
 
