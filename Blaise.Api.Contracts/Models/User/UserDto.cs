@@ -12,5 +12,7 @@ namespace Blaise.Api.Contracts.Models.User
         public List<string> ServerParks { get; set; }
 
         public string DefaultServerPark => ServerParks.FirstOrDefault();
+
+        public string User { get; set; }
     }
 }
