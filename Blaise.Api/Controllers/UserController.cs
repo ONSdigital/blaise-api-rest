@@ -76,7 +76,6 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult AddUser([FromBody] AddUserDto userDto)
         {
-            _loggingService.LogInfo($"{userDto.CurrentlyLoggedInUser}")
             _loggingService.LogInfo($"Attempting to add user '{userDto.Name}' as '{userDto.CurrentlyLoggedInUser}'");
 
             _userService.AddUser(userDto);
