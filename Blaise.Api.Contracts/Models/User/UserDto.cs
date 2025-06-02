@@ -13,6 +13,6 @@ namespace Blaise.Api.Contracts.Models.User
 
         public string DefaultServerPark => ServerParks.FirstOrDefault();
 
-        public string User { get; set; }
+        public string CurrentlyLoggedInUser { get; set; }
     }
 }
