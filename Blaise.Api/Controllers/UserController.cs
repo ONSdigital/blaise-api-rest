@@ -1,4 +1,5 @@
 ﻿using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Contracts.Models.ServerPark;
 using Blaise.Api.Contracts.Models.User;
 using Blaise.Api.Core.Interfaces.Services;
 using Swashbuckle.Swagger.Annotations;
@@ -109,11 +110,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult UpdatePassword([FromUri] string userName, [FromBody] UserPasswordDto userPasswordDto)
         {
-            _loggingService.LogInfo($"Attempting to update password for user '{userName}'");
+            _loggingService.LogInfo($"Attempting to update password for user '{userName}' as '{userPasswordDto.CurrentlyLoggedInUser}'");
 
             _userService.UpdatePassword(userName, userPasswordDto.Password);
 
-            _loggingService.LogInfo($"Successfully updated password for user '{userName}'");
+            _loggingService.LogInfo($"Successfully updated password for user '{userName}' as '{userPasswordDto.CurrentlyLoggedInUser}'");
 
             return NoContent();
         }
@@ -125,11 +126,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult UpdateRole([FromUri] string userName, [FromBody] UpdateUserRoleDto roleDto)
         {
-            _loggingService.LogInfo($"Attempting to update user '{userName}' role to '{roleDto.Role}'");
+            _loggingService.LogInfo($"Attempting to update user '{userName}' role to '{roleDto.Role}' as '{roleDto.CurrentlyLoggedInUser}'");
 
             _userService.UpdateRole(userName, roleDto);
 
-            _loggingService.LogInfo($"Successfully updated role for user '{userName}'");
+            _loggingService.LogInfo($"Successfully updated role for user '{userName}' as '{roleDto.CurrentlyLoggedInUser}'");
 
             return NoContent();
         }
@@ -141,11 +142,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult UpdateServerParks([FromUri] string userName, [FromBody] UpdateUserServerParksDto serverParksDto)
         {
-            _loggingService.LogInfo($"Attempting to update server parks for user '{userName}'");
+            _loggingService.LogInfo($"Attempting to update server parks for user '{userName}' as '{serverParksDto.CurrentlyLoggedInUser}'");
 
             _userService.UpdateServerParks(userName, serverParksDto);
 
-            _loggingService.LogInfo($"Successfully updated server parks for user '{userName}'");
+            _loggingService.LogInfo($"Successfully updated server parks for user '{userName}' as '{serverParksDto.CurrentlyLoggedInUser}'");
 
             return NoContent();
         }

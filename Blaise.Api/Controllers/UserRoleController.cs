@@ -1,4 +1,5 @@
 ﻿using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Contracts.Models.ServerPark;
 using Blaise.Api.Contracts.Models.UserRole;
 using Blaise.Api.Core.Interfaces.Services;
 using Swashbuckle.Swagger.Annotations;
@@ -76,11 +77,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult AddUserRole([FromBody] UserRoleDto roleDto)
         {
-            _loggingService.LogInfo($"Attempting to add user role '{roleDto.Name}'");
+            _loggingService.LogInfo($"Attempting to add user role '{roleDto.Name}' as '{roleDto.CurrentlyLoggedInUser}'");
 
             _roleService.AddUserRole(roleDto);
 
-            _loggingService.LogInfo($"Successfully added user role '{roleDto.Name}'");
+            _loggingService.LogInfo($"Successfully added user role '{roleDto.Name}' as '{roleDto.CurrentlyLoggedInUser}'");
 
             return Created($"{Request.RequestUri}/{roleDto.Name}", roleDto);
         }

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Blaise.Api.Contracts.Models.User
 {
-    public class UpdateUserServerParksDto
+    public class UpdateUserServerParksDto : UserAuditInfoDto
     {
         public List<string> ServerParks { get; set; } = new List<string>();
 

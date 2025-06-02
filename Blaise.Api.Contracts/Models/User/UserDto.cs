@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Blaise.Api.Contracts.Models.User
 {
-    public class UserDto 
+    public class UserDto : UserAuditInfoDto
     {
         public string Name { get; set; }
 
@@ -12,7 +12,5 @@ namespace Blaise.Api.Contracts.Models.User
         public List<string> ServerParks { get; set; }
 
         public string DefaultServerPark => ServerParks.FirstOrDefault();
-
-        public string CurrentlyLoggedInUser { get; set; }
     }
 }

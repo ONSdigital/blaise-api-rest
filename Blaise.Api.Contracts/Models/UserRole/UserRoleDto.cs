@@ -2,7 +2,7 @@
 
 namespace Blaise.Api.Contracts.Models.UserRole
 {
-    public class UserRoleDto
+    public class UserRoleDto :UserAuditInfoDto
     {
         public string Name { get; set; }
 
