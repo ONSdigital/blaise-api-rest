@@ -81,7 +81,7 @@ namespace Blaise.Api.Controllers
 
             _userService.AddUser(userDto);
 
-            _loggingService.LogInfo($"Successfully added role '{userDto.Name}' as '{userDto.CurrentlyLoggedInUser}'");
+            _loggingService.LogInfo($"Successfully added user '{userDto.Name}' as '{userDto.CurrentlyLoggedInUser}'");
 
             return Created($"{Request.RequestUri}/{userDto.Name}", userDto);
         }
