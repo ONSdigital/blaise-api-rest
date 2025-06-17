@@ -127,6 +127,10 @@
       <Name>Blaise.Api.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\StatNeth.Blaise.API.x64.5.9.7\build\StatNeth.Blaise.API.x64.targets" Condition="Exists('..\packages\StatNeth.Blaise.API.x64.5.9.7\build\StatNeth.Blaise.API.x64.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
