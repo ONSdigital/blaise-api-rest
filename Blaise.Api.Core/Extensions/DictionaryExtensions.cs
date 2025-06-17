@@ -5,8 +5,9 @@ namespace Blaise.Api.Core.Extensions
 {
     public static class DictionaryExtensions
     {
-        //this will throw an error if an existing key from the dictionary to add exists in the base dictionary
-        public static void AddRange<TKey, TValue>(this IDictionary<TKey, TValue> baseDictionary,
+        // this will throw an error if an existing key from the dictionary to add exists in the base dictionary
+        public static void AddRange<TKey, TValue>(
+            this IDictionary<TKey, TValue> baseDictionary,
             IDictionary<TKey, TValue> dictionaryToAdd)
         {
             dictionaryToAdd.ForEach(x => baseDictionary.Add(x.Key, x.Value));

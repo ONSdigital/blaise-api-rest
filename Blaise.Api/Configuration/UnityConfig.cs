@@ -25,11 +25,11 @@ namespace Blaise.Api.Configuration
         {
             UnityContainer = new UnityContainer();
 
-            //blaise api
+            // blaise api
             var blaiseConfigurationProvider = new BlaiseConfigurationProvider();
             var connectionModel = blaiseConfigurationProvider.GetConnectionModel();
 
-            //logging
+            // logging
             UnityContainer.RegisterType<ILoggingService, EventLogging>();
 
             UnityContainer.RegisterType<IBlaiseServerParkApi, BlaiseServerParkApi>(new InjectionConstructor(connectionModel));
@@ -42,12 +42,12 @@ namespace Blaise.Api.Configuration
             UnityContainer.RegisterType<IBlaiseCaseApi, BlaiseCaseApi>(new InjectionConstructor(connectionModel));
             UnityContainer.RegisterType<IBlaiseSqlApi, BlaiseSqlApi>();
 
-            //providers
+            // providers
             UnityContainer.RegisterType<IConfigurationProvider, ConfigurationProvider>();
             UnityContainer.RegisterType<ICloudStorageClientProvider, CloudStorageClientProvider>();
             UnityContainer.RegisterType<IFileSystem, FileSystem>();
 
-            //core mappers
+            // core mappers
             UnityContainer.RegisterType<IServerParkDtoMapper, ServerParkDtoMapper>();
             UnityContainer.RegisterType<IQuestionnaireDtoMapper, QuestionnaireDtoMapper>();
             UnityContainer.RegisterType<IQuestionnaireNodeDtoMapper, QuestionnaireNodeDtoMapper>();
@@ -58,7 +58,7 @@ namespace Blaise.Api.Configuration
             UnityContainer.RegisterType<IDataEntrySettingsDtoMapper, DataEntrySettingsDtoMapper>();
             UnityContainer.RegisterType<ICaseDtoMapper, CaseDtoMapper>();
 
-            //core services
+            // core services
             UnityContainer.RegisterType<IServerParkService, ServerParkService>();
             UnityContainer.RegisterType<IQuestionnaireService, QuestionnaireService>();
             UnityContainer.RegisterType<IQuestionnaireDataService, QuestionnaireDataService>();
@@ -78,7 +78,7 @@ namespace Blaise.Api.Configuration
             UnityContainer.RegisterType<IIngestService, IngestService>();
             UnityContainer.RegisterType(typeof(IRetryService<>), typeof(RetryService<>));
 
-            //storage services
+            // storage services
             UnityContainer.RegisterType<ICloudStorageService, CloudStorageService>();
         }
 
