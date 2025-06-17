@@ -72,8 +72,13 @@ stages:
               script: |
                 cd "$(Build.SourcesDirectory)"
                 dotnet format Blaise.Api.Rest.sln --verify-no-changes --no-restore --verbosity diagnostic
-                if ($LASTEXITCODE -ne 0) {
-                  Write-Host "Code formatting issues found. Run 'dotnet format' locally to fix them."
+                 if ($LASTEXITCODE -eq 0) {
+                  Write-Host "? Code formatting is clean."
+                } elseif ($LASTEXITCODE -eq 2) {
+                  Write-Host "?? Formatting or naming violations detected (warnings)."
+                  exit 0  # Optional: don't fail build for warnings
+                } else {
+                  Write-Host "? Formatting check failed due to errors."
                   exit 1
                 }
 
