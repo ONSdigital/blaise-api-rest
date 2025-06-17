@@ -1,4 +1,4 @@
-﻿namespace Blaise.Api.Contracts.Models.User
+namespace Blaise.Api.Contracts.Models.User
 {
     public class UpdateUserRoleDto
     {

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models.ServerPark;
 using Blaise.Api.Core.Interfaces.Mappers;
@@ -37,7 +37,7 @@ namespace Blaise.Api.Core.Mappers
                 Servers = MapToServerDtos(serverPark.Servers)
             };
         }
-        
+
         private static IEnumerable<ServerDto> MapToServerDtos(IServerCollection servers)
         {
             var serverDtoList = new List<ServerDto>();
