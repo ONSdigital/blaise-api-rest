@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models.User;
 using Blaise.Api.Core.Interfaces.Mappers;

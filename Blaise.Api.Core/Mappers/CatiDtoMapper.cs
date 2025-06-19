@@ -69,8 +69,8 @@ namespace Blaise.Api.Core.Mappers
         private static bool SetDeliverDataWhichIncludesADaysGraceFromLastSurveyDay(IReadOnlyCollection<DateTime> surveyDays)
         {
             return SurveyIsActive(surveyDays) ||
-                   surveyDays.All(s => s.Date < DateTime.Today) &&
-                   surveyDays.Any(s => s.Date == DateTime.Today.AddDays(-1));
+                   (surveyDays.All(s => s.Date < DateTime.Today) &&
+                   surveyDays.Any(s => s.Date == DateTime.Today.AddDays(-1)));
         }
     }
 }

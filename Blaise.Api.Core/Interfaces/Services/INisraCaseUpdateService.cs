@@ -1,4 +1,4 @@
-﻿using StatNeth.Blaise.API.DataRecord;
+using StatNeth.Blaise.API.DataRecord;
 
 namespace Blaise.Api.Core.Interfaces.Services
 {

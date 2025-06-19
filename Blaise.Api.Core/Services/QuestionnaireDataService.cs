@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Core.Extensions;
@@ -17,7 +17,7 @@ namespace Blaise.Api.Core.Services
         public QuestionnaireDataService(
             IFileService fileService,
             INisraFileImportService caseService,
-            ICloudStorageService storageService, 
+            ICloudStorageService storageService,
             ILoggingService loggingService)
         {
             _fileService = fileService;

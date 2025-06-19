@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,7 +46,8 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [When("the ingest file is processed")]
         public async Task WhenTheIngestFileIsProcessed()
         {
-            var statusCode = await RestApiHelper.GetInstance().IngestData(RestApiConfigurationHelper.IngestDataUrl,
+            var statusCode = await RestApiHelper.GetInstance().IngestData(
+                RestApiConfigurationHelper.IngestDataUrl,
                 IngestFileHelper.IngestFile);
 
             Assert.AreEqual(HttpStatusCode.Created, statusCode);
@@ -89,7 +90,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             await IngestFileHelper.GetInstance().CleanUpIngestFiles();
             FileSystemHelper.GetInstance().CleanUpTempFiles(_tempFilePath);
         }
-        
+
         [AfterFeature("ingest")]
         public static void CleanUpFeature()
         {

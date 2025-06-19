@@ -18,7 +18,7 @@ namespace Blaise.Api.Core.Services
         public NisraFileImportService(
             IBlaiseCaseApi blaiseApi,
             INisraCaseComparisonService caseComparisonService,
-            INisraCaseUpdateService onlineCaseService, 
+            INisraCaseUpdateService onlineCaseService,
             ILoggingService loggerService)
         {
             _blaiseApi = blaiseApi;
@@ -62,6 +62,7 @@ namespace Blaise.Api.Core.Services
             return existingCaseStatusModelList.FirstOrDefault(t =>
                 t.PrimaryKey == primaryKeyValue);
         }
+
         private bool CaseNeedsToBeUpdated(CaseStatusModel nisraCaseStatusModel, CaseStatusModel existingCaseStatusModel,
                     string questionnaireName)
         {
