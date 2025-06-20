@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Blaise.Api.Core.Extensions
 {
-    public static class ArgumentValidationExtensions
+       public static class ArgumentValidationExtensions
     {
         public static void ThrowExceptionIfNullOrEmpty(this string argument, string argumentName)
         {
@@ -15,6 +15,7 @@ namespace Blaise.Api.Core.Extensions
 
             if (string.IsNullOrWhiteSpace(argument))
             {
+
                 throw new ArgumentException($"A value for the argument '{argumentName}' must be supplied");
             }
         }
@@ -28,6 +29,7 @@ namespace Blaise.Api.Core.Extensions
 
             if (!argument.Any())
             {
+
                 throw new ArgumentException($"A value for the argument '{argumentName}' must be supplied");
             }
         }

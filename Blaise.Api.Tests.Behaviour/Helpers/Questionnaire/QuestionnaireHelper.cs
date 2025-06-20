@@ -1,12 +1,12 @@
-using System;
-using System.Threading;
-using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
+﻿using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Nuget.Api.Api;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Extensions;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Blaise.Nuget.Api.Contracts.Models;
 using StatNeth.Blaise.API.ServerManager;
+using System;
+using System.Threading;
 
 namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 {
@@ -57,6 +57,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 
             if (!QuestionnaireHasBeenUninstalled(BlaiseConfigurationHelper.QuestionnaireName, timeoutInSeconds))
             {
+
                 throw new Exception($"It appears the questionnaire '{BlaiseConfigurationHelper.QuestionnaireName}' has not uninstalled successfully");
             }
         }
@@ -85,7 +86,6 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
                     return false;
                 }
             }
-
             return GetQuestionnaireStatus(questionnaireName) == QuestionnaireStatusType.Active;
         }
 
@@ -104,7 +104,6 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
                     return false;
                 }
             }
-
             return true;
         }
 
@@ -123,7 +122,6 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
                     return false;
                 }
             }
-
             return true;
         }
 

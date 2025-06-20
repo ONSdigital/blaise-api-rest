@@ -1,4 +1,4 @@
-namespace Blaise.Api.Contracts.Models.Case
+﻿namespace Blaise.Api.Contracts.Models.Case
 {
     public class CaseEditInformationDto
     {

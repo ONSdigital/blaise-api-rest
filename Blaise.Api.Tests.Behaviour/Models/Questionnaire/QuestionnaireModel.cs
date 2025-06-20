@@ -1,4 +1,4 @@
-using Blaise.Nuget.Api.Contracts.Enums;
+﻿using Blaise.Nuget.Api.Contracts.Enums;
 
 namespace Blaise.Api.Tests.Behaviour.Models.Questionnaire
 {

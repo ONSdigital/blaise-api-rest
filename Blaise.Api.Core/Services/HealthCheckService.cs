@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Enums;
 using Blaise.Api.Contracts.Models.Health;
 using Blaise.Api.Core.Interfaces.Services;
@@ -28,8 +28,8 @@ namespace Blaise.Api.Core.Services
 
         private HealthCheckResultDto CheckConnectionModel()
         {
-            return _blaiseHealthApi.ConnectionModelIsHealthy()
-                ? new HealthCheckResultDto(HealthCheckType.ConnectionModel, HealthStatusType.Ok)
+            return _blaiseHealthApi.ConnectionModelIsHealthy() 
+                ? new HealthCheckResultDto(HealthCheckType.ConnectionModel, HealthStatusType.Ok) 
                 : new HealthCheckResultDto(HealthCheckType.ConnectionModel, HealthStatusType.Error);
         }
 

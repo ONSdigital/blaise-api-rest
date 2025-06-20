@@ -18,10 +18,10 @@ namespace Blaise.Api.Tests.Unit.Configuration
         [TestCase(typeof(UserController))]
         public void Given_A_Controller_Type_I_Resolve_The_Controller_Type_Then_All_Dependencies_Are_Resolved(Type controllerType)
         {
-            // arrange
+            //arrange
             var container = UnityConfig.UnityContainer;
 
-            // act && assert
+            //act && assert
             Assert.DoesNotThrow(() => container.Resolve(controllerType, controllerType.ToString()));
         }
     }

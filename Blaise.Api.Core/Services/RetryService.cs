@@ -1,12 +1,11 @@
-using System;
+﻿using System;
 using Blaise.Api.Core.Interfaces.Services;
 using Polly;
 using Polly.Retry;
 
 namespace Blaise.Api.Core.Services
 {
-    public class RetryService<T> : IRetryService<T>
-        where T : Exception
+    public class RetryService<T> : IRetryService<T> where T: Exception
     {
         private const int MaxRetryAttempts = 3;
         private readonly TimeSpan _pauseBetweenFailures = TimeSpan.FromSeconds(1);

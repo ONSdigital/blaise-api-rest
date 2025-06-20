@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web.Http;
@@ -22,7 +22,7 @@ namespace Blaise.Api.Controllers
             _healthService = healthService;
             _loggingService = loggingService;
         }
-
+        
         [HttpGet]
         [Route("")]
         public IHttpActionResult HealthCheck()

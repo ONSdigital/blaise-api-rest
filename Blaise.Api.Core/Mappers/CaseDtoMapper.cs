@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using Blaise.Api.Contracts.Enums;
+﻿using Blaise.Api.Contracts.Enums;
 using Blaise.Api.Contracts.Models.Case;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Nuget.Api.Contracts.Interfaces;
-using Blaise.Nuget.Api.Contracts.Models;
 using StatNeth.Blaise.API.DataRecord;
+using System.Collections.Generic;
+using Blaise.Nuget.Api.Contracts.Models;
 
 namespace Blaise.Api.Core.Mappers
 {
@@ -31,6 +31,7 @@ namespace Blaise.Api.Core.Mappers
                         PrimaryKey = caseStatus.PrimaryKey,
                         Outcome = caseStatus.Outcome
                     });
+
             }
 
             return caseStatusDtoList;
@@ -56,7 +57,7 @@ namespace Blaise.Api.Core.Mappers
 
         public CaseEditInformationDto MapToCaseEditInformationDto(IDataRecord caseRecord)
         {
-            caseRecord.ThrowExceptionIfNull("caseRecord");
+            caseRecord.ThrowExceptionIfNull("caseRecord");                
 
             return new CaseEditInformationDto
             {

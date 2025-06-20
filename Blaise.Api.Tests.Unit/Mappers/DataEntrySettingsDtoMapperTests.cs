@@ -20,10 +20,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [Test]
         public void Given_A_DataEntrySettingsModel_When_I_Call_MapToDataEntrySettingsDto_Then_I_Get_A_List_Of_DataEntrySettingsDtos_Back()
         {
-            // act
+            //act
             var result = _sut.MapDataEntrySettingsDtos(new List<DataEntrySettingsModel>());
 
-            // assert
+            //assert
             Assert.NotNull(result);
             Assert.IsInstanceOf<List<DataEntrySettingsDto>>(result);
         }
@@ -31,7 +31,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [Test]
         public void Given_A_DataEntrySettingsModel_When_I_Call_MapToDataEntrySettingsDto_Then_Properties_Are_Mapped_Correctly()
         {
-            // arrange
+            //arrange
             var dataEntrySettingsModelList = new List<DataEntrySettingsModel>
             {
                 new DataEntrySettingsModel
@@ -39,8 +39,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
                     Type = "StrictInterviewing",
                     SaveSessionOnTimeout = true,
                     SaveSessionOnQuit = false,
-                    DeleteSessionOnTimeout = true,
-                    DeleteSessionOnQuit = false,
+                    DeleteSessionOnTimeout = true, 
+                    DeleteSessionOnQuit = false, 
                     SessionTimeout = 30,
                     ApplyRecordLocking = true
                 },
@@ -49,17 +49,17 @@ namespace Blaise.Api.Tests.Unit.Mappers
                     Type = "StrictCati",
                     SaveSessionOnTimeout = false,
                     SaveSessionOnQuit = true,
-                    DeleteSessionOnTimeout = false,
-                    DeleteSessionOnQuit = true,
+                    DeleteSessionOnTimeout = false, 
+                    DeleteSessionOnQuit = true, 
                     SessionTimeout = 15,
                     ApplyRecordLocking = false
                 },
             };
 
-            // act
+            //act
             var result = _sut.MapDataEntrySettingsDtos(dataEntrySettingsModelList).ToList();
 
-            // assert
+            //assert
             Assert.IsNotNull(result);
             Assert.IsNotEmpty(result);
             Assert.AreEqual(2, result.Count);

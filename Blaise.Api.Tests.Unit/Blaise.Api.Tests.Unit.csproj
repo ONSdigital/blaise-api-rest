@@ -107,7 +107,7 @@
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
     </Reference>
     <Reference Include="StatNeth.Blaise.API, Version=5.0.0.0, Culture=neutral, PublicKeyToken=ad2ddd432cb2a452, processorArchitecture=MSIL">
-      <HintPath>..\packages\StatNeth.Blaise.API.x64.5.9.7\lib\net472\StatNeth.Blaise.API.dll</HintPath>
+      <HintPath>..\packages\StatNeth.Blaise.API.x64.5.14.6.3686\lib\net48\StatNeth.Blaise.API.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -231,10 +231,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\CloudStorageServiceTests.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
@@ -267,9 +264,9 @@
     <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.17.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.17.0\build\net35\NUnit3TestAdapter.props'))" />
     <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.112.2\build\net40\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.112.2\build\net40\System.Data.SQLite.Core.targets'))" />
     <Error Condition="!Exists('..\packages\NUnit.3.13.1\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.13.1\build\NUnit.props'))" />
-    <Error Condition="!Exists('..\packages\StatNeth.Blaise.API.x64.5.9.7\build\StatNeth.Blaise.API.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StatNeth.Blaise.API.x64.5.9.7\build\StatNeth.Blaise.API.x64.targets'))" />
+    <Error Condition="!Exists('..\packages\StatNeth.Blaise.API.x64.5.14.6.3686\build\StatNeth.Blaise.API.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StatNeth.Blaise.API.x64.5.14.6.3686\build\StatNeth.Blaise.API.x64.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.112.2\build\net40\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.112.2\build\net40\System.Data.SQLite.Core.targets')" />
-  <Import Project="..\packages\StatNeth.Blaise.API.x64.5.9.7\build\StatNeth.Blaise.API.x64.targets" Condition="Exists('..\packages\StatNeth.Blaise.API.x64.5.9.7\build\StatNeth.Blaise.API.x64.targets')" />
+  <Import Project="..\packages\StatNeth.Blaise.API.x64.5.14.6.3686\build\StatNeth.Blaise.API.x64.targets" Condition="Exists('..\packages\StatNeth.Blaise.API.x64.5.14.6.3686\build\StatNeth.Blaise.API.x64.targets')" />
 </Project>

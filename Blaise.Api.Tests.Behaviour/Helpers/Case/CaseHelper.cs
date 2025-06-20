@@ -1,17 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
-using Blaise.Api.Tests.Behaviour.Helpers.PrimaryKey;
+﻿using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Blaise.Api.Tests.Behaviour.Models.Case;
 using Blaise.Api.Tests.Behaviour.Models.Enums;
 using Blaise.Nuget.Api.Api;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Extensions;
 using Blaise.Nuget.Api.Contracts.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using Blaise.Api.Tests.Behaviour.Helpers.PrimaryKey;
 
 namespace Blaise.Api.Tests.Behaviour.Helpers.Case
 {
+
     public class CaseHelper
     {
         private readonly IBlaiseCaseApi _blaiseCaseApi = new BlaiseCaseApi();
@@ -73,7 +74,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
         {
             var dataFields = BuildDataFieldsFromCaseModel(caseModel);
             var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseModel.PrimaryKey);
-
+            
             _blaiseCaseApi.CreateCase(primaryKeys, dataFields,
                 BlaiseConfigurationHelper.QuestionnaireName, BlaiseConfigurationHelper.ServerParkName);
         }
@@ -123,15 +124,13 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
 
         public void DeleteCases()
         {
-            _blaiseCaseApi.RemoveCases(
-                BlaiseConfigurationHelper.QuestionnaireName,
+            _blaiseCaseApi.RemoveCases(BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
         }
 
         public int NumberOfCasesInQuestionnaire()
         {
-            return _blaiseCaseApi.GetNumberOfCases(
-                BlaiseConfigurationHelper.QuestionnaireName,
+            return _blaiseCaseApi.GetNumberOfCases(BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
         }
 
@@ -150,11 +149,9 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
             var dataRecord = _blaiseCaseApi.GetCase(primaryKeys, BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
 
-            var fieldData = new Dictionary<string, string>
-            {
-                { FieldNameType.LastUpdatedDate.FullName(), DateTime.Now.ToString("dd-MM-yyyy") },
-                { FieldNameType.LastUpdatedTime.FullName(), DateTime.Now.ToString("HH:mm:ss") }
-            };
+            var fieldData = new Dictionary<string, string> {
+                {FieldNameType.LastUpdatedDate.FullName(), DateTime.Now.ToString("dd-MM-yyyy")},
+                {FieldNameType.LastUpdatedTime.FullName(), DateTime.Now.ToString("HH:mm:ss")}};
 
             _blaiseCaseApi.UpdateCase(dataRecord, fieldData, BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);

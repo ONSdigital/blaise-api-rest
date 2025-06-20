@@ -7,7 +7,6 @@ namespace Blaise.Api.Core.Interfaces.Mappers
     public interface IServerParkDtoMapper
     {
         IEnumerable<ServerParkDto> MapToServerParkDtos(IEnumerable<IServerPark> serverParks);
-
         ServerParkDto MapToServerParkDto(IServerPark serverPark);
     }
 }

@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web.Http;
-using System.Web.Http.Description;
-using Blaise.Api.Contracts.Interfaces;
+﻿using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.Case;
 using Blaise.Api.Core.Interfaces.Services;
 using Swashbuckle.Swagger.Annotations;
+using System.Collections.Generic;
+using System.Net;
+using System.Web.Http;
+
+using System.Linq;
+using System.Web.Http.Description;
 
 namespace Blaise.Api.Controllers
 {
@@ -60,6 +61,7 @@ namespace Blaise.Api.Controllers
             return Ok(exists);
         }
 
+
         [HttpGet]
         [Route("exists/multikey")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
@@ -107,11 +109,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues)
         {
-            _loggingService.LogInfo($"Attempting to get case with multikey parameters' {keyNames} {keyValues}'");
+             _loggingService.LogInfo($"Attempting to get case with multikey parameters' {keyNames} {keyValues}'");
 
             var caseDto = _caseService.GetCase(serverParkName, questionnaireName, keyNames, keyValues);
 
-            _loggingService.LogInfo("Successfully got multikey case");
+             _loggingService.LogInfo("Successfully got multikey case");
 
             return Ok(caseDto);
         }
@@ -186,7 +188,7 @@ namespace Blaise.Api.Controllers
             }
 
             _loggingService.LogInfo($"Successfully created cases for server park {serverParkName} and questionnaire {questionnaireName}");
-            return Created(string.Empty, string.Empty);
+            return Created("", "");
         }
 
         [HttpPatch]

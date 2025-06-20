@@ -1,4 +1,4 @@
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Behaviour.Helpers.Cloud;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
@@ -18,6 +18,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             await CloudStorageHelper.GetInstance().UploadFileToBucketAsync(
                 BlaiseConfigurationHelper.QuestionnairePackageBucket,
                 BlaiseConfigurationHelper.QuestionnairePackagePath);
+
         }
 
         [When("the API is called to install the questionnaire")]
@@ -42,7 +43,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public async Task CleanUpScenario()
         {
             QuestionnaireHelper.GetInstance().UninstallQuestionnaire(60);
-
+           
             await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(
                 BlaiseConfigurationHelper.QuestionnairePackageBucket,
                 BlaiseConfigurationHelper.QuestionnairePackage);

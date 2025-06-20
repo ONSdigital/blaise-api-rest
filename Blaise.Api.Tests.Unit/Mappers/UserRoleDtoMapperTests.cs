@@ -21,7 +21,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [Test]
         public void Given_A_List_Of_Roles_When_I_Call_MapToUserRoleDtos_Then_A_Correct_List_Of_UserRoleDtos_Are_Returned()
         {
-            // arrange
+            //arrange
             const string role1Name = "Name1";
             const string role1Description = "Description1";
             var role1Mock = new Mock<IRole>();
@@ -32,7 +32,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var actionPermission1Mock = new Mock<IActionPermission>();
             actionPermission1Mock.Setup(a => a.Action).Returns(permission1);
             actionPermission1Mock.Setup(a => a.Permission).Returns(PermissionStatus.Allowed);
-            var actionPermissions = new List<IActionPermission> { actionPermission1Mock.Object };
+            var actionPermissions = new List<IActionPermission> { actionPermission1Mock .Object};
             role1Mock.Setup(r => r.Permissions).Returns(actionPermissions);
 
             const string role2Name = "Name2";
@@ -48,18 +48,18 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var actionPermissions2 = new List<IActionPermission> { actionPermission2Mock.Object };
             role2Mock.Setup(r => r.Permissions).Returns(actionPermissions2);
 
-            var roles = new List<IRole> { role1Mock.Object, role2Mock.Object };
+            var roles = new List<IRole> {role1Mock.Object, role2Mock.Object};
 
-            // act
+            //act
             var result = _sut.MapToUserRoleDtos(roles).ToList();
 
-            // assert
+            //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<List<UserRoleDto>>(result);
             Assert.IsNotEmpty(result);
             Assert.AreEqual(2, result.Count);
 
-            Assert.IsTrue(result.Any(r =>
+            Assert.IsTrue(result.Any(r => 
                 r.Name == role1Name &&
                 r.Description == role1Description &&
                 r.Permissions.Count() == 1 &&
@@ -75,7 +75,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [Test]
         public void Given_A_List_Of_Roles_When_I_Call_MapToUserRoleDtos_Then_Only_Allowed_Permissions_Are_Returned()
         {
-            // arrange
+            //arrange
             const string role1Name = "Name1";
             const string role1Description = "Description1";
             var role1Mock = new Mock<IRole>();
@@ -104,10 +104,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
 
             var roles = new List<IRole> { role1Mock.Object, role2Mock.Object };
 
-            // act
+            //act
             var result = _sut.MapToUserRoleDtos(roles).ToList();
 
-            // assert
+            //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<List<UserRoleDto>>(result);
             Assert.IsNotEmpty(result);
@@ -128,7 +128,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [Test]
         public void Given_A_Role_When_I_Call_MapToUserRoleDto_Then_A_Correct_UserRoleDto_Is_Returned()
         {
-            // arrange
+            //arrange
             const string role1Name = "Name1";
             const string role1Description = "Description1";
             var role1Mock = new Mock<IRole>();
@@ -148,10 +148,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var actionPermissions = new List<IActionPermission> { actionPermission1Mock.Object, actionPermission2Mock.Object };
             role1Mock.Setup(r => r.Permissions).Returns(actionPermissions);
 
-            // act
+            //act
             var result = _sut.MapToUserRoleDto(role1Mock.Object);
 
-            // assert
+            //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<UserRoleDto>(result);
 
@@ -165,7 +165,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [Test]
         public void Given_A_Role_When_I_Call_MapToUserRoleDto_Then_Only_Allowed_Permissions_Are_Returned()
         {
-            // arrange
+            //arrange
             const string role1Name = "Name1";
             const string role1Description = "Description1";
             var role1Mock = new Mock<IRole>();
@@ -185,10 +185,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var actionPermissions = new List<IActionPermission> { actionPermission1Mock.Object, actionPermission2Mock.Object };
             role1Mock.Setup(r => r.Permissions).Returns(actionPermissions);
 
-            // act
+            //act
             var result = _sut.MapToUserRoleDto(role1Mock.Object);
 
-            // assert
+            //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<UserRoleDto>(result);
 

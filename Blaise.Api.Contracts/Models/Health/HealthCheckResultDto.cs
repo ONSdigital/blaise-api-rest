@@ -1,4 +1,4 @@
-using Blaise.Api.Contracts.Enums;
+﻿using Blaise.Api.Contracts.Enums;
 using Newtonsoft.Json;
 
 namespace Blaise.Api.Contracts.Models.Health

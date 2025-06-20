@@ -1,4 +1,5 @@
-﻿namespace Blaise.Api.Contracts.Models.Ingest
+﻿
+namespace Blaise.Api.Contracts.Models.Ingest
 {
     public class IngestDataDto
     {

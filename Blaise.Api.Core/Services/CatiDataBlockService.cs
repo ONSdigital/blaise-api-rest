@@ -39,12 +39,10 @@ namespace Blaise.Api.Core.Services
             }
         }
 
-        public void AddCatiManaCallItems(
-            Dictionary<string, string> newFieldData,
+        public void AddCatiManaCallItems(Dictionary<string, string> newFieldData,
             Dictionary<string, string> existingFieldData, int outcomeCode)
         {
-            var catiCallItems = BuildCatiManaRegCallItems(
-                existingFieldData,
+            var catiCallItems = BuildCatiManaRegCallItems(existingFieldData,
                 outcomeCode);
 
             AddCatiManaNrOfCallItem(newFieldData, existingFieldData);
@@ -56,25 +54,21 @@ namespace Blaise.Api.Core.Services
             }
         }
 
-        public void SetFirstDayIfNotSet(
-            Dictionary<string, string> newFieldData,
+        public void SetFirstDayIfNotSet(Dictionary<string, string> newFieldData,
             Dictionary<string, string> existingFieldData)
         {
             var existingFieldValue = existingFieldData["CatiMana.CatiCall.FirstDay"];
 
-            newFieldData.Add(
-                "CatiMana.CatiCall.FirstDay",
+            newFieldData.Add("CatiMana.CatiCall.FirstDay",
                 string.IsNullOrWhiteSpace(existingFieldValue)
                     ? DateTime.Now.ToString("ddMMyyyy", CultureInfo.InvariantCulture)
                     : existingFieldValue);
         }
 
-        public void AddCatiManaNrOfCallItem(
-            Dictionary<string, string> newFieldData,
+        public void AddCatiManaNrOfCallItem(Dictionary<string, string> newFieldData,
             Dictionary<string, string> existingFieldData)
         {
-            newFieldData.Add(
-                "CatiMana.CatiCall.NrOfCall",
+            newFieldData.Add("CatiMana.CatiCall.NrOfCall",
                 int.TryParse(existingFieldData["CatiMana.CatiCall.NrOfCall"], out var numberOfCalls)
                     ? (numberOfCalls + 1).ToString()
                     : "1");
@@ -98,11 +92,11 @@ namespace Blaise.Api.Core.Services
         {
             return new Dictionary<string, string>
             {
-                { $"CatiMana.CatiCall.RegsCalls[{entryNumber}].WhoMade", "Web" },
-                { $"CatiMana.CatiCall.RegsCalls[{entryNumber}].DayNumber", "1" },
-                { $"CatiMana.CatiCall.RegsCalls[{entryNumber}].DialTime", $"{DateTime.Now:HH:mm:ss}" },
-                { $"CatiMana.CatiCall.RegsCalls[{entryNumber}].NrOfDials", "1" },
-                { $"CatiMana.CatiCall.RegsCalls[{entryNumber}].DialResult", outcomeCode == 110 ? "1" : "2" }
+                {$"CatiMana.CatiCall.RegsCalls[{entryNumber}].WhoMade", "Web"},
+                {$"CatiMana.CatiCall.RegsCalls[{entryNumber}].DayNumber", "1"},
+                {$"CatiMana.CatiCall.RegsCalls[{entryNumber}].DialTime", $"{DateTime.Now:HH:mm:ss}"},
+                {$"CatiMana.CatiCall.RegsCalls[{entryNumber}].NrOfDials", "1"},
+                {$"CatiMana.CatiCall.RegsCalls[{entryNumber}].DialResult", outcomeCode == 110 ? "1" : "2"}
             };
         }
 
@@ -111,11 +105,11 @@ namespace Blaise.Api.Core.Services
         {
             return new Dictionary<string, string>
             {
-                { $"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].WhoMade", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].WhoMade"] },
-                { $"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].DayNumber", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].DayNumber"] },
-                { $"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].DialTime", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].DialTime"] },
-                { $"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].NrOfDials", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].NrOfDials"] },
-                { $"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].DialResult", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].DialResult"] }
+                {$"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].WhoMade", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].WhoMade"]},
+                {$"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].DayNumber", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].DayNumber"]},
+                {$"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].DialTime", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].DialTime"]},
+                {$"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].NrOfDials", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].NrOfDials"]},
+                {$"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].DialResult", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].DialResult"]}
             };
         }
     }

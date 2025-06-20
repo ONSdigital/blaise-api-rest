@@ -30,10 +30,10 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_Blaise_Is_Up_When_I_Call_PerformCheck_Then_A_List_Of_HealthResultDtos_Are_Returned()
         {
-            // act
+            //act
             var result = _sut.PerformCheck().ToList();
 
-            // assert
+            //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<IEnumerable<HealthCheckResultDto>>(result);
             Assert.IsNotEmpty(result);
@@ -43,10 +43,10 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_Blaise_Is_Up_When_I_Call_PerformCheck_Then_A_Correct_List_Of_HealthResultDtos_Are_Returned()
         {
-            // act
+            //act
             var result = _sut.PerformCheck().ToList();
 
-            // assert
+            //assert
             Assert.IsNotNull(result);
 
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok));
@@ -58,13 +58,13 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Invalid_ConnectionModel_When_I_Call_PerformCheck_Then_A_Correct_List_Of_HealthResultDtos_Are_Returned()
         {
-            // arrange
+            //arrange
             _blaiseApiMock.Setup(b => b.ConnectionModelIsHealthy()).Returns(false);
 
-            // act
+            //act
             var result = _sut.PerformCheck().ToList();
 
-            // assert
+            //assert
             Assert.IsNotNull(result);
 
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Error));
@@ -76,13 +76,13 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_Blaise_Connection_Is_Down_When_I_Call_PerformCheck_Then_A_Correct_List_Of_HealthResultDtos_Are_Returned()
         {
-            // arrange
+            //arrange
             _blaiseApiMock.Setup(b => b.ConnectionToBlaiseIsHealthy()).Returns(false);
 
-            // act
+            //act
             var result = _sut.PerformCheck().ToList();
 
-            // assert
+            //assert
             Assert.IsNotNull(result);
 
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok));
@@ -94,13 +94,13 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_Blaise_Remote_Connection_Is_Down_When_I_Call_PerformCheck_Then_A_Correct_List_Of_HealthResultDtos_Are_Returned()
         {
-            // arrange
+            //arrange
             _blaiseApiMock.Setup(b => b.RemoteConnectionToBlaiseIsHealthy()).Returns(false);
 
-            // act
+            //act
             var result = _sut.PerformCheck().ToList();
 
-            // assert
+            //assert
             Assert.IsNotNull(result);
 
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok));
@@ -112,13 +112,13 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_Blaise_Remote_Cati_Connection_Is_Down_When_I_Call_PerformCheck_Then_A_Correct_List_Of_HealthResultDtos_Are_Returned()
         {
-            // arrange
+            //arrange
             _blaiseApiMock.Setup(b => b.RemoteConnectionToCatiIsHealthy()).Returns(false);
 
-            // act
+            //act
             var result = _sut.PerformCheck().ToList();
 
-            // assert
+            //assert
             Assert.IsNotNull(result);
 
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok));

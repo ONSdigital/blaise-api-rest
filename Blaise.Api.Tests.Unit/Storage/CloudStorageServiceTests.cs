@@ -37,7 +37,7 @@ namespace Blaise.Api.Tests.Unit.Storage
         [Test]
         public async Task Given_I_Call_DownloadPackageFromQuestionnaireBucketAsync_Then_The_Correct_File_Is_Downloaded()
         {
-            // arrange
+            //arrange
             const string bucketName = "DQS";
             const string bucketFilePath = "OPN1234/OPN1234.zip";
             const string fileName = "OPN1234.zip";
@@ -46,24 +46,24 @@ namespace Blaise.Api.Tests.Unit.Storage
 
             _configurationProviderMock.Setup(c => c.DqsBucket).Returns(bucketName);
 
+
             _fileSystemMock.Setup(f => f.Directory.Exists(tempFilePath)).Returns(true);
             _fileSystemMock.Setup(f => f.Path.GetFileName(bucketFilePath)).Returns(fileName);
             _fileSystemMock.Setup(s => s.Path.Combine(tempFilePath, fileName))
                 .Returns(localFilePath);
 
-            // act
+            //act
             await _sut.DownloadFileFromQuestionnaireBucketAsync(bucketFilePath, tempFilePath);
 
-            // assert
-            _storageProviderMock.Verify(v => v.DownloadAsync(
-                bucketName,
+            //assert
+            _storageProviderMock.Verify(v => v.DownloadAsync(bucketName,
                 bucketFilePath, localFilePath));
         }
 
         [Test]
         public async Task Given_I_Call_DownloadDatabaseFilesFromNisraBucketAsync_Then_The_Correct_BucketName_Is_Provided()
         {
-            // arrange
+            //arrange
             const string bucketName = "NISRA";
             const string bucketFilePath = "OPN1234";
             var tempFilePath = @"d:\temp\GUID";
@@ -85,15 +85,14 @@ namespace Blaise.Api.Tests.Unit.Storage
 
             _configurationProviderMock.Setup(c => c.NisraBucket).Returns(bucketName);
 
+
             _fileSystemMock.Setup(f => f.Directory.Exists(tempFilePath)).Returns(true);
 
-            // act
+            //act
             await _sut.DownloadFilesFromNisraBucketAsync(bucketFilePath, tempFilePath);
 
-            // assert
-            _storageProviderMock.Verify(
-                v => v.GetListOfFiles(
-                bucketName,
+            //assert
+            _storageProviderMock.Verify(v => v.GetListOfFiles(bucketName,
                 bucketFilePath), Times.Once);
 
             foreach (var file in files)
@@ -105,7 +104,7 @@ namespace Blaise.Api.Tests.Unit.Storage
         [Test]
         public void Given_No_Files_Are_In_The_BucketPath_When_I_Call_DownloadDatabaseFilesFromNisraBucketAsync_Then_A_DataNotFoundException_Is_Thrown()
         {
-            // arrange
+            //arrange
             const string bucketName = "NISRA";
             const string tempPath = @"d:\Temp";
             const string bucketFilePath = "OPN1234";
@@ -122,7 +121,7 @@ namespace Blaise.Api.Tests.Unit.Storage
 
             _fileSystemMock.Setup(f => f.Directory.Exists(localFilePath)).Returns(true);
 
-            // act && assert
+            //act && assert
             var exception = Assert.ThrowsAsync<DataNotFoundException>(async () => await _sut.DownloadFilesFromNisraBucketAsync(bucketFilePath, tempPath));
             Assert.AreEqual($"No files were found for bucket path '{bucketFilePath}' in bucket '{bucketName}'", exception.Message);
         }
@@ -130,7 +129,7 @@ namespace Blaise.Api.Tests.Unit.Storage
         [Test]
         public async Task Given_I_Call_DownloadFromBucket_Then_The_Correct_Services_Are_Called()
         {
-            // arrange
+            //arrange
             const string bucketName = "OPN";
             const string bucketFilePath = "OPN1234/OPN1234.zip";
             const string fileName = "OPN1234.zip";
@@ -143,19 +142,18 @@ namespace Blaise.Api.Tests.Unit.Storage
                 .Returns(destinationFilePath);
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
-            // act
+            //act
             await _sut.DownloadFileFromBucketAsync(bucketName, bucketFilePath, filePath);
 
-            // assert
-            _storageProviderMock.Verify(v => v.DownloadAsync(
-                bucketName,
+            //assert
+            _storageProviderMock.Verify(v => v.DownloadAsync(bucketName,
                 bucketFilePath, destinationFilePath));
         }
 
         [Test]
         public async Task Given_I_Call_DownloadFromBucket_Then_The_Correct_FilePath_Is_Returned()
         {
-            // arrange
+            //arrange
             const string bucketName = "OPN";
             const string bucketFilePath = "OPN1234/OPN1234.zip";
             const string fileName = "OPN1234.zip";
@@ -168,17 +166,17 @@ namespace Blaise.Api.Tests.Unit.Storage
                 .Returns(destinationFilePath);
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
-            // act
+            //act
             var result = await _sut.DownloadFileFromBucketAsync(bucketName, bucketFilePath, filePath);
 
-            // arrange
+            //arrange
             Assert.AreEqual(destinationFilePath, result);
         }
 
         [Test]
         public async Task Given_Temp_Path_Is_Not_There_When_I_Call_DownloadFromBucket_Then_The_Temp_Path_Is_Created()
         {
-            // arrange
+            //arrange
             const string bucketName = "OPN";
             const string fileName = "OPN1234.zip";
             const string filePath = @"d:\temp";
@@ -192,10 +190,10 @@ namespace Blaise.Api.Tests.Unit.Storage
                 filePath));
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
-            // act
+            //act
             await _sut.DownloadFileFromBucketAsync(bucketName, fileName, filePath);
 
-            // arrange
+            //arrange
             _fileSystemMock.Verify(v => v.Directory.CreateDirectory(filePath), Times.Once);
         }
     }

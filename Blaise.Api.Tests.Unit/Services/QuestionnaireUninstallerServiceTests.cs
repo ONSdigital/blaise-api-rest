@@ -16,7 +16,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
         private string _serverParkName;
         private string _questionnaireName;
-
+        
         [SetUp]
         public void SetUpTests()
         {
@@ -36,25 +36,22 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_I_Call_UninstallQuestionnaire_Then_The_Correct_Services_Are_Called()
         {
-            // act
+            //act
             _sut.UninstallQuestionnaire(_questionnaireName, _serverParkName);
 
-            // assert
+            //assert
             _blaiseCaseApiMock.Verify(v => v.RemoveCases(_questionnaireName, _serverParkName));
-            _blaiseQuestionnaireApiMock.Verify(
-                v => v.UninstallQuestionnaire(_questionnaireName, _serverParkName, false, false, false),
-                Times.Once);
-            _blaiseSqlApiMock.Verify(
-                v => v.DropQuestionnaireTables(_questionnaireName),
-                Times.Once);
+            _blaiseQuestionnaireApiMock.Verify(v => v.UninstallQuestionnaire(_questionnaireName, _serverParkName, false, false, false)
+                , Times.Once);
+            _blaiseSqlApiMock.Verify(v => v.DropQuestionnaireTables(_questionnaireName)
+                , Times.Once);
         }
 
         [Test]
         public void Given_An_Empty_QuestionnaireName_When_I_Call_UninstallQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UninstallQuestionnaire(
-                string.Empty,
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UninstallQuestionnaire(string.Empty,
                 _serverParkName));
             Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
@@ -62,9 +59,8 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_QuestionnaireName_When_I_Call_UninstallQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UninstallQuestionnaire(
-                null,
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UninstallQuestionnaire(null,
                 _serverParkName));
             Assert.AreEqual("questionnaireName", exception.ParamName);
         }
@@ -72,9 +68,8 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_UninstallQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UninstallQuestionnaire(
-                _questionnaireName,
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UninstallQuestionnaire(_questionnaireName,
                 string.Empty));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
@@ -82,9 +77,8 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_UninstallQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UninstallQuestionnaire(
-                _questionnaireName,
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UninstallQuestionnaire(_questionnaireName,
                 null));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }

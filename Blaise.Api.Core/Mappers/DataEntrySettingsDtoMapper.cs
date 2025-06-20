@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Nuget.Api.Contracts.Models;

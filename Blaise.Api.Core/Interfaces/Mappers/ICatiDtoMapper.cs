@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Nuget.Api.Contracts.Models;

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.UserRole;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
@@ -13,7 +13,7 @@ namespace Blaise.Api.Core.Services
         private readonly IUserRoleDtoMapper _dtoMapper;
 
         public UserRoleService(
-            IBlaiseRoleApi blaiseApi,
+            IBlaiseRoleApi blaiseApi, 
             IUserRoleDtoMapper dtoMapper)
         {
             _blaiseApi = blaiseApi;
@@ -30,7 +30,7 @@ namespace Blaise.Api.Core.Services
         public UserRoleDto GetUserRole(string name)
         {
             name.ThrowExceptionIfNullOrEmpty("name");
-
+            
             var role = _blaiseApi.GetRole(name);
 
             return _dtoMapper.MapToUserRoleDto(role);

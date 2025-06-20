@@ -5,9 +5,9 @@ using Blaise.Api.Contracts.Models.Ingest;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Storage.Interfaces;
+using StatNeth.Blaise.API.DataRecord;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Blaise.Nuget.Api.Contracts.Models;
-using StatNeth.Blaise.API.DataRecord;
 
 namespace Blaise.Api.Core.Services
 {
@@ -21,7 +21,7 @@ namespace Blaise.Api.Core.Services
         public IngestService(
             IBlaiseCaseApi blaiseApi,
             IFileService fileService,
-            ICloudStorageService storageService,
+            ICloudStorageService storageService, 
             ILoggingService loggingService)
         {
             _blaiseApi = blaiseApi;

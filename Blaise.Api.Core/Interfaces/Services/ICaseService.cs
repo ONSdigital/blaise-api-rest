@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.Case;
+﻿using Blaise.Api.Contracts.Models.Case;
+using System.Collections.Generic;
 
 namespace Blaise.Api.Core.Interfaces.Services
 {
@@ -12,7 +12,6 @@ namespace Blaise.Api.Core.Interfaces.Services
         string GetPostCode(string serverParkName, string questionnaireName, string caseId);
 
         CaseDto GetCase(string serverParkName, string questionnaireName, string caseId);
-
         CaseMultikeyDto GetCase(string serverParkName, string questionnaireName, List<string> keyNames, List<string> keyValues);
 
         int CreateCases(List<CaseDto> fieldData, string questionnaireName, string serverParkName);
@@ -30,7 +29,6 @@ namespace Blaise.Api.Core.Interfaces.Services
         void DeleteCase(string serverParkName, string questionnaireName, string caseId);
 
         void DeleteCase(string serverParkName, string questionnaireName, List<string> keyNames, List<string> keyValues);
-
         bool CaseExists(string serverParkName, string questionnaireName, string caseId);
 
         bool CaseExists(string serverParkName, string questionnaireName, List<string> keyNames, List<string> keyValues);

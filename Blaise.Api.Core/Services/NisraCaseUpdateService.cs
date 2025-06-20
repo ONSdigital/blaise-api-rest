@@ -69,7 +69,7 @@ namespace Blaise.Api.Core.Services
             // we need to preserve the TO CallHistory block data captured in Cati
             _catiDataService.RemoveCallHistoryBlock(newFieldData);
 
-            // we need to preserve the web nudged field
+            //we need to preserve the web nudged field
             _catiDataService.RemoveWebNudgedField(newFieldData);
 
             // add the existing cati call data with additional items to the new field data
@@ -79,7 +79,7 @@ namespace Blaise.Api.Core.Services
             return newFieldData;
         }
 
-        internal bool RecordHasBeenUpdated(string primaryKey, IDataRecord newDataRecord,
+        internal bool RecordHasBeenUpdated(string primaryKey, IDataRecord newDataRecord, 
             string questionnaireName, string serverParkName)
         {
             var primaryKeyValues = new Dictionary<string, string> { { "QID.Serial_Number", primaryKey } };

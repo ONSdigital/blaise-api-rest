@@ -35,7 +35,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_I_Call_GetServerParks_Then_The_Correct_Method_Is_called_On_The_Api()
         {
-            // arrange
+            //arrange
             var serverPark1Mock = new Mock<IServerPark>();
             serverPark1Mock.Setup(s => s.Name).Returns("ServerParkA");
             var serverPark2Mock = new Mock<IServerPark>();
@@ -49,10 +49,10 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _blaiseApiMock.Setup(b => b.GetServerParks()).Returns(serverParkList);
 
-            // act
+            //act
             _sut.GetServerParks();
 
-            // assert
+            //assert
             _blaiseApiMock.Verify(v => v.GetServerParks(), Times.Once);
             _mapperMock.Verify(v => v.MapToServerParkDtos(serverParkList));
         }
@@ -60,7 +60,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_I_Call_GetServerParks_Then_The_Correct_ServerParkDto_List_Is_returned()
         {
-            // arrange
+            //arrange
             _blaiseApiMock.Setup(b => b.GetServerParks()).Returns(new List<IServerPark>());
             var serverParkDtoList = new List<ServerParkDto>
             {
@@ -71,10 +71,10 @@ namespace Blaise.Api.Tests.Unit.Services
             _mapperMock.Setup(m => m.MapToServerParkDtos(It.IsAny<List<IServerPark>>()))
                 .Returns(serverParkDtoList);
 
-            // act
+            //act
             var result = _sut.GetServerParks().ToList();
 
-            // assert
+            //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<List<ServerParkDto>>(result);
             Assert.IsNotEmpty(result);
@@ -85,17 +85,17 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_I_Call_GetServerPark_Then_The_Correct_Method_Is_called_On_The_Api()
         {
-            // arrange
+            //arrange
             var serverPark1Mock = new Mock<IServerPark>();
             serverPark1Mock.Setup(s => s.Name).Returns(_serverParkName);
 
             _blaiseApiMock.Setup(b => b.GetServerPark(_serverParkName))
                 .Returns(serverPark1Mock.Object);
 
-            // act
+            //act
             _sut.GetServerPark(_serverParkName);
 
-            // assert
+            //assert
             _blaiseApiMock.Verify(v => v.GetServerPark(_serverParkName), Times.Once);
             _mapperMock.Verify(v => v.MapToServerParkDto(serverPark1Mock.Object));
         }
@@ -103,7 +103,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_I_Call_GetServerPark_Then_The_Correct_ServerParkDto_Is_returned()
         {
-            // arrange
+            //arrange
             var serverParkDto = new ServerParkDto();
 
             _blaiseApiMock.Setup(b => b.GetServerPark(_serverParkName))
@@ -112,10 +112,10 @@ namespace Blaise.Api.Tests.Unit.Services
             _mapperMock.Setup(m => m.MapToServerParkDto(It.IsAny<IServerPark>()))
                 .Returns(serverParkDto);
 
-            // act
+            //act
             var result = _sut.GetServerPark(_serverParkName);
 
-            // assert
+            //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<ServerParkDto>(result);
             Assert.AreEqual(serverParkDto, result);
@@ -124,7 +124,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_GetServerPark_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetServerPark(string.Empty));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
@@ -132,7 +132,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_GetServerPark_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetServerPark(null));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
@@ -140,14 +140,14 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_I_Call_ServerParkExists_Then_The_Correct_Method_Is_called_On_The_Api()
         {
-            // arrange
+            //arrange
             _blaiseApiMock.Setup(b => b.ServerParkExists(_serverParkName))
                 .Returns(It.IsAny<bool>());
 
-            // act
+            //act
             _sut.ServerParkExists(_serverParkName);
 
-            // assert
+            //assert
             _blaiseApiMock.Verify(v => v.ServerParkExists(_serverParkName), Times.Once);
         }
 
@@ -155,14 +155,14 @@ namespace Blaise.Api.Tests.Unit.Services
         [TestCase(false)]
         public void Given_I_Call_ServerParkExists_Then_The_Correct_Response_Is_returned(bool exists)
         {
-            // arrange
+            //arrange
             _blaiseApiMock.Setup(b => b.ServerParkExists(_serverParkName))
                 .Returns(exists);
 
-            // act
+            //act
             var result = _sut.ServerParkExists(_serverParkName);
 
-            // assert
+            //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<bool>(result);
             Assert.AreEqual(exists, result);
@@ -171,7 +171,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_ServerParkExists_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.ServerParkExists(string.Empty));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
@@ -179,7 +179,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_ServerParkExists_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.ServerParkExists(null));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }

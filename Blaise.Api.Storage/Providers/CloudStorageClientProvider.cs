@@ -26,10 +26,7 @@ namespace Blaise.Api.Storage.Providers
 
                 foreach (var storageObject in storageObjects)
                 {
-                    if (storageObject.Name == prefix)
-                    {
-                        continue; // if the folder has been created it becomes its own object
-                    }
+                    if(storageObject.Name == prefix) continue; // if the folder has been created it becomes its own object
 
                     files.Add(storageObject.Name);
                 }

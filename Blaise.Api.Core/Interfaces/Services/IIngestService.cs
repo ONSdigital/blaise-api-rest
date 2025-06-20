@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Blaise.Api.Contracts.Models.Ingest;
 
 namespace Blaise.Api.Core.Interfaces.Services

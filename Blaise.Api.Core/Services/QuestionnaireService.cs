@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models.Questionnaire;
@@ -18,7 +18,7 @@ namespace Blaise.Api.Core.Services
 
         public QuestionnaireService(
             IBlaiseQuestionnaireApi blaiseQuestionnaireApi,
-            IQuestionnaireDtoMapper questionnaireDtoMapper,
+            IQuestionnaireDtoMapper questionnaireDtoMapper, 
             IDataEntrySettingsDtoMapper dataEntryDtoMapper)
         {
             _blaiseQuestionnaireApi = blaiseQuestionnaireApi;

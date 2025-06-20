@@ -1,4 +1,4 @@
-using Blaise.Api.Contracts.Interfaces;
+﻿using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Models;
 
@@ -13,7 +13,7 @@ namespace Blaise.Api.Core.Services
             _loggingService = loggingService;
         }
 
-        public bool CaseNeedsToBeUpdated(CaseStatusModel nisraCaseStatusModel, CaseStatusModel existingCaseStatusModel,
+        public bool CaseNeedsToBeUpdated(CaseStatusModel nisraCaseStatusModel, CaseStatusModel existingCaseStatusModel, 
             string questionnaireName)
         {
             if (nisraCaseStatusModel.Outcome == 0)

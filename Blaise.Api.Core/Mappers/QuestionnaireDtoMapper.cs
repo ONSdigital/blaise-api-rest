@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models.Questionnaire;
@@ -13,7 +13,7 @@ namespace Blaise.Api.Core.Mappers
         private readonly IQuestionnaireNodeDtoMapper _nodeDtoMapper;
 
         public QuestionnaireDtoMapper(
-            IQuestionnaireStatusMapper statusMapper,
+            IQuestionnaireStatusMapper statusMapper, 
             IQuestionnaireNodeDtoMapper nodeDtoMapper)
         {
             _statusMapper = statusMapper;
@@ -55,17 +55,18 @@ namespace Blaise.Api.Core.Mappers
             {
                 return null;
             }
-
-            var yearPeriod = questionnaireName.Substring(3, 2);
+                
+            var yearPeriod =  questionnaireName.Substring(3, 2);
             var monthPeriod = questionnaireName.Substring(5, 2);
 
-            if (int.TryParse(yearPeriod, out var year) && int.TryParse(monthPeriod, out var month))
+            if(int.TryParse(yearPeriod, out var year) && int.TryParse(monthPeriod, out var month))
             {
+
                 if (month < 1 || month > 12)
                 {
                     return null;
                 }
-
+                    
                 return new DateTime(2000 + year, month, 1);
             }
 

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,12 +39,11 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
             await UploadFileToBucket(filePath);
         }
-
+        
         public async Task CleanUpIngestFiles()
         {
             _logging.LogInfo($"CreateCasesInIngestFileAsync - cleanup remove file '{IngestFile}' from bucket '{BlaiseConfigurationHelper.IngestBucket}'");
-            await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(
-                BlaiseConfigurationHelper.IngestBucket,
+            await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(BlaiseConfigurationHelper.IngestBucket,
                 IngestFile);
         }
 
@@ -62,7 +61,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
         {
             _logging.LogInfo($"CreateCasesInIngestFileAsync - upload file '{filePath}' to bucket '{BlaiseConfigurationHelper.IngestBucket}'");
             await CloudStorageHelper.GetInstance().UploadFileToBucketAsync(
-                BlaiseConfigurationHelper.IngestBucket,
+                BlaiseConfigurationHelper.IngestBucket, 
                 filePath);
         }
     }

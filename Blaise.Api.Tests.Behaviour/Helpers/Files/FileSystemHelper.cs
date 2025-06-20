@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.IO;
 using System.Threading;
 
@@ -13,12 +14,9 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
             return _currentInstance ?? (_currentInstance = new FileSystemHelper());
         }
 
-        public void CleanUpTempFiles(string path)
+        public void CleanUpTempFiles( string path)
         {
-            if (!Directory.Exists(path))
-            {
-                return;
-            }
+            if (!Directory.Exists(path)) return;
 
             var directoryInfo = new DirectoryInfo(path);
 
@@ -39,7 +37,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
                 Thread.Sleep(2000);
                 Directory.Delete(path, true);
             }
-            catch // ewwwwwww fml
+            catch //ewwwwwww fml
             {
             }
         }

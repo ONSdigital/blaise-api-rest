@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Blaise.Api.Tests.Behaviour.Models.Case;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;

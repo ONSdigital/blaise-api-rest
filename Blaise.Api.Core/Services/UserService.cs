@@ -13,7 +13,7 @@ namespace Blaise.Api.Core.Services
         private readonly IUserDtoMapper _mapper;
 
         public UserService(
-            IBlaiseUserApi blaiseApi,
+            IBlaiseUserApi blaiseApi, 
             IUserDtoMapper mapper)
         {
             _blaiseApi = blaiseApi;
@@ -75,7 +75,6 @@ namespace Blaise.Api.Core.Services
 
             _blaiseApi.UpdateServerParks(userName, updateUserServerParksDto.ServerParks, updateUserServerParksDto.DefaultServerPark);
         }
-
         public void RemoveUser(string userName)
         {
             userName.ThrowExceptionIfNullOrEmpty("userName");

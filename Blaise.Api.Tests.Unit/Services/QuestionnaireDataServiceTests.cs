@@ -41,7 +41,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _bucketPath = "OPN2010A";
             _tempPath = @"c:\temp\GUID";
 
-            _questionnaireDataDto = new QuestionnaireDataDto { QuestionnaireDataPath = _bucketPath };
+            _questionnaireDataDto = new QuestionnaireDataDto { QuestionnaireDataPath = _bucketPath};
 
             _sut = new QuestionnaireDataService(
                 _fileServiceMock.Object,
@@ -53,7 +53,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public async Task Given_I_Call_ImportOnlineDataAsync_Then_The_Correct_Services_Are_Called_In_The_Correct_Order()
         {
-            // arrange
+            //arrange
             var dataBaseFilePath = $@"d:\OPN\{_questionnaireName}.bdix";
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s =>
@@ -66,10 +66,10 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f.RemovePathAndFiles(It.IsAny<string>()));
 
-            // act
-            await _sut.ImportOnlineDataAsync(_questionnaireDataDto, _serverParkName, _questionnaireName, _tempPath);
+            //act
+          await _sut.ImportOnlineDataAsync(_questionnaireDataDto, _serverParkName, _questionnaireName, _tempPath);
 
-            // assert
+            //assert
             _storageServiceMock.Verify(v => v.DownloadFilesFromNisraBucketAsync(_bucketPath, _tempPath), Times.Once);
 
             _fileServiceMock.Verify(v => v.GetDatabaseFile(_tempPath, _questionnaireName), Times.Once);
@@ -83,7 +83,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_QuestionnaireDataDto_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            //act && assert
             var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.ImportOnlineDataAsync(null, _serverParkName,
                 _questionnaireName, _tempPath));
             Assert.AreEqual("The argument 'questionnaireDataDto' must be supplied", exception.ParamName);
@@ -92,10 +92,10 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_QuestionnaireDataPath_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentException_Is_Thrown()
         {
-            // arrange
+            //arrange
             _questionnaireDataDto.QuestionnaireDataPath = string.Empty;
 
-            // act && assert
+            //act && assert
             var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.ImportOnlineDataAsync(_questionnaireDataDto, _serverParkName,
                 _questionnaireName, _tempPath));
             Assert.AreEqual("A value for the argument 'questionnaireDataDto.QuestionnaireDataPath' must be supplied", exception.Message);
@@ -104,10 +104,10 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_QuestionnaireDataPath_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // arrange
+            //arrange
             _questionnaireDataDto.QuestionnaireDataPath = null;
 
-            // act && assert
+            //act && assert
             var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.ImportOnlineDataAsync(_questionnaireDataDto, _serverParkName,
                _questionnaireName, _tempPath));
             Assert.AreEqual("questionnaireDataDto.QuestionnaireDataPath", exception.ParamName);
@@ -116,7 +116,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_questionnaireName_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            //act && assert
             var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.ImportOnlineDataAsync(_questionnaireDataDto, _serverParkName,
                 string.Empty, _tempPath));
             Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
@@ -125,7 +125,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_questionnaireName_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            //act && assert
             var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.ImportOnlineDataAsync(_questionnaireDataDto, _serverParkName,
                null, _tempPath));
             Assert.AreEqual("questionnaireName", exception.ParamName);
@@ -134,7 +134,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            //act && assert
             var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.ImportOnlineDataAsync(_questionnaireDataDto, string.Empty,
                 _questionnaireName, _tempPath));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
@@ -143,7 +143,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            //act && assert
             var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.ImportOnlineDataAsync(_questionnaireDataDto, null,
                 _questionnaireName, _tempPath));
             Assert.AreEqual("serverParkName", exception.ParamName);
@@ -152,7 +152,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_TempFilePath_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            //act && assert
             var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.ImportOnlineDataAsync(_questionnaireDataDto, _serverParkName,
                 _questionnaireName, string.Empty));
             Assert.AreEqual("A value for the argument 'tempFilePath' must be supplied", exception.Message);
@@ -161,7 +161,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_TempFilePath_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            //act && assert
             var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.ImportOnlineDataAsync(_questionnaireDataDto, _serverParkName,
                 _questionnaireName, null));
             Assert.AreEqual("tempFilePath", exception.ParamName);
