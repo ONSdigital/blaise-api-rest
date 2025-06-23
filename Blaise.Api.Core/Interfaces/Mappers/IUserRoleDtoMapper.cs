@@ -7,6 +7,7 @@ namespace Blaise.Api.Core.Interfaces.Mappers
     public interface IUserRoleDtoMapper
     {
         IEnumerable<UserRoleDto> MapToUserRoleDtos(IEnumerable<IRole> roles);
+
         UserRoleDto MapToUserRoleDto(IRole role);
     }
 }

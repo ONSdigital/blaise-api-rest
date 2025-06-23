@@ -24,7 +24,7 @@ namespace Blaise.Api
             });
             appBuilder.UseStageMarker(PipelineStage.PostAcquireState);
 
-            // Configure Web API for self-host. 
+            // Configure Web API for self-host.
             var config = new HttpConfiguration
             {
                 DependencyResolver = new UnityDependencyResolver(UnityContainer)
@@ -34,8 +34,7 @@ namespace Blaise.Api
             config.Routes.MapHttpRoute(
                 "DefaultApi",
                 "api/{controller}/{id}",
-                new { id = RouteParameter.Optional }
-            );
+                new { id = RouteParameter.Optional });
             appBuilder.UseWebApi(config);
 
             config.Formatters.JsonFormatter.SupportedMediaTypes

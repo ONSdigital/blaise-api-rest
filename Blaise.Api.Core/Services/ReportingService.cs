@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Interfaces;
@@ -17,7 +17,7 @@ namespace Blaise.Api.Core.Services
 
         public ReportingService(
             IBlaiseCaseApi blaiseCaseApi,
-            IBlaiseQuestionnaireApi blaiseQuestionnaireApi, 
+            IBlaiseQuestionnaireApi blaiseQuestionnaireApi,
             ILoggingService loggingService)
         {
             _blaiseCaseApi = blaiseCaseApi;
@@ -41,7 +41,7 @@ namespace Blaise.Api.Core.Services
             return BuildReportDto(serverParkName, questionnaireName, questionnaireId, fieldIds, filter);
         }
 
-        private ReportDto BuildReportDto(string serverParkName, string questionnaireName, Guid questionnaireId, 
+        private ReportDto BuildReportDto(string serverParkName, string questionnaireName, Guid questionnaireId,
             List<string> fieldIds, string filter)
         {
             var reportDto = new ReportDto
@@ -50,8 +50,8 @@ namespace Blaise.Api.Core.Services
                 QuestionnaireId = questionnaireId
             };
 
-            var cases = filter == null 
-                ? _blaiseCaseApi.GetCases(questionnaireName, serverParkName) 
+            var cases = filter == null
+                ? _blaiseCaseApi.GetCases(questionnaireName, serverParkName)
                 : _blaiseCaseApi.GetFilteredCases(questionnaireName, serverParkName, filter);
 
             while (!cases.EndOfSet)

@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
 using Google.Cloud.Storage.V1;
@@ -34,7 +34,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Cloud
                 {
                     await storageClient.UploadObjectAsync(bucketPath, $"{BlaiseConfigurationHelper.QuestionnaireName}/{Path.GetFileName(file)}", null, fileStream);
                 }
-            }          
+            }
         }
 
         public async Task DeleteFileInBucketAsync(string bucketPath, string fileName)

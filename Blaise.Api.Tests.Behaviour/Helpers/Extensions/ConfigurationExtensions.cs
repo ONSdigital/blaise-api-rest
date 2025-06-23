@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Configuration;
 
 namespace Blaise.Api.Tests.Behaviour.Helpers.Extensions

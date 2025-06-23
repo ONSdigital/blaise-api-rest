@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 
 namespace Blaise.Api.Tests.Behaviour.Helpers.Extensions
 {
-       public static class ArgumentValidationExtensions
+    public static class ArgumentValidationExtensions
     {
         public static void ThrowExceptionIfNullOrEmpty(this string argument, string argumentName)
         {
@@ -13,7 +13,6 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Extensions
 
             if (string.IsNullOrWhiteSpace(argument))
             {
-
                 throw new ArgumentException($"A value for the argument '{argumentName}' must be supplied");
             }
         }

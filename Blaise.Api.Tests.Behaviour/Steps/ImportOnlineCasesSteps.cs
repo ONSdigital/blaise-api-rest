@@ -49,7 +49,8 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [When("the online file is processed")]
         public async Task WhenTheOnlineFileIsProcessed()
         {
-            var statusCode = await RestApiHelper.GetInstance().ImportOnlineCases(RestApiConfigurationHelper.QuestionnaireDataUrl,
+            var statusCode = await RestApiHelper.GetInstance().ImportOnlineCases(
+                RestApiConfigurationHelper.QuestionnaireDataUrl,
                 BlaiseConfigurationHelper.QuestionnaireName);
 
             Assert.AreEqual(HttpStatusCode.Created, statusCode);
@@ -113,7 +114,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public async Task GivenThereIsAnOnlineFileThatContainsACaseWithTheOutcomeCodeAsync(int outcomeCode)
         {
             var primaryKey = await OnlineFileHelper.GetInstance().CreateCaseInOnlineFileAsync(outcomeCode, _tempFilePath);
-            _scenarioContext.Set(primaryKey,"primaryKey");
+            _scenarioContext.Set(primaryKey, "primaryKey");
         }
 
         [Given("the same case exists in Blaise that is complete")]
@@ -134,12 +135,12 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             var caseModel = CaseHelper.GetInstance().CreateCaseModel("110", ModeType.Web, DateTime.Now);
             CaseHelper.GetInstance().CreateCaseInBlaise(caseModel);
 
-            caseModel.Mode = ModeType.Ftf; //used to differentiate the case to ensure it has not been imported again
+            caseModel.Mode = ModeType.Ftf; // used to differentiate the case to ensure it has not been imported again
             await OnlineFileHelper.GetInstance().CreateCaseInOnlineFileAsync(caseModel, _tempFilePath);
-            
-            _scenarioContext.Set(caseModel.PrimaryKey,"primaryKey");
+
+            _scenarioContext.Set(caseModel.PrimaryKey, "primaryKey");
         }
-        
+
         [Given("the same case exists in Blaise with the outcome code '(.*)'")]
         public void GivenTheSameCaseExistsInBlaiseWithTheOutcomeCode(int outcomeCode)
         {
@@ -184,7 +185,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             await OnlineFileHelper.GetInstance().CreateCasesInOnlineFileAsync(numberOfCases, _tempFilePath);
         }
-        
+
         [Given("blaise contains no cases")]
         public void GivenTheBlaiseDatabaseIsEmpty()
         {
@@ -196,7 +197,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             CaseHelper.GetInstance().CreateCasesInBlaise(numberOfCases);
         }
-        
+
         [Then("blaise will contain no cases")]
         public void ThenBlaiseWillContainNoCases()
         {
@@ -218,7 +219,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             await OnlineFileHelper.GetInstance().CleanUpOnlineFiles();
             FileSystemHelper.GetInstance().CleanUpTempFiles(_tempFilePath);
         }
-        
+
         [AfterFeature("onlinedata")]
         public static void CleanUpFeature()
         {

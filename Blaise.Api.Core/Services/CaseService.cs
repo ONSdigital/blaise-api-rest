@@ -1,10 +1,10 @@
 ﻿using System;
-using Blaise.Api.Contracts.Models.Case;
-using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces.Services;
 using System.Collections.Generic;
 using System.Linq;
+using Blaise.Api.Contracts.Models.Case;
+using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
+using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Blaise.Nuget.Api.Contracts.Models;
@@ -18,8 +18,8 @@ namespace Blaise.Api.Core.Services
         private readonly IBlaiseSqlApi _blaiseSqlApi;
 
         public CaseService(
-            IBlaiseCaseApi blaiseCaseApi, 
-            ICaseDtoMapper caseDtoMapper, 
+            IBlaiseCaseApi blaiseCaseApi,
+            ICaseDtoMapper caseDtoMapper,
             IBlaiseSqlApi blaiseSqlApi)
         {
             _blaiseCaseApi = blaiseCaseApi;
@@ -43,7 +43,7 @@ namespace Blaise.Api.Core.Services
 
         public string GetPostCode(string serverParkName, string questionnaireName, string caseId)
         {
-            var primaryKeyValues = new Dictionary<string, string>{ { "QID.Serial_Number", caseId } };
+            var primaryKeyValues = new Dictionary<string, string> { { "QID.Serial_Number", caseId } };
             var caseRecord = _blaiseCaseApi.GetCase(primaryKeyValues, questionnaireName, serverParkName);
 
             return _blaiseCaseApi.GetFieldValue(caseRecord, FieldNameType.PostCode).ValueAsText;
@@ -105,6 +105,7 @@ namespace Blaise.Api.Core.Services
             {
                 primaryKeyValues.Add(keyNames[i], keyValues[i]);
             }
+
             _blaiseCaseApi.CreateCase(primaryKeyValues, fieldData, questionnaireName, serverParkName);
         }
 
@@ -131,6 +132,7 @@ namespace Blaise.Api.Core.Services
 
                 _blaiseCaseApi.CreateCases(caseModelList, questionnaireName, serverParkName);
             }
+
             return totalItems;
         }
 
@@ -145,7 +147,6 @@ namespace Blaise.Api.Core.Services
             _blaiseCaseApi.UpdateCase(primaryKeyValues, fieldData, questionnaireName, serverParkName);
         }
 
-
         public void UpdateCase(string serverParkName, string questionnaireName, List<string> keyNames, List<string> keyValues, Dictionary<string, string> fieldData)
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
@@ -154,12 +155,12 @@ namespace Blaise.Api.Core.Services
             keyNames.ThrowExceptionIfNullOrEmpty("keyNames");
             keyValues.ThrowExceptionIfNullOrEmpty("keyValues");
 
-
             var primaryKeyValues = new Dictionary<string, string>();
             for (var i = 0; i < keyNames.Count; i++)
             {
                 primaryKeyValues.Add(keyNames[i], keyValues[i]);
             }
+
             _blaiseCaseApi.UpdateCase(primaryKeyValues, fieldData, questionnaireName, serverParkName);
         }
 
@@ -185,6 +186,7 @@ namespace Blaise.Api.Core.Services
             {
                 primaryKeyValues.Add(keyNames[i], keyValues[i]);
             }
+
             _blaiseCaseApi.RemoveCase(primaryKeyValues, questionnaireName, serverParkName);
         }
 
@@ -210,6 +212,7 @@ namespace Blaise.Api.Core.Services
             {
                 primaryKeyValues.Add(keyNames[i], keyValues[i]);
             }
+
             return _blaiseCaseApi.CaseExists(primaryKeyValues, questionnaireName, serverParkName);
         }
 
@@ -233,9 +236,8 @@ namespace Blaise.Api.Core.Services
                     caseEditInformationList.Add(_caseDtoMapper.MapToCaseEditInformationDto(caseRecord));
                 }
 
-                caseRecords.MoveNext(); 
+                caseRecords.MoveNext();
             }
-
 
             return caseEditInformationList;
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Blaise.Api.Core.Interfaces.Services
 {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Blaise.Api.Tests.Behaviour.Models.Enums;
 
 namespace Blaise.Api.Tests.Behaviour.Models.Case

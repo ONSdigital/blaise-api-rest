@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Questionnaire;
 using StatNeth.Blaise.API.ServerManager;
 

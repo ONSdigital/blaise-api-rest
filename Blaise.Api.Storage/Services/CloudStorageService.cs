@@ -1,4 +1,4 @@
-﻿using System.IO.Abstractions;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
@@ -17,7 +17,7 @@ namespace Blaise.Api.Storage.Services
         public CloudStorageService(
             IConfigurationProvider configurationProvider,
             ICloudStorageClientProvider cloudStorageClient,
-            IFileSystem fileSystem, 
+            IFileSystem fileSystem,
             ILoggingService loggingService)
         {
             _configurationProvider = configurationProvider;
@@ -28,7 +28,6 @@ namespace Blaise.Api.Storage.Services
 
         public async Task<string> DownloadFileFromQuestionnaireBucketAsync(string filePath, string tempFilePath)
         {
-
             _loggingService.LogInfo($"Attempting to download package '{filePath}' from bucket '{_configurationProvider.DqsBucket}'");
 
             return await DownloadFileFromBucketAsync(_configurationProvider.DqsBucket, filePath, tempFilePath);
@@ -62,7 +61,7 @@ namespace Blaise.Api.Storage.Services
 
             _loggingService.LogInfo($"Downloaded '{bucketFiles.Count}' files from bucket '{bucketName}'");
         }
-        
+
         public async Task<string> DownloadFileFromBucketAsync(string bucketName, string bucketFilePath, string tempFilePath)
         {
             if (!_fileSystem.Directory.Exists(tempFilePath))

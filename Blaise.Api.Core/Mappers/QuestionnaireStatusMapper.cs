@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Nuget.Api.Contracts.Enums;
@@ -22,8 +22,8 @@ namespace Blaise.Api.Core.Mappers
                 return QuestionnaireStatusType.Inactive;
             }
 
-            return AnyQuestionnaireNodeHasFailedOrTakenTooLongToInstall(questionnaire) 
-                ? QuestionnaireStatusType.Failed 
+            return AnyQuestionnaireNodeHasFailedOrTakenTooLongToInstall(questionnaire)
+                ? QuestionnaireStatusType.Failed
                 : QuestionnaireStatusType.Installing;
         }
 
@@ -37,14 +37,14 @@ namespace Blaise.Api.Core.Mappers
         {
             return AnyQuestionnaireNodeHasFailed(questionnaire) || QuestionnaireHasTakenTooLongToInstall(questionnaire);
         }
-        
+
         private static bool AnyQuestionnaireNodeHasFailed(ISurvey questionnaire)
         {
             return questionnaire.Configuration.Configurations.Any(c =>
                 c.Status != QuestionnaireStatusType.Active.ToString() &&
                 c.Status != QuestionnaireStatusType.Installing.ToString());
         }
-        
+
         private static bool QuestionnaireHasTakenTooLongToInstall(ISurvey questionnaire)
         {
             var expiredInstallDateTime = DateTime.Now.AddMinutes(-InstallExpiryTimeOutInMinutes);

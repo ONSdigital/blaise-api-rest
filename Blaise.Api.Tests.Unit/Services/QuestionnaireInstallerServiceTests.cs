@@ -54,7 +54,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public async Task Given_I_Call_InstallQuestionnaire_Then_The_Correct_Services_Are_Called_In_The_Correct_Order()
         {
-            //arrange
+            // arrange
             const string questionnaireFilePath = "d:\\temp\\OPN1234.zip";
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFileFromQuestionnaireBucketAsync(
@@ -67,19 +67,20 @@ namespace Blaise.Api.Tests.Unit.Services
                 .GetQuestionnaireNameFromFile(_questionnaireFile)).Returns(_questionnaireName);
 
             _blaiseQuestionnaireApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallQuestionnaire(_questionnaireName,_serverParkName, questionnaireFilePath, It.IsAny<IInstallOptions>()));
+                .InstallQuestionnaire(_questionnaireName, _serverParkName, questionnaireFilePath, It.IsAny<IInstallOptions>()));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .RemovePathAndFiles(_tempPath));
 
-            //act
+            // act
             await _sut.InstallQuestionnaireAsync(_serverParkName, _questionnairePackageDto, _tempPath);
 
-            //assert
-            _storageServiceMock.Verify(v => v.DownloadFileFromQuestionnaireBucketAsync( _questionnaireFile, _tempPath), Times.Once);
+            // assert
+            _storageServiceMock.Verify(v => v.DownloadFileFromQuestionnaireBucketAsync(_questionnaireFile, _tempPath), Times.Once);
             _fileServiceMock.Verify(v => v.UpdateQuestionnaireFileWithSqlConnection(questionnaireFilePath), Times.Once);
             _fileServiceMock.Verify(v => v.GetQuestionnaireNameFromFile(_questionnaireFile), Times.Once);
-            _blaiseQuestionnaireApiMock.Verify(v => v.InstallQuestionnaire(_questionnaireName, _serverParkName,
+            _blaiseQuestionnaireApiMock.Verify(
+                v => v.InstallQuestionnaire(_questionnaireName, _serverParkName,
                 questionnaireFilePath, It.Is<IInstallOptions>(i =>
                     i.DataEntrySettingsName == "StrictInterviewing" &&
                     i.InitialAppLayoutSetGroupName == "CATI" &&
@@ -90,7 +91,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public async Task Given_I_Call_InstallQuestionnaire_Then_The_The_Correct_Questionnaire_Name_Is_Returned()
         {
-            //arrange
+            // arrange
             const string questionnaireFilePath = "d:\\temp\\OPN1234.zip";
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFileFromQuestionnaireBucketAsync(
@@ -103,15 +104,15 @@ namespace Blaise.Api.Tests.Unit.Services
                 .GetQuestionnaireNameFromFile(_questionnaireFile)).Returns(_questionnaireName);
 
             _blaiseQuestionnaireApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallQuestionnaire(_questionnaireName,_serverParkName, questionnaireFilePath, It.IsAny<IInstallOptions>()));
+                .InstallQuestionnaire(_questionnaireName, _serverParkName, questionnaireFilePath, It.IsAny<IInstallOptions>()));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .RemovePathAndFiles(_tempPath));
 
-            //act
+            // act
             var result = await _sut.InstallQuestionnaireAsync(_serverParkName, _questionnairePackageDto, _tempPath);
 
-            //assert
+            // assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<string>(result);
             Assert.AreEqual(_questionnaireName, result);
@@ -120,8 +121,9 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_InstallQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
-            //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.InstallQuestionnaireAsync(string.Empty, 
+            // act && assert
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.InstallQuestionnaireAsync(
+                string.Empty,
                 _questionnairePackageDto, _tempPath));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
@@ -129,8 +131,9 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_InstallQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
-            //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.InstallQuestionnaireAsync(null,
+            // act && assert
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.InstallQuestionnaireAsync(
+                null,
                 _questionnairePackageDto, _tempPath));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
@@ -138,8 +141,9 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_TempFilePath_When_I_Call_InstallQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
-            //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.InstallQuestionnaireAsync(_serverParkName, 
+            // act && assert
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.InstallQuestionnaireAsync(
+                _serverParkName,
                 _questionnairePackageDto, string.Empty));
             Assert.AreEqual("A value for the argument 'tempFilePath' must be supplied", exception.Message);
         }
@@ -147,8 +151,9 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_TempFilePath_When_I_Call_InstallQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
-            //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.InstallQuestionnaireAsync(_serverParkName,
+            // act && assert
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.InstallQuestionnaireAsync(
+                _serverParkName,
                 _questionnairePackageDto, null));
             Assert.AreEqual("tempFilePath", exception.ParamName);
         }

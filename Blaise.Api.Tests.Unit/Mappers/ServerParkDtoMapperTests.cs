@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models.Questionnaire;
@@ -29,7 +29,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [Test]
         public void Given_A_List_Of_ServerParks_When_I_Call_MapToServerParkDtos_Then_A_Correct_List_Of_ServerParkDto_Is_Returned()
         {
-            //arrange
+            // arrange
             var serverCollection = new Mock<IServerCollection>();
             serverCollection.Setup(s => s.GetEnumerator()).Returns(new List<IServer>().GetEnumerator());
 
@@ -50,10 +50,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 serverPark2.Object
             };
 
-            //act
+            // act
             var result = _sut.MapToServerParkDtos(serverParks).ToList();
 
-            //assert
+            // assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<List<ServerParkDto>>(result);
             Assert.AreEqual(2, result.Count);
@@ -64,7 +64,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [Test]
         public void Given_A_ServerPark_When_I_Call_MapToServerParkDto_Then_A_Correct_ServerParkDto_Is_Returned()
         {
-            //arrange
+            // arrange
             var productVersionInfoMock = new Mock<IProductVersionInfo>();
             productVersionInfoMock.Setup(pi => pi.ToString()).Returns("5.9.9");
 
@@ -75,7 +75,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var server1Mock = new Mock<IServer>();
             const string machine1Name = "ServerA";
             const string machine1LogicalRoot = "Default1";
-            var machine1Roles = new List<string> {"role1", "role2"};
+            var machine1Roles = new List<string> { "role1", "role2" };
             var machine1ServerRoleCollection = new Mock<IServerRoleCollection>();
             machine1ServerRoleCollection.Setup(s => s.GetEnumerator()).Returns(machine1Roles.GetEnumerator());
             server1Mock.Setup(s => s.Name).Returns(machine1Name);
@@ -84,9 +84,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             server1Mock.Setup(s => s.Roles).Returns(machine1ServerRoleCollection.Object);
 
             var server2Mock = new Mock<IServer>();
-            const string machine2Name = "ServerB";  
+            const string machine2Name = "ServerB";
             const string machine2LogicalRoot = "Default2";
-            var machine2Roles = new List<string> {"role3"};
+            var machine2Roles = new List<string> { "role3" };
             var machine2ServerRoleCollection = new Mock<IServerRoleCollection>();
             machine2ServerRoleCollection.Setup(s => s.GetEnumerator()).Returns(machine2Roles.GetEnumerator());
             server2Mock.Setup(s => s.Name).Returns(machine2Name);
@@ -94,16 +94,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             server2Mock.Setup(s => s.LogicalRoot).Returns(machine2LogicalRoot);
             server2Mock.Setup(s => s.Roles).Returns(machine2ServerRoleCollection.Object);
 
-            var serverList = new List<IServer> { server1Mock.Object, server2Mock.Object};
+            var serverList = new List<IServer> { server1Mock.Object, server2Mock.Object };
             var serverCollection = new Mock<IServerCollection>();
             serverCollection.Setup(s => s.GetEnumerator()).Returns(serverList.GetEnumerator());
 
             serverPark.Setup(s => s.Servers).Returns(serverCollection.Object);
-            
-            //act
+
+            // act
             var result = _sut.MapToServerParkDto(serverPark.Object);
 
-            //assert
+            // assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<ServerParkDto>(result);
             Assert.AreEqual(serverParkName, result.Name);
@@ -116,15 +116,14 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.True(result.Servers.Any(s => s.Name == machine1Name && s.BlaiseVersion == "5.9.9" && s.LogicalServerName == machine1LogicalRoot &&
                                                 s.Roles.OrderByDescending(l => l).SequenceEqual(machine1Roles.OrderByDescending(l => l))));
 
-            Assert.True(result.Servers.Any(s => s.Name == machine2Name && s.BlaiseVersion == "5.9.9" && s.LogicalServerName == machine2LogicalRoot && 
+            Assert.True(result.Servers.Any(s => s.Name == machine2Name && s.BlaiseVersion == "5.9.9" && s.LogicalServerName == machine2LogicalRoot &&
                                                 s.Roles.OrderByDescending(l => l).SequenceEqual(machine2Roles.OrderByDescending(l => l))));
-
         }
 
         [Test]
         public void Given_A_ServerPark_Has_A_Questionnaire_When_I_Call_MapToServerParkDto_Then_The_Questionnaire_Is_Mapped()
         {
-            //arrange
+            // arrange
             var serverPark = new Mock<IServerPark>();
             serverPark.Setup(s => s.Surveys).Returns(It.IsAny<ISurveyCollection>());
 
@@ -152,18 +151,18 @@ namespace Blaise.Api.Tests.Unit.Mappers
                     It.IsAny<ISurveyCollection>()))
                 .Returns(new List<QuestionnaireDto> { questionnaire1Dto, questionnaire2Dto });
 
-            //act
+            // act
             var result = _sut.MapToServerParkDto(serverPark.Object).Questionnaires.ToList();
 
-            //assert
+            // assert
             Assert.IsInstanceOf<List<QuestionnaireDto>>(result);
             Assert.IsNotEmpty(result);
             Assert.AreEqual(2, result.Count);
 
-            Assert.True(result.Any(i => i.Name == questionnaire1Dto.Name && i.ServerParkName == questionnaire1Dto.ServerParkName && 
+            Assert.True(result.Any(i => i.Name == questionnaire1Dto.Name && i.ServerParkName == questionnaire1Dto.ServerParkName &&
                                         i.InstallDate == questionnaire1Dto.InstallDate && i.Status == questionnaire1Dto.Status));
 
-            Assert.True(result.Any(i => i.Name == questionnaire2Dto.Name && i.ServerParkName == questionnaire2Dto.ServerParkName && 
+            Assert.True(result.Any(i => i.Name == questionnaire2Dto.Name && i.ServerParkName == questionnaire2Dto.ServerParkName &&
                                         i.InstallDate == questionnaire2Dto.InstallDate && i.Status == questionnaire2Dto.Status));
         }
     }

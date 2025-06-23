@@ -11,7 +11,7 @@ namespace Blaise.Api.Core.Services
         private readonly IBlaiseSqlApi _blaiseSqlApi;
 
         public QuestionnaireUninstallerService(
-            IBlaiseQuestionnaireApi blaiseQuestionnaireApi, 
+            IBlaiseQuestionnaireApi blaiseQuestionnaireApi,
             IBlaiseCaseApi blaiseCaseApi,
             IBlaiseSqlApi blaiseSqlApi)
         {
@@ -19,6 +19,7 @@ namespace Blaise.Api.Core.Services
             _blaiseCaseApi = blaiseCaseApi;
             _blaiseSqlApi = blaiseSqlApi;
         }
+
         public void UninstallQuestionnaire(string questionnaireName, string serverParkName)
         {
             questionnaireName.ThrowExceptionIfNullOrEmpty("questionnaireName");
@@ -26,7 +27,7 @@ namespace Blaise.Api.Core.Services
 
             _blaiseCaseApi.RemoveCases(questionnaireName, serverParkName);
             _blaiseQuestionnaireApi.UninstallQuestionnaire(questionnaireName, serverParkName);
-            
+
             _blaiseSqlApi.DropQuestionnaireTables(questionnaireName);
         }
     }

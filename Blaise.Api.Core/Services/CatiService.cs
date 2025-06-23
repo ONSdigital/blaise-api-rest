@@ -1,15 +1,14 @@
-﻿using Blaise.Api.Contracts.Models.Cati;
+﻿using System;
+using System.Collections.Generic;
+using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
+using Blaise.Nuget.Api.Contracts.Exceptions;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using StatNeth.Blaise.API.ServerManager;
-using System;
-using System.Collections.Generic;
-using Blaise.Nuget.Api.Contracts.Exceptions;
 
 // ReSharper disable PossibleInvalidOperationException
-
 namespace Blaise.Api.Core.Services
 {
     public class CatiService : ICatiService

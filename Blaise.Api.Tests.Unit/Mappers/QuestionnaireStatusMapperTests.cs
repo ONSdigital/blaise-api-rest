@@ -43,15 +43,15 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [Test]
         public void Given_A_Survey_Is_Active_Across_All_Nodes_When_I_Call_GetQuestionnaireStatus_Then_The_Active_Status_Is_Mapped()
         {
-            //arrange
+            // arrange
             _iConfiguration1Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Active.FullName());
             _iConfiguration2Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Active.FullName());
             _iConfiguration3Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Active.FullName());
-            
-            //act
+
+            // act
             var result = _sut.GetQuestionnaireStatus(_surveyMock.Object);
 
-            //assert
+            // assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<QuestionnaireStatusType>(result);
             Assert.AreEqual(QuestionnaireStatusType.Active, result);
@@ -60,15 +60,15 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [Test]
         public void Given_A_Survey_Is_Inactive_Across_All_Nodes_When_I_Call_GetQuestionnaireStatus_Then_The_Inactive_Status_Is_Mapped()
         {
-            //arrange
+            // arrange
             _iConfiguration1Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Inactive.FullName());
             _iConfiguration2Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Inactive.FullName());
             _iConfiguration3Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Inactive.FullName());
 
-            //act
+            // act
             var result = _sut.GetQuestionnaireStatus(_surveyMock.Object);
 
-            //assert
+            // assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<QuestionnaireStatusType>(result);
             Assert.AreEqual(QuestionnaireStatusType.Inactive, result);
@@ -77,15 +77,15 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [Test]
         public void Given_A_Survey_Is_Either_Active_Or_Installing_Across_All_Nodes_When_I_Call_GetQuestionnaireStatus_Then_The_Installing_Status_Is_Mapped()
         {
-            //arrange
+            // arrange
             _iConfiguration1Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Installing.FullName());
             _iConfiguration2Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Active.FullName());
             _iConfiguration3Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Active.FullName());
 
-            //act
+            // act
             var result = _sut.GetQuestionnaireStatus(_surveyMock.Object);
 
-            //assert
+            // assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<QuestionnaireStatusType>(result);
             Assert.AreEqual(QuestionnaireStatusType.Installing, result);
@@ -96,39 +96,39 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_Survey_Status_Is_Installing_But_Has_Taken_Too_Long_When_I_Call_GetQuestionnaireStatus_Then_The_Failed_Status_Is_Mapped(
             int minutesSpentInstalling)
         {
-            //arrange
+            // arrange
             _iConfiguration1Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Installing.FullName());
             _iConfiguration2Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Active.FullName());
             _iConfiguration3Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Active.FullName());
 
             _surveyMock.Setup(s => s.InstallDate).Returns(DateTime.Now.AddMinutes(-minutesSpentInstalling));
 
-            //act
+            // act
             var result = _sut.GetQuestionnaireStatus(_surveyMock.Object);
 
-            //assert
+            // assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<QuestionnaireStatusType>(result);
             Assert.AreEqual(QuestionnaireStatusType.Failed, result);
         }
-        
+
         [TestCase(10)]
         [TestCase(11)]
         [TestCase(60)]
         public void Given_A_Survey_Status_Is_Active_And_Is_Outside_Our_Expired_Installation_Period_When_I_Call_GetQuestionnaireStatus_Then_The_InstallDate_Is_Ignored_And_The_Active_Status_Is_Mapped(
             int minutesSpentInstalling)
         {
-            //arrange
+            // arrange
             _iConfiguration1Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Active.FullName());
             _iConfiguration2Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Active.FullName());
             _iConfiguration3Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Active.FullName());
-            
+
             _surveyMock.Setup(s => s.InstallDate).Returns(DateTime.Now.AddMinutes(-minutesSpentInstalling));
 
-            //act
+            // act
             var result = _sut.GetQuestionnaireStatus(_surveyMock.Object);
 
-            //assert
+            // assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<QuestionnaireStatusType>(result);
             Assert.AreEqual(QuestionnaireStatusType.Active, result);
@@ -141,15 +141,15 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_Survey_On_Any_Node_Has_Failed_When_I_Call_GetQuestionnaireStatus_Then_The_Failed_Status_Is_Mapped(
             QuestionnaireStatusType statusType)
         {
-            //arrange
+            // arrange
             _iConfiguration1Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Active.FullName());
             _iConfiguration2Mock.Setup(c => c.Status).Returns(statusType.FullName());
             _iConfiguration3Mock.Setup(c => c.Status).Returns(QuestionnaireStatusType.Installing.FullName());
 
-            //act
+            // act
             var result = _sut.GetQuestionnaireStatus(_surveyMock.Object);
 
-            //assert
+            // assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<QuestionnaireStatusType>(result);
             Assert.AreEqual(QuestionnaireStatusType.Failed, result);

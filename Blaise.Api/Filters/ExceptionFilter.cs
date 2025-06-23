@@ -12,13 +12,14 @@ namespace Blaise.Api.Filters
     public class ExceptionFilter : ExceptionFilterAttribute
     {
         private readonly ILoggingService _loggingService;
+
         public ExceptionFilter()
         {
-            #if DEBUG
-                _loggingService = new ConsoleLogging();
-            #else
+#if DEBUG
+            _loggingService = new ConsoleLogging();
+#else
                 _loggingService = UnityConfig.Resolve<ILoggingService>();
-            #endif
+#endif
         }
 
         public override void OnException(HttpActionExecutedContext context)

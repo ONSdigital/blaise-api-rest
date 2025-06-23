@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
@@ -25,7 +25,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(IEnumerable<ServerParkDto>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<ServerParkDto>))]
         public IHttpActionResult GetServerParks()
         {
             _loggingService.LogInfo("Obtaining a list of server parks");
@@ -39,7 +39,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{serverParkName}")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(ServerParkDto))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ServerParkDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetServerPark([FromUri] string serverParkName)
@@ -53,7 +53,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{serverParkName}/exists")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         public IHttpActionResult ServerParkExists([FromUri] string serverParkName)
         {

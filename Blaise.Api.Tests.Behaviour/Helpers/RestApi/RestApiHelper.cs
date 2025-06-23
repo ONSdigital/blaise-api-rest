@@ -22,7 +22,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
 
         public RestApiHelper()
         {
-            _httpClient = new HttpClient {BaseAddress = new Uri(RestApiConfigurationHelper.BaseUrl)};
+            _httpClient = new HttpClient { BaseAddress = new Uri(RestApiConfigurationHelper.BaseUrl) };
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
@@ -71,7 +71,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
         public async Task<HttpStatusCode> IngestData(string url, string ingestFilePath)
         {
             var model = new IngestDataDto(ingestFilePath);
-            
+
             var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(url, stringContent);
             return response.StatusCode;
@@ -81,7 +81,10 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
         {
             var response = await _httpClient.GetAsync(url);
 
-            if (response.StatusCode != HttpStatusCode.OK) return default;
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                return default;
+            }
 
             var responseAsJson = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<T>>(responseAsJson);

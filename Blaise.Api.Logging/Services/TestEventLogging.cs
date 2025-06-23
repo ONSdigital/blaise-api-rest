@@ -1,6 +1,6 @@
-﻿using Blaise.Api.Contracts.Interfaces;
-using System;
+﻿using System;
 using System.Diagnostics;
+using Blaise.Api.Contracts.Interfaces;
 
 namespace Blaise.Api.Logging.Services
 {

@@ -7,6 +7,7 @@ namespace Blaise.Api.Core.Interfaces.Mappers
     public interface IUserDtoMapper
     {
         UserDto MapToUserDto(IUser user);
+
         IEnumerable<UserDto> MapToUserDtos(IEnumerable<IUser> users);
     }
 }
