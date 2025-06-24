@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Cati;
 
@@ -17,7 +17,7 @@ namespace Blaise.Api.Core.Interfaces.Services
         DayBatchDto GetDayBatch(string questionnaireName, string serverParkName);
 
         bool QuestionnaireHasADayBatchForToday(string questionnaireName, string serverParkName);
-        
+
         void AddCasesToDayBatch(string questionnaireName, string serverParkName, List<string> caseIds);
 
         List<DateTime> GetSurveyDays(string questionnaireName, string serverParkName);

@@ -18,25 +18,25 @@ namespace Blaise.Api.Tests.Unit.Mappers
         {
             _sut = new QuestionnaireNodeDtoMapper();
         }
-        
+
         [Test]
         public void Given_A_Multi_Node_Setup_When_I_Call_MapToQuestionnaireNodeDtos_Then_A_Populated_Node_List_Is_Returned()
         {
-            //arrange
-           
-            //node 1
+            // arrange
+
+            // node 1
             const string node1Name = "data-management";
             var node1Status = QuestionnaireStatusType.Active.ToString();
             var iConfiguration1Mock = new Mock<IConfiguration>();
             iConfiguration1Mock.Setup(c => c.Status).Returns(node1Status);
 
-            //node 2
+            // node 2
             const string node2Name = "data-entry1";
             var node2Status = QuestionnaireStatusType.Installing.ToString();
             var iConfiguration2Mock = new Mock<IConfiguration>();
             iConfiguration2Mock.Setup(c => c.Status).Returns(node2Status);
 
-            //multi node setup
+            // multi node setup
             var machineConfigurationMock = new Mock<IMachineConfigurationCollection>();
             var machineConfigurations = new List<KeyValuePair<string, IConfiguration>>
             {
@@ -46,12 +46,12 @@ namespace Blaise.Api.Tests.Unit.Mappers
 
             machineConfigurationMock.Setup(m => m.GetEnumerator())
                 .Returns(machineConfigurations.GetEnumerator());
-            
-            //act
+
+            // act
             var result = _sut.MapToQuestionnaireNodeDtos(machineConfigurationMock.Object)
                 .ToList();
 
-            //assert
+            // assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<IEnumerable<QuestionnaireNodeDto>>(result);
             Assert.IsNotEmpty(result);

@@ -31,8 +31,7 @@ namespace Blaise.Api.Controllers
         public IHttpActionResult GetReportingData([FromUri] string serverParkName, [FromUri] string questionnaireName,
             [FromUri] List<string> fieldIds, [FromUri] string filter = null)
         {
-
-            _loggingService.LogInfo($"Obtaining the fields '{string.Join(",", fieldIds)}' with filter '{filter ?? ""}' for questionnaire '{questionnaireName}' on server park '{serverParkName}'");
+            _loggingService.LogInfo($"Obtaining the fields '{string.Join(",", fieldIds)}' with filter '{filter ?? string.Empty}' for questionnaire '{questionnaireName}' on server park '{serverParkName}'");
 
             var reportDto = _reportingService.GetReportingData(serverParkName, questionnaireName, fieldIds, filter);
 
