@@ -1,5 +1,4 @@
-﻿
-namespace Blaise.Api.Contracts.Models.Questionnaire
+﻿namespace Blaise.Api.Contracts.Models.Questionnaire
 {
     public class QuestionnairePackageDto
     {

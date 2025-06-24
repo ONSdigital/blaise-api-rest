@@ -27,6 +27,35 @@ stages:
               solution: $(solutionPath)
               platform: $(buildPlatform)
               configuration: $(buildConfiguration)
+          - task: UseDotNet@2
+            inputs:
+               packageType: 'sdk'
+               version: '8.0.408'  # Stable LTS
+          - script: dotnet --list-sdks
+            displayName: Check .NET SDK version
+           
+          - script: dotnet --list-runtimes
+            displayName: Check .NET runtime versions
+           
+          - script: dotnet format --version
+            displayName: Confirm dotnet-format version
+           
+          - task: PowerShell@2
+            displayName: Check code formatting with dotnet-format
+            inputs:
+              targetType: inline
+              script: |
+                cd "$(Build.SourcesDirectory)"
+                dotnet format Blaise.Api.Rest.sln --verify-no-changes --no-restore --verbosity diagnostic
+                 if ($LASTEXITCODE -eq 0) {
+                  Write-Host "? Code formatting is clean."
+                } elseif ($LASTEXITCODE -eq 2) {
+                  Write-Host "?? Formatting or naming violations detected (warnings)."
+                  exit 0  # Optional: don't fail build for warnings
+                } else {
+                  Write-Host "? Formatting check failed due to errors."
+                  exit 1
+                }
           - task: VSTest@2
             displayName: Run unit tests
             inputs:

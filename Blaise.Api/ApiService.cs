@@ -2,6 +2,7 @@
 using System.ServiceProcess;
 using Blaise.Api.Providers;
 using Microsoft.Owin.Hosting;
+
 namespace Blaise.Api
 {
     internal partial class ApiService : ServiceBase

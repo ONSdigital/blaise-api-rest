@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -50,7 +50,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
             var questionnaireDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.QuestionnaireName + ".bdix");
 
             var caseModel = CaseHelper.GetInstance().CreateCaseModel(outcomeCode.ToString(), ModeType.Web, DateTime.Now.AddMinutes(-40));
-           CaseHelper.GetInstance().CreateCaseInFile(questionnaireDatabase, caseModel);
+            CaseHelper.GetInstance().CreateCaseInFile(questionnaireDatabase, caseModel);
 
             await UploadFilesToBucket(extractedFilePath);
 
@@ -70,7 +70,8 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
         public async Task CleanUpOnlineFiles()
         {
-            await CloudStorageHelper.GetInstance().DeleteFilesInBucketAsync(BlaiseConfigurationHelper.OnlineFileBucket,
+            await CloudStorageHelper.GetInstance().DeleteFilesInBucketAsync(
+                BlaiseConfigurationHelper.OnlineFileBucket,
                 BlaiseConfigurationHelper.QuestionnaireName);
         }
 
@@ -86,7 +87,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
         private async Task UploadFilesToBucket(string filePath)
         {
             await CloudStorageHelper.GetInstance().UploadFolderToBucketAsync(
-                BlaiseConfigurationHelper.OnlineFileBucket, 
+                BlaiseConfigurationHelper.OnlineFileBucket,
                 filePath);
         }
     }

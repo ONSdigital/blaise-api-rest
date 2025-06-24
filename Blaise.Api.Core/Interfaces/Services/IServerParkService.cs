@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.ServerPark;
 
 namespace Blaise.Api.Core.Interfaces.Services

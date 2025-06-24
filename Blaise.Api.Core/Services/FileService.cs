@@ -1,13 +1,14 @@
 ﻿using System;
-using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Nuget.Api.Contracts.Interfaces;
 using System.IO.Abstractions;
 using System.IO.Compression;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using Blaise.Api.Core.Extensions;
+using Blaise.Api.Core.Interfaces.Services;
+using Blaise.Nuget.Api.Contracts.Interfaces;
 
 [assembly: InternalsVisibleTo("Blaise.Api.Tests.Unit")]
+
 namespace Blaise.Api.Core.Services
 {
     public class FileService : IFileService
@@ -16,7 +17,7 @@ namespace Blaise.Api.Core.Services
         private readonly IFileSystem _fileSystem;
 
         public FileService(
-            IBlaiseFileApi blaiseFileApi, 
+            IBlaiseFileApi blaiseFileApi,
             IFileSystem fileSystem)
         {
             _blaiseFileApi = blaiseFileApi;
@@ -45,8 +46,11 @@ namespace Blaise.Api.Core.Services
 
         public void RemovePathAndFiles(string path)
         {
-            if (!_fileSystem.Directory.Exists(path)) return;
-            
+            if (!_fileSystem.Directory.Exists(path))
+            {
+                return;
+            }
+
             var directoryInfo = _fileSystem.Directory.CreateDirectory(path);
 
             if (directoryInfo.Parent != null &&
@@ -71,7 +75,7 @@ namespace Blaise.Api.Core.Services
                 Thread.Sleep(2000);
                 _fileSystem.Directory.Delete(path, true);
             }
-            catch //ewwwwwww fml
+            catch // ewwwwwww fml
             {
             }
         }

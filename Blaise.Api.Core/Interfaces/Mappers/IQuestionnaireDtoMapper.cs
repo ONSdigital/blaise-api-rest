@@ -7,6 +7,7 @@ namespace Blaise.Api.Core.Interfaces.Mappers
     public interface IQuestionnaireDtoMapper
     {
         IEnumerable<QuestionnaireDto> MapToQuestionnaireDtos(IEnumerable<ISurvey> questionnaires);
+
         QuestionnaireDto MapToQuestionnaireDto(ISurvey questionnaire);
     }
 }

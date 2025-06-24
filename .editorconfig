@@ -1,0 +1,148 @@
+root = true
+ 
+[*.cs]
+ 
+# Disable file header insertion
+# So that this doesn't get added to the top of a c# file when dotnet format is run:
+# "// <copyright file="<className>.cs" company="PlaceholderCompany">
+#// Copyright (c) PlaceholderCompany. All rights reserved.
+#// </copyright>"
+dotnet_diagnostic.SA1633.severity = none
+ 
+# Indentation
+indent_style = space
+indent_size = 4
+ 
+# Line endings
+end_of_line = crlf
+insert_final_newline = true
+ 
+# Quotes (not directly applicable in C#, single vs double quotes aren't configurable, default is double)
+# No need to set anything here
+ 
+# Semicolons (mandatory in C#, no rule needed)
+ 
+# Unused variables (this is handled by compiler/analyzers in C#)
+ 
+# Empty functions (can be flagged by analyzers but not .editorconfig)
+ 
+# Curly spacing
+csharp_space_between_braces = ignore # no exact match, requires analyzers for detailed enforcement
+ 
+# Multiple empty lines
+dotnet_style_allow_multiple_blank_lines = false
+ 
+# Space in parentheses
+csharp_space_between_parentheses = false
+ 
+# No multi-spaces
+csharp_preserve_single_line_statements = true # Closest, but specific analyzer needed for exact behavior
+ 
+# Comma spacing (handled by code formatters)
+dotnet_style_spacing_after_comma = true
+dotnet_style_spacing_before_comma = false
+ 
+# Template curly spacing (not applicable in C#, C# uses string interpolation `${}` which doesn’t have spacing config)
+ 
+# New line at end of file
+insert_final_newline = true
+ 
+# Charset
+#TODO: test this
+charset = utf-8
+ 
+# Trim trailing whitespace
+trim_trailing_whitespace = true
+ 
+# csharp_indent_labels = flush_left achieved out of the box
+ 
+# place using statements outside of namespace
+dotnet_diagnostic.SA1200.severity = none
+ 
+csharp_prefer_simple_using_statement = true:suggestion
+csharp_prefer_braces = true:silent
+csharp_style_namespace_declarations = block_scoped:silent
+ 
+csharp_style_prefer_method_group_conversion = true:silent
+dotnet_diagnostic.SA1130.severity = error
+ 
+csharp_style_prefer_top_level_statements = true:silent
+csharp_style_prefer_primary_constructors = true:suggestion
+csharp_prefer_system_threading_lock = true:suggestion
+csharp_style_expression_bodied_methods = false:silent
+ 
+[*.{cs,vb}]
+#### Naming styles ####
+ 
+# Naming rules
+ 
+dotnet_naming_rule.interface_should_be_begins_with_i.severity = suggestion
+dotnet_naming_rule.interface_should_be_begins_with_i.symbols = interface
+dotnet_naming_rule.interface_should_be_begins_with_i.style = begins_with_i
+ 
+dotnet_naming_rule.types_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.types_should_be_pascal_case.symbols = types
+dotnet_naming_rule.types_should_be_pascal_case.style = pascal_case
+ 
+ 
+ 
+# Symbol specifications
+ 
+dotnet_naming_symbols.interface.applicable_kinds = interface
+dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.interface.required_modifiers =
+ 
+dotnet_naming_symbols.types.applicable_kinds = class, struct, interface, enum
+dotnet_naming_symbols.types.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.types.required_modifiers =
+ 
+dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, method
+dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.non_field_members.required_modifiers =
+ 
+# Naming styles
+# Symbol group: all private fields
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+dotnet_naming_symbols.private_fields.required_modifiers =
+ 
+# Style: _camelCase
+dotnet_naming_style.camel_with_underscore.capitalization = camel_case
+dotnet_naming_style.camel_with_underscore.required_prefix = _
+dotnet_naming_style.camel_with_underscore.required_suffix =
+ 
+# Rule: private fields should use _camelCase
+dotnet_naming_rule.private_fields_should_have_underscore.symbols = private_fields
+dotnet_naming_rule.private_fields_should_have_underscore.style = camel_with_underscore
+dotnet_naming_rule.private_fields_should_have_underscore.severity = error
+ 
+ 
+ 
+dotnet_naming_style.begins_with_i.required_prefix = I
+dotnet_naming_style.begins_with_i.required_suffix =
+dotnet_naming_style.begins_with_i.word_separator =
+dotnet_naming_style.begins_with_i.capitalization = pascal_case
+ 
+dotnet_naming_style.pascal_case.required_prefix =
+dotnet_naming_style.pascal_case.required_suffix =
+dotnet_naming_style.pascal_case.word_separator =
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+ 
+dotnet_naming_style.pascal_case.required_prefix =
+dotnet_naming_style.pascal_case.required_suffix =
+dotnet_naming_style.pascal_case.word_separator =
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+dotnet_style_operator_placement_when_wrapping = beginning_of_line
+tab_width = 4
+indent_size = 4
+ 
+# Set the severity of SA1309 to 'none' to disable the rule
+dotnet_diagnostic.SA1309.severity = none
+ 
+# disables the 'this' keyword being added when you call properties/fields of a class within a class (seems annoying)
+dotnet_diagnostic.SA1101.severity = none
+ 
+# disables the auto adding of <inherit doc> comment
+dotnet_diagnostic.SA1648.severity = none
+ 
+dotnet_diagnostic.SA1413.severity = none
