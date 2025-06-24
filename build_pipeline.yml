@@ -27,35 +27,10 @@ stages:
               solution: $(solutionPath)
               platform: $(buildPlatform)
               configuration: $(buildConfiguration)
-          - task: VSTest@2
-            displayName: Run unit tests
-            inputs:
-              testSelector: testAssemblies
-              testAssemblyVer2: |
-                **\*test*.dll
-                !**\*Behaviour.dll
-                !**\*TestAdapter.dll
-                !**\obj\**
-              searchFolder: $(System.DefaultWorkingDirectory)
-          - task: CopyFiles@2
-            displayName: Copy artifact
-            inputs:
-              SourceFolder: $(System.DefaultWorkingDirectory)
-              Contents: '**\bin\$(BuildConfiguration)\**'
-              TargetFolder: $(build.artifactstagingdirectory)
-              CleanTargetFolder: true
-              OverWrite: true
-          - task: PublishBuildArtifacts@1
-            displayName: Publish artifact
-            inputs:
-              PathtoPublish: $(Build.ArtifactStagingDirectory)
-              ArtifactName: _BlaiseRestApi
-              publishLocation: Container
           - task: UseDotNet@2
             inputs:
                packageType: 'sdk'
                version: '8.0.408'  # Stable LTS
-               
           - script: dotnet --list-sdks
             displayName: Check .NET SDK version
            
@@ -81,4 +56,27 @@ stages:
                   Write-Host "? Formatting check failed due to errors."
                   exit 1
                 }
-
+          - task: VSTest@2
+            displayName: Run unit tests
+            inputs:
+              testSelector: testAssemblies
+              testAssemblyVer2: |
+                **\*test*.dll
+                !**\*Behaviour.dll
+                !**\*TestAdapter.dll
+                !**\obj\**
+              searchFolder: $(System.DefaultWorkingDirectory)
+          - task: CopyFiles@2
+            displayName: Copy artifact
+            inputs:
+              SourceFolder: $(System.DefaultWorkingDirectory)
+              Contents: '**\bin\$(BuildConfiguration)\**'
+              TargetFolder: $(build.artifactstagingdirectory)
+              CleanTargetFolder: true
+              OverWrite: true
+          - task: PublishBuildArtifacts@1
+            displayName: Publish artifact
+            inputs:
+              PathtoPublish: $(Build.ArtifactStagingDirectory)
+              ArtifactName: _BlaiseRestApi
+              publishLocation: Container
