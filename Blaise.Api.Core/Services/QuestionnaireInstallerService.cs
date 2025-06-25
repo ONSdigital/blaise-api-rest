@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Blaise.Api.Contracts.Models.Questionnaire;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
