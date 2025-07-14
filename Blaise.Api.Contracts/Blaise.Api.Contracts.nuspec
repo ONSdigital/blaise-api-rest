@@ -9,7 +9,7 @@
     <description>Contracts package for the REST API to interact with Blaise</description>
     <dependencies>
       <group targetFramework="net48">
-        <dependency id="Blaise.Nuget.Api.Contracts" version="2024.2.14.4" />
+        <dependency id="Blaise.Nuget.Api.Contracts" version="2025.7.14.3" />
         <dependency id="Newtonsoft.Json" version="13.0.3" />
         <dependency id="System.Runtime.Serialization.Json" version="4.3.0" />
       </group>
