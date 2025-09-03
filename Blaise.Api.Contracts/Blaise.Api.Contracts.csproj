@@ -52,8 +52,8 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Blaise.Nuget.Api.Contracts, Version=2025.9.2.1, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2025.9.2.1-BLAIS5-4587-rich\lib\net48\Blaise.Nuget.Api.Contracts.dll</HintPath>
+    <Reference Include="Blaise.Nuget.Api.Contracts, Version=2025.9.3.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2025.9.3.2-BLAIS5-4587-rich\lib\net48\Blaise.Nuget.Api.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>

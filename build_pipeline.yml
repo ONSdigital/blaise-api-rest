@@ -4,7 +4,7 @@ pool:
   vmImage: windows-latest
 variables:
   solutionPath: '**/*.sln'
-  buildPlatform: x64
+  buildPlatform: Any CPU
   buildConfiguration: Release
 stages:
   - stage: BuildRestApi
