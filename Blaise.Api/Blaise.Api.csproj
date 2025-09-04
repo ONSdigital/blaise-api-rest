@@ -57,14 +57,14 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Blaise.Nuget.Api, Version=2025.9.3.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.2025.9.3.3-BLAIS5-4587-rich\lib\net48\Blaise.Nuget.Api.dll</HintPath>
+    <Reference Include="Blaise.Nuget.Api, Version=2025.9.4.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Blaise.Nuget.Api.2025.9.4.2\lib\net48\Blaise.Nuget.Api.dll</HintPath>
     </Reference>
-    <Reference Include="Blaise.Nuget.Api.Contracts, Version=2025.9.3.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2025.9.3.3-BLAIS5-4587-rich\lib\net48\Blaise.Nuget.Api.Contracts.dll</HintPath>
+    <Reference Include="Blaise.Nuget.Api.Contracts, Version=2025.9.4.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2025.9.4.2\lib\net48\Blaise.Nuget.Api.Contracts.dll</HintPath>
     </Reference>
-    <Reference Include="Blaise.Nuget.Api.Core, Version=2025.9.3.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.2025.9.3.3-BLAIS5-4587-rich\lib\net48\Blaise.Nuget.Api.Core.dll</HintPath>
+    <Reference Include="Blaise.Nuget.Api.Core, Version=2025.9.4.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Blaise.Nuget.Api.2025.9.4.2\lib\net48\Blaise.Nuget.Api.Core.dll</HintPath>
     </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>

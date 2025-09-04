@@ -52,8 +52,14 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Blaise.Nuget.Api.Contracts, Version=2025.9.3.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2025.9.3.3-BLAIS5-4587-rich\lib\net48\Blaise.Nuget.Api.Contracts.dll</HintPath>
+    <Reference Include="Blaise.Nuget.Api, Version=2025.9.4.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Blaise.Nuget.Api.2025.9.4.2\lib\net48\Blaise.Nuget.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Blaise.Nuget.Api.Contracts, Version=2025.9.4.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Blaise.Nuget.Api.Contracts.2025.9.4.2\lib\net48\Blaise.Nuget.Api.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="Blaise.Nuget.Api.Core, Version=2025.9.4.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Blaise.Nuget.Api.2025.9.4.2\lib\net48\Blaise.Nuget.Api.Core.dll</HintPath>
     </Reference>
     <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
       <HintPath>..\packages\BouncyCastle.Cryptography.2.5.1\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
@@ -149,6 +155,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=5.11.7.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Abstractions.5.11.7\lib\net48\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.11.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Container.5.11.11\lib\net48\Unity.Container.dll</HintPath>
+    </Reference>
     <Reference Include="ZstdSharp, Version=0.8.5.0, Culture=neutral, PublicKeyToken=8d151af33a4ad5cf, processorArchitecture=MSIL">
       <HintPath>..\packages\ZstdSharp.Port.0.8.5\lib\net462\ZstdSharp.dll</HintPath>
     </Reference>
