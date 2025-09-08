@@ -1,10 +1,10 @@
-﻿using System;
-using Blaise.Api.Configuration;
-using Blaise.Api.Controllers;
-using NUnit.Framework;
-
 namespace Blaise.Api.Tests.Unit.Configuration
 {
+    using System;
+    using Blaise.Api.Configuration;
+    using Blaise.Api.Controllers;
+    using NUnit.Framework;
+
     public class UnityTests
     {
         [TestCase(typeof(CatiController))]
@@ -19,9 +19,9 @@ namespace Blaise.Api.Tests.Unit.Configuration
         public void Given_A_Controller_Type_I_Resolve_The_Controller_Type_Then_All_Dependencies_Are_Resolved(Type controllerType)
         {
             // arrange
-            var container = UnityConfig.UnityContainer;
+            var container = UnityConfig.GetContainer();
 
-            // act && assert
+            // act and assert
             Assert.DoesNotThrow(() => container.Resolve(controllerType, controllerType.ToString()));
         }
     }

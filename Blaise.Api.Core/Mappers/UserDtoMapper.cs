@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Models.User;
-using Blaise.Api.Core.Interfaces.Mappers;
-using StatNeth.Blaise.API.ServerManager;
-
 namespace Blaise.Api.Core.Mappers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Blaise.Api.Contracts.Models.User;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class UserDtoMapper : IUserDtoMapper
     {
         public IEnumerable<UserDto> MapToUserDtos(IEnumerable<IUser> users)
@@ -26,7 +26,7 @@ namespace Blaise.Api.Core.Mappers
             {
                 Name = user.Name,
                 Role = GetRole(user as IUser2),
-                ServerParks = user.ServerParks.ToList()
+                ServerParks = user.ServerParks.ToList(),
             };
         }
 

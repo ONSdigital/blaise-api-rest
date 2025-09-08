@@ -1,37 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Core.Services;
-using Blaise.Api.Tests.Unit.Helpers;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using Moq;
-using NUnit.Framework;
-using StatNeth.Blaise.API.DataRecord;
-
 namespace Blaise.Api.Tests.Unit.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Api.Core.Services;
+    using Blaise.Api.Tests.Unit.Helpers;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using Moq;
+    using NUnit.Framework;
+    using StatNeth.Blaise.API.DataRecord;
+
     public class NisraCaseUpdateServiceTests
     {
-        private Mock<IBlaiseCaseApi> _blaiseApiMock;
-        private Mock<ICatiDataBlockService> _catiDataMock;
-        private Mock<ILoggingService> _loggingMock;
-        private MockSequence _mockSequence;
-
-        private Mock<IDataRecord> _nisraDataRecordMock;
-        private Mock<IDataRecord> _existingDataRecordMock;
-
         private readonly string _primaryKey;
         private readonly Dictionary<string, string> _primaryKeys;
         private readonly string _serverParkName;
         private readonly string _questionnaireName;
         private readonly int _outcomeCode;
         private readonly string _lastUpdated;
-
+        private Mock<IBlaiseCaseApi> _blaiseApiMock;
+        private Mock<ICatiDataBlockService> _catiDataMock;
+        private Mock<ILoggingService> _loggingMock;
+        private MockSequence _mockSequence;
+        private Mock<IDataRecord> _nisraDataRecordMock;
+        private Mock<IDataRecord> _existingDataRecordMock;
         private Dictionary<string, string> _newFieldData;
         private Dictionary<string, string> _existingFieldData;
-
         private NisraCaseUpdateService _sut;
 
         public NisraCaseUpdateServiceTests()
@@ -71,8 +67,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _catiDataMock.InSequence(_mockSequence).Setup(c => c.RemoveCatiManaBlock(_newFieldData));
             _catiDataMock.InSequence(_mockSequence).Setup(c => c.RemoveCallHistoryBlock(_newFieldData));
             _catiDataMock.InSequence(_mockSequence).Setup(c => c.RemoveWebNudgedField(_newFieldData));
-            _catiDataMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(_newFieldData, _existingFieldData,
-                It.IsAny<int>()));
+            _catiDataMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(_newFieldData, _existingFieldData, It.IsAny<int>()));
 
             _sut = new NisraCaseUpdateService(
                 _blaiseApiMock.Object,
@@ -92,8 +87,12 @@ namespace Blaise.Api.Tests.Unit.Services
 
             // assert
             _blaiseApiMock.Verify(
-                v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _questionnaireName, _serverParkName), Times.Never);
+                v => v.UpdateCase(
+                    _existingDataRecordMock.Object,
+                    _newFieldData,
+                    _questionnaireName,
+                    _serverParkName),
+                Times.Never);
         }
 
         [Test]
@@ -105,10 +104,15 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetRecordDataFields(_nisraDataRecordMock.Object)).Returns(_newFieldData);
             _blaiseApiMock.Setup(b => b.GetRecordDataFields(_existingDataRecordMock.Object)).Returns(_existingFieldData);
             _catiDataMock.InSequence(_mockSequence).Setup(c => c.RemoveCatiManaBlock(_newFieldData));
-            _catiDataMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(_newFieldData, _existingFieldData,
+            _catiDataMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(
+                _newFieldData,
+                _existingFieldData,
                 _outcomeCode));
-            _blaiseApiMock.Setup(b => b.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _questionnaireName, _serverParkName));
+            _blaiseApiMock.Setup(b => b.UpdateCase(
+                _existingDataRecordMock.Object,
+                _newFieldData,
+                _questionnaireName,
+                _serverParkName));
 
             // act
             _sut.UpdateCase(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _questionnaireName, _serverParkName);
@@ -120,8 +124,12 @@ namespace Blaise.Api.Tests.Unit.Services
             _catiDataMock.Verify(v => v.AddCatiManaCallItems(_newFieldData, _existingFieldData, _outcomeCode), Times.Once);
 
             _blaiseApiMock.Verify(
-                v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _questionnaireName, _serverParkName), Times.Once);
+                v => v.UpdateCase(
+                    _existingDataRecordMock.Object,
+                    _newFieldData,
+                    _questionnaireName,
+                    _serverParkName),
+                Times.Once);
         }
 
         [Test]
@@ -140,10 +148,15 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetRecordDataFields(_nisraDataRecordMock.Object)).Returns(_newFieldData);
             _blaiseApiMock.Setup(b => b.GetRecordDataFields(_existingDataRecordMock.Object)).Returns(_existingFieldData);
             _catiDataMock.InSequence(_mockSequence).Setup(c => c.RemoveCatiManaBlock(_newFieldData));
-            _catiDataMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(_newFieldData, _existingFieldData,
+            _catiDataMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(
+                _newFieldData,
+                _existingFieldData,
                 _outcomeCode));
-            _blaiseApiMock.Setup(b => b.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
-                _questionnaireName, _serverParkName));
+            _blaiseApiMock.Setup(b => b.UpdateCase(
+                _existingDataRecordMock.Object,
+                _newFieldData,
+                _questionnaireName,
+                _serverParkName));
 
             // act
             _sut.UpdateCase(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _questionnaireName, _serverParkName);
@@ -165,7 +178,9 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetRecordDataFields(_nisraDataRecordMock.Object)).Returns(_newFieldData);
             _blaiseApiMock.Setup(b => b.GetRecordDataFields(_existingDataRecordMock.Object)).Returns(_existingFieldData);
             _catiDataMock.InSequence(_mockSequence).Setup(c => c.RemoveCatiManaBlock(_newFieldData));
-            _catiDataMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(_newFieldData, _existingFieldData,
+            _catiDataMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(
+                _newFieldData,
+                _existingFieldData,
                 _outcomeCode));
 
             // set the return of the date field to be a different value

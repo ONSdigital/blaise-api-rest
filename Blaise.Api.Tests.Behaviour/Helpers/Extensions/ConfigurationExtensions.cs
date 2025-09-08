@@ -1,8 +1,8 @@
-using System;
-using System.Configuration;
-
 namespace Blaise.Api.Tests.Behaviour.Helpers.Extensions
 {
+    using System;
+    using System.Configuration;
+
     public class ConfigurationExtensions
     {
         public static string GetEnvironmentVariable(string variableName)

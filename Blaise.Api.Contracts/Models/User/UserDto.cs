@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Blaise.Api.Contracts.Models.User
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class UserDto
     {
         public string Name { get; set; }

@@ -1,7 +1,7 @@
-using Blaise.Api.Tests.Behaviour.Helpers.Extensions;
-
 namespace Blaise.Api.Tests.Behaviour.Helpers.Configuration
 {
+    using Blaise.Api.Tests.Behaviour.Helpers.Extensions;
+
     public static class RestApiConfigurationHelper
     {
         public static string BaseUrl => ConfigurationExtensions.GetVariable("ENV_RESTAPI_URL");

@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.IO.Abstractions;
-using System.Threading.Tasks;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Storage.Interfaces;
-using Blaise.Api.Storage.Services;
-using Blaise.Nuget.Api.Contracts.Exceptions;
-using Moq;
-using NUnit.Framework;
-
 namespace Blaise.Api.Tests.Unit.Storage
 {
+    using System.Collections.Generic;
+    using System.IO.Abstractions;
+    using System.Threading.Tasks;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Storage.Interfaces;
+    using Blaise.Api.Storage.Services;
+    using Blaise.Nuget.Api.Contracts.Exceptions;
+    using Moq;
+    using NUnit.Framework;
+
     public class CloudStorageServiceTests
     {
         private CloudStorageService _sut;
@@ -57,7 +57,8 @@ namespace Blaise.Api.Tests.Unit.Storage
             // assert
             _storageProviderMock.Verify(v => v.DownloadAsync(
                 bucketName,
-                bucketFilePath, localFilePath));
+                bucketFilePath,
+                localFilePath));
         }
 
         [Test]
@@ -122,7 +123,7 @@ namespace Blaise.Api.Tests.Unit.Storage
 
             _fileSystemMock.Setup(f => f.Directory.Exists(localFilePath)).Returns(true);
 
-            // act && assert
+            // act and assert
             var exception = Assert.ThrowsAsync<DataNotFoundException>(async () => await _sut.DownloadFilesFromNisraBucketAsync(bucketFilePath, tempPath));
             Assert.AreEqual($"No files were found for bucket path '{bucketFilePath}' in bucket '{bucketName}'", exception.Message);
         }
@@ -149,7 +150,8 @@ namespace Blaise.Api.Tests.Unit.Storage
             // assert
             _storageProviderMock.Verify(v => v.DownloadAsync(
                 bucketName,
-                bucketFilePath, destinationFilePath));
+                bucketFilePath,
+                destinationFilePath));
         }
 
         [Test]
@@ -188,7 +190,9 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(s => s.Path.Combine(filePath, fileName))
                 .Returns(destinationFilePath);
 
-            _storageProviderMock.Setup(s => s.DownloadAsync(bucketName, fileName,
+            _storageProviderMock.Setup(s => s.DownloadAsync(
+                bucketName,
+                fileName,
                 filePath));
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 

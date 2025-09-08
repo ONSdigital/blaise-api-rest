@@ -1,140 +1,81 @@
-# Blaise RESTful Web API
+# Blaise RESTful API
 
-This service provides a thin RESTful (representational state transfer) wrapper around our custom Blaise API library.
+The Blaise RESTful API provides a lightweight RESTful wrapper around our custom Blaise API NuGet library. It enables developers to interact with Blaise through standard HTTP methods, offering a more accessible and platform-agnostic integration.
 
-## Blaise API library
-https://github.com/ONSdigital/blaise-nuget-api
+This service exposes Blaise functionality as RESTful endpoints, making it easy to perform CRUD operations using common HTTP methods such as `GET`, `POST`, `PUT`, `PATCH`, and `DELETE`.
 
-The Blaise API library offers an abstraction of the interfaces provided by the official Blaise API DLL library to offer a high level CRUD style interface that is easier to work with. This library is available internally to the ONS via a NuGet repository and uses .Net framework.
+The API includes an interactive Swagger UI for exploring and testing endpoints directly in your browser.
 
-## Usage
-Where the API library is .Net framework specific, the RESTful web API provides a language and infrastructure agnostic approach to accessing Blaise resources.
+The RESTful API is powered by our [Blaise NuGet API library](https://github.com/ONSdigital/blaise-nuget-api
+), which provides a simplified and intuitive abstraction over the official Blaise API NuGet package.
 
-Blaise resources can get accessed via standard GET, POST, PUT, PATCH and DELETE requests over HTTPS, and the web API offers a swagger (https://swagger.io) UI interface which allows for easy testing of endpoints.
+## Available Endpoints
 
-## Available resources
+### `cases`
 
-### Cases 
-This endpoint offers the ability to create, update and delete cases for a questionnaire on a server park in Blaise. You may also retrieve a list of Case identifiers for a questionnaire and a status of a case.
+This endpoint offers the ability to create, update and delete cases for a questionnaire on a server park in Blaise. You may also retrieve a list of case identifiers for a questionnaire and a status of a case.
 
-### Cati
+### `cati`
+
 This endpoint offers the ability to retrieve a list of all questionnaires installed on a server park in Blaise, as well as details for a specific questionnaire. You can also retrieve details of daybatches and survey days configured for a questionnaire and the ability to create daybatches and survey days.
 
-### Questionnaire
-This endpoint offers the ability to install and uninstall an questionnaire on a server park in Blaise, as well as retrieving a list of questionnaires installed.
+### `health`
 
-### Server park
+This endpoint offers the ability to check the health status of Blaise.
+
+### `ingest`
+
+This endpoint offers the ability to ingest questionnaire data and append it to our existing questionnaire data.
+
+### `questionnaires`
+
+This endpoint offers the ability to install and uninstall a questionnaire on a server park in Blaise, as well as retrieving a list of questionnaires installed.
+
+### `serverparks`
+
 This endpoint offers the ability to retrieve a list of server parks configured for a Blaise environment.
 
-### User
+### `users`
+
 This endpoint offers the ability to create, update or delete a user in a Blaise environment, as well as retrieving a list of existing users.
 
-### User Role
-This endpoint offers the ability to create, update or delete roles for a user in a Blaise environment, as well as retrieving a list of existing user roles.
+### `userroles`
 
-## Local setup
+This endpoint offers the ability to create, update or delete roles for a user in a Blaise environment, as well as retrieving a list of existing user roles and their permissions.
 
-Populate the App.config file accordingly, **never commit a populated App.config file!**
-Run the application in admin mode.
-Swagger should now be available locally at http://localhost:90/swagger
+## Local Setup
+
+Run Visual Studio in administrator mode.
+
+To run the service locally, you must provide the necessary connection details for a Blaise environment. You can achieve this in two ways:
+
+- **Populate `App.config`:** Update the `App.config` file with the required Blaise connection details.
+- **Use Environment Variables:** Alternatively, you can use `setx` commands to set environment variables. This is a safer way to handle sensitive data. For example: `setx ENV_BLAISE_SERVER_HOST_NAME=blah /m`.
+
+⚠️ **Important:** Never commit `App.config` files with populated secrets or credentials to source control. To safely commit your changes without including the `App.config` file, you can use the command: `git add . ':!app.config'`.
+
+**Connecting to a Blaise Environment:** The service needs to communicate with Blaise on two specific ports which are defined in the `App.config` file. To connect to a Blaise environment deployed on Google Cloud Platform (GCP), you can open IAP tunnels to the virtual machines.
+
+```bash
+gcloud auth login
+
+gcloud config set project ons-blaise-v2-<env>
+
+gcloud compute start-iap-tunnel blaise-gusty-mgmt 8031 --local-host-port=localhost:8031
+
+gcloud compute start-iap-tunnel blaise-gusty-mgmt 8033 --local-host-port=localhost:8033
+```
+
+Run the service.
+
+Swagger should now be available locally at http://localhost/swagger.
 
 ## Tests
 
 Behaviour and unit tests are in a separate top level "Tests" folder.
 
----
+Tests can be run via the Visual Studio IDE or via the `dotnet test` command.
 
-## Coding Standard Rules (C#)
+## Coding Standards
 
-This project uses a standardized set of formatting and naming rules to ensure consistency and maintainability in the codebase. These rules are enforced via the `.editorconfig` file.
-
-The Nuget package StyleCop.Analyzers is responsible for auto code-fixing when the 'dotnet format' command is run in terminal. The extensive list of rules which this package can enforce be found here: https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/DOCUMENTATION.md
-
-The editor config contains a mix of rules which only DotNet Format can understand (which the server pipeline relies on) and StyleCop.Analyzers rules which help auto code fix locally (these will have the prefix 'SA' with a number code).
-
-### Formatting Rules (`*.cs`)
-
-#### Indentation & Spacing
-
-* **Spaces, not tabs**: `indent_style = space`
-* **Indent size**: `indent_size = 4`
-* **Tab width**: `tab_width = 4`
-* **Final newline**: Required (`insert_final_newline = true`)
-* **Trim trailing whitespace**: `trim_trailing_whitespace = true`
-
-#### Line Endings
-
-* **Windows-style line endings**: `end_of_line = crlf`
-
-#### Curly Braces & Parentheses
-
-* **Brace spacing**: Ignored (`csharp_space_between_braces = ignore`)
-* **No space inside parentheses**: `csharp_space_between_parentheses = false`
-
-#### Empty Lines
-
-* **No multiple blank lines allowed**: `dotnet_style_allow_multiple_blank_lines = false`
-
-#### Single-Line Statements
-
-* **Preserve single-line formatting**: `csharp_preserve_single_line_statements = true`
-
-#### Comma Spacing
-
-* **Space after commas**: Yes (`dotnet_style_spacing_after_comma = true`)
-* **Space before commas**: No (`dotnet_style_spacing_before_comma = false`)
-
----
-
-### Miscellaneous C# Formatting
-
-* **Label indentation**: Flush left (`csharp_indent_labels = flush_left`)
-* **`using` directive placement**: Outside namespace (`csharp_using_directive_placement = outside_namespace:silent`)
-* **Prefer simple `using` statements**: Enabled (`csharp_prefer_simple_using_statement = true:suggestion`)
-* **Require braces for blocks**: Yes (`csharp_prefer_braces = true:silent`)
-* **Namespace style**: Block scoped (`csharp_style_namespace_declarations = block_scoped:silent`)
-* **Prefer method group conversions**: Yes (`csharp_style_prefer_method_group_conversion = true:silent`)
-* **Prefer top-level statements**: Yes (`csharp_style_prefer_top_level_statements = true:silent`)
-* **Prefer primary constructors**: Yes (`csharp_style_prefer_primary_constructors = true:suggestion`)
-* **Prefer `System.Threading.Monitor` lock**: Yes (`csharp_prefer_system_threading_lock = true:suggestion`)
-* **Expression-bodied methods**: Disabled (`csharp_style_expression_bodied_methods = false:silent`)
-
----
-
-### Naming Rules (`*.{cs,vb}`)
-
-#### Interfaces
-
-* **Must begin with "I"**
-  Rule: `interface_should_be_begins_with_i`
-  Style: `IName` (PascalCase with "I" prefix)
-
-#### Types (classes, structs, interfaces, enums)
-
-* **Must use PascalCase**
-  Rule: `types_should_be_pascal_case`
-  Style: `TypeName`
-
-#### Non-field Members (methods, properties, events)
-
-* **Must use PascalCase**
-  Rule: `non_field_members_should_be_pascal_case`
-  Style: `MemberName`
-
-#### Operator Placement
-
-* **Operators placed at the beginning of the line when wrapping**:
-  `dotnet_style_operator_placement_when_wrapping = beginning_of_line`
-
----
-
-### Character Encoding
-
-* **Charset**: UTF-8 (`charset = utf-8`)
-
----
-
-This configuration promotes a consistent and readable codebase, aligned with modern C# conventions. All contributors should ensure their editors respect this `.editorconfig` file.
-
----
-
+The project enforces a strict set of coding and formatting rules via an .editorconfig file, which is used by StyleCop. Builds may error or issue warnings if these standards are not followed. You can use dotnet format to automatically fix some formatting issues.

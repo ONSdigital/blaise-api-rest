@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Models.Cati;
-using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Nuget.Api.Contracts.Models;
-using StatNeth.Blaise.API.ServerManager;
-
 namespace Blaise.Api.Core.Mappers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Blaise.Api.Contracts.Models.Cati;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using Blaise.Nuget.Api.Contracts.Models;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class CatiDtoMapper : ICatiDtoMapper
     {
         private readonly IQuestionnaireStatusMapper _statusMapper;
@@ -35,7 +35,7 @@ namespace Blaise.Api.Core.Mappers
                 SurveyDays = surveyDays,
                 Active = SurveyIsActive(surveyDays),
                 ActiveToday = SurveyIsActiveToday(surveyDays),
-                DeliverData = SetDeliverDataWhichIncludesADaysGraceFromLastSurveyDay(surveyDays)
+                DeliverData = SetDeliverDataWhichIncludesADaysGraceFromLastSurveyDay(surveyDays),
             };
         }
 
@@ -44,7 +44,7 @@ namespace Blaise.Api.Core.Mappers
             return new DayBatchDto
             {
                 DayBatchDate = dayBatchModel.DayBatchDate,
-                CaseIds = dayBatchModel.CaseIds
+                CaseIds = dayBatchModel.CaseIds,
             };
         }
 

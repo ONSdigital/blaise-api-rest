@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
 namespace Blaise.Api.Contracts.Models.ServerPark
 {
+    using System.Collections.Generic;
+
     public class ServerDto
     {
         public string Name { get; set; }

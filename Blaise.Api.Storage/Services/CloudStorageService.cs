@@ -1,12 +1,12 @@
-using System.IO.Abstractions;
-using System.Linq;
-using System.Threading.Tasks;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Storage.Interfaces;
-using Blaise.Nuget.Api.Contracts.Exceptions;
-
 namespace Blaise.Api.Storage.Services
 {
+    using System.IO.Abstractions;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Storage.Interfaces;
+    using Blaise.Nuget.Api.Contracts.Exceptions;
+
     public class CloudStorageService : ICloudStorageService
     {
         private readonly IConfigurationProvider _configurationProvider;

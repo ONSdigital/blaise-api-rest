@@ -1,7 +1,7 @@
-﻿using Blaise.Api.Tests.Behaviour.Helpers.Extensions;
-
 namespace Blaise.Api.Tests.Behaviour.Helpers.Configuration
 {
+    using Blaise.Api.Tests.Behaviour.Helpers.Extensions;
+
     public static class BlaiseConfigurationHelper
     {
         public static string ServerParkName => ConfigurationExtensions.GetEnvironmentVariable("ServerParkName");

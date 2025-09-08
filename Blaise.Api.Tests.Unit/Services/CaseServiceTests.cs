@@ -1,38 +1,35 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Blaise.Api.Contracts.Models.Case;
-using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Core.Services;
-using Blaise.Api.Tests.Unit.Helpers;
-using Blaise.Nuget.Api.Contracts.Enums;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using Blaise.Nuget.Api.Contracts.Models;
-using Moq;
-using NUnit.Framework;
-using StatNeth.Blaise.API.DataLink;
-using StatNeth.Blaise.API.DataRecord;
-
 namespace Blaise.Api.Tests.Unit.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using Blaise.Api.Contracts.Models.Case;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Api.Core.Services;
+    using Blaise.Api.Tests.Unit.Helpers;
+    using Blaise.Nuget.Api.Contracts.Enums;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using Blaise.Nuget.Api.Contracts.Models;
+    using Moq;
+    using NUnit.Framework;
+    using StatNeth.Blaise.API.DataLink;
+    using StatNeth.Blaise.API.DataRecord;
+
     public class CaseServiceTests
     {
         private ICaseService _sut;
-
         private Mock<IBlaiseCaseApi> _blaiseCaseApiMock;
         private Mock<ICaseDtoMapper> _mapperMock;
         private Mock<IBlaiseSqlApi> _blaiseSqlApiMock;
         private Mock<IDataRecord> _dataRecordMock;
         private Mock<IDataSet> _dataSetMock;
-
         private string _questionnaireName;
         private string _serverParkName;
 
         [SetUp]
         public void SetUpTests()
         {
-            // Setup mocks
             _blaiseCaseApiMock = new Mock<IBlaiseCaseApi>();
             _mapperMock = new Mock<ICaseDtoMapper>();
             _blaiseSqlApiMock = new Mock<IBlaiseSqlApi>();
@@ -238,10 +235,11 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             const string caseId = "1000001";
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(
                 string.Empty,
-                _questionnaireName, caseId));
+                _questionnaireName,
+                caseId));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -251,10 +249,11 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             const string caseId = "1000001";
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCase(
                 null,
-                _questionnaireName, caseId));
+                _questionnaireName,
+                caseId));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
@@ -264,10 +263,11 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             const string caseId = "1000001";
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(
                 _serverParkName,
-                string.Empty, caseId));
+                string.Empty,
+                caseId));
             Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
@@ -277,10 +277,11 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             const string caseId = "1000001";
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCase(
                 _serverParkName,
-                null, caseId));
+                null,
+                caseId));
             Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
@@ -289,10 +290,11 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // arrange
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(
                 _serverParkName,
-                _questionnaireName, string.Empty));
+                _questionnaireName,
+                string.Empty));
             Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
         }
 
@@ -301,10 +303,11 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // arrange
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCase(
                 _serverParkName,
-                _serverParkName, null));
+                _serverParkName,
+                null));
             Assert.AreEqual("caseId", exception.ParamName);
         }
 
@@ -315,19 +318,19 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
             var primaryKeys = new Dictionary<string, string>
             {
                 { "mainSurveyId", "123-234343-343243" },
-                { "id", "9000001" }
+                { "id", "9000001" },
             };
 
             // act
@@ -346,25 +349,25 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
             var primaryKeyValues = new Dictionary<string, string>
             {
                 { "mainSurveyId", "123-234343-343243" },
-                { "id", "9000001" }
+                { "id", "9000001" },
             };
 
             var multiKeyDto = new CaseMultikeyDto
             {
                 PrimaryKeyValues = primaryKeyValues,
-                FieldData = fieldData
+                FieldData = fieldData,
             };
 
             _blaiseCaseApiMock.Setup(c => c.GetCase(primaryKeyValues, _questionnaireName, _serverParkName))
@@ -392,25 +395,25 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
             var primaryKeyValues = new Dictionary<string, string>
             {
                 { "mainSurveyId", "123-234343-343243" },
-                { "id", "9000001" }
+                { "id", "9000001" },
             };
 
             var multiKeyDto = new CaseMultikeyDto
             {
                 PrimaryKeyValues = primaryKeyValues,
-                FieldData = fieldData
+                FieldData = fieldData,
             };
 
             _blaiseCaseApiMock.Setup(c => c.GetCase(primaryKeyValues, _questionnaireName, _serverParkName))
@@ -434,19 +437,21 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(
                 string.Empty,
-                _questionnaireName, keyNames, keyValues));
+                _questionnaireName,
+                keyNames,
+                keyValues));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -457,19 +462,21 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCase(
                 null,
-                _questionnaireName, keyNames, keyValues));
+                _questionnaireName,
+                keyNames,
+                keyValues));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
@@ -480,19 +487,21 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(
                 _serverParkName,
-                string.Empty, keyNames, keyValues));
+                string.Empty,
+                keyNames,
+                keyValues));
             Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
@@ -503,19 +512,21 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCase(
                 _serverParkName,
-                null, keyNames, keyValues));
+                null,
+                keyNames,
+                keyValues));
             Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
@@ -528,12 +539,15 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(_serverParkName, _questionnaireName,
-                keyNames, keyValues));
+            // act and assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(
+                _serverParkName,
+                _questionnaireName,
+                keyNames,
+                keyValues));
             Assert.AreEqual("A value for the argument 'keyNames' must be supplied", exception.Message);
         }
 
@@ -544,12 +558,15 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCase(_serverParkName, _questionnaireName,
-                null, keyValues));
+            // act and assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCase(
+                _serverParkName,
+                _questionnaireName,
+                null,
+                keyValues));
             Assert.AreEqual("keyNames", exception.ParamName);
         }
 
@@ -560,13 +577,16 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
             var keyValues = new List<string>();
 
-            // act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(_serverParkName, _questionnaireName,
-                keyNames, keyValues));
+            // act and assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetCase(
+                _serverParkName,
+                _questionnaireName,
+                keyNames,
+                keyValues));
             Assert.AreEqual("A value for the argument 'keyValues' must be supplied", exception.Message);
         }
 
@@ -577,12 +597,15 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
-            // act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCase(_serverParkName, _questionnaireName,
-                keyNames, null));
+            // act and assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCase(
+                _serverParkName,
+                _questionnaireName,
+                keyNames,
+                null));
             Assert.AreEqual("keyValues", exception.ParamName);
         }
 
@@ -608,10 +631,12 @@ namespace Blaise.Api.Tests.Unit.Services
             const string caseId = "1000001";
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(
                 string.Empty,
-                _questionnaireName, caseId, fieldData));
+                _questionnaireName,
+                caseId,
+                fieldData));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -622,10 +647,12 @@ namespace Blaise.Api.Tests.Unit.Services
             const string caseId = "1000001";
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(
                 null,
-                _questionnaireName, caseId, fieldData));
+                _questionnaireName,
+                caseId,
+                fieldData));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
@@ -636,10 +663,12 @@ namespace Blaise.Api.Tests.Unit.Services
             const string caseId = "1000001";
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(
                 _serverParkName,
-                string.Empty, caseId, fieldData));
+                string.Empty,
+                caseId,
+                fieldData));
             Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
@@ -650,10 +679,12 @@ namespace Blaise.Api.Tests.Unit.Services
             const string caseId = "1000001";
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(
                 _serverParkName,
-                null, caseId, fieldData));
+                null,
+                caseId,
+                fieldData));
             Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
@@ -663,10 +694,12 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(
                 _serverParkName,
-                _questionnaireName, string.Empty, fieldData));
+                _questionnaireName,
+                string.Empty,
+                fieldData));
             Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
         }
 
@@ -676,10 +709,12 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(
                 _serverParkName,
-                _serverParkName, null, fieldData));
+                _serverParkName,
+                null,
+                fieldData));
             Assert.AreEqual("caseId", exception.ParamName);
         }
 
@@ -690,10 +725,12 @@ namespace Blaise.Api.Tests.Unit.Services
             const string caseId = "1000001";
             var fieldData = new Dictionary<string, string>();
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(
                 _serverParkName,
-                _questionnaireName, caseId, fieldData));
+                _questionnaireName,
+                caseId,
+                fieldData));
             Assert.AreEqual("A value for the argument 'fieldData' must be supplied", exception.Message);
         }
 
@@ -703,10 +740,12 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             const string caseId = "1000001";
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(
                 _serverParkName,
-                _serverParkName, caseId, null));
+                _serverParkName,
+                caseId,
+                null));
             Assert.AreEqual("fieldData", exception.ParamName);
         }
 
@@ -719,19 +758,19 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
             var primaryKeyValues = new Dictionary<string, string>
             {
                 { "mainSurveyId", "123-234343-343243" },
-                { "id", "9000001" }
+                { "id", "9000001" },
             };
 
             // act
@@ -749,19 +788,22 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(
                 string.Empty,
-                _questionnaireName, keyNames, keyValues, fieldData));
+                _questionnaireName,
+                keyNames,
+                keyValues,
+                fieldData));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -773,19 +815,22 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(
                 null,
-                _questionnaireName, keyNames, keyValues, fieldData));
+                _questionnaireName,
+                keyNames,
+                keyValues,
+                fieldData));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
@@ -797,19 +842,22 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(
                 _serverParkName,
-                string.Empty, keyNames, keyValues, fieldData));
+                string.Empty,
+                keyNames,
+                keyValues,
+                fieldData));
             Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
@@ -821,19 +869,22 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(
                 _serverParkName,
-                null, keyNames, keyValues, fieldData));
+                null,
+                keyNames,
+                keyValues,
+                fieldData));
             Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
@@ -845,19 +896,22 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(
                 _serverParkName,
-                _questionnaireName, keyNames, keyValues, fieldData));
+                _questionnaireName,
+                keyNames,
+                keyValues,
+                fieldData));
             Assert.AreEqual("A value for the argument 'fieldData' must be supplied", exception.Message);
         }
 
@@ -868,19 +922,22 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(
                 _serverParkName,
-                _serverParkName, keyNames, keyValues, null));
+                _serverParkName,
+                keyNames,
+                keyValues,
+                null));
             Assert.AreEqual("fieldData", exception.ParamName);
         }
 
@@ -894,13 +951,16 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(
                 _serverParkName,
-                _questionnaireName, keyNames, keyValues, fieldData));
+                _questionnaireName,
+                keyNames,
+                keyValues,
+                fieldData));
             Assert.AreEqual("A value for the argument 'keyNames' must be supplied", exception.Message);
         }
 
@@ -912,13 +972,16 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(
                 _serverParkName,
-                _serverParkName, null, keyValues, fieldData));
+                _serverParkName,
+                null,
+                keyValues,
+                fieldData));
             Assert.AreEqual("keyNames", exception.ParamName);
         }
 
@@ -930,15 +993,18 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>();
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateCase(
                 _serverParkName,
-                _questionnaireName, keyNames, keyValues, fieldData));
+                _questionnaireName,
+                keyNames,
+                keyValues,
+                fieldData));
             Assert.AreEqual("A value for the argument 'keyValues' must be supplied", exception.Message);
         }
 
@@ -950,20 +1016,23 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateCase(
                 _serverParkName,
-                _serverParkName, keyNames, null, fieldData));
+                _serverParkName,
+                keyNames,
+                null,
+                fieldData));
             Assert.AreEqual("keyValues", exception.ParamName);
         }
 
         [Test]
         public void Given_Valid_Arguments_When_I_Call_CreateCases_Then_The_Correct_Service_Is_Called()
         {
-            // Arrange
+            // arrange
             var caseModelList = new List<CaseDto>();
             var caseDto = new CaseDto { CaseId = "1" };
             caseDto.FieldData.Add("qiD.Serial_Number", "9998");
@@ -977,14 +1046,14 @@ namespace Blaise.Api.Tests.Unit.Services
             caseDto.FieldData.Add("qDataBag.PostCode", "TO41 7GH");
             caseModelList.Add(caseDto);
 
-            // Set up the mock behavior for RemoveCases and CreateCases methods
+            // setup the mock behavior for RemoveCases and CreateCases methods
             _blaiseCaseApiMock.Setup(x => x.RemoveCases(_questionnaireName, _serverParkName));
             _blaiseCaseApiMock.Setup(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName));
 
-            // Act
+            // act
             var result = _sut.CreateCases(caseModelList, this._questionnaireName, this._serverParkName);
 
-            // Assert
+            // assertt
             _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
 
             var batchSize = 500;
@@ -996,13 +1065,13 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_Empty_FieldData_When_I_Call_CreateCases_The_A_Bad_Request_Is_Returned()
         {
-            // Arrange
+            // arrange
             var fieldData = new List<CaseDto>();
 
-            // Act
+            // act
             var result = _sut.CreateCases(fieldData, this._questionnaireName, this._serverParkName);
 
-            // Assert
+            // assertt
             _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
             _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Never);
             Assert.AreEqual(0, result);
@@ -1011,7 +1080,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Small_Batch_Size_When_I_Call_CreateCases_Then_The_Correct_Service_Is_Called()
         {
-            // Arrange
+            // arrange
             var caseModelList = new List<CaseDto>();
             var caseDto = new CaseDto { CaseId = "1" };
             caseDto.FieldData.Add("qiD.Serial_Number", "9998");
@@ -1025,13 +1094,13 @@ namespace Blaise.Api.Tests.Unit.Services
             caseDto.FieldData.Add("qDataBag.PostCode", "TO41 7GH");
             caseModelList.Add(caseDto);
 
-            // Set a small batch size for testing
+            // set small batch size for testing
             var maxChunkSize = 2;
 
-            // Act
+            // act
             var result = _sut.CreateCases(caseModelList, this._questionnaireName, this._serverParkName);
 
-            // Assert
+            // assertt
             _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
 
             var expectedCreateCalls = (int)Math.Ceiling((double)caseModelList.Count / maxChunkSize);
@@ -1043,7 +1112,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Large_Batch_Size_When_I_Call_CreateCases_Then_The_Correct_Service_Is_Called()
         {
-            // Arrange
+            // arrange
             var caseDtoList = new List<CaseDto>();
 
             for (var iCounter = 1; iCounter <= 10000; iCounter++)
@@ -1052,35 +1121,19 @@ namespace Blaise.Api.Tests.Unit.Services
                 caseDtoList.Add(caseDto);
             }
 
-            // Set a large batch size for testing
+            // set large batch size for testing
             var maxChunkSize = 500;
 
-            // Act
+            // act
             var result = _sut.CreateCases(caseDtoList, this._questionnaireName, this._serverParkName);
 
-            // Assert
+            // assertt
             _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
 
             var expectedCreateCalls = (int)Math.Ceiling((double)caseDtoList.Count / maxChunkSize);
             _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Exactly(expectedCreateCalls));
 
             Assert.AreEqual(caseDtoList.Count, result);
-        }
-
-        private static CaseDto GenerateRandomCaseDto(int caseId)
-        {
-            var caseDto = new CaseDto
-            {
-                CaseId = caseId.ToString(),
-                FieldData = new Dictionary<string, string>
-                                {
-                                    { "qiD.Serial_Number", caseId.ToString() },
-                                    { "qDataBag.TLA", "LMS" },
-                                    { "qDataBag.PostCode", "TO41 7GH" }
-                                }
-            };
-
-            return caseDto;
         }
 
         [Test]
@@ -1105,10 +1158,12 @@ namespace Blaise.Api.Tests.Unit.Services
             const string caseId = "1000001";
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateCase(
                 string.Empty,
-                _questionnaireName, caseId, fieldData));
+                _questionnaireName,
+                caseId,
+                fieldData));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -1119,10 +1174,12 @@ namespace Blaise.Api.Tests.Unit.Services
             const string caseId = "1000001";
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateCase(
                 null,
-                _questionnaireName, caseId, fieldData));
+                _questionnaireName,
+                caseId,
+                fieldData));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
@@ -1133,10 +1190,12 @@ namespace Blaise.Api.Tests.Unit.Services
             const string caseId = "1000001";
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateCase(
                 _serverParkName,
-                string.Empty, caseId, fieldData));
+                string.Empty,
+                caseId,
+                fieldData));
             Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
@@ -1147,10 +1206,12 @@ namespace Blaise.Api.Tests.Unit.Services
             const string caseId = "1000001";
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateCase(
                 _serverParkName,
-                null, caseId, fieldData));
+                null,
+                caseId,
+                fieldData));
             Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
@@ -1160,10 +1221,12 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateCase(
                 _serverParkName,
-                _questionnaireName, string.Empty, fieldData));
+                _questionnaireName,
+                string.Empty,
+                fieldData));
             Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
         }
 
@@ -1173,10 +1236,12 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateCase(
                 _serverParkName,
-                _serverParkName, null, fieldData));
+                _serverParkName,
+                null,
+                fieldData));
             Assert.AreEqual("caseId", exception.ParamName);
         }
 
@@ -1187,10 +1252,12 @@ namespace Blaise.Api.Tests.Unit.Services
             const string caseId = "1000001";
             var fieldData = new Dictionary<string, string>();
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateCase(
                 _serverParkName,
-                _questionnaireName, caseId, fieldData));
+                _questionnaireName,
+                caseId,
+                fieldData));
             Assert.AreEqual("A value for the argument 'fieldData' must be supplied", exception.Message);
         }
 
@@ -1200,10 +1267,12 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             const string caseId = "1000001";
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateCase(
                 _serverParkName,
-                _serverParkName, caseId, null));
+                _serverParkName,
+                caseId,
+                null));
             Assert.AreEqual("fieldData", exception.ParamName);
         }
 
@@ -1215,18 +1284,18 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
             var primaryKeyValues = new Dictionary<string, string>
             {
                 { "mainSurveyId", "123-234343-343243" },
-                { "id", "9000001" }
+                { "id", "9000001" },
             };
 
             // act
@@ -1244,19 +1313,22 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateCase(
                 string.Empty,
-                _questionnaireName, keyNames, keyValues, fieldData));
+                _questionnaireName,
+                keyNames,
+                keyValues,
+                fieldData));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -1268,19 +1340,22 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateCase(
                 null,
-                _questionnaireName, keyNames, keyValues, fieldData));
+                _questionnaireName,
+                keyNames,
+                keyValues,
+                fieldData));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
@@ -1292,19 +1367,22 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateCase(
                 _serverParkName,
-                string.Empty, keyNames, keyValues, fieldData));
+                string.Empty,
+                keyNames,
+                keyValues,
+                fieldData));
             Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
@@ -1316,19 +1394,22 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateCase(
                 _serverParkName,
-                null, keyNames, keyValues, fieldData));
+                null,
+                keyNames,
+                keyValues,
+                fieldData));
             Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
@@ -1340,19 +1421,22 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateCase(
                 _serverParkName,
-                _questionnaireName, keyNames, keyValues, fieldData));
+                _questionnaireName,
+                keyNames,
+                keyValues,
+                fieldData));
             Assert.AreEqual("A value for the argument 'fieldData' must be supplied", exception.Message);
         }
 
@@ -1363,19 +1447,22 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateCase(
                 _serverParkName,
-                _serverParkName, keyNames, keyValues, null));
+                _serverParkName,
+                keyNames,
+                keyValues,
+                null));
             Assert.AreEqual("fieldData", exception.ParamName);
         }
 
@@ -1388,13 +1475,16 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateCase(
                 _serverParkName,
-                _questionnaireName, keyNames, keyValues, fieldData));
+                _questionnaireName,
+                keyNames,
+                keyValues,
+                fieldData));
             Assert.AreEqual("A value for the argument 'keyNames' must be supplied", exception.Message);
         }
 
@@ -1406,13 +1496,16 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateCase(
                 _serverParkName,
-                _serverParkName, null, keyValues, fieldData));
+                _serverParkName,
+                null,
+                keyValues,
+                fieldData));
             Assert.AreEqual("keyNames", exception.ParamName);
         }
 
@@ -1424,14 +1517,17 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
             var keyValues = new List<string>();
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateCase(
                 _serverParkName,
-                _questionnaireName, keyNames, keyValues, fieldData));
+                _questionnaireName,
+                keyNames,
+                keyValues,
+                fieldData));
             Assert.AreEqual("A value for the argument 'keyValues' must be supplied", exception.Message);
         }
 
@@ -1443,13 +1539,16 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateCase(
                 _serverParkName,
-                _serverParkName, keyNames, null, fieldData));
+                _serverParkName,
+                keyNames,
+                null,
+                fieldData));
             Assert.AreEqual("keyValues", exception.ParamName);
         }
 
@@ -1473,10 +1572,11 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             const string caseId = "1000001";
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(
                 string.Empty,
-                _questionnaireName, caseId));
+                _questionnaireName,
+                caseId));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -1486,10 +1586,11 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             const string caseId = "1000001";
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(
                 null,
-                _questionnaireName, caseId));
+                _questionnaireName,
+                caseId));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
@@ -1499,10 +1600,11 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             const string caseId = "1000001";
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(
                 _serverParkName,
-                string.Empty, caseId));
+                string.Empty,
+                caseId));
             Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
@@ -1512,30 +1614,33 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             const string caseId = "1000001";
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(
                 _serverParkName,
-                null, caseId));
+                null,
+                caseId));
             Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
         [Test]
         public void Given_An_Empty_CaseId_When_I_Call_DeleteCase_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(
                 _serverParkName,
-                _questionnaireName, string.Empty));
+                _questionnaireName,
+                string.Empty));
             Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
         }
 
         [Test]
         public void Given_A_Null_CaseId_When_I_Call_DeleteCase_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(
                 _serverParkName,
-                _questionnaireName, null));
+                _questionnaireName,
+                null));
             Assert.AreEqual("caseId", exception.ParamName);
         }
 
@@ -1545,18 +1650,18 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
             var primaryKeyValues = new Dictionary<string, string>
             {
                 { "mainSurveyId", "123-234343-343243" },
-                { "id", "9000001" }
+                { "id", "9000001" },
             };
 
             // act
@@ -1573,19 +1678,21 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(
                 string.Empty,
-                _questionnaireName, keyNames, keyValues));
+                _questionnaireName,
+                keyNames,
+                keyValues));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -1596,19 +1703,21 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(
                 null,
-                _questionnaireName, keyNames, keyValues));
+                _questionnaireName,
+                keyNames,
+                keyValues));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
@@ -1619,19 +1728,21 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(
                 _serverParkName,
-                string.Empty, keyNames, keyValues));
+                string.Empty,
+                keyNames,
+                keyValues));
             Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
@@ -1642,19 +1753,21 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(
                 _serverParkName,
-                null, keyNames, keyValues));
+                null,
+                keyNames,
+                keyValues));
             Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
@@ -1667,13 +1780,15 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(
                 _serverParkName,
-                _questionnaireName, keyNames, keyValues));
+                _questionnaireName,
+                keyNames,
+                keyValues));
             Assert.AreEqual("A value for the argument 'keyNames' must be supplied", exception.Message);
         }
 
@@ -1684,13 +1799,15 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(
                 _serverParkName,
-                _questionnaireName, null, keyValues));
+                _questionnaireName,
+                null,
+                keyValues));
             Assert.AreEqual("keyNames", exception.ParamName);
         }
 
@@ -1701,15 +1818,17 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>();
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeleteCase(
                 _serverParkName,
-                _questionnaireName, keyNames, keyValues));
+                _questionnaireName,
+                keyNames,
+                keyValues));
             Assert.AreEqual("A value for the argument 'keyValues' must be supplied", exception.Message);
         }
 
@@ -1720,13 +1839,15 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeleteCase(
                 _serverParkName,
-                _questionnaireName, keyNames, null));
+                _questionnaireName,
+                keyNames,
+                null));
             Assert.AreEqual("keyValues", exception.ParamName);
         }
 
@@ -1767,10 +1888,11 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             const string caseId = "1000001";
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(
                 string.Empty,
-                _questionnaireName, caseId));
+                _questionnaireName,
+                caseId));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -1780,10 +1902,11 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             const string caseId = "1000001";
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(
                 null,
-                _questionnaireName, caseId));
+                _questionnaireName,
+                caseId));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
@@ -1793,10 +1916,11 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             const string caseId = "1000001";
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(
                 _serverParkName,
-                string.Empty, caseId));
+                string.Empty,
+                caseId));
             Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
@@ -1806,30 +1930,33 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             const string caseId = "1000001";
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(
                 _serverParkName,
-                null, caseId));
+                null,
+                caseId));
             Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
         [Test]
         public void Given_An_Empty_CaseId_When_I_Call_CaseExists_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(
                 _serverParkName,
-                _questionnaireName, string.Empty));
+                _questionnaireName,
+                string.Empty));
             Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
         }
 
         [Test]
         public void Given_A_Null_CaseId_When_I_Call_CaseExists_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(
                 _serverParkName,
-                _serverParkName, null));
+                _serverParkName,
+                null));
             Assert.AreEqual("caseId", exception.ParamName);
         }
 
@@ -1841,18 +1968,18 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
             var primaryKeyValues = new Dictionary<string, string>
             {
                 { "mainSurveyId", "123-234343-343243" },
-                { "id", "9000001" }
+                { "id", "9000001" },
             };
 
             _blaiseCaseApiMock.Setup(c => c.CaseExists(primaryKeyValues, _questionnaireName, _serverParkName))
@@ -1872,19 +1999,21 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(
                 string.Empty,
-                _questionnaireName, keyNames, keyValues));
+                _questionnaireName,
+                keyNames,
+                keyValues));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -1895,19 +2024,21 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(
                 null,
-                _questionnaireName, keyNames, keyValues));
+                _questionnaireName,
+                keyNames,
+                keyValues));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
@@ -1918,18 +2049,21 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(_serverParkName, string.Empty,
-                keyNames, keyValues));
+            // act and assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(
+                _serverParkName,
+                string.Empty,
+                keyNames,
+                keyValues));
             Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
@@ -1940,16 +2074,16 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(_serverParkName, null, keyNames, keyValues));
             Assert.AreEqual("questionnaireName", exception.ParamName);
         }
@@ -1963,12 +2097,15 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(_serverParkName, _questionnaireName,
-                keyNames, keyValues));
+            // act and assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(
+                _serverParkName,
+                _questionnaireName,
+                keyNames,
+                keyValues));
             Assert.AreEqual("A value for the argument 'keyNames' must be supplied", exception.Message);
         }
 
@@ -1979,10 +2116,10 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyValues = new List<string>
             {
                 "123-234343-343243",
-                "9000001"
+                "9000001",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(_serverParkName, _questionnaireName, null, keyValues));
             Assert.AreEqual("keyNames", exception.ParamName);
         }
@@ -1994,14 +2131,17 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
             var keyValues = new List<string>();
 
-            // act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(_serverParkName, _questionnaireName,
-                keyNames, keyValues));
+            // act and assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CaseExists(
+                _serverParkName,
+                _questionnaireName,
+                keyNames,
+                keyValues));
             Assert.AreEqual("A value for the argument 'keyValues' must be supplied", exception.Message);
         }
 
@@ -2012,10 +2152,10 @@ namespace Blaise.Api.Tests.Unit.Services
             var keyNames = new List<string>
             {
                 "mainSurveyId",
-                "id"
+                "id",
             };
 
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(_serverParkName, _questionnaireName, keyNames, null));
             Assert.AreEqual("keyValues", exception.ParamName);
         }
@@ -2057,7 +2197,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var casesIds = new List<string>
             {
                 "10001011",
-                "10001013"
+                "10001013",
             };
 
             var case1Mock = new Mock<IDataRecord>();
@@ -2100,7 +2240,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var casesIds = new List<string>
             {
                 "10001011",
-                "10001013"
+                "10001013",
             };
 
             var case1Mock = new Mock<IDataRecord>();
@@ -2181,6 +2321,22 @@ namespace Blaise.Api.Tests.Unit.Services
 
             // assert
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        private static CaseDto GenerateRandomCaseDto(int caseId)
+        {
+            var caseDto = new CaseDto
+            {
+                CaseId = caseId.ToString(),
+                FieldData = new Dictionary<string, string>
+                {
+                    { "qiD.Serial_Number", caseId.ToString() },
+                    { "qDataBag.TLA", "LMS" },
+                    { "qDataBag.PostCode", "TO41 7GH" },
+                },
+            };
+
+            return caseDto;
         }
     }
 }

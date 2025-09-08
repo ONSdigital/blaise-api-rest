@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Models.Questionnaire;
-using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Core.Services;
-using Blaise.Nuget.Api.Contracts.Enums;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using Blaise.Nuget.Api.Contracts.Models;
-using Moq;
-using NUnit.Framework;
-using StatNeth.Blaise.API.ServerManager;
-
 namespace Blaise.Api.Tests.Unit.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Blaise.Api.Contracts.Models.Questionnaire;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Api.Core.Services;
+    using Blaise.Nuget.Api.Contracts.Enums;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using Blaise.Nuget.Api.Contracts.Models;
+    using Moq;
+    using NUnit.Framework;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class QuestionnaireServiceTests
     {
         private IQuestionnaireService _sut;
@@ -82,7 +82,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var questionnaireDtos = new List<QuestionnaireDto>
             {
                 new QuestionnaireDto { Name = "OPN2010A" },
-                new QuestionnaireDto { Name = "OPN2010B" }
+                new QuestionnaireDto { Name = "OPN2010B" },
             };
 
             _questionnaireMapperMock.Setup(m => m.MapToQuestionnaireDtos(new List<ISurvey>()))
@@ -135,7 +135,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_GetQuestionnaires_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetQuestionnaires(string.Empty));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
@@ -143,7 +143,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_GetQuestionnaires_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetQuestionnaires(null));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
@@ -197,7 +197,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_QuestionnaireName_When_I_Call_GetQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetQuestionnaire(
                 string.Empty,
                 _serverParkName));
@@ -207,7 +207,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_QuestionnaireName_When_I_Call_GetQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetQuestionnaire(
                 null,
                 _serverParkName));
@@ -217,7 +217,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_GetQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetQuestionnaire(
                 _questionnaireName,
                 string.Empty));
@@ -227,7 +227,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_GetQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetQuestionnaire(
                 _questionnaireName,
                 null));
@@ -273,7 +273,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_QuestionnaireName_When_I_Call_QuestionnaireExists_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.QuestionnaireExists(
                 string.Empty,
                 _serverParkName));
@@ -283,7 +283,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_QuestionnaireName_When_I_Call_QuestionnaireExists_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.QuestionnaireExists(
                 null,
                 _serverParkName));
@@ -293,7 +293,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_QuestionnaireExists_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.QuestionnaireExists(
                 _questionnaireName,
                 string.Empty));
@@ -303,7 +303,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_QuestionnaireExists_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.QuestionnaireExists(
                 _questionnaireName,
                 null));
@@ -332,7 +332,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_QuestionnaireName_When_I_Call_GetQuestionnaireId_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetQuestionnaireId(
                 string.Empty,
                 _serverParkName));
@@ -342,7 +342,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_QuestionnaireName_When_I_Call_GetQuestionnaireId_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetQuestionnaireId(
                 null,
                 _serverParkName));
@@ -352,7 +352,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_GetQuestionnaireId_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetQuestionnaireId(
                 _questionnaireName,
                 string.Empty));
@@ -362,7 +362,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_GetQuestionnaireId_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetQuestionnaireId(
                 _questionnaireName,
                 null));
@@ -394,7 +394,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_QuestionnaireName_When_I_Call_GetQuestionnaireStatus_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetQuestionnaireStatus(
                 string.Empty,
                 _serverParkName));
@@ -404,7 +404,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_QuestionnaireName_When_I_Call_GetQuestionnaireStatus_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetQuestionnaireStatus(
                 null,
                 _serverParkName));
@@ -414,7 +414,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_GetQuestionnaireStatus_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetQuestionnaireStatus(
                 _questionnaireName,
                 string.Empty));
@@ -424,7 +424,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_GetQuestionnaireStatus_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetQuestionnaireStatus(
                 _questionnaireName,
                 null));
@@ -451,7 +451,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_QuestionnaireName_When_I_Call_ActivateQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.ActivateQuestionnaire(
                 string.Empty,
                 _serverParkName));
@@ -461,7 +461,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_QuestionnaireName_When_I_Call_ActivateQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.ActivateQuestionnaire(
                 null,
                 _serverParkName));
@@ -471,7 +471,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_ActivateQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.ActivateQuestionnaire(
                 _questionnaireName,
                 string.Empty));
@@ -481,7 +481,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_ActivateQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.ActivateQuestionnaire(
                 _questionnaireName,
                 null));
@@ -508,7 +508,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_QuestionnaireName_When_I_Call_DeactivateQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeactivateQuestionnaire(
                 string.Empty,
                 _serverParkName));
@@ -518,7 +518,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_QuestionnaireName_When_I_Call_DeactivateQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeactivateQuestionnaire(
                 null,
                 _serverParkName));
@@ -528,7 +528,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_DeactivateQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.DeactivateQuestionnaire(
                 _questionnaireName,
                 string.Empty));
@@ -538,7 +538,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_DeactivateQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeactivateQuestionnaire(
                 _questionnaireName,
                 null));

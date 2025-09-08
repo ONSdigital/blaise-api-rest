@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-
 namespace Blaise.Api.Contracts.Models.Case
 {
+    using System.Collections.Generic;
+
     public class CaseMultikeyDto
     {
         public Dictionary<string, string> PrimaryKeyValues { get; set; } = new Dictionary<string, string>();

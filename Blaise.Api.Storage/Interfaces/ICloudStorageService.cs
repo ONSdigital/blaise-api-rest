@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-
 namespace Blaise.Api.Storage.Interfaces
 {
+    using System.Threading.Tasks;
+
     public interface ICloudStorageService
     {
         Task<string> DownloadFileFromQuestionnaireBucketAsync(string filePath, string tempFilePath);

@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace Blaise.Api.Storage.Interfaces
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public interface ICloudStorageClientProvider
     {
         Task<IEnumerable<string>> GetListOfFiles(string bucketName, string bucketPath);

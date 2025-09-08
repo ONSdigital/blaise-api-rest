@@ -1,20 +1,18 @@
-﻿using System.Net.Http.Extensions.Compression.Core.Compressors;
-using System.Net.Http.Headers;
-using System.Web.Http;
-using Blaise.Api.Configuration;
-using Microsoft.AspNet.WebApi.Extensions.Compression.Server;
-using Microsoft.Owin.Extensions;
-using Newtonsoft.Json.Serialization;
-using Owin;
-using Unity;
-using Unity.WebApi;
-
 namespace Blaise.Api
 {
+    using System.Net.Http.Extensions.Compression.Core.Compressors;
+    using System.Net.Http.Headers;
+    using System.Web.Http;
+    using Blaise.Api.Configuration;
+    using Microsoft.AspNet.WebApi.Extensions.Compression.Server;
+    using Microsoft.Owin.Extensions;
+    using Newtonsoft.Json.Serialization;
+    using Owin;
+    using Unity;
+    using Unity.WebApi;
+
     public class Startup
     {
-        public virtual IUnityContainer UnityContainer => UnityConfig.UnityContainer;
-
         public void Configuration(IAppBuilder appBuilder)
         {
             appBuilder.Use((context, next) =>
@@ -24,10 +22,9 @@ namespace Blaise.Api
             });
             appBuilder.UseStageMarker(PipelineStage.PostAcquireState);
 
-            // Configure Web API for self-host.
             var config = new HttpConfiguration
             {
-                DependencyResolver = new UnityDependencyResolver(UnityContainer)
+                DependencyResolver = UnityConfig.GetDependencyResolver(),
             };
 
             config.MapHttpAttributeRoutes();

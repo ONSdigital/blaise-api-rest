@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-
 namespace Blaise.Api.Contracts.Models.Case
 {
+    using System.Collections.Generic;
+
     public class CaseDto
     {
         public string CaseId { get; set; }

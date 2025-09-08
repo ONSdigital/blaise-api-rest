@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-
 namespace Blaise.Api.Tests.Behaviour.Helpers.PrimaryKey
 {
+    using System.Collections.Generic;
+
     public static class PrimaryKeyHelper
     {
         public static Dictionary<string, string> CreatePrimaryKeys(string caseId)

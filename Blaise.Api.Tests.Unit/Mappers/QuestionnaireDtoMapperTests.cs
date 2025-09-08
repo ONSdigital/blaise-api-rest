@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Models.Questionnaire;
-using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Api.Core.Mappers;
-using Blaise.Nuget.Api.Contracts.Enums;
-using Moq;
-using NUnit.Framework;
-using StatNeth.Blaise.API.ServerManager;
-
 namespace Blaise.Api.Tests.Unit.Mappers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Blaise.Api.Contracts.Models.Questionnaire;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using Blaise.Api.Core.Mappers;
+    using Blaise.Nuget.Api.Contracts.Enums;
+    using Moq;
+    using NUnit.Framework;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class QuestionnaireDtoMapperTests
     {
         private QuestionnaireDtoMapper _sut;
@@ -77,7 +77,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
 
             var nodeList = new List<QuestionnaireNodeDto>
             {
-                new QuestionnaireNodeDto()
+                new QuestionnaireNodeDto(),
             };
 
             _nodeDtoMapperMock.Setup(n => n.MapToQuestionnaireNodeDtos(It.IsAny<IMachineConfigurationCollection>()))
@@ -140,7 +140,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
 
             var nodeList = new List<QuestionnaireNodeDto>
             {
-                new QuestionnaireNodeDto()
+                new QuestionnaireNodeDto(),
             };
 
             _nodeDtoMapperMock.Setup(n => n.MapToQuestionnaireNodeDtos(It.IsAny<IMachineConfigurationCollection>()))
@@ -186,7 +186,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
 
             var nodeList = new List<QuestionnaireNodeDto>
             {
-                new QuestionnaireNodeDto()
+                new QuestionnaireNodeDto(),
             };
 
             _nodeDtoMapperMock.Setup(n => n.MapToQuestionnaireNodeDtos(It.IsAny<IMachineConfigurationCollection>()))
@@ -273,7 +273,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var surveys = new List<ISurvey>
             {
                 survey1Mock.Object,
-                survey2Mock.Object
+                survey2Mock.Object,
             };
 
             _statusMapperMock.Setup(s => s.GetQuestionnaireStatus(survey1Mock.Object))
@@ -285,7 +285,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var nodeList = new List<QuestionnaireNodeDto>
             {
                 new QuestionnaireNodeDto(),
-                new QuestionnaireNodeDto()
+                new QuestionnaireNodeDto(),
             };
 
             _nodeDtoMapperMock.Setup(n => n.MapToQuestionnaireNodeDtos(It.IsAny<IMachineConfigurationCollection>()))
@@ -333,10 +333,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var tests = new Dictionary<string, DateTime>()
             {
                 { "FRS2404a", new DateTime(2024, 04, 1) },
-                { "OPN2308a", new DateTime(2023, 08, 1) }
+                { "OPN2308a", new DateTime(2023, 08, 1) },
             };
 
-            // act && assert
+            // act and assert
             foreach (var test in tests)
             {
                 var fieldPeriod = QuestionnaireDtoMapper.GetFieldPeriod(test.Key);

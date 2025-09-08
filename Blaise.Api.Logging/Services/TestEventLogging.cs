@@ -1,9 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using Blaise.Api.Contracts.Interfaces;
-
 namespace Blaise.Api.Logging.Services
 {
+    using System;
+    using System.Diagnostics;
+    using Blaise.Api.Contracts.Interfaces;
+
     public class TestEventLogging : ILoggingService
     {
         public void LogError(string message, Exception exception)

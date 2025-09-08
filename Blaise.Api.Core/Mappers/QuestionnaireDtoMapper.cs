@@ -1,12 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Models.Questionnaire;
-using Blaise.Api.Core.Interfaces.Mappers;
-using StatNeth.Blaise.API.ServerManager;
-
 namespace Blaise.Api.Core.Mappers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Blaise.Api.Contracts.Models.Questionnaire;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class QuestionnaireDtoMapper : IQuestionnaireDtoMapper
     {
         private readonly IQuestionnaireStatusMapper _statusMapper;
@@ -45,7 +45,7 @@ namespace Blaise.Api.Core.Mappers
                 Status = _statusMapper.GetQuestionnaireStatus(questionnaire).ToString(),
                 DataRecordCount = GetNumberOfDataRecords(questionnaire as ISurvey2),
                 BlaiseVersion = GetBlaiseVersion(questionnaire),
-                Nodes = _nodeDtoMapper.MapToQuestionnaireNodeDtos(questionnaire.Configuration)
+                Nodes = _nodeDtoMapper.MapToQuestionnaireNodeDtos(questionnaire.Configuration),
             };
         }
 

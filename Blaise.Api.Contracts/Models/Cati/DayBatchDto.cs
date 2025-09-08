@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
-
 namespace Blaise.Api.Contracts.Models.Cati
 {
+    using System;
+    using System.Collections.Generic;
+
     public class DayBatchDto
     {
         public DateTime DayBatchDate { get; set; }
