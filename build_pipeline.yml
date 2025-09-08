@@ -35,7 +35,7 @@ stages:
               errorActionPreference: continue
               script: |
                 cd "$(Build.SourcesDirectory)"
-                dotnet format Blaise.Nuget.Api.sln --verify-no-changes --no-restore --verbosity diagnostic
+                dotnet format Blaise.Api.Rest.sln --verify-no-changes --no-restore --verbosity diagnostic
                 if ($LASTEXITCODE -eq 0) {
                   Write-Host '✅ Check code formatting found no issues.'
                 } elseif ($LASTEXITCODE -eq 2) {
