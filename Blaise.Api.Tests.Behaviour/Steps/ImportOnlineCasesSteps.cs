@@ -28,20 +28,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             _scenarioContext = scenarioContext;
         }
 
-        [AfterScenario("onlinedata")]
-        public static async Task CleanUpScenario()
-        {
-            CaseHelper.GetInstance().DeleteCases();
-            await OnlineFileHelper.GetInstance().CleanUpOnlineFiles();
-            FileSystemHelper.GetInstance().CleanUpTempFiles(_tempFilePath);
-        }
-
-        [AfterFeature("onlinedata")]
-        public static void CleanUpFeature()
-        {
-            QuestionnaireHelper.GetInstance().UninstallQuestionnaire(60);
-        }
-
         [BeforeFeature("onlinedata")]
         public static void SetupUpFeature()
         {
@@ -228,6 +214,20 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             var numberOfCasesInBlaise = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
 
             Assert.AreEqual(numberOfCases, numberOfCasesInBlaise);
+        }
+
+        [AfterScenario("onlinedata")]
+        public static async Task CleanUpScenario()
+        {
+            CaseHelper.GetInstance().DeleteCases();
+            await OnlineFileHelper.GetInstance().CleanUpOnlineFiles();
+            FileSystemHelper.GetInstance().CleanUpTempFiles(_tempFilePath);
+        }
+
+        [AfterFeature("onlinedata")]
+        public static void CleanUpFeature()
+        {
+            QuestionnaireHelper.GetInstance().UninstallQuestionnaire(60);
         }
     }
 }

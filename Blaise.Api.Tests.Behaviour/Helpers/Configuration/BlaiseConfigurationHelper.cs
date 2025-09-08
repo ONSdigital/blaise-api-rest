@@ -6,11 +6,11 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Configuration
     {
         public static string ServerParkName => ConfigurationExtensions.GetEnvironmentVariable("ServerParkName");
 
-        public static string QuestionnaireName => ConfigurationExtensions.GetEnvironmentVariable("InstrumentName");
+        public static string QuestionnaireName => ConfigurationExtensions.GetEnvironmentVariable("QuestionnaireName");
 
         public static string QuestionnaireFile => $"{QuestionnaireName}.{QuestionnaireExtension}";
 
-        public static string QuestionnairePath => ConfigurationExtensions.GetEnvironmentVariable("InstrumentPath");
+        public static string QuestionnairePath => ConfigurationExtensions.GetEnvironmentVariable("QuestionnairePath");
 
         public static string QuestionnairePackage => $"{QuestionnaireName}.{QuestionnaireExtension}";
 
