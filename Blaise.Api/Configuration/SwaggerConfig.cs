@@ -4,8 +4,6 @@ using Blaise.Api.Configuration;
 using Swashbuckle.Application;
 using WebActivatorEx;
 
-[assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
-
 namespace Blaise.Api.Configuration
 {
     public class SwaggerConfig
