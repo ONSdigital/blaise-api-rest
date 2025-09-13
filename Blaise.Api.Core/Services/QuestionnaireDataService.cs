@@ -1,12 +1,12 @@
-using System.Threading.Tasks;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Contracts.Models.Questionnaire;
-using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Storage.Interfaces;
-
 namespace Blaise.Api.Core.Services
 {
+    using System.Threading.Tasks;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Contracts.Models.Questionnaire;
+    using Blaise.Api.Core.Extensions;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Api.Storage.Interfaces;
+
     public class QuestionnaireDataService : IQuestionnaireDataService
     {
         private readonly IFileService _fileService;
@@ -26,7 +26,10 @@ namespace Blaise.Api.Core.Services
             _loggingService = loggingService;
         }
 
-        public async Task ImportOnlineDataAsync(QuestionnaireDataDto questionnaireDataDto, string serverParkName, string questionnaireName,
+        public async Task ImportOnlineDataAsync(
+            QuestionnaireDataDto questionnaireDataDto,
+            string serverParkName,
+            string questionnaireName,
             string tempFilePath)
         {
             questionnaireDataDto.ThrowExceptionIfNull("questionnaireDataDto");

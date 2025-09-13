@@ -1,9 +1,9 @@
-using System.IO;
-using System.IO.Compression;
-using Blaise.Api.Logging.Services;
-
 namespace Blaise.Api.Tests.Behaviour.Helpers.Extensions
 {
+    using System.IO;
+    using System.IO.Compression;
+    using Blaise.Api.Logging.Services;
+
     public static class FileExtensions
     {
         public static string ExtractFiles(this string sourceFilePath, string destinationFilePath)

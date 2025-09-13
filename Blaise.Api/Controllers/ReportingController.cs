@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Web.Http;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Contracts.Models.Reports;
-using Blaise.Api.Core.Interfaces.Services;
-using Swashbuckle.Swagger.Annotations;
-
 namespace Blaise.Api.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Web.Http;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Contracts.Models.Reports;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Swashbuckle.Swagger.Annotations;
+
     [RoutePrefix("api/v2/serverparks/{serverParkName}/questionnaires")]
     public class ReportingController : BaseController
     {
@@ -28,8 +28,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ReportDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult GetReportingData([FromUri] string serverParkName, [FromUri] string questionnaireName,
-            [FromUri] List<string> fieldIds, [FromUri] string filter = null)
+        public IHttpActionResult GetReportingData(
+            [FromUri] string serverParkName,
+            [FromUri] string questionnaireName,
+            [FromUri] List<string> fieldIds,
+            [FromUri] string filter = null)
         {
             _loggingService.LogInfo($"Obtaining the fields '{string.Join(",", fieldIds)}' with filter '{filter ?? string.Empty}' for questionnaire '{questionnaireName}' on server park '{serverParkName}'");
 
@@ -45,8 +48,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ReportDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult GetReportingData([FromUri] string serverParkName, [FromUri] Guid questionnaireId,
-            [FromUri] List<string> fieldIds, [FromUri] string filter = null)
+        public IHttpActionResult GetReportingData(
+            [FromUri] string serverParkName,
+            [FromUri] Guid questionnaireId,
+            [FromUri] List<string> fieldIds,
+            [FromUri] string filter = null)
         {
             var reportDto = _reportingService.GetReportingData(serverParkName, questionnaireId, fieldIds, filter);
 

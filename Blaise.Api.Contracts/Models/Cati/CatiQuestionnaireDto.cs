@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.Questionnaire;
-
 namespace Blaise.Api.Contracts.Models.Cati
 {
+    using System;
+    using System.Collections.Generic;
+    using Blaise.Api.Contracts.Models.Questionnaire;
+
     public class CatiQuestionnaireDto : QuestionnaireDto
     {
         public List<DateTime> SurveyDays = new List<DateTime>();

@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using Blaise.Nuget.Api.Contracts.Models;
-using StatNeth.Blaise.API.DataRecord;
-
 namespace Blaise.Api.Core.Services
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using Blaise.Nuget.Api.Contracts.Models;
+    using StatNeth.Blaise.API.DataRecord;
+
     public class NisraFileImportService : INisraFileImportService
     {
         private readonly IBlaiseCaseApi _blaiseApi;
@@ -44,8 +44,11 @@ namespace Blaise.Api.Core.Services
                     var primaryKeyValues = new Dictionary<string, string> { { "QID.Serial_Number", nisraCaseStatusModel.PrimaryKey } };
                     var existingRecord = _blaiseApi.GetCase(primaryKeyValues, questionnaireName, serverParkName);
 
-                    _onlineCaseUpdateService.UpdateCase(nisraRecord, existingRecord,
-                        questionnaireName, serverParkName);
+                    _onlineCaseUpdateService.UpdateCase(
+                        nisraRecord,
+                        existingRecord,
+                        questionnaireName,
+                        serverParkName);
                 }
 
                 nisraFileCaseRecords.MoveNext();
@@ -63,8 +66,10 @@ namespace Blaise.Api.Core.Services
                 t.PrimaryKey == primaryKeyValue);
         }
 
-        private bool CaseNeedsToBeUpdated(CaseStatusModel nisraCaseStatusModel, CaseStatusModel existingCaseStatusModel,
-                    string questionnaireName)
+        private bool CaseNeedsToBeUpdated(
+            CaseStatusModel nisraCaseStatusModel,
+            CaseStatusModel existingCaseStatusModel,
+            string questionnaireName)
         {
             if (existingCaseStatusModel == null)
             {

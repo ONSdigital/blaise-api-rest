@@ -1,9 +1,9 @@
-using System;
-using System.Configuration;
-using Blaise.Api.Core.Extensions;
-
 namespace Blaise.Api.Extensions
 {
+    using System;
+    using System.Configuration;
+    using Blaise.Api.Core.Extensions;
+
     public class ConfigurationExtensions
     {
         public static string GetEnvironmentVariable(string variableName)

@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Blaise.Api.Contracts.Models.Case;
-using Blaise.Api.Core.Mappers;
-using Blaise.Api.Tests.Unit.Helpers;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using Blaise.Nuget.Api.Contracts.Models;
-using Moq;
-using NUnit.Framework;
-using StatNeth.Blaise.API.DataRecord;
-
 namespace Blaise.Api.Tests.Unit.Mappers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using Blaise.Api.Contracts.Models.Case;
+    using Blaise.Api.Core.Mappers;
+    using Blaise.Api.Tests.Unit.Helpers;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using Blaise.Nuget.Api.Contracts.Models;
+    using Moq;
+    using NUnit.Framework;
+    using StatNeth.Blaise.API.DataRecord;
+
     public class CaseDtoMapperTests
     {
         private Mock<IBlaiseCaseApi> _blaiseCaseApiMock;
@@ -21,7 +21,6 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [SetUp]
         public void SetUpTests()
         {
-            // Setup mocks
             _blaiseCaseApiMock = new Mock<IBlaiseCaseApi>();
             _sut = new CaseDtoMapper(_blaiseCaseApiMock.Object);
         }
@@ -33,7 +32,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var caseStatusModelList = new List<CaseStatusModel>
             {
                 new CaseStatusModel(PrimaryKeyHelper.CreatePrimaryKeys("0000007"), 110, DateTime.Today.ToString(CultureInfo.InvariantCulture)),
-                new CaseStatusModel(PrimaryKeyHelper.CreatePrimaryKeys("0000008"), 210, DateTime.Today.ToString(CultureInfo.InvariantCulture))
+                new CaseStatusModel(PrimaryKeyHelper.CreatePrimaryKeys("0000008"), 210, DateTime.Today.ToString(CultureInfo.InvariantCulture)),
             };
 
             // act
@@ -92,7 +91,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var primaryKeyValues = new Dictionary<string, string>
             {
                 { "mainSurveyId", "123-234343-343243" },
-                { "id", "9000001" }
+                { "id", "9000001" },
             };
 
             _blaiseCaseApiMock.Setup(c => c.GetRecordDataFields(dataRecordMock.Object)).Returns(fieldData);
@@ -110,7 +109,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         [Test]
         public void Given_A_Valid_CaseRecord_When_I_Call_MapToCaseEditInformationDto_Then_A_Correct_CaseEditInformationDto_Is_Returned()
         {
-            // Arrange
+            // arrange
             var primaryKey = "10001011";
             var outcome = 110;
             var assignedTo = "Dr Doom";
@@ -127,10 +126,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.EditedStatus").EnumerationValue).Returns((int)editedStatus);
             _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "orgID").EnumerationValue).Returns((int)organisation);
 
-            // Act
+            // act
             var result = _sut.MapToCaseEditInformationDto(dataRecordMock.Object);
 
-            // Assert
+            // assertt
             Assert.AreEqual(primaryKey, result.PrimaryKey);
             Assert.AreEqual(outcome, result.Outcome);
             Assert.AreEqual(assignedTo, result.AssignedTo);

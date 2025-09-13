@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.Cati;
-using Blaise.Api.Contracts.Models.Questionnaire;
-using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Api.Core.Mappers;
-using Blaise.Nuget.Api.Contracts.Enums;
-using Blaise.Nuget.Api.Contracts.Models;
-using Moq;
-using NUnit.Framework;
-using StatNeth.Blaise.API.ServerManager;
-
 namespace Blaise.Api.Tests.Unit.Mappers
 {
+    using System;
+    using System.Collections.Generic;
+    using Blaise.Api.Contracts.Models.Cati;
+    using Blaise.Api.Contracts.Models.Questionnaire;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using Blaise.Api.Core.Mappers;
+    using Blaise.Nuget.Api.Contracts.Enums;
+    using Blaise.Nuget.Api.Contracts.Models;
+    using Moq;
+    using NUnit.Framework;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class CatiDtoMapperTests
     {
         private CatiDtoMapper _sut;
@@ -78,7 +78,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
 
             var nodeList = new List<QuestionnaireNodeDto>
             {
-                new QuestionnaireNodeDto()
+                new QuestionnaireNodeDto(),
             };
 
             _nodeDtoMapperMock.Setup(n => n.MapToQuestionnaireNodeDtos(It.IsAny<IMachineConfigurationCollection>()))
@@ -123,7 +123,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             {
                 DateTime.Today.AddDays(3),
                 DateTime.Today.AddDays(2),
-                DateTime.Today.AddDays(1)
+                DateTime.Today.AddDays(1),
             };
 
             // act
@@ -143,7 +143,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             {
                 DateTime.Today.AddDays(-3),
                 DateTime.Today.AddDays(-2),
-                DateTime.Today.AddDays(-1)
+                DateTime.Today.AddDays(-1),
             };
 
             // act
@@ -164,7 +164,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 DateTime.Today.AddDays(-3),
                 DateTime.Today.AddDays(-2),
                 DateTime.Today.AddDays(-1),
-                DateTime.Today.AddDays(1)
+                DateTime.Today.AddDays(1),
             };
 
             // act
@@ -182,7 +182,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             // arrange
             var surveyDays = new List<DateTime>
             {
-                DateTime.Today
+                DateTime.Today,
             };
 
             // act
@@ -200,7 +200,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             // arrange
             var surveyDays = new List<DateTime>
             {
-                DateTime.Today.AddHours(1)
+                DateTime.Today.AddHours(1),
             };
 
             // act
@@ -220,7 +220,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             {
                 DateTime.Today.AddDays(-3),
                 DateTime.Today.AddDays(-2),
-                DateTime.Today.AddDays(1)
+                DateTime.Today.AddDays(1),
             };
 
             // act
@@ -241,7 +241,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 DateTime.Today.AddDays(-3),
                 DateTime.Today.AddDays(-2),
                 DateTime.Today,
-                DateTime.Today.AddDays(1)
+                DateTime.Today.AddDays(1),
             };
 
             // act
@@ -259,7 +259,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             // arrange
             var surveyDays = new List<DateTime>
             {
-                DateTime.Today.AddHours(1)
+                DateTime.Today.AddHours(1),
             };
 
             // act
@@ -294,7 +294,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             {
                 DateTime.Today.AddDays(3),
                 DateTime.Today.AddDays(2),
-                DateTime.Today.AddDays(1)
+                DateTime.Today.AddDays(1),
             };
 
             // act
@@ -315,7 +315,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 DateTime.Today.AddDays(-3),
                 DateTime.Today.AddDays(-2),
                 DateTime.Today.AddDays(-1),
-                DateTime.Today.AddDays(1)
+                DateTime.Today.AddDays(1),
             };
 
             // act
@@ -333,7 +333,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             // arrange
             var surveyDays = new List<DateTime>
             {
-                DateTime.Today
+                DateTime.Today,
             };
 
             // act
@@ -351,7 +351,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             // arrange
             var surveyDays = new List<DateTime>
             {
-                DateTime.Today.AddHours(1)
+                DateTime.Today.AddHours(1),
             };
 
             // act
@@ -369,7 +369,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             // arrange
             var surveyDays = new List<DateTime>
             {
-                DateTime.Today.AddDays(-1)
+                DateTime.Today.AddDays(-1),
             };
 
             // act
@@ -388,7 +388,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var surveyDays = new List<DateTime>
             {
                 DateTime.Today.AddDays(3),
-                DateTime.Today.AddDays(2)
+                DateTime.Today.AddDays(2),
             };
 
             // act

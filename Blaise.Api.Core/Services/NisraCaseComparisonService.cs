@@ -1,9 +1,9 @@
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Nuget.Api.Contracts.Models;
-
 namespace Blaise.Api.Core.Services
 {
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Nuget.Api.Contracts.Models;
+
     public class NisraCaseComparisonService : INisraCaseComparisonService
     {
         private readonly ILoggingService _loggingService;
@@ -13,7 +13,9 @@ namespace Blaise.Api.Core.Services
             _loggingService = loggingService;
         }
 
-        public bool CaseNeedsToBeUpdated(CaseStatusModel nisraCaseStatusModel, CaseStatusModel existingCaseStatusModel,
+        public bool CaseNeedsToBeUpdated(
+            CaseStatusModel nisraCaseStatusModel,
+            CaseStatusModel existingCaseStatusModel,
             string questionnaireName)
         {
             if (nisraCaseStatusModel.Outcome == 0)
@@ -61,7 +63,9 @@ namespace Blaise.Api.Core.Services
             return true;
         }
 
-        internal bool NisraRecordHasAlreadyBeenProcessed(CaseStatusModel nisraCaseStatusModel, CaseStatusModel existingCaseStatusModel,
+        internal bool NisraRecordHasAlreadyBeenProcessed(
+            CaseStatusModel nisraCaseStatusModel,
+            CaseStatusModel existingCaseStatusModel,
             string questionnaireName)
         {
             var recordHasAlreadyBeenProcessed =

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.User;
-
 namespace Blaise.Api.Core.Interfaces.Services
 {
+    using System.Collections.Generic;
+    using Blaise.Api.Contracts.Models.User;
+
     public interface IUserService
     {
         IEnumerable<UserDto> GetUsers();

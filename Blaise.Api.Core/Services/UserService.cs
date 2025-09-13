@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.User;
-using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-
 namespace Blaise.Api.Core.Services
 {
+    using System.Collections.Generic;
+    using Blaise.Api.Contracts.Models.User;
+    using Blaise.Api.Core.Extensions;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+
     public class UserService : IUserService
     {
         private readonly IBlaiseUserApi _blaiseApi;

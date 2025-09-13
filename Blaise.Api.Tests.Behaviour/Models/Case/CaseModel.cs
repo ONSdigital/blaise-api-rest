@@ -1,8 +1,8 @@
-using System;
-using Blaise.Api.Tests.Behaviour.Models.Enums;
-
 namespace Blaise.Api.Tests.Behaviour.Models.Case
 {
+    using System;
+    using Blaise.Api.Tests.Behaviour.Models.Enums;
+
     public class CaseModel
     {
         public CaseModel(string primaryKey, string outcome, ModeType mode, DateTime lastUpdated)

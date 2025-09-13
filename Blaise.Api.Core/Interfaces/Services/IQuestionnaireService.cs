@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.Questionnaire;
-using Blaise.Nuget.Api.Contracts.Enums;
-
 namespace Blaise.Api.Core.Interfaces.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using Blaise.Api.Contracts.Models.Questionnaire;
+    using Blaise.Nuget.Api.Contracts.Enums;
+
     public interface IQuestionnaireService
     {
         IEnumerable<QuestionnaireDto> GetAllQuestionnaires();

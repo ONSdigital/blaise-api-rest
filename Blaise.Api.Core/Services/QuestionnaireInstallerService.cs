@@ -1,16 +1,16 @@
-using System.Threading.Tasks;
-using Blaise.Api.Contracts.Models.Questionnaire;
-using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Storage.Interfaces;
-using Blaise.Nuget.Api.Contracts.Enums;
-using Blaise.Nuget.Api.Contracts.Extensions;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using Blaise.Nuget.Api.Contracts.Models;
-using StatNeth.Blaise.API.ServerManager;
-
 namespace Blaise.Api.Core.Services
 {
+    using System.Threading.Tasks;
+    using Blaise.Api.Contracts.Models.Questionnaire;
+    using Blaise.Api.Core.Extensions;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Api.Storage.Interfaces;
+    using Blaise.Nuget.Api.Contracts.Enums;
+    using Blaise.Nuget.Api.Contracts.Extensions;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using Blaise.Nuget.Api.Contracts.Models;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class QuestionnaireInstallerService : IQuestionnaireInstallerService
     {
         private readonly IBlaiseQuestionnaireApi _blaiseQuestionnaireApi;
@@ -27,7 +27,9 @@ namespace Blaise.Api.Core.Services
             _storageService = storageService;
         }
 
-        public async Task<string> InstallQuestionnaireAsync(string serverParkName, QuestionnairePackageDto questionnairePackageDto,
+        public async Task<string> InstallQuestionnaireAsync(
+            string serverParkName,
+            QuestionnairePackageDto questionnairePackageDto,
             string tempFilePath)
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");

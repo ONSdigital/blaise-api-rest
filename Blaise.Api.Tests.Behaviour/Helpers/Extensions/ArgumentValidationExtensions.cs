@@ -1,7 +1,7 @@
-using System;
-
 namespace Blaise.Api.Tests.Behaviour.Helpers.Extensions
 {
+    using System;
+
     public static class ArgumentValidationExtensions
     {
         public static void ThrowExceptionIfNullOrEmpty(this string argument, string argumentName)

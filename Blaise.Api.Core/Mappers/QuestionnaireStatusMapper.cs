@@ -1,11 +1,11 @@
-using System;
-using System.Linq;
-using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Nuget.Api.Contracts.Enums;
-using StatNeth.Blaise.API.ServerManager;
-
 namespace Blaise.Api.Core.Mappers
 {
+    using System;
+    using System.Linq;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using Blaise.Nuget.Api.Contracts.Enums;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class QuestionnaireStatusMapper : IQuestionnaireStatusMapper
     {
         private const int InstallExpiryTimeOutInMinutes = 10;

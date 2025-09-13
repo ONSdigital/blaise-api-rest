@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
-
 namespace Blaise.Api.Contracts.Models.Reports
 {
+    using System;
+    using System.Collections.Generic;
+
     public class ReportDto
     {
         public string QuestionnaireName { get; set; }

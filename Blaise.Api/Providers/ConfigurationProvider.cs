@@ -1,9 +1,9 @@
-﻿using System;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Extensions;
-
 namespace Blaise.Api.Providers
 {
+    using System;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Extensions;
+
     public class ConfigurationProvider : IConfigurationProvider
     {
         public string BaseUrl => $"{ConfigurationExtensions.GetVariable("BASE_URL")}{ConfigurationExtensions.GetVariable("ENV_RESTAPI_PORT")}/";

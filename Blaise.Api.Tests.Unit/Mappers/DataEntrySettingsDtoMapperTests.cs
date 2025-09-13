@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Models.Questionnaire;
-using Blaise.Api.Core.Mappers;
-using Blaise.Nuget.Api.Contracts.Models;
-using NUnit.Framework;
-
 namespace Blaise.Api.Tests.Unit.Mappers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Blaise.Api.Contracts.Models.Questionnaire;
+    using Blaise.Api.Core.Mappers;
+    using Blaise.Nuget.Api.Contracts.Models;
+    using NUnit.Framework;
+
     public class DataEntrySettingsDtoMapperTests
     {
         private DataEntrySettingsDtoMapper _sut;
@@ -42,7 +42,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
                     DeleteSessionOnTimeout = true,
                     DeleteSessionOnQuit = false,
                     SessionTimeout = 30,
-                    ApplyRecordLocking = true
+                    ApplyRecordLocking = true,
                 },
                 new DataEntrySettingsModel
                 {
@@ -52,7 +52,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
                     DeleteSessionOnTimeout = false,
                     DeleteSessionOnQuit = true,
                     SessionTimeout = 15,
-                    ApplyRecordLocking = false
+                    ApplyRecordLocking = false,
                 },
             };
 

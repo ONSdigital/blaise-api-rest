@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using Blaise.Api.Contracts.Enums;
-using Blaise.Api.Contracts.Models.Health;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-
 namespace Blaise.Api.Core.Services
 {
+    using System.Collections.Generic;
+    using Blaise.Api.Contracts.Enums;
+    using Blaise.Api.Contracts.Models.Health;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+
     public class HealthCheckService : IHealthCheckService
     {
         private readonly IBlaiseHealthApi _blaiseHealthApi;
@@ -22,7 +22,7 @@ namespace Blaise.Api.Core.Services
                 CheckConnectionModel(),
                 CheckConnection(),
                 CheckRemoteDataServerConnection(),
-                CheckRemoteCatiManagementConnection()
+                CheckRemoteCatiManagementConnection(),
             };
         }
 

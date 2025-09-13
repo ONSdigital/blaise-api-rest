@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Models.ServerPark;
-using Blaise.Api.Core.Interfaces.Mappers;
-using StatNeth.Blaise.API.ServerManager;
-
 namespace Blaise.Api.Core.Mappers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Blaise.Api.Contracts.Models.ServerPark;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class ServerParkDtoMapper : IServerParkDtoMapper
     {
         private readonly IQuestionnaireDtoMapper _mapper;
@@ -34,7 +34,7 @@ namespace Blaise.Api.Core.Mappers
                 Name = serverPark.Name,
                 LoadBalancer = serverPark.LoadBalancer,
                 Questionnaires = _mapper.MapToQuestionnaireDtos(serverPark.Surveys),
-                Servers = MapToServerDtos(serverPark.Servers)
+                Servers = MapToServerDtos(serverPark.Servers),
             };
         }
 
@@ -49,7 +49,7 @@ namespace Blaise.Api.Core.Mappers
                     Name = server.Name,
                     BlaiseVersion = ((IServer2)server).BlaiseVersion.ToString(),
                     LogicalServerName = server.LogicalRoot,
-                    Roles = server.Roles.ToList()
+                    Roles = server.Roles.ToList(),
                 });
             }
 

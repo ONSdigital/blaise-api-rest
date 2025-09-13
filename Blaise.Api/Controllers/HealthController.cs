@@ -1,14 +1,14 @@
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Description;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Contracts.Models.Health;
-using Blaise.Api.Core.Interfaces.Services;
-
 namespace Blaise.Api.Controllers
 {
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Web.Http;
+    using System.Web.Http.Description;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Contracts.Models.Health;
+    using Blaise.Api.Core.Interfaces.Services;
+
     [RoutePrefix("api/v2/health")]
     public class HealthController : BaseController
     {
