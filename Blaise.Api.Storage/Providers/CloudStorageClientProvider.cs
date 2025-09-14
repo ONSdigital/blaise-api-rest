@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.IO.Abstractions;
-using System.Threading.Tasks;
-using Blaise.Api.Storage.Interfaces;
-using Google.Cloud.Storage.V1;
-
 namespace Blaise.Api.Storage.Providers
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.IO.Abstractions;
+    using System.Threading.Tasks;
+    using Blaise.Api.Storage.Interfaces;
+    using Google.Cloud.Storage.V1;
+
     public class CloudStorageClientProvider : ICloudStorageClientProvider
     {
         private readonly IFileSystem _fileSystem;
@@ -28,7 +28,8 @@ namespace Blaise.Api.Storage.Providers
                 {
                     if (storageObject.Name == prefix)
                     {
-                        continue; // if the folder has been created it becomes its own object
+                        // if the folder has been created it becomes its own object
+                        continue;
                     }
 
                     files.Add(storageObject.Name);
@@ -42,7 +43,7 @@ namespace Blaise.Api.Storage.Providers
         {
             using (var storageClient = await StorageClient.CreateAsync())
             {
-                using (var fileStream = _fileSystem.FileStream.Create(destinationFilePath, FileMode.OpenOrCreate))
+                using (var fileStream = _fileSystem.File.Open(destinationFilePath, FileMode.OpenOrCreate))
                 {
                     await storageClient.DownloadObjectAsync(bucketName, fileName, fileStream);
                 }

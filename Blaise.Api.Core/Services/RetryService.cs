@@ -1,10 +1,10 @@
-using System;
-using Blaise.Api.Core.Interfaces.Services;
-using Polly;
-using Polly.Retry;
-
 namespace Blaise.Api.Core.Services
 {
+    using System;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Polly;
+    using Polly.Retry;
+
     public class RetryService<T> : IRetryService<T>
         where T : Exception
     {

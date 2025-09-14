@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-
 namespace Blaise.Api.Core.Extensions
 {
+    using System;
+    using System.Collections.Generic;
+
     public static class DictionaryExtensions
     {
-        // this will throw an error if an existing key from the dictionary to add exists in the base dictionary
+        // will throw error if any key in dictionaryToAdd already exists in baseDictionary
         public static void AddRange<TKey, TValue>(
             this IDictionary<TKey, TValue> baseDictionary,
             IDictionary<TKey, TValue> dictionaryToAdd)

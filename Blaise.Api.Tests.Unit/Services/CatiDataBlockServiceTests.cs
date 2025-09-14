@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Blaise.Api.Core.Services;
-using NUnit.Framework;
-
 namespace Blaise.Api.Tests.Unit.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using Blaise.Api.Core.Services;
+    using NUnit.Framework;
+
     public class CatiDataBlockServiceTests
     {
         private CatiDataBlockService _sut;
@@ -25,7 +25,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 { "CatiMana.CatiAppoint.AppointType", "blah1" },
                 { "CatiMana.CatiSlices.DialData[1].WeekDay", "blah2" },
                 { "CatiMana.CatiSlices.DialData[1].DialTime", "blah3" },
-                { "InterviewerID", "Jambo" }
+                { "InterviewerID", "Jambo" },
             };
 
             // act
@@ -47,7 +47,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 { "CallHistory.ATime", "blah1" },
                 { "CallHistory.CaseHist[1].THour", "blah2" },
                 { "CallHistory.CaseHist[1].TMinute", "blah3" },
-                { "InterviewerID", "Jambo" }
+                { "InterviewerID", "Jambo" },
             };
 
             // act
@@ -67,7 +67,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var fieldData = new Dictionary<string, string>
             {
                 { "WebNudged", "1" },
-                { "InterviewerID", "Jambo" }
+                { "InterviewerID", "Jambo" },
             };
 
             // act
@@ -93,7 +93,7 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             var existingFieldData = new Dictionary<string, string>
             {
-                { "CatiMana.CatiCall.NrOfCall", initialValue }
+                { "CatiMana.CatiCall.NrOfCall", initialValue },
             };
 
             var newFieldData = new Dictionary<string, string>();
@@ -114,7 +114,7 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             var existingFieldData = new Dictionary<string, string>
             {
-                { "CatiMana.CatiCall.FirstDay", string.Empty }
+                { "CatiMana.CatiCall.FirstDay", string.Empty },
             };
 
             var newFieldData = new Dictionary<string, string>();
@@ -140,7 +140,7 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             var existingFieldData = new Dictionary<string, string>
             {
-                { "CatiMana.CatiCall.FirstDay", "18022021" }
+                { "CatiMana.CatiCall.FirstDay", "18022021" },
             };
 
             var newFieldData = new Dictionary<string, string>();
@@ -160,7 +160,8 @@ namespace Blaise.Api.Tests.Unit.Services
         [TestCase(210, "6", "2")]
         public void Given_A_CatiCall_Item_When_I_Call_BuildCatiManaRegCallItems_Then_The_Field_Is_Inserted_At_Position_One(
             int outcomeCode,
-            string telDialResult, string webDialResult)
+            string telDialResult,
+            string webDialResult)
         {
             // arrange
             var existingFieldData = new Dictionary<string, string>
@@ -189,7 +190,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 { "CatiMana.CatiCall.RegsCalls[5].DayNumber", "1" },
                 { "CatiMana.CatiCall.RegsCalls[5].DialTime", "12:17:37" },
                 { "CatiMana.CatiCall.RegsCalls[5].NrOfDials", "2" },
-                { "CatiMana.CatiCall.RegsCalls[5].DialResult", telDialResult }
+                { "CatiMana.CatiCall.RegsCalls[5].DialResult", telDialResult },
             };
 
             var expectedFieldData = new Dictionary<string, string>
@@ -220,7 +221,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 { "CatiMana.CatiCall.RegsCalls[5].DayNumber", "1" },
                 { "CatiMana.CatiCall.RegsCalls[5].DialTime", "12:17:37" },
                 { "CatiMana.CatiCall.RegsCalls[5].NrOfDials", "2" },
-                { "CatiMana.CatiCall.RegsCalls[5].DialResult", telDialResult }
+                { "CatiMana.CatiCall.RegsCalls[5].DialResult", telDialResult },
             };
 
             // act
@@ -248,7 +249,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [TestCase(210, "2")]
         public void Given_No_Existing_CatiMana_Data_When_I_Call_AddCatiManaCallItems_Then_The_Correct_Items_Are_Added(
             int outcomeCode,
-             string webDialResult)
+            string webDialResult)
         {
             // arrange
             var existingFieldData = new Dictionary<string, string>
@@ -279,7 +280,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 { "CatiMana.CatiCall.RegsCalls[5].DayNumber", string.Empty },
                 { "CatiMana.CatiCall.RegsCalls[5].DialTime", string.Empty },
                 { "CatiMana.CatiCall.RegsCalls[5].NrOfDials", string.Empty },
-                { "CatiMana.CatiCall.RegsCalls[5].DialResult", string.Empty }
+                { "CatiMana.CatiCall.RegsCalls[5].DialResult", string.Empty },
             };
 
             var expectedFieldData = new Dictionary<string, string>
@@ -377,7 +378,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 { "CatiMana.CatiCall.RegsCalls[5].DayNumber", string.Empty },
                 { "CatiMana.CatiCall.RegsCalls[5].DialTime", string.Empty },
                 { "CatiMana.CatiCall.RegsCalls[5].NrOfDials", string.Empty },
-                { "CatiMana.CatiCall.RegsCalls[5].DialResult", string.Empty }
+                { "CatiMana.CatiCall.RegsCalls[5].DialResult", string.Empty },
             };
 
             var expectedFieldData = new Dictionary<string, string>
@@ -417,7 +418,7 @@ namespace Blaise.Api.Tests.Unit.Services
             // data with cati mana block removed
             var newFieldData = new Dictionary<string, string>
             {
-                { "InterviewerID", "Jambo" }
+                { "InterviewerID", "Jambo" },
             };
 
             // act

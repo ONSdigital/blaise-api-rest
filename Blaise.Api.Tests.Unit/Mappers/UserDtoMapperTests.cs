@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Models.User;
-using Blaise.Api.Core.Mappers;
-using Moq;
-using NUnit.Framework;
-using StatNeth.Blaise.API.ServerManager;
-
 namespace Blaise.Api.Tests.Unit.Mappers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Blaise.Api.Contracts.Models.User;
+    using Blaise.Api.Core.Mappers;
+    using Moq;
+    using NUnit.Framework;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class UserDtoMapperTests
     {
         private UserDtoMapper _sut;

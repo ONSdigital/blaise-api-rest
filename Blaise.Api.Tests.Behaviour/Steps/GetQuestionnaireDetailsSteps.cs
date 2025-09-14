@@ -1,20 +1,20 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
-using Blaise.Api.Tests.Behaviour.Helpers.Questionnaire;
-using Blaise.Api.Tests.Behaviour.Helpers.RestApi;
-using Blaise.Api.Tests.Behaviour.Models.Questionnaire;
-using NUnit.Framework;
-using TechTalk.SpecFlow;
-
 namespace Blaise.Api.Tests.Behaviour.Steps
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
+    using Blaise.Api.Tests.Behaviour.Helpers.Questionnaire;
+    using Blaise.Api.Tests.Behaviour.Helpers.RestApi;
+    using Blaise.Api.Tests.Behaviour.Models.Questionnaire;
+    using NUnit.Framework;
+    using Reqnroll;
+
     [Binding]
     public sealed class GetQuestionnaireDetailsSteps
     {
-        private readonly ScenarioContext _scenarioContext;
         private const string ApiResponse = "ApiResponse";
+        private readonly ScenarioContext _scenarioContext;
 
         public GetQuestionnaireDetailsSteps(ScenarioContext scenarioContext)
         {

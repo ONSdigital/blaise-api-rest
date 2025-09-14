@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.Case;
-using Blaise.Nuget.Api.Contracts.Models;
-using StatNeth.Blaise.API.DataRecord;
-
 namespace Blaise.Api.Core.Interfaces.Mappers
 {
+    using System.Collections.Generic;
+    using Blaise.Api.Contracts.Models.Case;
+    using Blaise.Nuget.Api.Contracts.Models;
+    using StatNeth.Blaise.API.DataRecord;
+
     public interface ICaseDtoMapper
     {
         List<CaseStatusDto> MapToCaseStatusDtoList(IEnumerable<CaseStatusModel> caseStatusModelList);

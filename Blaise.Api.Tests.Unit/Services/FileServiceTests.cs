@@ -1,13 +1,13 @@
-﻿using System;
-using System.IO.Abstractions;
-using System.IO.Abstractions.TestingHelpers;
-using Blaise.Api.Core.Services;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using Moq;
-using NUnit.Framework;
-
 namespace Blaise.Api.Tests.Unit.Services
 {
+    using System;
+    using System.IO.Abstractions;
+    using System.IO.Abstractions.TestingHelpers;
+    using Blaise.Api.Core.Services;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using Moq;
+    using NUnit.Framework;
+
     public class FileServiceTests
     {
         private FileService _sut;
@@ -45,14 +45,16 @@ namespace Blaise.Api.Tests.Unit.Services
             // assert
             _blaiseFileApiMock.Verify(
                 v => v.UpdateQuestionnaireFileWithSqlConnection(
-                _questionnaireName,
-                _questionnaireFile, true), Times.Once);
+                    _questionnaireName,
+                    _questionnaireFile,
+                    true),
+                Times.Once);
         }
 
         [Test]
         public void Given_An_Empty_QuestionnaireFile_When_I_Call_UpdateQuestionnaireFileWithSqlConnection_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateQuestionnaireFileWithSqlConnection(string.Empty));
             Assert.AreEqual("A value for the argument 'questionnaireFile' must be supplied", exception.Message);
         }
@@ -60,7 +62,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_QuestionnaireFile_When_I_Call_UpdateQuestionnaireFileWithSqlConnection_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateQuestionnaireFileWithSqlConnection(null));
             Assert.AreEqual("questionnaireFile", exception.ParamName);
         }

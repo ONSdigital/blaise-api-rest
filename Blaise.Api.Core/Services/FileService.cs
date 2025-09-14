@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO.Abstractions;
 using System.IO.Compression;
 using System.Runtime.CompilerServices;
@@ -75,8 +75,9 @@ namespace Blaise.Api.Core.Services
                 Thread.Sleep(2000);
                 _fileSystem.Directory.Delete(path, true);
             }
-            catch // ewwwwwww fml
+            catch
             {
+                // file locked? don't error, still continue...
             }
         }
     }

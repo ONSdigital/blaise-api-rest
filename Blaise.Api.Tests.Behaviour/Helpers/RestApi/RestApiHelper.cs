@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using Blaise.Api.Contracts.Models.Ingest;
-using Blaise.Api.Contracts.Models.Questionnaire;
-using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
-using Blaise.Api.Tests.Behaviour.Models.Questionnaire;
-using Blaise.Nuget.Api.Contracts.Enums;
-using Newtonsoft.Json;
-
 namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Blaise.Api.Contracts.Models.Ingest;
+    using Blaise.Api.Contracts.Models.Questionnaire;
+    using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
+    using Blaise.Api.Tests.Behaviour.Models.Questionnaire;
+    using Blaise.Nuget.Api.Contracts.Enums;
+    using Newtonsoft.Json;
+
     public class RestApiHelper
     {
         private static HttpClient _httpClient;
@@ -47,7 +47,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
         {
             var model = new QuestionnairePackageDto
             {
-                QuestionnaireFile = questionnaireFile
+                QuestionnaireFile = questionnaireFile,
             };
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
@@ -60,7 +60,7 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.RestApi
         {
             var model = new QuestionnaireDataDto
             {
-                QuestionnaireDataPath = questionnaireDataPath
+                QuestionnaireDataPath = questionnaireDataPath,
             };
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");

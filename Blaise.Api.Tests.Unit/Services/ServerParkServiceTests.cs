@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Models.ServerPark;
-using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Core.Services;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using Moq;
-using NUnit.Framework;
-using StatNeth.Blaise.API.ServerManager;
-
 namespace Blaise.Api.Tests.Unit.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Blaise.Api.Contracts.Models.ServerPark;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Api.Core.Services;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using Moq;
+    using NUnit.Framework;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class ServerParkServiceTests
     {
         private Mock<IBlaiseServerParkApi> _blaiseApiMock;
@@ -44,7 +44,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var serverParkList = new List<IServerPark>
             {
                 serverPark1Mock.Object,
-                serverPark2Mock.Object
+                serverPark2Mock.Object,
             };
 
             _blaiseApiMock.Setup(b => b.GetServerParks()).Returns(serverParkList);
@@ -65,7 +65,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var serverParkDtoList = new List<ServerParkDto>
             {
                 new ServerParkDto(),
-                new ServerParkDto()
+                new ServerParkDto(),
             };
 
             _mapperMock.Setup(m => m.MapToServerParkDtos(It.IsAny<List<IServerPark>>()))
@@ -124,7 +124,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_GetServerPark_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetServerPark(string.Empty));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
@@ -132,7 +132,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_GetServerPark_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetServerPark(null));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
@@ -171,7 +171,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_ServerParkExists_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.ServerParkExists(string.Empty));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
@@ -179,7 +179,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_ServerParkExists_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.ServerParkExists(null));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }

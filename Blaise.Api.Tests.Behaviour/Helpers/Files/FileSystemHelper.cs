@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-
 namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 {
+    using System;
+    using System.IO;
+    using System.Threading;
+
     public class FileSystemHelper
     {
         private static FileSystemHelper _currentInstance;
@@ -39,8 +39,9 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
                 Thread.Sleep(2000);
                 Directory.Delete(path, true);
             }
-            catch // ewwwwwww fml
+            catch
             {
+                // file locked? don't error, still continue...
             }
         }
     }

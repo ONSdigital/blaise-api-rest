@@ -1,17 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
-using Blaise.Api.Tests.Behaviour.Helpers.PrimaryKey;
-using Blaise.Api.Tests.Behaviour.Models.Case;
-using Blaise.Api.Tests.Behaviour.Models.Enums;
-using Blaise.Nuget.Api.Api;
-using Blaise.Nuget.Api.Contracts.Enums;
-using Blaise.Nuget.Api.Contracts.Extensions;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-
 namespace Blaise.Api.Tests.Behaviour.Helpers.Case
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
+    using Blaise.Api.Tests.Behaviour.Helpers.PrimaryKey;
+    using Blaise.Api.Tests.Behaviour.Models.Case;
+    using Blaise.Api.Tests.Behaviour.Models.Enums;
+    using Blaise.Nuget.Api.Api;
+    using Blaise.Nuget.Api.Contracts.Enums;
+    using Blaise.Nuget.Api.Contracts.Extensions;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+
     public class CaseHelper
     {
         private readonly IBlaiseCaseApi _blaiseCaseApi = new BlaiseCaseApi();
@@ -74,8 +74,11 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
             var dataFields = BuildDataFieldsFromCaseModel(caseModel);
             var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseModel.PrimaryKey);
 
-            _blaiseCaseApi.CreateCase(primaryKeys, dataFields,
-                BlaiseConfigurationHelper.QuestionnaireName, BlaiseConfigurationHelper.ServerParkName);
+            _blaiseCaseApi.CreateCase(
+                primaryKeys,
+                dataFields,
+                BlaiseConfigurationHelper.QuestionnaireName,
+                BlaiseConfigurationHelper.ServerParkName);
         }
 
         public void CreateCaseInFile(string databaseFile, CaseModel caseModel)
@@ -84,19 +87,6 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
             var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(caseModel.PrimaryKey);
 
             _blaiseCaseApi.CreateCase(databaseFile, primaryKeys, dataFields);
-        }
-
-        private Dictionary<string, string> BuildDataFieldsFromCaseModel(CaseModel caseModel)
-        {
-            return new Dictionary<string, string>
-            {
-                { "SerialNumber", caseModel.PrimaryKey },
-                { FieldNameType.HOut.FullName(), caseModel.Outcome },
-                { FieldNameType.Mode.FullName(), ((int)caseModel.Mode).ToString() },
-                { FieldNameType.LastUpdated.FullName(), caseModel.LastUpdated.ToString("dd-MM-yyyy:HH:mm:ss") },
-                { FieldNameType.LastUpdatedDate.FullName(), caseModel.LastUpdated.ToString("dd-MM-yyyy") },
-                { FieldNameType.LastUpdatedTime.FullName(), caseModel.LastUpdated.ToString("HH:mm:ss") }
-            };
         }
 
         public IEnumerable<CaseModel> GetCasesInDatabase()
@@ -138,8 +128,11 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
         public ModeType GetMode(string primaryKey)
         {
             var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(primaryKey);
-            var field = _blaiseCaseApi.GetFieldValue(primaryKeys, BlaiseConfigurationHelper.QuestionnaireName,
-                BlaiseConfigurationHelper.ServerParkName, FieldNameType.Mode);
+            var field = _blaiseCaseApi.GetFieldValue(
+                primaryKeys,
+                BlaiseConfigurationHelper.QuestionnaireName,
+                BlaiseConfigurationHelper.ServerParkName,
+                FieldNameType.Mode);
 
             return (ModeType)field.EnumerationValue;
         }
@@ -147,17 +140,35 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Case
         public void MarkCaseAsOpenInCati(string primaryKey)
         {
             var primaryKeys = PrimaryKeyHelper.CreatePrimaryKeys(primaryKey);
-            var dataRecord = _blaiseCaseApi.GetCase(primaryKeys, BlaiseConfigurationHelper.QuestionnaireName,
+            var dataRecord = _blaiseCaseApi.GetCase(
+                primaryKeys,
+                BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
 
             var fieldData = new Dictionary<string, string>
             {
                 { FieldNameType.LastUpdatedDate.FullName(), DateTime.Now.ToString("dd-MM-yyyy") },
-                { FieldNameType.LastUpdatedTime.FullName(), DateTime.Now.ToString("HH:mm:ss") }
+                { FieldNameType.LastUpdatedTime.FullName(), DateTime.Now.ToString("HH:mm:ss") },
             };
 
-            _blaiseCaseApi.UpdateCase(dataRecord, fieldData, BlaiseConfigurationHelper.QuestionnaireName,
+            _blaiseCaseApi.UpdateCase(
+                dataRecord,
+                fieldData,
+                BlaiseConfigurationHelper.QuestionnaireName,
                 BlaiseConfigurationHelper.ServerParkName);
+        }
+
+        private Dictionary<string, string> BuildDataFieldsFromCaseModel(CaseModel caseModel)
+        {
+            return new Dictionary<string, string>
+            {
+                { "SerialNumber", caseModel.PrimaryKey },
+                { FieldNameType.HOut.FullName(), caseModel.Outcome },
+                { FieldNameType.Mode.FullName(), ((int)caseModel.Mode).ToString() },
+                { FieldNameType.LastUpdated.FullName(), caseModel.LastUpdated.ToString("dd-MM-yyyy:HH:mm:ss") },
+                { FieldNameType.LastUpdatedDate.FullName(), caseModel.LastUpdated.ToString("dd-MM-yyyy") },
+                { FieldNameType.LastUpdatedTime.FullName(), caseModel.LastUpdated.ToString("HH:mm:ss") },
+            };
         }
     }
 }

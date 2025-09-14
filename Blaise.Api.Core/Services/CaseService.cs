@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Models.Case;
-using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Nuget.Api.Contracts.Enums;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using Blaise.Nuget.Api.Contracts.Models;
-
 namespace Blaise.Api.Core.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Blaise.Api.Contracts.Models.Case;
+    using Blaise.Api.Core.Extensions;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Nuget.Api.Contracts.Enums;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using Blaise.Nuget.Api.Contracts.Models;
+
     public class CaseService : ICaseService
     {
         private readonly IBlaiseCaseApi _blaiseCaseApi;
@@ -79,7 +79,10 @@ namespace Blaise.Api.Core.Services
             return _caseDtoMapper.MapToCaseMultikeyDto(primaryKeyValues, caseRecord);
         }
 
-        public void CreateCase(string serverParkName, string questionnaireName, string caseId,
+        public void CreateCase(
+            string serverParkName,
+            string questionnaireName,
+            string caseId,
             Dictionary<string, string> fieldData)
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
@@ -91,7 +94,11 @@ namespace Blaise.Api.Core.Services
             _blaiseCaseApi.CreateCase(primaryKeyValues, fieldData, questionnaireName, serverParkName);
         }
 
-        public void CreateCase(string serverParkName, string questionnaireName, List<string> keyNames, List<string> keyValues,
+        public void CreateCase(
+            string serverParkName,
+            string questionnaireName,
+            List<string> keyNames,
+            List<string> keyValues,
             Dictionary<string, string> fieldData)
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
@@ -113,14 +120,14 @@ namespace Blaise.Api.Core.Services
         {
             _blaiseCaseApi.RemoveCases(questionnaireName, serverParkName);
 
-            // Calculate the number of batches (chunks)
-            var batchSize = Properties.Settings.Default.MaxChunkSize;
+            // calculate how many batches are needed to process all cases
+            var batchSize = 500;
             var totalItems = fieldData.Count;
             var numBatches = (int)Math.Ceiling((double)totalItems / batchSize);
 
             for (var batchIndex = 0; batchIndex < numBatches; batchIndex++)
             {
-                // Get a chunk of data (batch) for processing
+                // get subset (batch) of cases to process in this iteration
                 var caseDtoBatch = fieldData.Skip(batchIndex * batchSize).Take(batchSize).ToList();
                 var caseModelList = new List<CaseModel>();
 

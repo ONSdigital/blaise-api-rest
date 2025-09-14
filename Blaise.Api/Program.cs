@@ -1,7 +1,7 @@
-using System.ServiceProcess;
-
 namespace Blaise.Api
 {
+    using System.ServiceProcess;
+
     internal class Program
     {
         private static void Main()

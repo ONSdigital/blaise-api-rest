@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces.Services;
-
 namespace Blaise.Api.Core.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using Blaise.Api.Core.Extensions;
+    using Blaise.Api.Core.Interfaces.Services;
+
     public class CatiDataBlockService : ICatiDataBlockService
     {
         public void RemoveCatiManaBlock(Dictionary<string, string> fieldData)
@@ -41,7 +41,8 @@ namespace Blaise.Api.Core.Services
 
         public void AddCatiManaCallItems(
             Dictionary<string, string> newFieldData,
-            Dictionary<string, string> existingFieldData, int outcomeCode)
+            Dictionary<string, string> existingFieldData,
+            int outcomeCode)
         {
             var catiCallItems = BuildCatiManaRegCallItems(
                 existingFieldData,
@@ -64,9 +65,7 @@ namespace Blaise.Api.Core.Services
 
             newFieldData.Add(
                 "CatiMana.CatiCall.FirstDay",
-                string.IsNullOrWhiteSpace(existingFieldValue)
-                    ? DateTime.Now.ToString("ddMMyyyy", CultureInfo.InvariantCulture)
-                    : existingFieldValue);
+                string.IsNullOrWhiteSpace(existingFieldValue) ? DateTime.Now.ToString("ddMMyyyy", CultureInfo.InvariantCulture) : existingFieldValue);
         }
 
         public void AddCatiManaNrOfCallItem(
@@ -75,9 +74,7 @@ namespace Blaise.Api.Core.Services
         {
             newFieldData.Add(
                 "CatiMana.CatiCall.NrOfCall",
-                int.TryParse(existingFieldData["CatiMana.CatiCall.NrOfCall"], out var numberOfCalls)
-                    ? (numberOfCalls + 1).ToString()
-                    : "1");
+                int.TryParse(existingFieldData["CatiMana.CatiCall.NrOfCall"], out var numberOfCalls) ? (numberOfCalls + 1).ToString() : "1");
         }
 
         public Dictionary<string, string> BuildCatiManaRegCallItems(Dictionary<string, string> fieldData, int outcomeCode)
@@ -102,11 +99,13 @@ namespace Blaise.Api.Core.Services
                 { $"CatiMana.CatiCall.RegsCalls[{entryNumber}].DayNumber", "1" },
                 { $"CatiMana.CatiCall.RegsCalls[{entryNumber}].DialTime", $"{DateTime.Now:HH:mm:ss}" },
                 { $"CatiMana.CatiCall.RegsCalls[{entryNumber}].NrOfDials", "1" },
-                { $"CatiMana.CatiCall.RegsCalls[{entryNumber}].DialResult", outcomeCode == 110 ? "1" : "2" }
+                { $"CatiMana.CatiCall.RegsCalls[{entryNumber}].DialResult", outcomeCode == 110 ? "1" : "2" },
             };
         }
 
-        private static Dictionary<string, string> BuildTelCatiCallItems(IReadOnlyDictionary<string, string> fieldData, int newEntryNumber,
+        private static Dictionary<string, string> BuildTelCatiCallItems(
+            IReadOnlyDictionary<string, string> fieldData,
+            int newEntryNumber,
             int existingEntryNumber)
         {
             return new Dictionary<string, string>
@@ -115,7 +114,7 @@ namespace Blaise.Api.Core.Services
                 { $"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].DayNumber", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].DayNumber"] },
                 { $"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].DialTime", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].DialTime"] },
                 { $"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].NrOfDials", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].NrOfDials"] },
-                { $"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].DialResult", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].DialResult"] }
+                { $"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].DialResult", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].DialResult"] },
             };
         }
     }

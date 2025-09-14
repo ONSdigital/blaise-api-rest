@@ -1,7 +1,7 @@
-using System.Runtime.Serialization;
-
 namespace Blaise.Api.Contracts.Enums
 {
+    using System.Runtime.Serialization;
+
     public enum HealthCheckType
     {
         [EnumMember(Value = "Connection model")]
@@ -14,6 +14,6 @@ namespace Blaise.Api.Contracts.Enums
         RemoteDataServer,
 
         [EnumMember(Value = "Remote Cati management connection")]
-        RemoteCatiManagement
+        RemoteCatiManagement,
     }
 }

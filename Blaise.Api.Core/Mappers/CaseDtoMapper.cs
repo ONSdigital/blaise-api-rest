@@ -1,14 +1,14 @@
-using System.Collections.Generic;
-using Blaise.Api.Contracts.Enums;
-using Blaise.Api.Contracts.Models.Case;
-using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using Blaise.Nuget.Api.Contracts.Models;
-using StatNeth.Blaise.API.DataRecord;
-
 namespace Blaise.Api.Core.Mappers
 {
+    using System.Collections.Generic;
+    using Blaise.Api.Contracts.Enums;
+    using Blaise.Api.Contracts.Models.Case;
+    using Blaise.Api.Core.Extensions;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using Blaise.Nuget.Api.Contracts.Models;
+    using StatNeth.Blaise.API.DataRecord;
+
     public class CaseDtoMapper : ICaseDtoMapper
     {
         private readonly IBlaiseCaseApi _blaiseCaseApi;
@@ -25,11 +25,10 @@ namespace Blaise.Api.Core.Mappers
             foreach (var caseStatus in caseStatusModelList)
             {
                 caseStatusDtoList.Add(
-
                     new CaseStatusDto
                     {
                         PrimaryKey = caseStatus.PrimaryKey,
-                        Outcome = caseStatus.Outcome
+                        Outcome = caseStatus.Outcome,
                     });
             }
 
@@ -41,7 +40,7 @@ namespace Blaise.Api.Core.Mappers
             return new CaseDto
             {
                 CaseId = caseId,
-                FieldData = _blaiseCaseApi.GetRecordDataFields(caseRecord)
+                FieldData = _blaiseCaseApi.GetRecordDataFields(caseRecord),
             };
         }
 
@@ -50,7 +49,7 @@ namespace Blaise.Api.Core.Mappers
             return new CaseMultikeyDto
             {
                 PrimaryKeyValues = primaryKeyValues,
-                FieldData = _blaiseCaseApi.GetRecordDataFields(caseRecord)
+                FieldData = _blaiseCaseApi.GetRecordDataFields(caseRecord),
             };
         }
 

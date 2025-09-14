@@ -1,12 +1,12 @@
-using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.ServerPark;
-using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-
 namespace Blaise.Api.Core.Services
 {
+    using System.Collections.Generic;
+    using Blaise.Api.Contracts.Models.ServerPark;
+    using Blaise.Api.Core.Extensions;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+
     public class ServerParkService : IServerParkService
     {
         private readonly IBlaiseServerParkApi _blaiseApi;
