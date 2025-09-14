@@ -1,8 +1,8 @@
-﻿using System;
-using Blaise.Api.Contracts.Interfaces;
-
 namespace Blaise.Api.Logging.Services
 {
+    using System;
+    using Blaise.Api.Contracts.Interfaces;
+
     public class ConsoleLogging : ILoggingService
     {
         public void LogInfo(string message)

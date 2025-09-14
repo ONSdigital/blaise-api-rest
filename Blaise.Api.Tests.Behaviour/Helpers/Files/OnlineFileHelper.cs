@@ -1,17 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Blaise.Api.Tests.Behaviour.Helpers.Case;
-using Blaise.Api.Tests.Behaviour.Helpers.Cloud;
-using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
-using Blaise.Api.Tests.Behaviour.Helpers.Extensions;
-using Blaise.Api.Tests.Behaviour.Models.Case;
-using Blaise.Api.Tests.Behaviour.Models.Enums;
-
 namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Blaise.Api.Tests.Behaviour.Helpers.Case;
+    using Blaise.Api.Tests.Behaviour.Helpers.Cloud;
+    using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
+    using Blaise.Api.Tests.Behaviour.Helpers.Extensions;
+    using Blaise.Api.Tests.Behaviour.Models.Case;
+    using Blaise.Api.Tests.Behaviour.Models.Enums;
+
     public class OnlineFileHelper
     {
         private static OnlineFileHelper _currentInstance;

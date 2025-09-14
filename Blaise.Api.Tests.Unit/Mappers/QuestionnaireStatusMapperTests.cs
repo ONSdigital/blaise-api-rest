@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Blaise.Api.Core.Mappers;
-using Blaise.Nuget.Api.Contracts.Enums;
-using Blaise.Nuget.Api.Contracts.Extensions;
-using Moq;
-using NUnit.Framework;
-using StatNeth.Blaise.API.ServerManager;
-
 namespace Blaise.Api.Tests.Unit.Mappers
 {
+    using System;
+    using System.Collections.Generic;
+    using Blaise.Api.Core.Mappers;
+    using Blaise.Nuget.Api.Contracts.Enums;
+    using Blaise.Nuget.Api.Contracts.Extensions;
+    using Moq;
+    using NUnit.Framework;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class QuestionnaireStatusMapperTests
     {
         private QuestionnaireStatusMapper _sut;
@@ -31,7 +31,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             {
                 _iConfiguration1Mock.Object,
                 _iConfiguration2Mock.Object,
-                _iConfiguration3Mock.Object
+                _iConfiguration3Mock.Object,
             };
 
             _surveyMock.Setup(s => s.Configuration.Configurations).Returns(iConfigurations);

@@ -1,22 +1,22 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Blaise.Api.Logging.Services;
-using Blaise.Api.Tests.Behaviour.Helpers.Case;
-using Blaise.Api.Tests.Behaviour.Helpers.Cloud;
-using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
-using Blaise.Api.Tests.Behaviour.Helpers.Extensions;
-using Blaise.Api.Tests.Behaviour.Models.Case;
-
 namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Blaise.Api.Logging.Services;
+    using Blaise.Api.Tests.Behaviour.Helpers.Case;
+    using Blaise.Api.Tests.Behaviour.Helpers.Cloud;
+    using Blaise.Api.Tests.Behaviour.Helpers.Configuration;
+    using Blaise.Api.Tests.Behaviour.Helpers.Extensions;
+    using Blaise.Api.Tests.Behaviour.Models.Case;
+
     public class IngestFileHelper
     {
-        private static IngestFileHelper _currentInstance;
-        private readonly TestEventLogging _logging = new TestEventLogging();
         public static string IngestDatabaseFile = $"{BlaiseConfigurationHelper.QuestionnaireName}.bdix";
         public static string IngestFile = $"{BlaiseConfigurationHelper.QuestionnaireName}.zip";
+        private static IngestFileHelper _currentInstance;
+        private readonly TestEventLogging _logging = new TestEventLogging();
 
         public static IngestFileHelper GetInstance()
         {

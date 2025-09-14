@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.Cati;
-
 namespace Blaise.Api.Core.Interfaces.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using Blaise.Api.Contracts.Models.Cati;
+
     public interface ICatiService
     {
         List<CatiQuestionnaireDto> GetCatiQuestionnaires();

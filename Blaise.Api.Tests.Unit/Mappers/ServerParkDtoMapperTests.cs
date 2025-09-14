@@ -1,18 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Models.Questionnaire;
-using Blaise.Api.Contracts.Models.ServerPark;
-using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Api.Core.Mappers;
-using Blaise.Nuget.Api.Contracts.Enums;
-using Blaise.Nuget.Api.Contracts.Extensions;
-using Moq;
-using NUnit.Framework;
-using StatNeth.Blaise.API.ServerManager;
-
 namespace Blaise.Api.Tests.Unit.Mappers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Blaise.Api.Contracts.Models.Questionnaire;
+    using Blaise.Api.Contracts.Models.ServerPark;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using Blaise.Api.Core.Mappers;
+    using Blaise.Nuget.Api.Contracts.Enums;
+    using Blaise.Nuget.Api.Contracts.Extensions;
+    using Moq;
+    using NUnit.Framework;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class ServerParkDtoMapperTests
     {
         private ServerParkDtoMapper _sut;
@@ -47,7 +47,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var serverParks = new List<IServerPark>
             {
                 serverPark1.Object,
-                serverPark2.Object
+                serverPark2.Object,
             };
 
             // act
@@ -136,7 +136,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 Name = "OPN2010A",
                 ServerParkName = "ServerParkA",
                 InstallDate = DateTime.Today.AddDays(-2),
-                Status = QuestionnaireStatusType.Inactive.FullName()
+                Status = QuestionnaireStatusType.Inactive.FullName(),
             };
 
             var questionnaire2Dto = new QuestionnaireDto
@@ -144,7 +144,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 Name = "OPN2010B",
                 ServerParkName = "ServerParkB",
                 InstallDate = DateTime.Today,
-                Status = QuestionnaireStatusType.Inactive.FullName()
+                Status = QuestionnaireStatusType.Inactive.FullName(),
             };
 
             _questionnaireDtoMapperMock.Setup(m => m.MapToQuestionnaireDtos(

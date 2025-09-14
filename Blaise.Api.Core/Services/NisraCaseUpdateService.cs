@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using StatNeth.Blaise.API.DataRecord;
-
 namespace Blaise.Api.Core.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using StatNeth.Blaise.API.DataRecord;
+
     public class NisraCaseUpdateService : INisraCaseUpdateService
     {
         private readonly IBlaiseCaseApi _blaiseApi;
@@ -63,24 +63,27 @@ namespace Blaise.Api.Core.Services
             var newFieldData = _blaiseApi.GetRecordDataFields(newDataRecord);
             var existingFieldData = _blaiseApi.GetRecordDataFields(existingDataRecord);
 
-            // we need to preserve the TO CatiMana block data sp remove the fields from WEB
+            // we need to preserve the CatiMana block so remove it from web
             _catiDataService.RemoveCatiManaBlock(newFieldData);
 
-            // we need to preserve the TO CallHistory block data captured in Cati
+            // we need to preserve the CallHistory block so remove it from web
             _catiDataService.RemoveCallHistoryBlock(newFieldData);
 
-            // we need to preserve the web nudged field
+            // we need to preserve the WebNudged field so remove it from web
             _catiDataService.RemoveWebNudgedField(newFieldData);
 
-            // add the existing cati call data with additional items to the new field data
+            // merge existing CATI call data into web
             var outcomeCode = _blaiseApi.GetOutcomeCode(newDataRecord);
             _catiDataService.AddCatiManaCallItems(newFieldData, existingFieldData, outcomeCode);
 
             return newFieldData;
         }
 
-        internal bool RecordHasBeenUpdated(string primaryKey, IDataRecord newDataRecord,
-            string questionnaireName, string serverParkName)
+        internal bool RecordHasBeenUpdated(
+            string primaryKey,
+            IDataRecord newDataRecord,
+            string questionnaireName,
+            string serverParkName)
         {
             var primaryKeyValues = new Dictionary<string, string> { { "QID.Serial_Number", primaryKey } };
             var existingRecord = _blaiseApi.GetCase(primaryKeyValues, questionnaireName, serverParkName);

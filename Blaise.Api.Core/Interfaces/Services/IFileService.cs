@@ -1,4 +1,4 @@
-﻿namespace Blaise.Api.Core.Interfaces.Services
+namespace Blaise.Api.Core.Interfaces.Services
 {
     public interface IFileService
     {

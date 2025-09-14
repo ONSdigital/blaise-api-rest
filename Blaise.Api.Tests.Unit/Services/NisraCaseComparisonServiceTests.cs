@@ -1,18 +1,16 @@
-﻿using System;
-using System.Globalization;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Core.Services;
-using Blaise.Api.Tests.Unit.Helpers;
-using Blaise.Nuget.Api.Contracts.Models;
-using Moq;
-using NUnit.Framework;
-
 namespace Blaise.Api.Tests.Unit.Services
 {
+    using System;
+    using System.Globalization;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Core.Services;
+    using Blaise.Api.Tests.Unit.Helpers;
+    using Blaise.Nuget.Api.Contracts.Models;
+    using Moq;
+    using NUnit.Framework;
+
     public class NisraCaseComparisonServiceTests
     {
-        private Mock<ILoggingService> _loggingMock;
-
         private readonly string _questionnaireName = "OPN2101A";
         private readonly string _primaryKey = "900000";
         private readonly int _hOutComplete = 110;
@@ -21,7 +19,7 @@ namespace Blaise.Api.Tests.Unit.Services
         private readonly int _hOutNotStarted = 0;
         private readonly string _date1 = DateTime.Now.AddHours(-1).ToString(CultureInfo.InvariantCulture);
         private readonly string _date2 = DateTime.Now.AddHours(-2).ToString(CultureInfo.InvariantCulture);
-
+        private Mock<ILoggingService> _loggingMock;
         private NisraCaseComparisonService _sut;
 
         [SetUp]
@@ -329,7 +327,9 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(primaryKeyValues, _hOutComplete, _date1);
 
             // act
-            var result = _sut.NisraRecordHasAlreadyBeenProcessed(nisraCaseStatusModel, existingCaseStatusModel,
+            var result = _sut.NisraRecordHasAlreadyBeenProcessed(
+                nisraCaseStatusModel,
+                existingCaseStatusModel,
                 _questionnaireName);
 
             // assert
@@ -346,7 +346,9 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(primaryKeyValues, _hOutPartial, _date1);
 
             // act
-            var result = _sut.NisraRecordHasAlreadyBeenProcessed(nisraCaseStatusModel, existingCaseStatusModel,
+            var result = _sut.NisraRecordHasAlreadyBeenProcessed(
+                nisraCaseStatusModel,
+                existingCaseStatusModel,
                 _questionnaireName);
 
             // assert
@@ -379,7 +381,9 @@ namespace Blaise.Api.Tests.Unit.Services
             var existingCaseStatusModel = new CaseStatusModel(primaryKeyValues, _hOutComplete, _date2);
 
             // act
-            var result = _sut.NisraRecordHasAlreadyBeenProcessed(nisraCaseStatusModel, existingCaseStatusModel,
+            var result = _sut.NisraRecordHasAlreadyBeenProcessed(
+                nisraCaseStatusModel,
+                existingCaseStatusModel,
                 _questionnaireName);
 
             // assert

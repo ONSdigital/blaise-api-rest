@@ -1,14 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web.Http;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Contracts.Models.ServerPark;
-using Blaise.Api.Core.Interfaces.Services;
-using Swashbuckle.Swagger.Annotations;
-
 namespace Blaise.Api.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Web.Http;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Contracts.Models.ServerPark;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Swashbuckle.Swagger.Annotations;
+
     [RoutePrefix("api/v2/serverparks")]
     public class ServerParkController : BaseController
     {

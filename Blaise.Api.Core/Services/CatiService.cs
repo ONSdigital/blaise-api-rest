@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.Cati;
-using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Nuget.Api.Contracts.Exceptions;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using StatNeth.Blaise.API.ServerManager;
-
-// ReSharper disable PossibleInvalidOperationException
 namespace Blaise.Api.Core.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using Blaise.Api.Contracts.Models.Cati;
+    using Blaise.Api.Core.Extensions;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Nuget.Api.Contracts.Exceptions;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class CatiService : ICatiService
     {
         private readonly IBlaiseCatiApi _blaiseCatiApi;
@@ -68,8 +67,11 @@ namespace Blaise.Api.Core.Services
             createDayBatchDto.DayBatchDate.ThrowExceptionIfNull("createDayBatchDto.DayBatchDate");
             createDayBatchDto.CheckForTreatedCases.ThrowExceptionIfNull("createDayBatchDto.CheckForTreatedCases");
 
-            var dayBatchModel = _blaiseCatiApi.CreateDayBatch(questionnaireName, serverParkName,
-                (DateTime)createDayBatchDto.DayBatchDate, (bool)createDayBatchDto.CheckForTreatedCases);
+            var dayBatchModel = _blaiseCatiApi.CreateDayBatch(
+                questionnaireName,
+                serverParkName,
+                (DateTime)createDayBatchDto.DayBatchDate,
+                (bool)createDayBatchDto.CheckForTreatedCases);
 
             return _mapper.MapToDayBatchDto(dayBatchModel);
         }

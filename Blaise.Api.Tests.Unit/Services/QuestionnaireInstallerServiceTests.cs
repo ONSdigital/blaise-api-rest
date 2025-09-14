@@ -1,16 +1,16 @@
-﻿using System;
-using System.Threading.Tasks;
-using Blaise.Api.Contracts.Models.Questionnaire;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Core.Services;
-using Blaise.Api.Storage.Interfaces;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using Moq;
-using NUnit.Framework;
-using StatNeth.Blaise.API.ServerManager;
-
 namespace Blaise.Api.Tests.Unit.Services
 {
+    using System;
+    using System.Threading.Tasks;
+    using Blaise.Api.Contracts.Models.Questionnaire;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Api.Core.Services;
+    using Blaise.Api.Storage.Interfaces;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using Moq;
+    using NUnit.Framework;
+    using StatNeth.Blaise.API.ServerManager;
+
     public class QuestionnaireInstallerServiceTests
     {
         private QuestionnaireInstallerService _sut;
@@ -42,7 +42,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _questionnairePackageDto = new QuestionnairePackageDto
             {
-                QuestionnaireFile = _questionnaireFile
+                QuestionnaireFile = _questionnaireFile,
             };
 
             _sut = new QuestionnaireInstallerService(
@@ -80,12 +80,16 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.Verify(v => v.UpdateQuestionnaireFileWithSqlConnection(questionnaireFilePath), Times.Once);
             _fileServiceMock.Verify(v => v.GetQuestionnaireNameFromFile(_questionnaireFile), Times.Once);
             _blaiseQuestionnaireApiMock.Verify(
-                v => v.InstallQuestionnaire(_questionnaireName, _serverParkName,
-                questionnaireFilePath, It.Is<IInstallOptions>(i =>
+                v => v.InstallQuestionnaire(
+                    _questionnaireName,
+                    _serverParkName,
+                    questionnaireFilePath,
+                    It.Is<IInstallOptions>(i =>
                     i.DataEntrySettingsName == "StrictInterviewing" &&
                     i.InitialAppLayoutSetGroupName == "CATI" &&
                     i.LayoutSetGroupName == "CATI" &&
-                    i.OverwriteMode == DataOverwriteMode.Always)), Times.Once);
+                    i.OverwriteMode == DataOverwriteMode.Always)),
+                Times.Once);
         }
 
         [Test]
@@ -121,40 +125,44 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_InstallQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.InstallQuestionnaireAsync(
                 string.Empty,
-                _questionnairePackageDto, _tempPath));
+                _questionnairePackageDto,
+                _tempPath));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_InstallQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.InstallQuestionnaireAsync(
                 null,
-                _questionnairePackageDto, _tempPath));
+                _questionnairePackageDto,
+                _tempPath));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
         [Test]
         public void Given_An_Empty_TempFilePath_When_I_Call_InstallQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.InstallQuestionnaireAsync(
                 _serverParkName,
-                _questionnairePackageDto, string.Empty));
+                _questionnairePackageDto,
+                string.Empty));
             Assert.AreEqual("A value for the argument 'tempFilePath' must be supplied", exception.Message);
         }
 
         [Test]
         public void Given_A_Null_TempFilePath_When_I_Call_InstallQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.InstallQuestionnaireAsync(
                 _serverParkName,
-                _questionnairePackageDto, null));
+                _questionnairePackageDto,
+                null));
             Assert.AreEqual("tempFilePath", exception.ParamName);
         }
     }

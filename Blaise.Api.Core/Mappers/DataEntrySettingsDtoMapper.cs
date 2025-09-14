@@ -1,10 +1,10 @@
-using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.Questionnaire;
-using Blaise.Api.Core.Interfaces.Mappers;
-using Blaise.Nuget.Api.Contracts.Models;
-
 namespace Blaise.Api.Core.Mappers
 {
+    using System.Collections.Generic;
+    using Blaise.Api.Contracts.Models.Questionnaire;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using Blaise.Nuget.Api.Contracts.Models;
+
     public class DataEntrySettingsDtoMapper : IDataEntrySettingsDtoMapper
     {
         public IEnumerable<DataEntrySettingsDto> MapDataEntrySettingsDtos(IEnumerable<DataEntrySettingsModel> dataEntrySettingsModels)
@@ -21,7 +21,7 @@ namespace Blaise.Api.Core.Mappers
                     DeleteSessionOnTimeout = dataEntrySettingsModel.DeleteSessionOnTimeout,
                     DeleteSessionOnQuit = dataEntrySettingsModel.DeleteSessionOnQuit,
                     SessionTimeout = dataEntrySettingsModel.SessionTimeout,
-                    ApplyRecordLocking = dataEntrySettingsModel.ApplyRecordLocking
+                    ApplyRecordLocking = dataEntrySettingsModel.ApplyRecordLocking,
                 });
             }
 

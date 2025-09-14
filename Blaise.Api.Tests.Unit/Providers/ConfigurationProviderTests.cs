@@ -1,9 +1,9 @@
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Providers;
-using NUnit.Framework;
-
 namespace Blaise.Api.Tests.Unit.Providers
 {
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Providers;
+    using NUnit.Framework;
+
     public class ConfigurationProviderTests
     {
         /// <summary>

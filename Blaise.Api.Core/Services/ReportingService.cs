@@ -1,14 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Contracts.Models.Reports;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using StatNeth.Blaise.API.DataRecord;
-
 namespace Blaise.Api.Core.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Contracts.Models.Reports;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using StatNeth.Blaise.API.DataRecord;
+
     public class ReportingService : IReportingService
     {
         private readonly IBlaiseCaseApi _blaiseCaseApi;
@@ -25,8 +25,11 @@ namespace Blaise.Api.Core.Services
             _loggingService = loggingService;
         }
 
-        public ReportDto GetReportingData(string serverParkName, string questionnaireName,
-            List<string> fieldIds, string filter)
+        public ReportDto GetReportingData(
+            string serverParkName,
+            string questionnaireName,
+            List<string> fieldIds,
+            string filter)
         {
             var questionnaireId = _blaiseQuestionnaireApi.GetIdOfQuestionnaire(questionnaireName, serverParkName);
 
@@ -41,13 +44,17 @@ namespace Blaise.Api.Core.Services
             return BuildReportDto(serverParkName, questionnaireName, questionnaireId, fieldIds, filter);
         }
 
-        private ReportDto BuildReportDto(string serverParkName, string questionnaireName, Guid questionnaireId,
-            List<string> fieldIds, string filter)
+        private ReportDto BuildReportDto(
+            string serverParkName,
+            string questionnaireName,
+            Guid questionnaireId,
+            List<string> fieldIds,
+            string filter)
         {
             var reportDto = new ReportDto
             {
                 QuestionnaireName = questionnaireName,
-                QuestionnaireId = questionnaireId
+                QuestionnaireId = questionnaireId,
             };
 
             var cases = filter == null

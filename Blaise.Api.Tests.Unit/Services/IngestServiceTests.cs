@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Contracts.Models.Ingest;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Core.Services;
-using Blaise.Api.Storage.Interfaces;
-using Blaise.Api.Tests.Unit.Helpers;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using Blaise.Nuget.Api.Contracts.Models;
-using Moq;
-using NUnit.Framework;
-using StatNeth.Blaise.API.DataLink;
-using StatNeth.Blaise.API.DataRecord;
-
 namespace Blaise.Api.Tests.Unit.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Contracts.Models.Ingest;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Api.Core.Services;
+    using Blaise.Api.Storage.Interfaces;
+    using Blaise.Api.Tests.Unit.Helpers;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using Blaise.Nuget.Api.Contracts.Models;
+    using Moq;
+    using NUnit.Framework;
+    using StatNeth.Blaise.API.DataLink;
+    using StatNeth.Blaise.API.DataRecord;
+
     public class IngestServiceTests
     {
         private IngestService _sut;
@@ -111,9 +111,12 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ingestDataDto_When_I_Call_IngestDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.IngestDataAsync(null, _serverParkName,
-                _questionnaireName, _tempPath));
+            // act and assert
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.IngestDataAsync(
+                null,
+                _serverParkName,
+                _questionnaireName,
+                _tempPath));
             Assert.AreEqual("The argument 'ingestDataDto' must be supplied", exception.ParamName);
         }
 
@@ -123,9 +126,12 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             _ingestDataDto.BucketFilePath = string.Empty;
 
-            // act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.IngestDataAsync(_ingestDataDto, _serverParkName,
-                _questionnaireName, _tempPath));
+            // act and assert
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.IngestDataAsync(
+                _ingestDataDto,
+                _serverParkName,
+                _questionnaireName,
+                _tempPath));
             Assert.AreEqual("A value for the argument 'ingestDataDto.BucketFilePath' must be supplied", exception.Message);
         }
 
@@ -135,63 +141,84 @@ namespace Blaise.Api.Tests.Unit.Services
             // arrange
             _ingestDataDto.BucketFilePath = null;
 
-            // act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.IngestDataAsync(_ingestDataDto, _serverParkName,
-               _questionnaireName, _tempPath));
+            // act and assert
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.IngestDataAsync(
+                _ingestDataDto,
+                _serverParkName,
+                _questionnaireName,
+                _tempPath));
             Assert.AreEqual("ingestDataDto.BucketFilePath", exception.ParamName);
         }
 
         [Test]
         public void Given_An_Empty_questionnaireName_When_I_Call_IngestDataAsync_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.IngestDataAsync(_ingestDataDto, _serverParkName,
-                string.Empty, _tempPath));
+            // act and assert
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.IngestDataAsync(
+                _ingestDataDto,
+                _serverParkName,
+                string.Empty,
+                _tempPath));
             Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
         }
 
         [Test]
         public void Given_A_Null_questionnaireName_When_I_Call_IngestDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.IngestDataAsync(_ingestDataDto, _serverParkName,
-               null, _tempPath));
+            // act and assert
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.IngestDataAsync(
+                _ingestDataDto,
+                _serverParkName,
+                null,
+                _tempPath));
             Assert.AreEqual("questionnaireName", exception.ParamName);
         }
 
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_IngestDataAsync_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.IngestDataAsync(_ingestDataDto, string.Empty,
-                _questionnaireName, _tempPath));
+            // act and assert
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.IngestDataAsync(
+                _ingestDataDto,
+                string.Empty,
+                _questionnaireName,
+                _tempPath));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_IngestDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.IngestDataAsync(_ingestDataDto, null,
-                _questionnaireName, _tempPath));
+            // act and assert
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.IngestDataAsync(
+                _ingestDataDto,
+                null,
+                _questionnaireName,
+                _tempPath));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
         [Test]
         public void Given_An_Empty_TempFilePath_When_I_Call_IngestDataAsync_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.IngestDataAsync(_ingestDataDto, _serverParkName,
-                _questionnaireName, string.Empty));
+            // act and assert
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.IngestDataAsync(
+                _ingestDataDto,
+                _serverParkName,
+                _questionnaireName,
+                string.Empty));
             Assert.AreEqual("A value for the argument 'tempFilePath' must be supplied", exception.Message);
         }
 
         [Test]
         public void Given_A_Null_TempFilePath_When_I_Call_IngestDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.IngestDataAsync(_ingestDataDto, _serverParkName,
-                _questionnaireName, null));
+            // act and assert
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.IngestDataAsync(
+                _ingestDataDto,
+                _serverParkName,
+                _questionnaireName,
+                null));
             Assert.AreEqual("tempFilePath", exception.ParamName);
         }
     }

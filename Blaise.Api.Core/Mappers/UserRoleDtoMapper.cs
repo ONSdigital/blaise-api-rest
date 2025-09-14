@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
-using Blaise.Api.Contracts.Models.UserRole;
-using Blaise.Api.Core.Interfaces.Mappers;
-using StatNeth.Blaise.API.Security;
-
 namespace Blaise.Api.Core.Mappers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Blaise.Api.Contracts.Models.UserRole;
+    using Blaise.Api.Core.Interfaces.Mappers;
+    using StatNeth.Blaise.API.Security;
+
     public class UserRoleDtoMapper : IUserRoleDtoMapper
     {
         public IEnumerable<UserRoleDto> MapToUserRoleDtos(IEnumerable<IRole> roles)
@@ -28,7 +28,7 @@ namespace Blaise.Api.Core.Mappers
                 Description = role.Description,
                 Permissions = role.Permissions
                     .Where(p => p.Permission == PermissionStatus.Allowed)
-                    .Select(p => p.Action)
+                    .Select(p => p.Action),
             };
         }
     }

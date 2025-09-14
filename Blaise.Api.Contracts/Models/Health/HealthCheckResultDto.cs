@@ -1,8 +1,8 @@
-using Blaise.Api.Contracts.Enums;
-using Newtonsoft.Json;
-
 namespace Blaise.Api.Contracts.Models.Health
 {
+    using Blaise.Api.Contracts.Enums;
+    using Newtonsoft.Json;
+
     public class HealthCheckResultDto
     {
         [JsonProperty(PropertyName = "Health check type")]

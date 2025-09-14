@@ -1,10 +1,10 @@
-﻿using System;
-using System.ServiceProcess;
-using Blaise.Api.Providers;
-using Microsoft.Owin.Hosting;
-
 namespace Blaise.Api
 {
+    using System;
+    using System.ServiceProcess;
+    using Blaise.Api.Providers;
+    using Microsoft.Owin.Hosting;
+
     internal partial class ApiService : ServiceBase
     {
         private IDisposable _server;

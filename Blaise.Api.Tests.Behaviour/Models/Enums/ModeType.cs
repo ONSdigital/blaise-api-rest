@@ -4,6 +4,6 @@ namespace Blaise.Api.Tests.Behaviour.Models.Enums
     {
         Tel,
         Ftf,
-        Web
+        Web,
     }
 }

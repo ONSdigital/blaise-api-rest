@@ -1,11 +1,11 @@
-﻿using System;
-using Blaise.Api.Core.Services;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using Moq;
-using NUnit.Framework;
-
 namespace Blaise.Api.Tests.Unit.Services
 {
+    using System;
+    using Blaise.Api.Core.Services;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using Moq;
+    using NUnit.Framework;
+
     public class QuestionnaireUninstallerServiceTests
     {
         private QuestionnaireUninstallerService _sut;
@@ -52,7 +52,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_QuestionnaireName_When_I_Call_UninstallQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UninstallQuestionnaire(
                 string.Empty,
                 _serverParkName));
@@ -62,7 +62,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_QuestionnaireName_When_I_Call_UninstallQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UninstallQuestionnaire(
                 null,
                 _serverParkName));
@@ -72,7 +72,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_UninstallQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UninstallQuestionnaire(
                 _questionnaireName,
                 string.Empty));
@@ -82,7 +82,7 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_UninstallQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
-            // act && assert
+            // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UninstallQuestionnaire(
                 _questionnaireName,
                 null));

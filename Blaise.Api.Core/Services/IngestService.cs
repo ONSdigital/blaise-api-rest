@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Contracts.Models.Ingest;
-using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Storage.Interfaces;
-using Blaise.Nuget.Api.Contracts.Interfaces;
-using Blaise.Nuget.Api.Contracts.Models;
-using StatNeth.Blaise.API.DataRecord;
-
 namespace Blaise.Api.Core.Services
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Contracts.Models.Ingest;
+    using Blaise.Api.Core.Extensions;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Blaise.Api.Storage.Interfaces;
+    using Blaise.Nuget.Api.Contracts.Interfaces;
+    using Blaise.Nuget.Api.Contracts.Models;
+    using StatNeth.Blaise.API.DataRecord;
+
     public class IngestService : IIngestService
     {
         private readonly IBlaiseCaseApi _blaiseApi;
@@ -30,7 +30,10 @@ namespace Blaise.Api.Core.Services
             _loggingService = loggingService;
         }
 
-        public async Task IngestDataAsync(IngestDataDto ingestDataDto, string serverParkName, string questionnaireName,
+        public async Task IngestDataAsync(
+            IngestDataDto ingestDataDto,
+            string serverParkName,
+            string questionnaireName,
             string tempFilePath)
         {
             ingestDataDto.ThrowExceptionIfNull("ingestDataDto");

@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web.Http;
-using System.Web.Http.Description;
-using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Contracts.Models.Case;
-using Blaise.Api.Core.Interfaces.Services;
-using Swashbuckle.Swagger.Annotations;
-
 namespace Blaise.Api.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Web.Http;
+    using System.Web.Http.Description;
+    using Blaise.Api.Contracts.Interfaces;
+    using Blaise.Api.Contracts.Models.Case;
+    using Blaise.Api.Core.Interfaces.Services;
+    using Swashbuckle.Swagger.Annotations;
+
     [RoutePrefix("api/v2/serverparks/{serverParkName}/questionnaires/{questionnaireName}/cases")]
     public class CaseController : BaseController
     {
@@ -135,7 +135,10 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult CreateCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] string caseId,
+        public IHttpActionResult CreateCase(
+            [FromUri] string serverParkName,
+            [FromUri] string questionnaireName,
+            [FromUri] string caseId,
             [FromBody] Dictionary<string, string> fieldData)
         {
             _loggingService.LogInfo($"Attempting to create case '{caseId}'");
@@ -152,7 +155,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult CreateCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues,
+        public IHttpActionResult CreateCase(
+            [FromUri] string serverParkName,
+            [FromUri] string questionnaireName,
+            [FromUri] List<string> keyNames,
+            [FromUri] List<string> keyValues,
             [FromBody] Dictionary<string, string> fieldData)
         {
             _loggingService.LogInfo($"Attempting to create case with multikey parameters '{keyNames} {keyValues}'");
@@ -168,8 +175,10 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.Created, Type = typeof(string))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult CreateCases([FromUri] string serverParkName, [FromUri] string questionnaireName,
-                                             [FromBody] List<CaseDto> caseData)
+        public IHttpActionResult CreateCases(
+            [FromUri] string serverParkName,
+            [FromUri] string questionnaireName,
+            [FromBody] List<CaseDto> caseData)
         {
             if (caseData == null || !caseData.Any())
             {
@@ -194,7 +203,10 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult UpdateCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] string caseId,
+        public IHttpActionResult UpdateCase(
+            [FromUri] string serverParkName,
+            [FromUri] string questionnaireName,
+            [FromUri] string caseId,
             [FromBody] Dictionary<string, string> fieldData)
         {
             _loggingService.LogInfo($"Attempting to update case '{caseId}'");
@@ -211,7 +223,11 @@ namespace Blaise.Api.Controllers
         [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult UpdateCase([FromUri] string serverParkName, [FromUri] string questionnaireName, [FromUri] List<string> keyNames, [FromUri] List<string> keyValues,
+        public IHttpActionResult UpdateCase(
+            [FromUri] string serverParkName,
+            [FromUri] string questionnaireName,
+            [FromUri] List<string> keyNames,
+            [FromUri] List<string> keyValues,
             [FromBody] Dictionary<string, string> fieldData)
         {
             _loggingService.LogInfo($"Attempting to update case with multikey parameters '{keyNames} {keyValues}'");

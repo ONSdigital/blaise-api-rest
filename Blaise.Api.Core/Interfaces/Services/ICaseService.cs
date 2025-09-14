@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.Case;
-
 namespace Blaise.Api.Core.Interfaces.Services
 {
+    using System.Collections.Generic;
+    using Blaise.Api.Contracts.Models.Case;
+
     public interface ICaseService
     {
         List<string> GetCaseIds(string serverParkName, string questionnaireName);
@@ -17,10 +17,17 @@ namespace Blaise.Api.Core.Interfaces.Services
 
         int CreateCases(List<CaseDto> fieldData, string questionnaireName, string serverParkName);
 
-        void CreateCase(string serverParkName, string questionnaireName, string caseId,
+        void CreateCase(
+            string serverParkName,
+            string questionnaireName,
+            string caseId,
             Dictionary<string, string> fieldData);
 
-        void CreateCase(string serverParkName, string questionnaireName, List<string> keyNames, List<string> keyValues,
+        void CreateCase(
+            string serverParkName,
+            string questionnaireName,
+            List<string> keyNames,
+            List<string> keyValues,
             Dictionary<string, string> fieldData);
 
         void UpdateCase(string serverParkName, string questionnaireName, string caseId, Dictionary<string, string> fieldData);

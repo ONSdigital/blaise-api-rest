@@ -1,4 +1,4 @@
-﻿namespace Blaise.Api.Contracts.Interfaces
+namespace Blaise.Api.Contracts.Interfaces
 {
     public interface IConfigurationProvider
     {
