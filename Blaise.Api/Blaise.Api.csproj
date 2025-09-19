@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="System.ServiceProcess.ServiceController" version="9.0.8" />
-    <PackageReference Include="Blaise.Nuget.Api" version="2025.9.18.1-BLAIS5-restapifix" />
-    <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.9.18.1-BLAIS5-restapifix" />
+    <PackageReference Include="Blaise.Nuget.Api" version="2025.9.19.1-BLAIS5-restapifix" />
+    <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.9.19.1-BLAIS5-restapifix" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
     <PackageReference Include="MySql.Data" Version="9.4.0" />
     <PackageReference Include="Swashbuckle" Version="5.6.0" />
