@@ -3,7 +3,7 @@
   <ItemGroup>
     <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="22.0.15" />
     <PackageReference Include="StatNeth.Blaise.API.x64" Version="5.14.13.3705" />
-    <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.9.22.1-BLAIS5-restapifix" />
+    <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.8.31.12-BLAIS5-4587-rich" />
     <PackageReference Include="NUnit" Version="3.14.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
