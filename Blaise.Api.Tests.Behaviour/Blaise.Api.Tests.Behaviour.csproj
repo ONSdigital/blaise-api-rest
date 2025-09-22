@@ -2,8 +2,8 @@
 
   <ItemGroup>
     <PackageReference Include="StatNeth.Blaise.API.x64" Version="5.14.13.3705" />
-    <PackageReference Include="Blaise.Nuget.Api" version="2025.9.3.3-BLAIS5-4587-rich" />
-    <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.9.3.3-BLAIS5-4587-rich" />
+    <PackageReference Include="Blaise.Nuget.Api" version="2025.9.3.5-mysql-data" />
+    <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.9.3.5-mysql-data" />
 
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
     <PackageReference Include="MySql.Data" Version="9.4.0" />
