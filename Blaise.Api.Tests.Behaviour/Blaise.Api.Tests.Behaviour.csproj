@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="StatNeth.Blaise.API.x64" Version="5.14.6.3686" />
-    <PackageReference Include="Blaise.Nuget.Api" version="2025.7.14.5-514" />
-    <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.7.14.5-514" />
+    <PackageReference Include="StatNeth.Blaise.API.x64" Version="5.14.13.3705" />
+    <PackageReference Include="Blaise.Nuget.Api" version="2025.9.22.1-BLAIS5-restapifix" />
+    <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.9.22.1-BLAIS5-restapifix" />
 
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
     <PackageReference Include="MySql.Data" Version="9.4.0" />
