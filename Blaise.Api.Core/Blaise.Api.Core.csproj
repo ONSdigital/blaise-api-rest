@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="Blaise.Nuget.Api" version="2025.8.31.12-BLAIS5-4587-rich" />
-    <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.8.31.12-BLAIS5-4587-rich" />
+    <PackageReference Include="Blaise.Nuget.Api" version="2025.9.3.3-BLAIS5-4587-rich" />
+    <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.9.3.3-BLAIS5-4587-rich" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
     <PackageReference Include="MySql.Data" Version="9.4.0" />
     <PackageReference Include="Polly" Version="8.6.3" />
