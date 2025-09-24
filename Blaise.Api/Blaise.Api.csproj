@@ -1,12 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <Reference Include="System.Web" />
+    <Reference Include="System.ServiceProcess" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blaise.Nuget.Api" Version="2025.9.23.3-BLAIS5-4951" />
-    <PackageReference Include="Blaise.Nuget.Api.Contracts" Version="2025.9.23.3-BLAIS5-4951" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.9" />
+    <PackageReference Include="Blaise.Nuget.Api" Version="2025.9.24.1-BLAIS5-4951" />
+    <PackageReference Include="Blaise.Nuget.Api.Contracts" Version="2025.9.24.1-BLAIS5-4951" />
     <PackageReference Include="Swashbuckle" Version="5.6.0" />
     <PackageReference Include="WebActivatorEx" Version="2.2.0" />
     <PackageReference Include="Unity.WebAPI" Version="5.4.0" />
