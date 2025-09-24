@@ -78,7 +78,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsTrue(result);
         }
 
-        // Scenario 4  (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
+        // Scenario 4 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [TestCase(210)]
         [TestCase(310)]
         [TestCase(430)]

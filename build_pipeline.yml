@@ -53,6 +53,7 @@ stages:
               solution: $(solutionPath)
               platform: $(buildPlatform)
               configuration: $(buildConfiguration)
+              vsVersion: latest
 
           - task: VSTest@2
             displayName: Run unit tests
