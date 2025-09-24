@@ -60,7 +60,7 @@ Scenario: There is an online file available that contains cases that already exi
 		| 900034     | 210     | Web  |
 	#scenario 18
 		| 900035     | 580     | Web  |
-	
+
 	And blaise contains the following cases
 		| primarykey | outcome | mode |
 	#scenario 1
@@ -274,7 +274,7 @@ Scenario: A case in the online file has already been processed
 	Then the online case is not imported again
 
 
-#Scenario 18 
+#Scenario 18
 Scenario: A case in the online file that is ineligible and in Blaise it marked as not started (0) we take the online case
 	Given there is a online file that contains a case that is ineligible
 	And the same case exists in Blaise with the outcome code '0'

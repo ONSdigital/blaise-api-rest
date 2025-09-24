@@ -25,8 +25,8 @@ stages:
 
           - task: UseDotNet@2
             inputs:
-               packageType: sdk
-               version: 8.x
+              packageType: sdk
+              version: 8.x
 
           - task: PowerShell@2
             displayName: Check code formatting
@@ -52,7 +52,7 @@ stages:
               solution: $(solutionPath)
               platform: $(buildPlatform)
               configuration: $(buildConfiguration)
-           
+
           - task: VSTest@2
             displayName: Run unit tests
             inputs:
