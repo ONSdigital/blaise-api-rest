@@ -15,13 +15,14 @@ stages:
     jobs:
       - job: build
         steps:
-          - task: NuGetCommand@2
+          - task: DotNetCoreCLI@2
             displayName: Run NuGet restore
             inputs:
               command: restore
-              restoreSolution: $(solutionPath)
+              projects: $(solutionPath)
               feedsToUse: select
               vstsFeed: fbaf94f7-2d40-410a-8a27-de142d8d2313/2d8c792e-c1ad-4a66-924d-5bc4fec5fca0
+              arguments: --runtime win-x64
 
           - task: UseDotNet@2
             inputs:
@@ -52,6 +53,7 @@ stages:
               solution: $(solutionPath)
               platform: $(buildPlatform)
               configuration: $(buildConfiguration)
+              msbuildArguments: /p:RuntimeIdentifier=win-x64
 
           - task: VSTest@2
             displayName: Run unit tests
