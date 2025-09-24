@@ -7,8 +7,8 @@
   <ItemGroup>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.9" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.9" />
-    <PackageReference Include="Blaise.Nuget.Api" Version="2025.9.24.2-BLAIS5-4951" />
-    <PackageReference Include="Blaise.Nuget.Api.Contracts" Version="2025.9.24.2-BLAIS5-4951" />
+    <PackageReference Include="Blaise.Nuget.Api" Version="2025.9.24.3-BLAIS5-4951" />
+    <PackageReference Include="Blaise.Nuget.Api.Contracts" Version="2025.9.24.3-BLAIS5-4951" />
     <PackageReference Include="Swashbuckle.Core" Version="5.6.0" />
     <PackageReference Include="WebActivatorEx" Version="2.2.0" />
     <PackageReference Include="Unity.WebAPI" Version="5.4.0" />
