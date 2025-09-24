@@ -54,6 +54,7 @@ stages:
               platform: $(buildPlatform)
               configuration: $(buildConfiguration)
               vsVersion: latest
+              restore: false
 
           - task: VSTest@2
             displayName: Run unit tests
