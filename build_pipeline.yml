@@ -8,7 +8,6 @@ variables:
   solutionPath: '**/*.sln'
   buildPlatform: x64
   buildConfiguration: Release
-  runtimeIdentifier: win-x64
 
 stages:
   - stage: BuildRestApi
@@ -47,12 +46,14 @@ stages:
                   exit 1
                 }
 
-          - task: DotNetCoreCLI@2
+          - task: VSBuild@1
             displayName: Build solution
             inputs:
-              command: build
-              projects: $(solutionPath)
-              arguments: --configuration $(buildConfiguration) --runtime $(runtimeIdentifier) --no-restore
+              solution: $(solutionPath)
+              platform: $(buildPlatform)
+              configuration: $(buildConfiguration)
+              vsVersion: latest
+              restore: false
 
           - task: VSTest@2
             displayName: Run unit tests
