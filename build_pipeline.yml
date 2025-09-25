@@ -6,7 +6,7 @@ pool:
 
 variables:
   solutionPath: '**/*.sln'
-  buildPlatform: x64
+  buildPlatform: AnyCPU
   buildConfiguration: Release
 
 stages:
@@ -19,7 +19,7 @@ stages:
             displayName: Run NuGet restore
             inputs:
               command: restore
-              projects: $(solutionPath)
+              restoreSolution: $(solutionPath)
               feedsToUse: select
               vstsFeed: fbaf94f7-2d40-410a-8a27-de142d8d2313/2d8c792e-c1ad-4a66-924d-5bc4fec5fca0
 
@@ -52,8 +52,6 @@ stages:
               solution: $(solutionPath)
               platform: $(buildPlatform)
               configuration: $(buildConfiguration)
-              vsVersion: latest
-              restore: false
 
           - task: VSTest@2
             displayName: Run unit tests
