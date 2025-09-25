@@ -52,7 +52,7 @@ namespace Blaise.Api.Tests.Behaviour.Features
             testRunner = global::Reqnroll.TestRunnerManager.GetTestRunnerForAssembly(featureHint: featureInfo);
             try
             {
-                if (((testRunner.FeatureContext != null)
+                if (((testRunner.FeatureContext != null) 
                             && (testRunner.FeatureContext.FeatureInfo.Equals(featureInfo) == false)))
                 {
                     await testRunner.OnFeatureEndAsync();
@@ -60,7 +60,7 @@ namespace Blaise.Api.Tests.Behaviour.Features
             }
             finally
             {
-                if (((testRunner.FeatureContext != null)
+                if (((testRunner.FeatureContext != null) 
                             && testRunner.FeatureContext.BeforeFeatureHookFailed))
                 {
                     throw new global::Reqnroll.ReqnrollException("Scenario skipped because of previous before feature hook error");

@@ -1068,7 +1068,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
                     "ed (0) we take the online case", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 278
+#line 277
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1078,16 +1078,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 279
+#line 278
  await testRunner.GivenAsync("there is a online file that contains a case that is ineligible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 280
+#line 279
  await testRunner.AndAsync("the same case exists in Blaise with the outcome code \'0\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 281
+#line 280
  await testRunner.WhenAsync("the online file is processed", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 282
+#line 281
  await testRunner.ThenAsync("the existing blaise case is overwritten with the online case", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
