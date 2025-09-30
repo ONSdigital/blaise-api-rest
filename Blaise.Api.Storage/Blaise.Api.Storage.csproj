@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.IO.Abstractions" version="22.0.15" />
-    <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.9.29.2-BLAIS5-logging" />
+    <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.9.30.1-BLAIS5-logging" />
     <PackageReference Include="Google.Cloud.Storage.V1" Version="4.13.0" />
   </ItemGroup>
 
