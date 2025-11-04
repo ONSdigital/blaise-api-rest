@@ -61,13 +61,21 @@ namespace Blaise.Api.Core.Services
                 ? _blaiseCaseApi.GetCases(questionnaireName, serverParkName)
                 : _blaiseCaseApi.GetFilteredCases(questionnaireName, serverParkName, filter);
 
-            while (!cases.EndOfSet)
+            _loggingService.LogInfo($"Cases enlisted after applying filter...");
+            _loggingService.LogInfo($"Length of cases = '{cases.RecordCount}'");
+
+            if (cases.RecordCount != 0)
             {
-                var caseData = GetReportFieldData(questionnaireName, fieldIds, cases.ActiveRecord);
+                while (!cases.EndOfSet)
+                {
+                    var caseData = GetReportFieldData(questionnaireName, fieldIds, cases.ActiveRecord);
 
-                reportDto.ReportingData.Add(caseData);
+                    _loggingService.LogInfo($"Casedata received successfully...");
 
-                cases.MoveNext();
+                    reportDto.ReportingData.Add(caseData);
+
+                    cases.MoveNext();
+                }
             }
 
             return reportDto;
