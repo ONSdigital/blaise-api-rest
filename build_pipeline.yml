@@ -52,7 +52,7 @@ stages:
               solution: $(solutionPath)
               platform: $(buildPlatform)
               configuration: $(buildConfiguration)
-           
+
           - task: VSTest@2
             displayName: Run unit tests
             inputs:

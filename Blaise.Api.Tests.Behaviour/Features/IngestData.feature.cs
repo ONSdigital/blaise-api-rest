@@ -170,10 +170,10 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
                             "900003",
                             "210",
                             "Web"});
-#line 15
+#line 14
  await testRunner.AndAsync("blaise contains the existing cases", ((string)(null)), table5, "And ");
 #line hidden
-#line 21
+#line 19
  await testRunner.WhenAsync("the ingest file is processed", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
                 global::Reqnroll.Table table6 = new global::Reqnroll.Table(new string[] {
@@ -204,7 +204,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
                             "900003",
                             "210",
                             "Web"});
-#line 22
+#line 20
  await testRunner.ThenAsync("blaise will contain the cases", ((string)(null)), table6, "Then ");
 #line hidden
             }

@@ -1,11 +1,11 @@
-using System.Configuration;
-using System.Web.Http;
-using Blaise.Api.Configuration;
-using Swashbuckle.Application;
-using WebActivatorEx;
-
 namespace Blaise.Api.Configuration
 {
+    using System.Configuration;
+    using System.Web.Http;
+    using Blaise.Api.Configuration;
+    using Swashbuckle.Application;
+    using WebActivatorEx;
+
     public class SwaggerConfig
     {
         public static void Register(HttpConfiguration config)
