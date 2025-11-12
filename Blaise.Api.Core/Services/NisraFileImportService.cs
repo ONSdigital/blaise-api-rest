@@ -55,15 +55,15 @@ namespace Blaise.Api.Core.Services
             }
         }
 
-        private CaseStatusModel GetNisraCaseStatusModel(IDataRecord nisraDataRecord)
-        {
-            return _blaiseApi.GetCaseStatus(nisraDataRecord);
-        }
-
         private static CaseStatusModel GetExistingTelCaseStatusModel(string primaryKeyValue, IEnumerable<CaseStatusModel> existingCaseStatusModelList)
         {
             return existingCaseStatusModelList.FirstOrDefault(t =>
                 t.PrimaryKey == primaryKeyValue);
+        }
+
+        private CaseStatusModel GetNisraCaseStatusModel(IDataRecord nisraDataRecord)
+        {
+            return _blaiseApi.GetCaseStatus(nisraDataRecord);
         }
 
         private bool CaseNeedsToBeUpdated(

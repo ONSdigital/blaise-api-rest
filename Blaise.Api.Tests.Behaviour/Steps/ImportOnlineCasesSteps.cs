@@ -19,8 +19,8 @@ namespace Blaise.Api.Tests.Behaviour.Steps
     [Binding]
     public class ImportOnlineCasesSteps
     {
-        private readonly ScenarioContext _scenarioContext;
         private static string _tempFilePath;
+        private readonly ScenarioContext _scenarioContext;
 
         public ImportOnlineCasesSteps(ScenarioContext scenarioContext)
         {
@@ -32,6 +32,20 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public static void SetupUpFeature()
         {
             QuestionnaireHelper.GetInstance().InstallQuestionnaire();
+        }
+
+        [AfterScenario("onlinedata")]
+        public static async Task CleanUpScenario()
+        {
+            CaseHelper.GetInstance().DeleteCases();
+            await OnlineFileHelper.GetInstance().CleanUpOnlineFiles();
+            FileSystemHelper.GetInstance().CleanUpTempFiles(_tempFilePath);
+        }
+
+        [AfterFeature("onlinedata")]
+        public static void CleanUpFeature()
+        {
+            QuestionnaireHelper.GetInstance().UninstallQuestionnaire(60);
         }
 
         [Given("there is a online file that contains the following cases")]
@@ -214,20 +228,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             var numberOfCasesInBlaise = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
 
             Assert.AreEqual(numberOfCases, numberOfCasesInBlaise);
-        }
-
-        [AfterScenario("onlinedata")]
-        public static async Task CleanUpScenario()
-        {
-            CaseHelper.GetInstance().DeleteCases();
-            await OnlineFileHelper.GetInstance().CleanUpOnlineFiles();
-            FileSystemHelper.GetInstance().CleanUpTempFiles(_tempFilePath);
-        }
-
-        [AfterFeature("onlinedata")]
-        public static void CleanUpFeature()
-        {
-            QuestionnaireHelper.GetInstance().UninstallQuestionnaire(60);
         }
     }
 }
