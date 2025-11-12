@@ -30,7 +30,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _sut = new NisraCaseComparisonService(_loggingMock.Object);
         }
 
-        // Scenario 1 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
+        // Scenario 1
         [Test]
         public void Given_The_Nisra_Case_And_Existing_Case_Have_An_Outcome_Of_Complete_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned()
         {
@@ -46,7 +46,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsTrue(result);
         }
 
-        // Scenario 2 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
+        // Scenario 2
         [Test]
         public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Has_An_Outcome_Of_Complete_When_I_Call_CaseNeedsToBeUpdated_Then_False_Is_Returned()
         {
@@ -62,7 +62,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsFalse(result);
         }
 
-        // Scenario 3 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
+        // Scenario 3
         [Test]
         public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Of_Partial_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned()
         {
@@ -78,7 +78,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsTrue(result);
         }
 
-        // Scenario 4  (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
+        // Scenario 4
         [TestCase(210)]
         [TestCase(310)]
         [TestCase(430)]
@@ -100,7 +100,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsTrue(result);
         }
 
-        // Scenario 5 & 8 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
+        // Scenario 5 & 8
         [TestCase(110)]
         [TestCase(310)]
         public void Given_The_Nisra_Outcome_Is_Zero_When_I_Call_CaseNeedsToBeUpdated_Then_False_Is_Returned(int existingOutcome)
@@ -117,7 +117,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsFalse(result);
         }
 
-        // Scenario 6 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
+        // Scenario 6
         [Test]
         public void Given_The_Nisra_Case_And_Existing_Case_Have_An_Outcome_Of_Partial_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned()
         {
@@ -133,7 +133,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsTrue(result);
         }
 
-        // Scenario 7 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
+        // Scenario 7
         [TestCase(210)]
         [TestCase(310)]
         [TestCase(430)]
@@ -155,9 +155,9 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsTrue(result);
         }
 
-        // Scenario 8 - covered by Scenario 5 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
+        // Scenario 8
 
-        // additional scenario
+        // Additional scenario
         [TestCase(110)]
         [TestCase(210)]
         public void Given_The_Nisra_Case_Has_A_Valid_Outcome_But_Existing_Case_Has_An_Outcome_Of_Zero_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned(int nisraOutcome)
@@ -174,7 +174,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsTrue(result);
         }
 
-        // Scenario 9 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
+        // Scenario 9
         [Test]
         public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Has_An_Outcome_Of_Delete_When_I_Call_CaseNeedsToBeUpdated_Then_False_Is_Returned()
         {
@@ -192,7 +192,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsFalse(result);
         }
 
-        // Scenario 10 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
+        // Scenario 10
         [Test]
         public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Of_Delete_When_I_Call_CaseNeedsToBeUpdated_Then_False_Is_Returned()
         {
@@ -210,8 +210,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsFalse(result);
         }
 
-        // Scenario 11
-        // see case service tests
+        // Scenario 11 - See case service tests
 
         // Scenario 12
         [Test]
@@ -229,7 +228,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsFalse(result);
         }
 
-        // Scenario 13 (https://collaborate2.ons.gov.uk/confluence/display/QSS/LMS+NISRA+Case+Processing+Scenarios - scenario 1)
+        // Scenario 13
         [Test]
         public void Given_The_Nisra_Case_And_Existing_Case_Have_An_Outcome_Of_Ineligible_When_I_Call_CaseNeedsToBeUpdated_Then_True_Is_Returned()
         {
@@ -245,7 +244,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsTrue(result);
         }
 
-        // Scenario 14 (https://collaborate2.ons.gov.uk/confluence/display/QSS/LMS+NISRA+Case+Processing+Scenarios - scenario 2)
+        // Scenario 14
         [TestCase(310)]
         [TestCase(430)]
         [TestCase(440)]
@@ -267,7 +266,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsTrue(result);
         }
 
-        // Scenario 15 (https://collaborate2.ons.gov.uk/confluence/display/QSS/LMS+NISRA+Case+Processing+Scenarios - scenario 3)
+        // Scenario 15
         [TestCase(110)]
         [TestCase(210)]
         [TestCase(561)]

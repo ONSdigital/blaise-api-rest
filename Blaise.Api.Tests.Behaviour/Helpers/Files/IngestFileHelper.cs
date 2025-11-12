@@ -13,10 +13,16 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Files
 
     public class IngestFileHelper
     {
-        public static string IngestDatabaseFile = $"{BlaiseConfigurationHelper.QuestionnaireName}.bdix";
-        public static string IngestFile = $"{BlaiseConfigurationHelper.QuestionnaireName}.zip";
+        private static string _ingestDatabaseFile = $"{BlaiseConfigurationHelper.QuestionnaireName}.bdix";
+        private static string _ingestFile = $"{BlaiseConfigurationHelper.QuestionnaireName}.zip";
+
         private static IngestFileHelper _currentInstance;
+
         private readonly TestEventLogging _logging = new TestEventLogging();
+
+        public static string IngestDatabaseFile => _ingestDatabaseFile;
+
+        public static string IngestFile => _ingestFile;
 
         public static IngestFileHelper GetInstance()
         {

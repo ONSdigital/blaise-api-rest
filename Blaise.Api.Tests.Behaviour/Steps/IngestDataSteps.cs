@@ -31,6 +31,20 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             QuestionnaireHelper.GetInstance().InstallQuestionnaire();
         }
 
+        [AfterScenario("ingest")]
+        public static async Task CleanUpScenario()
+        {
+            CaseHelper.GetInstance().DeleteCases();
+            await IngestFileHelper.GetInstance().CleanUpIngestFiles();
+            FileSystemHelper.GetInstance().CleanUpTempFiles(_tempFilePath);
+        }
+
+        [AfterFeature("ingest")]
+        public static void CleanUpFeature()
+        {
+            QuestionnaireHelper.GetInstance().UninstallQuestionnaire(60);
+        }
+
         [Given("there is an ingest file that contains the following cases")]
         public async Task GivenThereIsAnIngestFileThatContainsTheFollowingCases(IEnumerable<CaseModel> cases)
         {
@@ -85,20 +99,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                     caseModel.Mode,
                     $"expected an version of '{caseRecordExpected.Mode}' for case '{caseModel.PrimaryKey}', but was '{caseModel.Mode}'");
             }
-        }
-
-        [AfterScenario("ingest")]
-        public static async Task CleanUpScenario()
-        {
-            CaseHelper.GetInstance().DeleteCases();
-            await IngestFileHelper.GetInstance().CleanUpIngestFiles();
-            FileSystemHelper.GetInstance().CleanUpTempFiles(_tempFilePath);
-        }
-
-        [AfterFeature("ingest")]
-        public static void CleanUpFeature()
-        {
-            QuestionnaireHelper.GetInstance().UninstallQuestionnaire(60);
         }
     }
 }

@@ -12,9 +12,8 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
 
     public class QuestionnaireHelper
     {
-        private readonly IBlaiseQuestionnaireApi _blaiseQuestionnaireApi;
-
         private static QuestionnaireHelper _currentInstance;
+        private readonly IBlaiseQuestionnaireApi _blaiseQuestionnaireApi;
 
         public QuestionnaireHelper()
         {
