@@ -21,6 +21,12 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             _scenarioContext = scenarioContext;
         }
 
+        [AfterScenario("questionnaires")]
+        public static void CleanUpScenario()
+        {
+            QuestionnaireHelper.GetInstance().UninstallQuestionnaire(60);
+        }
+
         [Given("there is a questionnaire installed on a Blaise environment")]
         public void GivenThereIsAQuestionnaireInstalledOnABlaiseEnvironment()
         {
@@ -47,12 +53,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var listOfActiveQuestionnaires = _scenarioContext.Get<List<QuestionnaireModel>>(ApiResponse);
             Assert.IsTrue(listOfActiveQuestionnaires.Any(q => q.Name == BlaiseConfigurationHelper.QuestionnaireName));
-        }
-
-        [AfterScenario("questionnaires")]
-        public static void CleanUpScenario()
-        {
-            QuestionnaireHelper.GetInstance().UninstallQuestionnaire(60);
         }
     }
 }

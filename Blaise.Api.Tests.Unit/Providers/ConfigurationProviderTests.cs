@@ -7,7 +7,7 @@ namespace Blaise.Api.Tests.Unit.Providers
     public class ConfigurationProviderTests
     {
         /// <summary>
-        /// Please ensure the app.config in the test project has values that relate to the tests.
+        /// Please ensure the App.config in the test project has values that relate to the tests.
         /// </summary>
         private IConfigurationProvider _sut;
 

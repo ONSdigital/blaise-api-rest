@@ -20,6 +20,34 @@ namespace Blaise.Api.Core.Mappers
             _nodeDtoMapper = nodeDtoMapper;
         }
 
+        public static DateTime? GetFieldPeriod(string questionnaireName)
+        {
+            if (questionnaireName.Length < 7)
+            {
+                return null;
+            }
+
+            var yearPeriod = questionnaireName.Substring(3, 2);
+            var monthPeriod = questionnaireName.Substring(5, 2);
+
+            if (int.TryParse(yearPeriod, out var year) && int.TryParse(monthPeriod, out var month))
+            {
+                if (month < 1 || month > 12)
+                {
+                    return null;
+                }
+
+                return new DateTime(2000 + year, month, 1);
+            }
+
+            return null;
+        }
+
+        public static string GetSurveyTla(string questionnaireName)
+        {
+            return questionnaireName.Length < 3 ? null : questionnaireName.Substring(0, 3);
+        }
+
         public IEnumerable<QuestionnaireDto> MapToQuestionnaireDtos(IEnumerable<ISurvey> questionnaires)
         {
             var questionnaireDtoList = new List<QuestionnaireDto>();
@@ -47,34 +75,6 @@ namespace Blaise.Api.Core.Mappers
                 BlaiseVersion = GetBlaiseVersion(questionnaire),
                 Nodes = _nodeDtoMapper.MapToQuestionnaireNodeDtos(questionnaire.Configuration),
             };
-        }
-
-        public static DateTime? GetFieldPeriod(string questionnaireName)
-        {
-            if (questionnaireName.Length < 7)
-            {
-                return null;
-            }
-
-            var yearPeriod = questionnaireName.Substring(3, 2);
-            var monthPeriod = questionnaireName.Substring(5, 2);
-
-            if (int.TryParse(yearPeriod, out var year) && int.TryParse(monthPeriod, out var month))
-            {
-                if (month < 1 || month > 12)
-                {
-                    return null;
-                }
-
-                return new DateTime(2000 + year, month, 1);
-            }
-
-            return null;
-        }
-
-        public static string GetSurveyTla(string questionnaireName)
-        {
-            return questionnaireName.Length < 3 ? null : questionnaireName.Substring(0, 3);
         }
 
         private static string GetBlaiseVersion(ISurvey questionnaire)

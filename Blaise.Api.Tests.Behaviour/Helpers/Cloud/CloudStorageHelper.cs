@@ -7,8 +7,9 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Cloud
 
     public class CloudStorageHelper
     {
-        private StorageClient _storageClient;
         private static CloudStorageHelper _currentInstance;
+
+        private StorageClient _storageClient;
 
         public static CloudStorageHelper GetInstance()
         {
