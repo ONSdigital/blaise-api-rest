@@ -44,7 +44,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             // arrange
             const string questionnaire1Name = "FRS2404a";
             var questionnaire1Id = Guid.NewGuid();
-            const string serverPark1Name = "ServerParkA";
+            const string ServerPark1Name = "ServerParkA";
             const string blaiseVersion = "5.9.9";
             var installDate = new DateTime(2024, 1, 1);
             var fieldPeriod = new DateTime(2024, 4, 1);
@@ -64,7 +64,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             survey1Mock.As<ISurvey2>();
             survey1Mock.Setup(s => s.Name).Returns(questionnaire1Name);
             survey1Mock.Setup(s => s.InstrumentID).Returns(questionnaire1Id);
-            survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1Name);
+            survey1Mock.Setup(s => s.ServerPark).Returns(ServerPark1Name);
             survey1Mock.Setup(s => s.InstallDate).Returns(installDate);
             survey1Mock.Setup(s => s.Configuration).Returns(configurationCollectionMock.Object);
 
@@ -87,19 +87,19 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToQuestionnaireDto(survey1Mock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<QuestionnaireDto>(result);
-            Assert.AreEqual(questionnaire1Name, result.Name);
-            Assert.AreEqual(questionnaire1Id, result.Id);
-            Assert.AreEqual(serverPark1Name, result.ServerParkName);
-            Assert.AreEqual(numberOfRecordForQuestionnaire1, result.DataRecordCount);
-            Assert.AreEqual(QuestionnaireStatusType.Active.ToString(), result.Status);
-            Assert.True(result.HasData);
-            Assert.AreEqual(blaiseVersion, result.BlaiseVersion);
-            Assert.AreEqual(installDate, result.InstallDate);
-            Assert.AreEqual(fieldPeriod, result.FieldPeriod);
-            Assert.AreEqual(surveyTla, result.SurveyTla);
-            Assert.AreSame(nodeList, result.Nodes);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<QuestionnaireDto>());
+            Assert.That(result.Name, Is.EqualTo(questionnaire1Name));
+            Assert.That(result.Id, Is.EqualTo(questionnaire1Id));
+            Assert.That(result.ServerParkName, Is.EqualTo(ServerPark1Name));
+            Assert.That(result.DataRecordCount, Is.EqualTo(numberOfRecordForQuestionnaire1));
+            Assert.That(result.Status, Is.EqualTo(QuestionnaireStatusType.Active.ToString()));
+            Assert.That(result.HasData, Is.True);
+            Assert.That(result.BlaiseVersion, Is.EqualTo(blaiseVersion));
+            Assert.That(result.InstallDate, Is.EqualTo(installDate));
+            Assert.That(result.FieldPeriod, Is.EqualTo(fieldPeriod));
+            Assert.That(result.SurveyTla, Is.EqualTo(surveyTla));
+            Assert.That(result.Nodes, Is.SameAs(nodeList));
         }
 
         [TestCase(24, 0)]
@@ -109,7 +109,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             // arrange
             var questionnaire1Name = $"FRS{year}{month}T";
             var questionnaire1Id = Guid.NewGuid();
-            const string serverPark1Name = "ServerParkA";
+            const string ServerPark1Name = "ServerParkA";
             const string blaiseVersion = "5.9.9";
             var installDate = new DateTime(2024, 2, 2);
 
@@ -127,7 +127,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             survey1Mock.As<ISurvey2>();
             survey1Mock.Setup(s => s.Name).Returns(questionnaire1Name);
             survey1Mock.Setup(s => s.InstrumentID).Returns(questionnaire1Id);
-            survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1Name);
+            survey1Mock.Setup(s => s.ServerPark).Returns(ServerPark1Name);
             survey1Mock.Setup(s => s.InstallDate).Returns(installDate);
             survey1Mock.Setup(s => s.Configuration).Returns(configurationCollectionMock.Object);
 
@@ -150,9 +150,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToQuestionnaireDto(survey1Mock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<QuestionnaireDto>(result);
-            Assert.IsNull(result.FieldPeriod);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<QuestionnaireDto>());
+            Assert.That(result.FieldPeriod, Is.Null);
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             // arrange
             const string questionnaire1Name = "OPN2010A";
             var questionnaire1Id = Guid.NewGuid();
-            const string serverPark1Name = "ServerParkA";
+            const string ServerPark1Name = "ServerParkA";
 
             const int numberOfRecordForQuestionnaire1 = 20;
 
@@ -174,7 +174,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             survey1Mock.As<ISurvey2>();
             survey1Mock.Setup(s => s.Name).Returns(questionnaire1Name);
             survey1Mock.Setup(s => s.InstrumentID).Returns(questionnaire1Id);
-            survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1Name);
+            survey1Mock.Setup(s => s.ServerPark).Returns(ServerPark1Name);
             survey1Mock.Setup(s => s.Configuration).Returns(configurationCollectionMock.Object);
 
             var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
@@ -196,9 +196,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToQuestionnaireDto(survey1Mock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<QuestionnaireDto>(result);
-            Assert.AreEqual("Not Available", result.BlaiseVersion);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<QuestionnaireDto>());
+            Assert.That(result.BlaiseVersion, Is.EqualTo("Not Available"));
         }
 
         [Test]
@@ -214,8 +214,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var questionnaire1Id = Guid.NewGuid();
             var questionnaire2Id = Guid.NewGuid();
 
-            const string serverPark1Name = "ServerParkA";
-            const string serverPark2Name = "ServerParkB";
+            const string ServerPark1Name = "ServerParkA";
+            const string ServerPark2Name = "ServerParkB";
 
             const int numberOfRecordForQuestionnaire1 = 20;
             const int numberOfRecordForQuestionnaire2 = 0;
@@ -239,7 +239,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             survey1Mock.As<ISurvey2>();
             survey1Mock.Setup(s => s.Name).Returns(questionnaire1Name);
             survey1Mock.Setup(s => s.InstrumentID).Returns(questionnaire1Id);
-            survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1Name);
+            survey1Mock.Setup(s => s.ServerPark).Returns(ServerPark1Name);
             survey1Mock.Setup(s => s.InstallDate).Returns(questionnaire1InstallDate);
             survey1Mock.Setup(s => s.Configuration).Returns(configurationCollection1Mock.Object);
 
@@ -263,7 +263,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             survey2Mock.Setup(s => s.Name).Returns(questionnaire2Name);
             survey2Mock.Setup(s => s.InstrumentID).Returns(questionnaire2Id);
             survey2Mock.Setup(s => s.InstallDate).Returns(questionnaire2InstallDate);
-            survey2Mock.Setup(s => s.ServerPark).Returns(serverPark2Name);
+            survey2Mock.Setup(s => s.ServerPark).Returns(ServerPark2Name);
             survey2Mock.Setup(s => s.Configuration).Returns(configurationCollection2Mock.Object);
 
             var surveyReportingInfoMock2 = new Mock<ISurveyReportingInfo>();
@@ -295,35 +295,41 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToQuestionnaireDtos(surveys).ToList();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<QuestionnaireDto>>(result);
-            Assert.AreEqual(2, result.Count);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<List<QuestionnaireDto>>());
+            Assert.That(result.Count, Is.EqualTo(2));
 
-            Assert.True(result.Any(i =>
-                i.Name == questionnaire1Name &&
-                i.Id == questionnaire1Id &&
-                i.ServerParkName == serverPark1Name &&
-                i.DataRecordCount == numberOfRecordForQuestionnaire1 &&
-                i.Status == QuestionnaireStatusType.Active.ToString() &&
-                i.HasData &&
-                i.BlaiseVersion == questionnaire1BlaiseVersion &&
-                i.InstallDate == questionnaire1InstallDate &&
-                i.FieldPeriod == fieldPeriod &&
-                i.SurveyTla == surveyTla &&
-                i.Nodes.Count() == 2));
+            Assert.That(
+                result.Any(
+                    i =>
+                    i.Name == questionnaire1Name &&
+                    i.Id == questionnaire1Id &&
+                    i.ServerParkName == ServerPark1Name &&
+                    i.DataRecordCount == numberOfRecordForQuestionnaire1 &&
+                    i.Status == QuestionnaireStatusType.Active.ToString() &&
+                    i.HasData &&
+                    i.BlaiseVersion == questionnaire1BlaiseVersion &&
+                    i.InstallDate == questionnaire1InstallDate &&
+                    i.FieldPeriod == fieldPeriod &&
+                    i.SurveyTla == surveyTla &&
+                    i.Nodes.Count() == 2),
+                Is.True);
 
-            Assert.True(result.Any(i =>
-                i.Name == questionnaire2Name &&
-                i.Id == questionnaire2Id &&
-                i.ServerParkName == serverPark2Name &&
-                i.DataRecordCount == numberOfRecordForQuestionnaire2 &&
-                i.Status == QuestionnaireStatusType.Installing.ToString() &&
-                i.HasData == false &&
-                i.BlaiseVersion == questionnaire2BlaiseVersion &&
-                i.InstallDate == questionnaire2InstallDate &&
-                i.FieldPeriod == fieldPeriod &&
-                i.SurveyTla == surveyTla &&
-                i.Nodes.Count() == 2));
+            Assert.That(
+                result.Any(
+                    i =>
+                    i.Name == questionnaire2Name &&
+                    i.Id == questionnaire2Id &&
+                    i.ServerParkName == ServerPark2Name &&
+                    i.DataRecordCount == numberOfRecordForQuestionnaire2 &&
+                    i.Status == QuestionnaireStatusType.Installing.ToString() &&
+                    i.HasData == false &&
+                    i.BlaiseVersion == questionnaire2BlaiseVersion &&
+                    i.InstallDate == questionnaire2InstallDate &&
+                    i.FieldPeriod == fieldPeriod &&
+                    i.SurveyTla == surveyTla &&
+                    i.Nodes.Count() == 2),
+                Is.True);
         }
 
         [Test]
@@ -340,7 +346,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             foreach (var test in tests)
             {
                 var fieldPeriod = QuestionnaireDtoMapper.GetFieldPeriod(test.Key);
-                Assert.AreEqual(test.Value, fieldPeriod);
+                Assert.That(fieldPeriod, Is.EqualTo(test.Value));
             }
         }
 
@@ -353,7 +359,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var fieldPeriod = QuestionnaireDtoMapper.GetFieldPeriod(questionnaireName);
 
             // assert
-            Assert.IsNull(fieldPeriod);
+            Assert.That(fieldPeriod, Is.Null);
         }
 
         [TestCase("FRS2404a", "FRS")]
@@ -365,7 +371,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var surveyTla = QuestionnaireDtoMapper.GetSurveyTla(questionnaireName);
 
             // assert
-            Assert.AreEqual(expectedResult, surveyTla);
+            Assert.That(surveyTla, Is.EqualTo(expectedResult));
         }
 
         [TestCase("F")]
@@ -376,7 +382,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var surveyTla = QuestionnaireDtoMapper.GetSurveyTla(questionnaireName);
 
             // assert
-            Assert.IsNull(surveyTla);
+            Assert.That(surveyTla, Is.Null);
         }
     }
 }

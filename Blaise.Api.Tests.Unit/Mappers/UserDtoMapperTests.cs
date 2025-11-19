@@ -50,14 +50,26 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToUserDtos(users).ToList();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<UserDto>>(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(2, result.Count);
-            Assert.IsTrue(result.Any(r => r.Name == user1Name && r.Role == role1 &&
-                                          r.ServerParks.Contains(serverParks[0]) && r.ServerParks.Contains(serverParks[1])));
-            Assert.IsTrue(result.Any(r => r.Name == user2Name && r.Role == role2 &&
-                                          r.ServerParks.Contains(serverParks2[0]) && r.ServerParks.Contains(serverParks2[1])));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<List<UserDto>>());
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(2));
+
+            Assert.That(
+                result.Any(
+                    r => r.Name == user1Name &&
+                    r.Role == role1 &&
+                    r.ServerParks.Contains(serverParks[0]) &&
+                    r.ServerParks.Contains(serverParks[1])),
+                Is.True);
+
+            Assert.That(
+                result.Any(
+                    r => r.Name == user2Name &&
+                    r.Role == role2 &&
+                    r.ServerParks.Contains(serverParks2[0]) &&
+                    r.ServerParks.Contains(serverParks2[1])),
+                Is.True);
         }
 
         [Test]
@@ -81,12 +93,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToUserDto(user1Mock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<UserDto>(result);
-
-            Assert.AreEqual(user1Name, result.Name);
-            Assert.AreEqual(role1, result.Role);
-            Assert.AreEqual(serverParks, result.ServerParks);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<UserDto>());
+            Assert.That(result.Name, Is.EqualTo(user1Name));
+            Assert.That(result.Role, Is.EqualTo(role1));
+            Assert.That(result.ServerParks, Is.EqualTo(serverParks));
         }
     }
 }

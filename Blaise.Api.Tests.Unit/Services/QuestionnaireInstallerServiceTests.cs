@@ -117,9 +117,9 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = await _sut.InstallQuestionnaireAsync(_serverParkName, _questionnairePackageDto, _tempPath);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<string>(result);
-            Assert.AreEqual(_questionnaireName, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<string>());
+            Assert.That(result, Is.EqualTo(_questionnaireName));
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 string.Empty,
                 _questionnairePackageDto,
                 _tempPath));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -141,7 +141,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 null,
                 _questionnairePackageDto,
                 _tempPath));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
@@ -152,7 +152,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 _questionnairePackageDto,
                 string.Empty));
-            Assert.AreEqual("A value for the argument 'tempFilePath' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'tempFilePath' must be supplied"));
         }
 
         [Test]
@@ -163,7 +163,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 _questionnairePackageDto,
                 null));
-            Assert.AreEqual("tempFilePath", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("tempFilePath"));
         }
     }
 }

@@ -33,14 +33,14 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var serverCollection = new Mock<IServerCollection>();
             serverCollection.Setup(s => s.GetEnumerator()).Returns(new List<IServer>().GetEnumerator());
 
-            const string serverPark1Name = "ServerParkA";
+            const string ServerPark1Name = "ServerParkA";
             var serverPark1 = new Mock<IServerPark>();
-            serverPark1.Setup(s => s.Name).Returns(serverPark1Name);
+            serverPark1.Setup(s => s.Name).Returns(ServerPark1Name);
             serverPark1.Setup(s => s.Servers).Returns(serverCollection.Object);
 
-            const string serverPark2Name = "ServerParkA";
+            const string ServerPark2Name = "ServerParkA";
             var serverPark2 = new Mock<IServerPark>();
-            serverPark2.Setup(s => s.Name).Returns(serverPark2Name);
+            serverPark2.Setup(s => s.Name).Returns(ServerPark2Name);
             serverPark2.Setup(s => s.Servers).Returns(It.IsAny<IServerCollection>());
             serverPark2.Setup(s => s.Servers).Returns(serverCollection.Object);
 
@@ -54,11 +54,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToServerParkDtos(serverParks).ToList();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<ServerParkDto>>(result);
-            Assert.AreEqual(2, result.Count);
-            Assert.True(result.Any(i => i.Name == serverPark1Name));
-            Assert.True(result.Any(i => i.Name == serverPark2Name));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<List<ServerParkDto>>());
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result.Any(i => i.Name == ServerPark1Name), Is.True);
+            Assert.That(result.Any(i => i.Name == ServerPark2Name), Is.True);
         }
 
         [Test]
@@ -104,20 +104,27 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToServerParkDto(serverPark.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ServerParkDto>(result);
-            Assert.AreEqual(serverParkName, result.Name);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<ServerParkDto>());
+            Assert.That(result.Name, Is.EqualTo(serverParkName));
+            Assert.That(result.Servers, Is.Not.Null);
+            Assert.That(result.Servers, Is.InstanceOf<IEnumerable<ServerDto>>());
+            Assert.That(result.Servers, Is.Not.Empty);
+            Assert.That(result.Servers.Count(), Is.EqualTo(2));
 
-            Assert.IsNotNull(result.Servers);
-            Assert.IsInstanceOf<IEnumerable<ServerDto>>(result.Servers);
-            Assert.IsNotEmpty(result.Servers);
-            Assert.AreEqual(2, result.Servers.Count());
+            Assert.That(
+                result.Servers.Any(
+                    s => s.Name == machine1Name &&
+                    s.BlaiseVersion == "5.9.9" &&
+                    s.LogicalServerName == machine1LogicalRoot &&
+                    s.Roles.OrderByDescending(l => l).SequenceEqual(machine1Roles.OrderByDescending(l => l))), Is.True);
 
-            Assert.True(result.Servers.Any(s => s.Name == machine1Name && s.BlaiseVersion == "5.9.9" && s.LogicalServerName == machine1LogicalRoot &&
-                                                s.Roles.OrderByDescending(l => l).SequenceEqual(machine1Roles.OrderByDescending(l => l))));
-
-            Assert.True(result.Servers.Any(s => s.Name == machine2Name && s.BlaiseVersion == "5.9.9" && s.LogicalServerName == machine2LogicalRoot &&
-                                                s.Roles.OrderByDescending(l => l).SequenceEqual(machine2Roles.OrderByDescending(l => l))));
+            Assert.That(
+                result.Servers.Any(
+                    s => s.Name == machine2Name &&
+                    s.BlaiseVersion == "5.9.9" &&
+                    s.LogicalServerName == machine2LogicalRoot &&
+                    s.Roles.OrderByDescending(l => l).SequenceEqual(machine2Roles.OrderByDescending(l => l))), Is.True);
         }
 
         [Test]
@@ -155,15 +162,23 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToServerParkDto(serverPark.Object).Questionnaires.ToList();
 
             // assert
-            Assert.IsInstanceOf<List<QuestionnaireDto>>(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(2, result.Count);
+            Assert.That(result, Is.InstanceOf<List<QuestionnaireDto>>());
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(2));
 
-            Assert.True(result.Any(i => i.Name == questionnaire1Dto.Name && i.ServerParkName == questionnaire1Dto.ServerParkName &&
-                                        i.InstallDate == questionnaire1Dto.InstallDate && i.Status == questionnaire1Dto.Status));
+            Assert.That(
+                result.Any(
+                    i => i.Name == questionnaire1Dto.Name &&
+                    i.ServerParkName == questionnaire1Dto.ServerParkName &&
+                    i.InstallDate == questionnaire1Dto.InstallDate &&
+                    i.Status == questionnaire1Dto.Status), Is.True);
 
-            Assert.True(result.Any(i => i.Name == questionnaire2Dto.Name && i.ServerParkName == questionnaire2Dto.ServerParkName &&
-                                        i.InstallDate == questionnaire2Dto.InstallDate && i.Status == questionnaire2Dto.Status));
+            Assert.That(
+                result.Any(
+                    i => i.Name == questionnaire2Dto.Name &&
+                    i.ServerParkName == questionnaire2Dto.ServerParkName &&
+                    i.InstallDate == questionnaire2Dto.InstallDate &&
+                    i.Status == questionnaire2Dto.Status), Is.True);
         }
     }
 }

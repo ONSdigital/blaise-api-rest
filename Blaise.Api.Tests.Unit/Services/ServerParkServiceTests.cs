@@ -75,11 +75,11 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetServerParks().ToList();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<ServerParkDto>>(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual(serverParkDtoList, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<List<ServerParkDto>>());
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result, Is.EqualTo(serverParkDtoList));
         }
 
         [Test]
@@ -116,9 +116,9 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetServerPark(_serverParkName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ServerParkDto>(result);
-            Assert.AreEqual(serverParkDto, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<ServerParkDto>());
+            Assert.That(result, Is.EqualTo(serverParkDto));
         }
 
         [Test]
@@ -126,7 +126,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetServerPark(string.Empty));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetServerPark(null));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
@@ -163,9 +163,9 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.ServerParkExists(_serverParkName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<bool>(result);
-            Assert.AreEqual(exists, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<bool>());
+            Assert.That(result, Is.EqualTo(exists));
         }
 
         [Test]
@@ -173,7 +173,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.ServerParkExists(string.Empty));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.ServerParkExists(null));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
     }
 }

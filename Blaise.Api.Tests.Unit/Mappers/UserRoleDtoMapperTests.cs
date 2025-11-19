@@ -54,22 +54,28 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToUserRoleDtos(roles).ToList();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<UserRoleDto>>(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(2, result.Count);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<List<UserRoleDto>>());
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(2));
 
-            Assert.IsTrue(result.Any(r =>
-                r.Name == role1Name &&
-                r.Description == role1Description &&
-                r.Permissions.Count() == 1 &&
-                r.Permissions.Contains(permission1)));
+            Assert.That(
+                result.Any(
+                    r =>
+                    r.Name == role1Name &&
+                    r.Description == role1Description &&
+                    r.Permissions.Count() == 1 &&
+                    r.Permissions.Contains(permission1)),
+                Is.True);
 
-            Assert.IsTrue(result.Any(r =>
-                r.Name == role2Name &&
-                r.Description == role2Description &&
-                r.Permissions.Count() == 1 &&
-                r.Permissions.Contains(permission2)));
+            Assert.That(
+                result.Any(
+                    r =>
+                    r.Name == role2Name &&
+                    r.Description == role2Description &&
+                    r.Permissions.Count() == 1 &&
+                    r.Permissions.Contains(permission2)),
+                Is.True);
         }
 
         [Test]
@@ -108,21 +114,27 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToUserRoleDtos(roles).ToList();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<UserRoleDto>>(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(2, result.Count);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<List<UserRoleDto>>());
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(2));
 
-            Assert.IsTrue(result.Any(r =>
-                r.Name == role1Name &&
-                r.Description == role1Description &&
-                !r.Permissions.Any()));
+            Assert.That(
+                result.Any(
+                    r =>
+                    r.Name == role1Name &&
+                    r.Description == role1Description &&
+                    !r.Permissions.Any()),
+                Is.True);
 
-            Assert.IsTrue(result.Any(r =>
-                r.Name == role2Name &&
-                r.Description == role2Description &&
-                r.Permissions.Count() == 1 &&
-                r.Permissions.Contains(permission2)));
+            Assert.That(
+                result.Any(
+                    r =>
+                    r.Name == role2Name &&
+                    r.Description == role2Description &&
+                    r.Permissions.Count() == 1 &&
+                    r.Permissions.Contains(permission2)),
+                Is.True);
         }
 
         [Test]
@@ -152,14 +164,13 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToUserRoleDto(role1Mock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<UserRoleDto>(result);
-
-            Assert.AreEqual(role1Name, result.Name);
-            Assert.AreEqual(role1Description, result.Description);
-            Assert.AreEqual(2, result.Permissions.Count());
-            Assert.IsTrue(result.Permissions.Any(p => p == permission1));
-            Assert.IsTrue(result.Permissions.Any(p => p == permission2));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<UserRoleDto>());
+            Assert.That(result.Name, Is.EqualTo(role1Name));
+            Assert.That(result.Description, Is.EqualTo(role1Description));
+            Assert.That(result.Permissions.Count(), Is.EqualTo(2));
+            Assert.That(result.Permissions.Any(p => p == permission1), Is.True);
+            Assert.That(result.Permissions.Any(p => p == permission2), Is.True);
         }
 
         [Test]
@@ -189,13 +200,12 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToUserRoleDto(role1Mock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<UserRoleDto>(result);
-
-            Assert.AreEqual(role1Name, result.Name);
-            Assert.AreEqual(role1Description, result.Description);
-            Assert.AreEqual(1, result.Permissions.Count());
-            Assert.IsTrue(result.Permissions.Any(p => p == permission2));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<UserRoleDto>());
+            Assert.That(result.Name, Is.EqualTo(role1Name));
+            Assert.That(result.Description, Is.EqualTo(role1Description));
+            Assert.That(result.Permissions.Count(), Is.EqualTo(1));
+            Assert.That(result.Permissions.Any(p => p == permission2), Is.True);
         }
     }
 }

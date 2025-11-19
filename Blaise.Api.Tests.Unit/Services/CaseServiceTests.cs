@@ -59,12 +59,12 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetCaseIds(_serverParkName, _questionnaireName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsNotEmpty(result);
-            Assert.IsInstanceOf<IEnumerable<string>>(result);
-            Assert.AreEqual(2, result.Count);
-            Assert.Contains("0000007", result);
-            Assert.Contains("0000008", result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result, Is.InstanceOf<IEnumerable<string>>());
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result, Has.Member("0000007"));
+            Assert.That(result, Has.Member("0000008"));
         }
 
         [Test]
@@ -77,9 +77,9 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetCaseIds(_serverParkName, _questionnaireName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsEmpty(result);
-            Assert.IsInstanceOf<IEnumerable<string>>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Empty);
+            Assert.That(result, Is.InstanceOf<IEnumerable<string>>());
         }
 
         [Test]
@@ -98,9 +98,9 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetCaseStatusList(_serverParkName, _questionnaireName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreSame(caseStatusDtoList, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result, Is.SameAs(caseStatusDtoList));
         }
 
         [Test]
@@ -137,9 +137,9 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetCaseStatusList(_serverParkName, _questionnaireName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsEmpty(result);
-            Assert.IsInstanceOf<IEnumerable<CaseStatusDto>>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Empty);
+            Assert.That(result, Is.InstanceOf<IEnumerable<CaseStatusDto>>());
         }
 
         [Test]
@@ -159,8 +159,8 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetPostCode(_serverParkName, _questionnaireName, caseId);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(postCode, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo(postCode));
         }
 
         [Test]
@@ -204,8 +204,8 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetCase(_serverParkName, _questionnaireName, caseId);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.AreSame(caseDto, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.SameAs(caseDto));
         }
 
         [Test]
@@ -240,7 +240,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 string.Empty,
                 _questionnaireName,
                 caseId));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -254,7 +254,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 null,
                 _questionnaireName,
                 caseId));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
@@ -268,7 +268,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 string.Empty,
                 caseId));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
@@ -282,7 +282,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 null,
                 caseId));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
@@ -295,7 +295,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 _questionnaireName,
                 string.Empty));
-            Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'caseId' must be supplied"));
         }
 
         [Test]
@@ -308,7 +308,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 _serverParkName,
                 null));
-            Assert.AreEqual("caseId", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("caseId"));
         }
 
         [Test]
@@ -382,8 +382,8 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetCase(_serverParkName, _questionnaireName, keyNames, keyValues);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.AreSame(multiKeyDto, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.SameAs(multiKeyDto));
         }
 
         [Test]
@@ -452,7 +452,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -477,7 +477,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
@@ -502,7 +502,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 string.Empty,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
@@ -527,7 +527,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 null,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
@@ -548,7 +548,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("A value for the argument 'keyNames' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'keyNames' must be supplied"));
         }
 
         [Test]
@@ -567,7 +567,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 null,
                 keyValues));
-            Assert.AreEqual("keyNames", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("keyNames"));
         }
 
         [Test]
@@ -587,7 +587,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("A value for the argument 'keyValues' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'keyValues' must be supplied"));
         }
 
         [Test]
@@ -606,7 +606,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 keyNames,
                 null));
-            Assert.AreEqual("keyValues", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("keyValues"));
         }
 
         [Test]
@@ -637,7 +637,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 caseId,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -653,7 +653,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 caseId,
                 fieldData));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
@@ -669,7 +669,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 string.Empty,
                 caseId,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
@@ -685,7 +685,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 null,
                 caseId,
                 fieldData));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
@@ -700,7 +700,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 string.Empty,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'caseId' must be supplied"));
         }
 
         [Test]
@@ -715,7 +715,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 null,
                 fieldData));
-            Assert.AreEqual("caseId", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("caseId"));
         }
 
         [Test]
@@ -731,7 +731,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 caseId,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'fieldData' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'fieldData' must be supplied"));
         }
 
         [Test]
@@ -746,7 +746,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 caseId,
                 null));
-            Assert.AreEqual("fieldData", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("fieldData"));
         }
 
         [Test]
@@ -804,7 +804,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -831,7 +831,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
@@ -858,7 +858,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
@@ -885,7 +885,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
@@ -912,7 +912,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'fieldData' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'fieldData' must be supplied"));
         }
 
         [Test]
@@ -938,7 +938,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 null));
-            Assert.AreEqual("fieldData", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("fieldData"));
         }
 
         [Test]
@@ -961,7 +961,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'keyNames' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'keyNames' must be supplied"));
         }
 
         [Test]
@@ -982,7 +982,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 null,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("keyNames", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("keyNames"));
         }
 
         [Test]
@@ -1005,7 +1005,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'keyValues' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'keyValues' must be supplied"));
         }
 
         [Test]
@@ -1026,7 +1026,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 null,
                 fieldData));
-            Assert.AreEqual("keyValues", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("keyValues"));
         }
 
         [Test]
@@ -1059,7 +1059,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var batchSize = 500;
             var expectedCreateCalls = (int)Math.Ceiling((double)caseModelList.Count / batchSize);
             _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Exactly(expectedCreateCalls));
-            Assert.AreEqual(caseModelList.Count, result);
+            Assert.That(result, Is.EqualTo(caseModelList.Count));
         }
 
         [Test]
@@ -1074,7 +1074,7 @@ namespace Blaise.Api.Tests.Unit.Services
             // assertt
             _blaiseCaseApiMock.Verify(x => x.RemoveCases(_questionnaireName, _serverParkName), Times.Once);
             _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Never);
-            Assert.AreEqual(0, result);
+            Assert.That(result, Is.EqualTo(0));
         }
 
         [Test]
@@ -1106,7 +1106,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var expectedCreateCalls = (int)Math.Ceiling((double)caseModelList.Count / maxChunkSize);
             _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Exactly(expectedCreateCalls));
 
-            Assert.AreEqual(caseModelList.Count, result);
+            Assert.That(result, Is.EqualTo(caseModelList.Count));
         }
 
         [Test]
@@ -1133,7 +1133,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var expectedCreateCalls = (int)Math.Ceiling((double)caseDtoList.Count / maxChunkSize);
             _blaiseCaseApiMock.Verify(x => x.CreateCases(It.IsAny<List<CaseModel>>(), _questionnaireName, _serverParkName), Times.Exactly(expectedCreateCalls));
 
-            Assert.AreEqual(caseDtoList.Count, result);
+            Assert.That(result, Is.EqualTo(caseDtoList.Count));
         }
 
         [Test]
@@ -1164,7 +1164,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 caseId,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -1180,7 +1180,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 caseId,
                 fieldData));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
@@ -1196,7 +1196,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 string.Empty,
                 caseId,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
@@ -1212,7 +1212,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 null,
                 caseId,
                 fieldData));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
@@ -1227,7 +1227,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 string.Empty,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'caseId' must be supplied"));
         }
 
         [Test]
@@ -1242,7 +1242,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 null,
                 fieldData));
-            Assert.AreEqual("caseId", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("caseId"));
         }
 
         [Test]
@@ -1258,7 +1258,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 caseId,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'fieldData' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'fieldData' must be supplied"));
         }
 
         [Test]
@@ -1273,7 +1273,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 caseId,
                 null));
-            Assert.AreEqual("fieldData", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("fieldData"));
         }
 
         [Test]
@@ -1329,7 +1329,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -1356,7 +1356,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
@@ -1383,7 +1383,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
@@ -1410,7 +1410,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
@@ -1437,7 +1437,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'fieldData' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'fieldData' must be supplied"));
         }
 
         [Test]
@@ -1463,7 +1463,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 null));
-            Assert.AreEqual("fieldData", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("fieldData"));
         }
 
         [Test]
@@ -1485,7 +1485,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'keyNames' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'keyNames' must be supplied"));
         }
 
         [Test]
@@ -1506,7 +1506,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 null,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("keyNames", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("keyNames"));
         }
 
         [Test]
@@ -1528,7 +1528,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 keyValues,
                 fieldData));
-            Assert.AreEqual("A value for the argument 'keyValues' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'keyValues' must be supplied"));
         }
 
         [Test]
@@ -1549,7 +1549,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 keyNames,
                 null,
                 fieldData));
-            Assert.AreEqual("keyValues", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("keyValues"));
         }
 
         [Test]
@@ -1577,7 +1577,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 string.Empty,
                 _questionnaireName,
                 caseId));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -1591,7 +1591,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 null,
                 _questionnaireName,
                 caseId));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
@@ -1605,7 +1605,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 string.Empty,
                 caseId));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
@@ -1619,7 +1619,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 null,
                 caseId));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
@@ -1630,7 +1630,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 _questionnaireName,
                 string.Empty));
-            Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'caseId' must be supplied"));
         }
 
         [Test]
@@ -1641,7 +1641,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 _questionnaireName,
                 null));
-            Assert.AreEqual("caseId", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("caseId"));
         }
 
         [Test]
@@ -1693,7 +1693,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -1718,7 +1718,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
@@ -1743,7 +1743,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 string.Empty,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
@@ -1768,7 +1768,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 null,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
@@ -1789,7 +1789,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("A value for the argument 'keyNames' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'keyNames' must be supplied"));
         }
 
         [Test]
@@ -1808,7 +1808,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 null,
                 keyValues));
-            Assert.AreEqual("keyNames", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("keyNames"));
         }
 
         [Test]
@@ -1829,7 +1829,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("A value for the argument 'keyValues' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'keyValues' must be supplied"));
         }
 
         [Test]
@@ -1848,7 +1848,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 keyNames,
                 null));
-            Assert.AreEqual("keyValues", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("keyValues"));
         }
 
         [Test]
@@ -1879,7 +1879,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseExists(_serverParkName, _questionnaireName, caseId);
 
             // assert
-            Assert.AreEqual(result, exists);
+            Assert.That(exists, Is.EqualTo(result));
         }
 
         [Test]
@@ -1893,7 +1893,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 string.Empty,
                 _questionnaireName,
                 caseId));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -1907,7 +1907,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 null,
                 _questionnaireName,
                 caseId));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
@@ -1921,7 +1921,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 string.Empty,
                 caseId));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
@@ -1935,7 +1935,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 null,
                 caseId));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
@@ -1946,7 +1946,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 _questionnaireName,
                 string.Empty));
-            Assert.AreEqual("A value for the argument 'caseId' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'caseId' must be supplied"));
         }
 
         [Test]
@@ -1957,7 +1957,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 _serverParkName,
                 null));
-            Assert.AreEqual("caseId", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("caseId"));
         }
 
         [TestCase(true)]
@@ -1989,7 +1989,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseExists(_serverParkName, _questionnaireName, keyNames, keyValues);
 
             // assert
-            Assert.AreEqual(result, exists);
+            Assert.That(exists, Is.EqualTo(result));
         }
 
         [Test]
@@ -2014,7 +2014,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -2039,7 +2039,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
@@ -2064,7 +2064,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 string.Empty,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
@@ -2085,7 +2085,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(_serverParkName, null, keyNames, keyValues));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
@@ -2106,7 +2106,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("A value for the argument 'keyNames' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'keyNames' must be supplied"));
         }
 
         [Test]
@@ -2121,7 +2121,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(_serverParkName, _questionnaireName, null, keyValues));
-            Assert.AreEqual("keyNames", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("keyNames"));
         }
 
         [Test]
@@ -2142,7 +2142,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName,
                 keyNames,
                 keyValues));
-            Assert.AreEqual("A value for the argument 'keyValues' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'keyValues' must be supplied"));
         }
 
         [Test]
@@ -2157,7 +2157,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CaseExists(_serverParkName, _questionnaireName, keyNames, null));
-            Assert.AreEqual("keyValues", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("keyValues"));
         }
 
         [Test]
@@ -2186,8 +2186,8 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetCaseEditInformationList(_serverParkName, _questionnaireName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<CaseEditInformationDto>>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<List<CaseEditInformationDto>>());
         }
 
         [Test]
@@ -2275,7 +2275,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetCaseEditInformationList(_serverParkName, _questionnaireName);
 
             // assert
-            Assert.NotNull(result);
+            Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.EqualTo(new List<CaseEditInformationDto> { editingDetailsDto1, editingDetailsDto3 }));
         }
 
@@ -2287,7 +2287,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCaseEditInformationList(_serverParkName, null));
 
             // assert
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
@@ -2298,7 +2298,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCaseEditInformationList(null, _questionnaireName));
 
             // assert
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
@@ -2309,7 +2309,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetCaseEditInformationList(_serverParkName, string.Empty));
 
             // assert
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
@@ -2320,7 +2320,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetCaseEditInformationList(string.Empty, _questionnaireName));
 
             // assert
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         private static CaseDto GenerateRandomCaseDto(int caseId)

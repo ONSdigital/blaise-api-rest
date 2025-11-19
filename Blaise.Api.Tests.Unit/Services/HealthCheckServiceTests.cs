@@ -34,10 +34,10 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.PerformCheck().ToList();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<IEnumerable<HealthCheckResultDto>>(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(4, result.Count);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<IEnumerable<HealthCheckResultDto>>());
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(4));
         }
 
         [Test]
@@ -47,12 +47,11 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.PerformCheck().ToList();
 
             // assert
-            Assert.IsNotNull(result);
-
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.Ok));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.Ok), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.Ok), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.Ok), Is.True);
         }
 
         [Test]
@@ -65,12 +64,11 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.PerformCheck().ToList();
 
             // assert
-            Assert.IsNotNull(result);
-
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Error));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.Ok));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Error), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.Ok), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.Ok), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.Ok), Is.True);
         }
 
         [Test]
@@ -83,12 +81,11 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.PerformCheck().ToList();
 
             // assert
-            Assert.IsNotNull(result);
-
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.Error));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.Ok));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.Error), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.Ok), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.Ok), Is.True);
         }
 
         [Test]
@@ -101,12 +98,11 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.PerformCheck().ToList();
 
             // assert
-            Assert.IsNotNull(result);
-
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.Error));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.Ok));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.Ok), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.Error), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.Ok), Is.True);
         }
 
         [Test]
@@ -119,12 +115,11 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.PerformCheck().ToList();
 
             // assert
-            Assert.IsNotNull(result);
-
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.Error));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.Ok), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.Ok), Is.True);
+            Assert.That(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.Error), Is.True);
         }
     }
 }
