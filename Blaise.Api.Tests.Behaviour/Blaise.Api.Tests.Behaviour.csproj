@@ -5,13 +5,13 @@
     <PackageReference Include="Blaise.Nuget.Api" version="2025.11.12.7" />
     <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.11.12.7" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
-    <PackageReference Include="MySql.Data" Version="9.4.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="MySql.Data" Version="9.5.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Google.Cloud.Storage.V1" Version="4.13.0" />
-    <PackageReference Include="NUnit" Version="3.14.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-    <PackageReference Include="Reqnroll.NUnit" Version="3.0.1" />
+    <PackageReference Include="NUnit" Version="4.4.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="5.2.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="Reqnroll.NUnit" Version="3.2.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -27,7 +27,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                 RestApiConfigurationHelper.QuestionnairesUrl,
                 BlaiseConfigurationHelper.QuestionnaireFile);
 
-            Assert.AreEqual(HttpStatusCode.Created, response);
+            Assert.That(response, Is.EqualTo(HttpStatusCode.Created));
         }
 
         [Then("the questionnaire is available to use")]
@@ -35,7 +35,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var questionnaireHasInstalled = QuestionnaireHelper.GetInstance().QuestionnaireHasInstalled(60);
 
-            Assert.IsTrue(questionnaireHasInstalled, "The questionnaire has not been installed, or is not active");
+            Assert.That(questionnaireHasInstalled, Is.True, "The questionnaire has not been installed, or is not active");
         }
 
         [AfterScenario("deploy")]

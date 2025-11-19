@@ -39,12 +39,12 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCaseStatusDtoList(caseStatusModelList);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsNotEmpty(result);
-            Assert.IsInstanceOf<IEnumerable<CaseStatusDto>>(result);
-            Assert.AreEqual(2, result.Count);
-            Assert.IsTrue(result.Any(r => r.PrimaryKey == "0000007" && r.Outcome == 110));
-            Assert.IsTrue(result.Any(r => r.PrimaryKey == "0000008" && r.Outcome == 210));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result, Is.InstanceOf<IEnumerable<CaseStatusDto>>());
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result.Any(r => r.PrimaryKey == "0000007" && r.Outcome == 110), Is.True);
+            Assert.That(result.Any(r => r.PrimaryKey == "0000008" && r.Outcome == 210), Is.True);
         }
 
         [Test]
@@ -55,9 +55,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCaseStatusDtoList(new List<CaseStatusModel>());
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsEmpty(result);
-            Assert.IsInstanceOf<IEnumerable<CaseStatusDto>>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Empty);
+            Assert.That(result, Is.InstanceOf<IEnumerable<CaseStatusDto>>());
         }
 
         [Test]
@@ -75,10 +75,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCaseDto(caseId, dataRecordMock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CaseDto>(result);
-            Assert.AreEqual(caseId, result.CaseId);
-            Assert.AreEqual(fieldData, result.FieldData);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CaseDto>());
+            Assert.That(result.CaseId, Is.EqualTo(caseId));
+            Assert.That(result.FieldData, Is.EqualTo(fieldData));
         }
 
         [Test]
@@ -100,10 +100,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCaseMultikeyDto(primaryKeyValues, dataRecordMock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CaseMultikeyDto>(result);
-            Assert.AreEqual(primaryKeyValues, result.PrimaryKeyValues);
-            Assert.AreEqual(fieldData, result.FieldData);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CaseMultikeyDto>());
+            Assert.That(result.PrimaryKeyValues, Is.EqualTo(primaryKeyValues));
+            Assert.That(result.FieldData, Is.EqualTo(fieldData));
         }
 
         [Test]
@@ -130,12 +130,12 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCaseEditInformationDto(dataRecordMock.Object);
 
             // assertt
-            Assert.AreEqual(primaryKey, result.PrimaryKey);
-            Assert.AreEqual(outcome, result.Outcome);
-            Assert.AreEqual(assignedTo, result.AssignedTo);
-            Assert.AreEqual(interviewer, result.Interviewer);
-            Assert.AreEqual(editedStatus, result.EditedStatus);
-            Assert.AreEqual(organisation, result.Organisation);
+            Assert.That(result.PrimaryKey, Is.EqualTo(primaryKey));
+            Assert.That(result.Outcome, Is.EqualTo(outcome));
+            Assert.That(result.AssignedTo, Is.EqualTo(assignedTo));
+            Assert.That(result.Interviewer, Is.EqualTo(interviewer));
+            Assert.That(result.EditedStatus, Is.EqualTo(editedStatus));
+            Assert.That(result.Organisation, Is.EqualTo(organisation));
         }
 
         [Test]
@@ -146,7 +146,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.MapToCaseEditInformationDto(null));
 
             // assert
-            Assert.AreEqual("The argument 'caseRecord' must be supplied", exception?.ParamName);
+            Assert.That("The argument 'caseRecord' must be supplied", Is.EqualTo(exception?.ParamName));
         }
     }
 }

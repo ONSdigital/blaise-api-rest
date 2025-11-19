@@ -64,7 +64,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                 RestApiConfigurationHelper.IngestDataUrl,
                 IngestFileHelper.IngestFile);
 
-            Assert.AreEqual(HttpStatusCode.Created, statusCode);
+            Assert.That(HttpStatusCode.Created, Is.EqualTo(statusCode));
         }
 
         [Then("blaise will contain the cases")]
@@ -89,14 +89,14 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                     Assert.Fail($"Case {caseModel.PrimaryKey} was in the database but not found in expected cases");
                 }
 
-                Assert.AreEqual(
+                Assert.That(
                     caseRecordExpected.Outcome,
-                    caseModel.Outcome,
+                    Is.EqualTo(caseModel.Outcome),
                     $"expected an outcome of '{caseRecordExpected.Outcome}' for case '{caseModel.PrimaryKey}', but was '{caseModel.Outcome}'");
 
-                Assert.AreEqual(
+                Assert.That(
                     caseRecordExpected.Mode,
-                    caseModel.Mode,
+                    Is.EqualTo(caseModel.Mode),
                     $"expected an version of '{caseRecordExpected.Mode}' for case '{caseModel.PrimaryKey}', but was '{caseModel.Mode}'");
             }
         }

@@ -24,8 +24,8 @@ namespace Blaise.Api.Tests.Unit.Providers
             var result = _sut.BaseUrl;
 
             // assert
-            Assert.NotNull(result);
-            Assert.AreEqual("http://*:80/", result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo("http://*:80/"));
         }
 
         [Test]
@@ -35,8 +35,8 @@ namespace Blaise.Api.Tests.Unit.Providers
             var result = _sut.TempPath;
 
             // assert
-            Assert.NotNull(result);
-            Assert.True(result.StartsWith(@"c:\Blaise\Temp"));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Does.StartWith(@"c:\Blaise\Temp"));
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace Blaise.Api.Tests.Unit.Providers
             var result2 = _sut.TempPath;
 
             // assert
-            Assert.AreNotEqual(result1, result2);
+            Assert.That(result1, Is.Not.EqualTo(result2));
         }
 
         [Test]
@@ -57,8 +57,8 @@ namespace Blaise.Api.Tests.Unit.Providers
             var result = _sut.DqsBucket;
 
             // assert
-            Assert.NotNull(result);
-            Assert.AreEqual("dqs-bucket", result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo("dqs-bucket"));
         }
 
         [Test]
@@ -68,8 +68,8 @@ namespace Blaise.Api.Tests.Unit.Providers
             var result = _sut.NisraBucket;
 
             // assert
-            Assert.NotNull(result);
-            Assert.AreEqual("nisra-bucket", result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo("nisra-bucket"));
         }
 
         [Test]
@@ -79,8 +79,8 @@ namespace Blaise.Api.Tests.Unit.Providers
             var result = _sut.IngestBucket;
 
             // assert
-            Assert.NotNull(result);
-            Assert.AreEqual("ingest-bucket", result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo("ingest-bucket"));
         }
 
         [Test]
@@ -90,8 +90,8 @@ namespace Blaise.Api.Tests.Unit.Providers
             var result = _sut.PackageExtension;
 
             // assert
-            Assert.NotNull(result);
-            Assert.AreEqual("bpkg", result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo("bpkg"));
         }
     }
 }

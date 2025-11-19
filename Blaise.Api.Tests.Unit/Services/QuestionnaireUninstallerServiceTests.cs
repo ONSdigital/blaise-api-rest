@@ -56,7 +56,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentException>(() => _sut.UninstallQuestionnaire(
                 string.Empty,
                 _serverParkName));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UninstallQuestionnaire(
                 null,
                 _serverParkName));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentException>(() => _sut.UninstallQuestionnaire(
                 _questionnaireName,
                 string.Empty));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UninstallQuestionnaire(
                 _questionnaireName,
                 null));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
     }
 }

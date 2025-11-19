@@ -117,7 +117,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 _questionnaireName,
                 _tempPath));
-            Assert.AreEqual("The argument 'ingestDataDto' must be supplied", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("The argument 'ingestDataDto' must be supplied"));
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 _questionnaireName,
                 _tempPath));
-            Assert.AreEqual("A value for the argument 'ingestDataDto.BucketFilePath' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'ingestDataDto.BucketFilePath' must be supplied"));
         }
 
         [Test]
@@ -147,7 +147,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 _questionnaireName,
                 _tempPath));
-            Assert.AreEqual("ingestDataDto.BucketFilePath", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("ingestDataDto.BucketFilePath"));
         }
 
         [Test]
@@ -159,7 +159,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 string.Empty,
                 _tempPath));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
@@ -171,7 +171,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 null,
                 _tempPath));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
@@ -183,7 +183,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 string.Empty,
                 _questionnaireName,
                 _tempPath));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -195,7 +195,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 null,
                 _questionnaireName,
                 _tempPath));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
@@ -207,7 +207,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 _questionnaireName,
                 string.Empty));
-            Assert.AreEqual("A value for the argument 'tempFilePath' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'tempFilePath' must be supplied"));
         }
 
         [Test]
@@ -219,7 +219,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName,
                 _questionnaireName,
                 null));
-            Assert.AreEqual("tempFilePath", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("tempFilePath"));
         }
     }
 }

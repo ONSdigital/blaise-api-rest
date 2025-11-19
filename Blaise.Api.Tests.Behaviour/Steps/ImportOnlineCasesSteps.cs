@@ -67,7 +67,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                 RestApiConfigurationHelper.QuestionnaireDataUrl,
                 BlaiseConfigurationHelper.QuestionnaireName);
 
-            Assert.AreEqual(HttpStatusCode.Created, statusCode);
+            Assert.That(statusCode, Is.EqualTo(HttpStatusCode.Created));
         }
 
         [Then("blaise will contain the following cases")]
@@ -92,14 +92,14 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                     Assert.Fail($"Case {caseModel.PrimaryKey} was in the database but not found in expected cases");
                 }
 
-                Assert.AreEqual(
-                    caseRecordExpected.Outcome,
+                Assert.That(
                     caseModel.Outcome,
+                    Is.EqualTo(caseRecordExpected.Outcome),
                     $"expected an outcome of '{caseRecordExpected.Outcome}' for case '{caseModel.PrimaryKey}', but was '{caseModel.Outcome}'");
 
-                Assert.AreEqual(
+                Assert.That(
                     caseRecordExpected.Mode,
-                    caseModel.Mode,
+                    Is.EqualTo(caseModel.Mode),
                     $"expected an version of '{caseRecordExpected.Mode}' for case '{caseModel.PrimaryKey}', but was '{caseModel.Mode}'");
             }
         }
@@ -179,7 +179,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
             var modeType = CaseHelper.GetInstance().GetMode(primaryKey);
-            Assert.AreEqual(ModeType.Web, modeType);
+            Assert.That(ModeType.Web, Is.EqualTo(modeType));
         }
 
         [Then("the existing blaise case is kept")]
@@ -187,7 +187,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
             var modeType = CaseHelper.GetInstance().GetMode(primaryKey);
-            Assert.AreEqual(ModeType.Tel, modeType);
+            Assert.That(ModeType.Tel, Is.EqualTo(modeType));
         }
 
         [Then("the online case is not imported again")]
@@ -195,7 +195,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
             var modeType = CaseHelper.GetInstance().GetMode(primaryKey);
-            Assert.AreEqual(ModeType.Web, modeType);
+            Assert.That(ModeType.Web, Is.EqualTo(modeType));
         }
 
         [Given("there is a online file that contains '(.*)' cases")]
@@ -227,7 +227,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var numberOfCasesInBlaise = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
 
-            Assert.AreEqual(numberOfCases, numberOfCasesInBlaise);
+            Assert.That(numberOfCases, Is.EqualTo(numberOfCasesInBlaise));
         }
     }
 }

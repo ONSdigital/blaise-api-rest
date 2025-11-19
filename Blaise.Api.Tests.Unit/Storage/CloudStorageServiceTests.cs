@@ -125,7 +125,7 @@ namespace Blaise.Api.Tests.Unit.Storage
 
             // act and assert
             var exception = Assert.ThrowsAsync<DataNotFoundException>(async () => await _sut.DownloadFilesFromNisraBucketAsync(bucketFilePath, tempPath));
-            Assert.AreEqual($"No files were found for bucket path '{bucketFilePath}' in bucket '{bucketName}'", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo($"No files were found for bucket path '{bucketFilePath}' in bucket '{bucketName}'"));
         }
 
         [Test]
@@ -174,7 +174,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             var result = await _sut.DownloadFileFromBucketAsync(bucketName, bucketFilePath, filePath);
 
             // arrange
-            Assert.AreEqual(destinationFilePath, result);
+            Assert.That(result, Is.EqualTo(destinationFilePath));
         }
 
         [Test]

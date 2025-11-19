@@ -56,7 +56,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateQuestionnaireFileWithSqlConnection(string.Empty));
-            Assert.AreEqual("A value for the argument 'questionnaireFile' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireFile' must be supplied"));
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateQuestionnaireFileWithSqlConnection(null));
-            Assert.AreEqual("questionnaireFile", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireFile"));
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetQuestionnaireNameFromFile(_questionnaireFile);
 
             // assert
-            Assert.AreEqual(_questionnaireName, result);
+            Assert.That(result, Is.EqualTo(_questionnaireName));
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetDatabaseFile(filePath, _questionnaireName);
 
             // assert
-            Assert.AreEqual(expectedName, result);
+            Assert.That(result, Is.EqualTo(expectedName));
         }
     }
 }

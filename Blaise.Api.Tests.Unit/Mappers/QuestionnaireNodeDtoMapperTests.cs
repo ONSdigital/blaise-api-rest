@@ -52,13 +52,12 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 .ToList();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<IEnumerable<QuestionnaireNodeDto>>(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(2, result.Count);
-
-            Assert.True(result.Any(n => n.NodeName == node1Name && n.NodeStatus == node1Status));
-            Assert.True(result.Any(n => n.NodeName == node2Name && n.NodeStatus == node2Status));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<IEnumerable<QuestionnaireNodeDto>>());
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result.Any(n => n.NodeName == node1Name && n.NodeStatus == node1Status), Is.True);
+            Assert.That(result.Any(n => n.NodeName == node2Name && n.NodeStatus == node2Status), Is.True);
         }
     }
 }
