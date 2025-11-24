@@ -82,7 +82,7 @@ namespace Blaise.Api.Controllers
 
             _loggingService.LogInfo($"Successfully added user role '{roleDto.Name}'");
 
-            return Created($"{Request.RequestUri}/{roleDto.Name}", roleDto);
+            return Created($"{Request.RequestUri}/{Uri.EscapeDataString(roleDto.Name)}", roleDto);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
