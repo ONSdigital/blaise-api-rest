@@ -7,8 +7,11 @@ namespace Blaise.Api.Contracts.Models.Cati
     public class CatiQuestionnaireDto : QuestionnaireDto
     {
         public List<DateTime> SurveyDays { get; set; } = new List<DateTime>();
+
         public bool Active { get; set; }
+
         public bool ActiveToday { get; set; }
+
         public bool DeliverData { get; set; }
     }
 }
