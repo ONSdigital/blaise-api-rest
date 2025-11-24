@@ -36,7 +36,7 @@ stages:
               targetType: inline
               errorActionPreference: continue
               script: |
-                cd "$(Build.SourcesDirectory)"
+                cd $(Build.SourcesDirectory)
                 dotnet format Blaise.Api.Rest.sln --verify-no-changes --no-restore --verbosity diagnostic
                 if ($LASTEXITCODE -eq 0) {
                   Write-Host '✅ Check code formatting found no issues.'
@@ -56,10 +56,12 @@ stages:
               configuration: $(buildConfiguration)
 
           - task: DotNetCoreCLI@2
-            displayName: Run tests
+            displayName: Run unit tests
             inputs:
               command: test
-              projects: '**/*[Tt]est*.csproj'
+              projects: |
+                **/*[Tt]est*.csproj
+                !**/*Behaviour.csproj
               arguments: --configuration $(buildConfiguration) --no-build
 
           - task: CopyFiles@2
