@@ -81,11 +81,11 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_GetDatabaseFile_Then_The_Correct_Name_Is_Returned()
         {
             // arrange
-            var filePath = @"d:\test";
-            var expectedName = $@"{filePath}\{_questionnaireName}.bdix";
+            const string FilePath = @"d:\test";
+            var expectedName = $@"{FilePath}\{_questionnaireName}.bdix";
 
             // act
-            var result = _sut.GetDatabaseFile(filePath, _questionnaireName);
+            var result = _sut.GetDatabaseFile(FilePath, _questionnaireName);
 
             // assert
             Assert.That(result, Is.EqualTo(expectedName));

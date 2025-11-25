@@ -278,12 +278,12 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Empty_ServerParkName_When_I_Call_GetCatiQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            var questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetCatiQuestionnaire(
                 string.Empty,
-                questionnaireName));
+                QuestionnaireName));
             Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
@@ -291,10 +291,10 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Null_ServerParkName_When_I_Call_GetCatiQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            var questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCatiQuestionnaire(null, questionnaireName));
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCatiQuestionnaire(null, QuestionnaireName));
             Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 

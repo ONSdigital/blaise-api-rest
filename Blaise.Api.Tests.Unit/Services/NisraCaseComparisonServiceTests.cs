@@ -179,11 +179,11 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Has_An_Outcome_Of_Delete_When_I_Call_CaseNeedsToBeUpdated_Then_False_Is_Returned()
         {
             // arrange
-            const int outcomeCode = 562; // respondent request for data to be deleted
+            const int OutcomeCode = 562; // respondent request for data to be deleted
 
             var primaryKeyValues = PrimaryKeyHelper.CreatePrimaryKeys(_primaryKey);
             var nisraCaseStatusModel = new CaseStatusModel(primaryKeyValues, _hOutPartial, _date1);
-            var existingCaseStatusModel = new CaseStatusModel(primaryKeyValues, outcomeCode, _date2);
+            var existingCaseStatusModel = new CaseStatusModel(primaryKeyValues, OutcomeCode, _date2);
 
             // act
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
@@ -197,11 +197,11 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Of_Delete_When_I_Call_CaseNeedsToBeUpdated_Then_False_Is_Returned()
         {
             // arrange
-            const int outcomeCode = 561; // respondent request for data to be deleted
+            const int OutcomeCode = 561; // respondent request for data to be deleted
 
             var primaryKeyValues = PrimaryKeyHelper.CreatePrimaryKeys(_primaryKey);
             var nisraCaseStatusModel = new CaseStatusModel(primaryKeyValues, _hOutPartial, _date1);
-            var existingCaseStatusModel = new CaseStatusModel(primaryKeyValues, outcomeCode, _date2);
+            var existingCaseStatusModel = new CaseStatusModel(primaryKeyValues, OutcomeCode, _date2);
 
             // act
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);

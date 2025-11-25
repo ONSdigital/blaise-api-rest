@@ -55,19 +55,19 @@ namespace Blaise.Api.Tests.Unit.Services
         public async Task Given_I_Call_InstallQuestionnaire_Then_The_Correct_Services_Are_Called_In_The_Correct_Order()
         {
             // arrange
-            const string questionnaireFilePath = "d:\\temp\\OPN1234.zip";
+            const string QuestionnaireFilePath = "d:\\temp\\OPN1234.zip";
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFileFromQuestionnaireBucketAsync(
-                    _questionnaireFile, _tempPath)).ReturnsAsync(questionnaireFilePath);
+                    _questionnaireFile, _tempPath)).ReturnsAsync(QuestionnaireFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(b => b
-                .UpdateQuestionnaireFileWithSqlConnection(questionnaireFilePath));
+                .UpdateQuestionnaireFileWithSqlConnection(QuestionnaireFilePath));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .GetQuestionnaireNameFromFile(_questionnaireFile)).Returns(_questionnaireName);
 
             _blaiseQuestionnaireApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallQuestionnaire(_questionnaireName, _serverParkName, questionnaireFilePath, It.IsAny<IInstallOptions>()));
+                .InstallQuestionnaire(_questionnaireName, _serverParkName, QuestionnaireFilePath, It.IsAny<IInstallOptions>()));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .RemovePathAndFiles(_tempPath));
@@ -77,13 +77,13 @@ namespace Blaise.Api.Tests.Unit.Services
 
             // assert
             _storageServiceMock.Verify(v => v.DownloadFileFromQuestionnaireBucketAsync(_questionnaireFile, _tempPath), Times.Once);
-            _fileServiceMock.Verify(v => v.UpdateQuestionnaireFileWithSqlConnection(questionnaireFilePath), Times.Once);
+            _fileServiceMock.Verify(v => v.UpdateQuestionnaireFileWithSqlConnection(QuestionnaireFilePath), Times.Once);
             _fileServiceMock.Verify(v => v.GetQuestionnaireNameFromFile(_questionnaireFile), Times.Once);
             _blaiseQuestionnaireApiMock.Verify(
                 v => v.InstallQuestionnaire(
                     _questionnaireName,
                     _serverParkName,
-                    questionnaireFilePath,
+                    QuestionnaireFilePath,
                     It.Is<IInstallOptions>(i =>
                     i.DataEntrySettingsName == "StrictInterviewing" &&
                     i.InitialAppLayoutSetGroupName == "CATI" &&
@@ -93,22 +93,22 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public async Task Given_I_Call_InstallQuestionnaire_Then_The_The_Correct_Questionnaire_Name_Is_Returned()
+        public async Task Given_I_Call_InstallQuestionnaire_Then_The_Correct_Questionnaire_Name_Is_Returned()
         {
             // arrange
-            const string questionnaireFilePath = "d:\\temp\\OPN1234.zip";
+            const string QuestionnaireFilePath = "d:\\temp\\OPN1234.zip";
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFileFromQuestionnaireBucketAsync(
-                    _questionnaireFile, _tempPath)).ReturnsAsync(questionnaireFilePath);
+                    _questionnaireFile, _tempPath)).ReturnsAsync(QuestionnaireFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(b => b
-                .UpdateQuestionnaireFileWithSqlConnection(questionnaireFilePath));
+                .UpdateQuestionnaireFileWithSqlConnection(QuestionnaireFilePath));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .GetQuestionnaireNameFromFile(_questionnaireFile)).Returns(_questionnaireName);
 
             _blaiseQuestionnaireApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallQuestionnaire(_questionnaireName, _serverParkName, questionnaireFilePath, It.IsAny<IInstallOptions>()));
+                .InstallQuestionnaire(_questionnaireName, _serverParkName, QuestionnaireFilePath, It.IsAny<IInstallOptions>()));
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                 .RemovePathAndFiles(_tempPath));

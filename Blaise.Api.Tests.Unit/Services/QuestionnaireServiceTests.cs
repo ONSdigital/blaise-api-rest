@@ -174,20 +174,20 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Questionnaire_Exists_When_I_Call_GetQuestionnaire_Then_I_Get_A_Correct_QuestionnaireDto_Returned()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
             var questionnaireDto = new QuestionnaireDto();
             var surveyMock = new Mock<ISurvey>();
 
             _blaiseApiMock.Setup(b => b
-                .GetQuestionnaire(questionnaireName, serverParkName))
+                .GetQuestionnaire(QuestionnaireName, ServerParkName))
                 .Returns(surveyMock.Object);
 
             _questionnaireMapperMock.Setup(m => m.MapToQuestionnaireDto(surveyMock.Object))
                 .Returns(questionnaireDto);
 
             // act
-            var result = _sut.GetQuestionnaire(questionnaireName, serverParkName);
+            var result = _sut.GetQuestionnaire(QuestionnaireName, ServerParkName);
 
             // assert
             Assert.That(result, Is.Not.Null);
@@ -238,14 +238,14 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Questionnaire_Exists_When_I_Call_QuestionnaireExists_Then_True_Is_Returned()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             _blaiseApiMock.Setup(b =>
-                b.QuestionnaireExists(questionnaireName, serverParkName)).Returns(true);
+                b.QuestionnaireExists(QuestionnaireName, ServerParkName)).Returns(true);
 
             // act
-            var result = _sut.QuestionnaireExists(questionnaireName, serverParkName);
+            var result = _sut.QuestionnaireExists(QuestionnaireName, ServerParkName);
 
             // assert
             Assert.That(result, Is.Not.Null);
@@ -256,14 +256,14 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Questionnaire_Does_Not_Exist_When_I_Call_QuestionnaireExists_Then_False_Is_Returned()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             _blaiseApiMock.Setup(b =>
-                b.QuestionnaireExists(questionnaireName, serverParkName)).Returns(false);
+                b.QuestionnaireExists(QuestionnaireName, ServerParkName)).Returns(false);
 
             // act
-            var result = _sut.QuestionnaireExists(questionnaireName, serverParkName);
+            var result = _sut.QuestionnaireExists(QuestionnaireName, ServerParkName);
 
             // assert
             Assert.That(result, Is.Not.Null);
@@ -314,15 +314,15 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Questionnaire_Exists_When_I_Call_GetQuestionnaireId_Then_The_Correct_Id_Is_Returned()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
             var questionnaireId = Guid.NewGuid();
 
             _blaiseApiMock.Setup(b =>
-                b.GetIdOfQuestionnaire(questionnaireName, serverParkName)).Returns(questionnaireId);
+                b.GetIdOfQuestionnaire(QuestionnaireName, ServerParkName)).Returns(questionnaireId);
 
             // act
-            var result = _sut.GetQuestionnaireId(questionnaireName, serverParkName);
+            var result = _sut.GetQuestionnaireId(QuestionnaireName, ServerParkName);
 
             // assert
             Assert.That(result, Is.Not.Null);
@@ -377,14 +377,14 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Questionnaire_Exists_When_I_Call_GetQuestionnaireStatus_Then_The_Correct_Status_Is_Returned(QuestionnaireStatusType surveyStatus)
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             _blaiseApiMock.Setup(b =>
-                b.GetQuestionnaireStatus(questionnaireName, serverParkName)).Returns(surveyStatus);
+                b.GetQuestionnaireStatus(QuestionnaireName, ServerParkName)).Returns(surveyStatus);
 
             // act
-            var result = _sut.GetQuestionnaireStatus(questionnaireName, serverParkName);
+            var result = _sut.GetQuestionnaireStatus(QuestionnaireName, ServerParkName);
 
             // assert
             Assert.That(result, Is.Not.Null);
@@ -435,17 +435,17 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Questionnaire_Exists_When_I_Call_ActivateQuestionnaire_Then_The_Correct_Service_Is_Called()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             _blaiseApiMock.Setup(b =>
-                b.ActivateQuestionnaire(questionnaireName, serverParkName));
+                b.ActivateQuestionnaire(QuestionnaireName, ServerParkName));
 
             // act
-            _sut.ActivateQuestionnaire(questionnaireName, serverParkName);
+            _sut.ActivateQuestionnaire(QuestionnaireName, ServerParkName);
 
             // assert
-            _blaiseApiMock.Verify(v => v.ActivateQuestionnaire(questionnaireName, serverParkName), Times.Once);
+            _blaiseApiMock.Verify(v => v.ActivateQuestionnaire(QuestionnaireName, ServerParkName), Times.Once);
         }
 
         [Test]
@@ -492,17 +492,17 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Questionnaire_Exists_When_I_Call_DeactivateQuestionnaire_Then_The_Correct_Service_Is_Called()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             _blaiseApiMock.Setup(b =>
-                b.DeactivateQuestionnaire(questionnaireName, serverParkName));
+                b.DeactivateQuestionnaire(QuestionnaireName, ServerParkName));
 
             // act
-            _sut.DeactivateQuestionnaire(questionnaireName, serverParkName);
+            _sut.DeactivateQuestionnaire(QuestionnaireName, ServerParkName);
 
             // assert
-            _blaiseApiMock.Verify(v => v.DeactivateQuestionnaire(questionnaireName, serverParkName), Times.Once);
+            _blaiseApiMock.Verify(v => v.DeactivateQuestionnaire(QuestionnaireName, ServerParkName), Times.Once);
         }
 
         [Test]
@@ -549,13 +549,13 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Questionnaire_Has_Modes_When_I_Call_GetModes_Then_I_Get_A_List_Containing_Modes_Back()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "LocalDevelopment";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "LocalDevelopment";
             var modes = new List<string> { "CATI", "CAWI" };
-            _blaiseApiMock.Setup(b => b.GetQuestionnaireModes(questionnaireName, serverParkName)).Returns(modes);
+            _blaiseApiMock.Setup(b => b.GetQuestionnaireModes(QuestionnaireName, ServerParkName)).Returns(modes);
 
             // act
-            var result = _sut.GetModes(questionnaireName, serverParkName);
+            var result = _sut.GetModes(QuestionnaireName, ServerParkName);
 
             // assert
             Assert.That(result, Is.Not.Null);
@@ -570,13 +570,13 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Mode_Exists_When_I_Call_ModeExists_With_That_Mode_Then_True_Is_Returned(string mode)
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "LocalDevelopment";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "LocalDevelopment";
             var modes = new List<string> { "CATI", "CAWI" };
-            _blaiseApiMock.Setup(b => b.GetQuestionnaireModes(questionnaireName, serverParkName)).Returns(modes);
+            _blaiseApiMock.Setup(b => b.GetQuestionnaireModes(QuestionnaireName, ServerParkName)).Returns(modes);
 
             // act
-            var result = _sut.ModeExists(questionnaireName, serverParkName, mode);
+            var result = _sut.ModeExists(QuestionnaireName, ServerParkName, mode);
 
             // assert
             Assert.That(result, Is.Not.Null);
@@ -590,13 +590,13 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Mode_Does_Not_Exist_When_I_Call_ModeExists_With_That_Mode_Then_False_Is_Returned(string mode)
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "LocalDevelopment";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "LocalDevelopment";
             var modes = new List<string> { "CATI", "CAWI" };
-            _blaiseApiMock.Setup(b => b.GetQuestionnaireModes(questionnaireName, serverParkName)).Returns(modes);
+            _blaiseApiMock.Setup(b => b.GetQuestionnaireModes(QuestionnaireName, ServerParkName)).Returns(modes);
 
             // act
-            var result = _sut.ModeExists(questionnaireName, serverParkName, mode);
+            var result = _sut.ModeExists(QuestionnaireName, ServerParkName, mode);
 
             // assert
             Assert.That(result, Is.Not.Null);

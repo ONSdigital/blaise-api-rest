@@ -68,30 +68,30 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var productVersionInfoMock = new Mock<IProductVersionInfo>();
             productVersionInfoMock.Setup(pi => pi.ToString()).Returns("5.9.9");
 
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
             var serverPark = new Mock<IServerPark>();
-            serverPark.Setup(s => s.Name).Returns(serverParkName);
+            serverPark.Setup(s => s.Name).Returns(ServerParkName);
 
             var server1Mock = new Mock<IServer>();
-            const string machine1Name = "ServerA";
-            const string machine1LogicalRoot = "Default1";
+            const string Machine1Name = "ServerA";
+            const string Machine1LogicalRoot = "Default1";
             var machine1Roles = new List<string> { "role1", "role2" };
             var machine1ServerRoleCollection = new Mock<IServerRoleCollection>();
             machine1ServerRoleCollection.Setup(s => s.GetEnumerator()).Returns(machine1Roles.GetEnumerator());
-            server1Mock.Setup(s => s.Name).Returns(machine1Name);
+            server1Mock.Setup(s => s.Name).Returns(Machine1Name);
             server1Mock.As<IServer2>().Setup(s => s.BlaiseVersion).Returns(productVersionInfoMock.Object);
-            server1Mock.Setup(s => s.LogicalRoot).Returns(machine1LogicalRoot);
+            server1Mock.Setup(s => s.LogicalRoot).Returns(Machine1LogicalRoot);
             server1Mock.Setup(s => s.Roles).Returns(machine1ServerRoleCollection.Object);
 
             var server2Mock = new Mock<IServer>();
-            const string machine2Name = "ServerB";
-            const string machine2LogicalRoot = "Default2";
+            const string Machine2Name = "ServerB";
+            const string Machine2LogicalRoot = "Default2";
             var machine2Roles = new List<string> { "role3" };
             var machine2ServerRoleCollection = new Mock<IServerRoleCollection>();
             machine2ServerRoleCollection.Setup(s => s.GetEnumerator()).Returns(machine2Roles.GetEnumerator());
-            server2Mock.Setup(s => s.Name).Returns(machine2Name);
+            server2Mock.Setup(s => s.Name).Returns(Machine2Name);
             server2Mock.As<IServer2>().Setup(s => s.BlaiseVersion).Returns(productVersionInfoMock.Object);
-            server2Mock.Setup(s => s.LogicalRoot).Returns(machine2LogicalRoot);
+            server2Mock.Setup(s => s.LogicalRoot).Returns(Machine2LogicalRoot);
             server2Mock.Setup(s => s.Roles).Returns(machine2ServerRoleCollection.Object);
 
             var serverList = new List<IServer> { server1Mock.Object, server2Mock.Object };
@@ -106,7 +106,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             // assert
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.InstanceOf<ServerParkDto>());
-            Assert.That(result.Name, Is.EqualTo(serverParkName));
+            Assert.That(result.Name, Is.EqualTo(ServerParkName));
             Assert.That(result.Servers, Is.Not.Null);
             Assert.That(result.Servers, Is.InstanceOf<IEnumerable<ServerDto>>());
             Assert.That(result.Servers, Is.Not.Empty);
@@ -114,16 +114,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
 
             Assert.That(
                 result.Servers.Any(
-                    s => s.Name == machine1Name &&
+                    s => s.Name == Machine1Name &&
                     s.BlaiseVersion == "5.9.9" &&
-                    s.LogicalServerName == machine1LogicalRoot &&
+                    s.LogicalServerName == Machine1LogicalRoot &&
                     s.Roles.OrderByDescending(l => l).SequenceEqual(machine1Roles.OrderByDescending(l => l))), Is.True);
 
             Assert.That(
                 result.Servers.Any(
-                    s => s.Name == machine2Name &&
+                    s => s.Name == Machine2Name &&
                     s.BlaiseVersion == "5.9.9" &&
-                    s.LogicalServerName == machine2LogicalRoot &&
+                    s.LogicalServerName == Machine2LogicalRoot &&
                     s.Roles.OrderByDescending(l => l).SequenceEqual(machine2Roles.OrderByDescending(l => l))), Is.True);
         }
 

@@ -42,18 +42,18 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_Survey_When_I_Call_MapToQuestionnaireDto_Then_Properties_Are_Mapped_Correctly()
         {
             // arrange
-            const string questionnaire1Name = "FRS2404a";
+            const string Questionnaire1Name = "FRS2404a";
             var questionnaire1Id = Guid.NewGuid();
             const string ServerPark1Name = "ServerParkA";
-            const string blaiseVersion = "5.9.9";
+            const string BlaiseVersion = "5.9.9";
             var installDate = new DateTime(2024, 1, 1);
             var fieldPeriod = new DateTime(2024, 4, 1);
-            var surveyTla = "FRS";
+            const string SurveyTla = "FRS";
 
-            const int numberOfRecordForQuestionnaire1 = 20;
+            const int NumberOfRecordForQuestionnaire1 = 20;
 
             var configurationMock = new Mock<IConfiguration2>();
-            configurationMock.Setup(c => c.BlaiseVersion).Returns(blaiseVersion);
+            configurationMock.Setup(c => c.BlaiseVersion).Returns(BlaiseVersion);
 
             var configurations = new List<IConfiguration> { configurationMock.Object };
 
@@ -62,14 +62,14 @@ namespace Blaise.Api.Tests.Unit.Mappers
 
             var survey1Mock = new Mock<ISurvey>();
             survey1Mock.As<ISurvey2>();
-            survey1Mock.Setup(s => s.Name).Returns(questionnaire1Name);
+            survey1Mock.Setup(s => s.Name).Returns(Questionnaire1Name);
             survey1Mock.Setup(s => s.InstrumentID).Returns(questionnaire1Id);
             survey1Mock.Setup(s => s.ServerPark).Returns(ServerPark1Name);
             survey1Mock.Setup(s => s.InstallDate).Returns(installDate);
             survey1Mock.Setup(s => s.Configuration).Returns(configurationCollectionMock.Object);
 
             var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
-            surveyReportingInfoMock1.Setup(r => r.DataRecordCount).Returns(numberOfRecordForQuestionnaire1);
+            surveyReportingInfoMock1.Setup(r => r.DataRecordCount).Returns(NumberOfRecordForQuestionnaire1);
             survey1Mock.As<ISurvey2>().Setup(s => s.GetReportingInfo()).Returns(surveyReportingInfoMock1.Object);
 
             _statusMapperMock.Setup(s => s.GetQuestionnaireStatus(survey1Mock.Object))
@@ -89,16 +89,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             // assert
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.InstanceOf<QuestionnaireDto>());
-            Assert.That(result.Name, Is.EqualTo(questionnaire1Name));
+            Assert.That(result.Name, Is.EqualTo(Questionnaire1Name));
             Assert.That(result.Id, Is.EqualTo(questionnaire1Id));
             Assert.That(result.ServerParkName, Is.EqualTo(ServerPark1Name));
-            Assert.That(result.DataRecordCount, Is.EqualTo(numberOfRecordForQuestionnaire1));
+            Assert.That(result.DataRecordCount, Is.EqualTo(NumberOfRecordForQuestionnaire1));
             Assert.That(result.Status, Is.EqualTo(QuestionnaireStatusType.Active.ToString()));
             Assert.That(result.HasData, Is.True);
-            Assert.That(result.BlaiseVersion, Is.EqualTo(blaiseVersion));
+            Assert.That(result.BlaiseVersion, Is.EqualTo(BlaiseVersion));
             Assert.That(result.InstallDate, Is.EqualTo(installDate));
             Assert.That(result.FieldPeriod, Is.EqualTo(fieldPeriod));
-            Assert.That(result.SurveyTla, Is.EqualTo(surveyTla));
+            Assert.That(result.SurveyTla, Is.EqualTo(SurveyTla));
             Assert.That(result.Nodes, Is.SameAs(nodeList));
         }
 
@@ -110,13 +110,13 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var questionnaire1Name = $"FRS{year}{month}T";
             var questionnaire1Id = Guid.NewGuid();
             const string ServerPark1Name = "ServerParkA";
-            const string blaiseVersion = "5.9.9";
+            const string BlaiseVersion = "5.9.9";
             var installDate = new DateTime(2024, 2, 2);
 
-            const int numberOfRecordForQuestionnaire1 = 20;
+            const int NumberOfRecordForQuestionnaire1 = 20;
 
             var configurationMock = new Mock<IConfiguration2>();
-            configurationMock.Setup(c => c.BlaiseVersion).Returns(blaiseVersion);
+            configurationMock.Setup(c => c.BlaiseVersion).Returns(BlaiseVersion);
 
             var configurations = new List<IConfiguration> { configurationMock.Object };
 
@@ -132,7 +132,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             survey1Mock.Setup(s => s.Configuration).Returns(configurationCollectionMock.Object);
 
             var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
-            surveyReportingInfoMock1.Setup(r => r.DataRecordCount).Returns(numberOfRecordForQuestionnaire1);
+            surveyReportingInfoMock1.Setup(r => r.DataRecordCount).Returns(NumberOfRecordForQuestionnaire1);
             survey1Mock.As<ISurvey2>().Setup(s => s.GetReportingInfo()).Returns(surveyReportingInfoMock1.Object);
 
             _statusMapperMock.Setup(s => s.GetQuestionnaireStatus(survey1Mock.Object))
@@ -159,11 +159,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_Survey_Has_No_Configuration_Available_When_I_Call_MapToQuestionnaireDto_Then_BlaiseVersion_Is_Set_To_Default()
         {
             // arrange
-            const string questionnaire1Name = "OPN2010A";
+            const string Questionnaire1Name = "OPN2010A";
             var questionnaire1Id = Guid.NewGuid();
             const string ServerPark1Name = "ServerParkA";
 
-            const int numberOfRecordForQuestionnaire1 = 20;
+            const int NumberOfRecordForQuestionnaire1 = 20;
 
             var configurations = new List<IConfiguration>();
 
@@ -172,13 +172,13 @@ namespace Blaise.Api.Tests.Unit.Mappers
 
             var survey1Mock = new Mock<ISurvey>();
             survey1Mock.As<ISurvey2>();
-            survey1Mock.Setup(s => s.Name).Returns(questionnaire1Name);
+            survey1Mock.Setup(s => s.Name).Returns(Questionnaire1Name);
             survey1Mock.Setup(s => s.InstrumentID).Returns(questionnaire1Id);
             survey1Mock.Setup(s => s.ServerPark).Returns(ServerPark1Name);
             survey1Mock.Setup(s => s.Configuration).Returns(configurationCollectionMock.Object);
 
             var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
-            surveyReportingInfoMock1.Setup(r => r.DataRecordCount).Returns(numberOfRecordForQuestionnaire1);
+            surveyReportingInfoMock1.Setup(r => r.DataRecordCount).Returns(NumberOfRecordForQuestionnaire1);
             survey1Mock.As<ISurvey2>().Setup(s => s.GetReportingInfo()).Returns(surveyReportingInfoMock1.Object);
 
             _statusMapperMock.Setup(s => s.GetQuestionnaireStatus(survey1Mock.Object))
@@ -205,11 +205,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_List_Of_Surveys_When_I_Call_MapToQuestionnaireDtos_Then_The_General_Properties_Are_Mapped()
         {
             // arrange
-            const string questionnaire1Name = "OPN2010A";
-            const string questionnaire2Name = "OPN2010B";
+            const string Questionnaire1Name = "OPN2010A";
+            const string Questionnaire2Name = "OPN2010B";
 
             var fieldPeriod = new DateTime(2020, 10, 1);
-            const string surveyTla = "OPN";
+            const string SurveyTla = "OPN";
 
             var questionnaire1Id = Guid.NewGuid();
             var questionnaire2Id = Guid.NewGuid();
@@ -217,11 +217,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
             const string ServerPark1Name = "ServerParkA";
             const string ServerPark2Name = "ServerParkB";
 
-            const int numberOfRecordForQuestionnaire1 = 20;
-            const int numberOfRecordForQuestionnaire2 = 0;
+            const int NumberOfRecordForQuestionnaire1 = 20;
+            const int NumberOfRecordForQuestionnaire2 = 0;
 
-            const string questionnaire1BlaiseVersion = "5.9.9";
-            const string questionnaire2BlaiseVersion = "5.9.3";
+            const string Questionnaire1BlaiseVersion = "5.9.9";
+            const string Questionnaire2BlaiseVersion = "5.9.3";
 
             var questionnaire1InstallDate = new DateTime(2024, 1, 1);
             var questionnaire2InstallDate = new DateTime(2024, 2, 1);
@@ -229,7 +229,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var survey1Mock = new Mock<ISurvey>();
 
             var configuration1Mock = new Mock<IConfiguration2>();
-            configuration1Mock.Setup(c => c.BlaiseVersion).Returns(questionnaire1BlaiseVersion);
+            configuration1Mock.Setup(c => c.BlaiseVersion).Returns(Questionnaire1BlaiseVersion);
 
             var configurations1 = new List<IConfiguration> { configuration1Mock.Object };
 
@@ -237,37 +237,37 @@ namespace Blaise.Api.Tests.Unit.Mappers
             configurationCollection1Mock.Setup(cc => cc.Configurations).Returns(configurations1);
 
             survey1Mock.As<ISurvey2>();
-            survey1Mock.Setup(s => s.Name).Returns(questionnaire1Name);
+            survey1Mock.Setup(s => s.Name).Returns(Questionnaire1Name);
             survey1Mock.Setup(s => s.InstrumentID).Returns(questionnaire1Id);
             survey1Mock.Setup(s => s.ServerPark).Returns(ServerPark1Name);
             survey1Mock.Setup(s => s.InstallDate).Returns(questionnaire1InstallDate);
             survey1Mock.Setup(s => s.Configuration).Returns(configurationCollection1Mock.Object);
 
             var surveyReportingInfoMock1 = new Mock<ISurveyReportingInfo>();
-            surveyReportingInfoMock1.Setup(r => r.DataRecordCount).Returns(numberOfRecordForQuestionnaire1);
+            surveyReportingInfoMock1.Setup(r => r.DataRecordCount).Returns(NumberOfRecordForQuestionnaire1);
             survey1Mock.As<ISurvey2>().Setup(s => s.GetReportingInfo()).Returns(surveyReportingInfoMock1.Object);
 
             var survey2Mock = new Mock<ISurvey>();
 
             var configuration2Mock = new Mock<IConfiguration2>();
-            configuration2Mock.Setup(c => c.BlaiseVersion).Returns(questionnaire2BlaiseVersion);
+            configuration2Mock.Setup(c => c.BlaiseVersion).Returns(Questionnaire2BlaiseVersion);
 
             var configurations2 = new List<IConfiguration> { configuration2Mock.Object };
 
             var configurationCollection2Mock = new Mock<IMachineConfigurationCollection>();
             configurationCollection2Mock.Setup(cc => cc.Configurations).Returns(configurations2);
 
-            configuration2Mock.Setup(c => c.BlaiseVersion).Returns(questionnaire2BlaiseVersion);
+            configuration2Mock.Setup(c => c.BlaiseVersion).Returns(Questionnaire2BlaiseVersion);
 
             survey2Mock.As<ISurvey2>();
-            survey2Mock.Setup(s => s.Name).Returns(questionnaire2Name);
+            survey2Mock.Setup(s => s.Name).Returns(Questionnaire2Name);
             survey2Mock.Setup(s => s.InstrumentID).Returns(questionnaire2Id);
             survey2Mock.Setup(s => s.InstallDate).Returns(questionnaire2InstallDate);
             survey2Mock.Setup(s => s.ServerPark).Returns(ServerPark2Name);
             survey2Mock.Setup(s => s.Configuration).Returns(configurationCollection2Mock.Object);
 
             var surveyReportingInfoMock2 = new Mock<ISurveyReportingInfo>();
-            surveyReportingInfoMock2.Setup(r => r.DataRecordCount).Returns(numberOfRecordForQuestionnaire2);
+            surveyReportingInfoMock2.Setup(r => r.DataRecordCount).Returns(NumberOfRecordForQuestionnaire2);
             survey2Mock.As<ISurvey2>().Setup(s => s.GetReportingInfo()).Returns(surveyReportingInfoMock2.Object);
 
             var surveys = new List<ISurvey>
@@ -302,32 +302,32 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.That(
                 result.Any(
                     i =>
-                    i.Name == questionnaire1Name &&
+                    i.Name == Questionnaire1Name &&
                     i.Id == questionnaire1Id &&
                     i.ServerParkName == ServerPark1Name &&
-                    i.DataRecordCount == numberOfRecordForQuestionnaire1 &&
+                    i.DataRecordCount == NumberOfRecordForQuestionnaire1 &&
                     i.Status == QuestionnaireStatusType.Active.ToString() &&
                     i.HasData &&
-                    i.BlaiseVersion == questionnaire1BlaiseVersion &&
+                    i.BlaiseVersion == Questionnaire1BlaiseVersion &&
                     i.InstallDate == questionnaire1InstallDate &&
                     i.FieldPeriod == fieldPeriod &&
-                    i.SurveyTla == surveyTla &&
+                    i.SurveyTla == SurveyTla &&
                     i.Nodes.Count() == 2),
                 Is.True);
 
             Assert.That(
                 result.Any(
                     i =>
-                    i.Name == questionnaire2Name &&
+                    i.Name == Questionnaire2Name &&
                     i.Id == questionnaire2Id &&
                     i.ServerParkName == ServerPark2Name &&
-                    i.DataRecordCount == numberOfRecordForQuestionnaire2 &&
+                    i.DataRecordCount == NumberOfRecordForQuestionnaire2 &&
                     i.Status == QuestionnaireStatusType.Installing.ToString() &&
                     i.HasData == false &&
-                    i.BlaiseVersion == questionnaire2BlaiseVersion &&
+                    i.BlaiseVersion == Questionnaire2BlaiseVersion &&
                     i.InstallDate == questionnaire2InstallDate &&
                     i.FieldPeriod == fieldPeriod &&
-                    i.SurveyTla == surveyTla &&
+                    i.SurveyTla == SurveyTla &&
                     i.Nodes.Count() == 2),
                 Is.True);
         }
