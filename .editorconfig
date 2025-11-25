@@ -54,9 +54,9 @@ dotnet_naming_symbols.types.applicable_kinds = class, struct, interface, enum
 dotnet_naming_symbols.types.applicable_accessibilities = *
 
 # Constants naming
-dotnet_naming_rule.constants_should_be_all_caps.severity = warning
-dotnet_naming_rule.constants_should_be_all_caps.symbols = all_constants
-dotnet_naming_rule.constants_should_be_all_caps.style = all_caps
+dotnet_naming_rule.constants_should_be_pascal_case.severity = warning
+dotnet_naming_rule.constants_should_be_pascal_case.symbols = all_constants
+dotnet_naming_rule.constants_should_be_pascal_case.style = pascal_case
 dotnet_naming_symbols.all_constants.applicable_kinds = field, local
 dotnet_naming_symbols.all_constants.required_modifiers = const
 
@@ -66,6 +66,7 @@ dotnet_naming_rule.private_fields_should_be_camel_with_underscore.symbols = priv
 dotnet_naming_rule.private_fields_should_be_camel_with_underscore.style = camel_case_with_underscore
 dotnet_naming_symbols.private_instance_fields.applicable_kinds = field
 dotnet_naming_symbols.private_instance_fields.applicable_accessibilities = private
+dotnet_naming_symbols.private_instance_fields.required_modifiers = !const
 
 # Disabled
 dotnet_diagnostic.SA0001.severity = none   # suppress disabled XML analysis warning
