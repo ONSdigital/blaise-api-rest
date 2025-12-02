@@ -5,6 +5,7 @@ namespace Blaise.Api.Tests.Unit.Services
     using System.Globalization;
     using Blaise.Api.Core.Services;
     using NUnit.Framework;
+    using StatNeth.Blaise.Shared.Util;
 
     public class CatiDataBlockServiceTests
     {
@@ -32,10 +33,10 @@ namespace Blaise.Api.Tests.Unit.Services
             _sut.RemoveCatiManaBlock(fieldData);
 
             // assert
-            Assert.IsNotEmpty(fieldData);
-            Assert.AreEqual(1, fieldData.Count);
-            Assert.True(fieldData.ContainsKey("InterviewerID"));
-            Assert.AreEqual("Jambo", fieldData["InterviewerID"]);
+            Assert.That(fieldData, Is.Not.Empty);
+            Assert.That(fieldData.Count, Is.EqualTo(1));
+            Assert.That(fieldData, Contains.Key("InterviewerID"));
+            Assert.That(fieldData["InterviewerID"], Is.EqualTo("Jambo"));
         }
 
         [Test]
@@ -54,10 +55,10 @@ namespace Blaise.Api.Tests.Unit.Services
             _sut.RemoveCallHistoryBlock(fieldData);
 
             // assert
-            Assert.IsNotEmpty(fieldData);
-            Assert.AreEqual(1, fieldData.Count);
-            Assert.True(fieldData.ContainsKey("InterviewerID"));
-            Assert.AreEqual("Jambo", fieldData["InterviewerID"]);
+            Assert.That(fieldData, Is.Not.Empty);
+            Assert.That(fieldData.Count, Is.EqualTo(1));
+            Assert.That(fieldData, Contains.Key("InterviewerID"));
+            Assert.That(fieldData["InterviewerID"], Is.EqualTo("Jambo"));
         }
 
         [Test]
@@ -74,10 +75,10 @@ namespace Blaise.Api.Tests.Unit.Services
             _sut.RemoveWebNudgedField(fieldData);
 
             // assert
-            Assert.IsNotEmpty(fieldData);
-            Assert.AreEqual(1, fieldData.Count);
-            Assert.True(fieldData.ContainsKey("InterviewerID"));
-            Assert.AreEqual("Jambo", fieldData["InterviewerID"]);
+            Assert.That(fieldData, Is.Not.Empty);
+            Assert.That(fieldData.Count, Is.EqualTo(1));
+            Assert.That(fieldData, Contains.Key("InterviewerID"));
+            Assert.That(fieldData["InterviewerID"], Is.EqualTo("Jambo"));
         }
 
         [TestCase("", "1")]
@@ -102,10 +103,10 @@ namespace Blaise.Api.Tests.Unit.Services
             _sut.AddCatiManaNrOfCallItem(newFieldData, existingFieldData);
 
             // assert
-            Assert.IsNotEmpty(newFieldData);
-            Assert.AreEqual(1, newFieldData.Count);
-            Assert.True(newFieldData.ContainsKey("CatiMana.CatiCall.NrOfCall"));
-            Assert.AreEqual(newValue, newFieldData["CatiMana.CatiCall.NrOfCall"]);
+            Assert.That(newFieldData, Is.Not.Empty);
+            Assert.That(newFieldData.Count, Is.EqualTo(1));
+            Assert.That(newFieldData, Contains.Key("CatiMana.CatiCall.NrOfCall"));
+            Assert.That(newFieldData["CatiMana.CatiCall.NrOfCall"], Is.EqualTo(newValue));
         }
 
         [Test]
@@ -123,15 +124,15 @@ namespace Blaise.Api.Tests.Unit.Services
             _sut.SetFirstDayIfNotSet(newFieldData, existingFieldData);
 
             // assert
-            Assert.IsNotEmpty(newFieldData);
-            Assert.AreEqual(1, newFieldData.Count);
-            Assert.True(newFieldData.ContainsKey("CatiMana.CatiCall.FirstDay"));
+            Assert.That(newFieldData, Is.Not.Empty);
+            Assert.That(newFieldData.Count, Is.EqualTo(1));
+            Assert.That(newFieldData, Contains.Key("CatiMana.CatiCall.FirstDay"));
 
             // throws error if exact format is not used
             var dateTime = DateTime.ParseExact(newFieldData["CatiMana.CatiCall.FirstDay"], "ddMMyyyy", CultureInfo.InvariantCulture);
 
-            Assert.IsNotNull(dateTime);
-            Assert.AreEqual(DateTime.Now.ToString("ddMMyyyy", CultureInfo.InvariantCulture), newFieldData["CatiMana.CatiCall.FirstDay"]);
+            Assert.That(dateTime, Is.Not.Null);
+            Assert.That(newFieldData["CatiMana.CatiCall.FirstDay"], Is.EqualTo(DateTime.Now.ToString("ddMMyyyy", CultureInfo.InvariantCulture)));
         }
 
         [Test]
@@ -149,11 +150,10 @@ namespace Blaise.Api.Tests.Unit.Services
             _sut.SetFirstDayIfNotSet(newFieldData, existingFieldData);
 
             // assert
-            Assert.IsNotEmpty(newFieldData);
-            Assert.AreEqual(1, newFieldData.Count);
-            Assert.True(newFieldData.ContainsKey("CatiMana.CatiCall.FirstDay"));
-
-            Assert.AreEqual("18022021", newFieldData["CatiMana.CatiCall.FirstDay"]);
+            Assert.That(newFieldData, Is.Not.Empty);
+            Assert.That(newFieldData.Count, Is.EqualTo(1));
+            Assert.That(newFieldData, Contains.Key("CatiMana.CatiCall.FirstDay"));
+            Assert.That(newFieldData["CatiMana.CatiCall.FirstDay"], Is.EqualTo("18022021"));
         }
 
         [TestCase(110, "1", "1")]
@@ -228,9 +228,9 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.BuildCatiManaRegCallItems(existingFieldData, outcomeCode);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(expectedFieldData.Count, result.Count);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(expectedFieldData.Count));
 
             foreach (var fieldData in expectedFieldData)
             {
@@ -238,10 +238,10 @@ namespace Blaise.Api.Tests.Unit.Services
                 {
                     // throws error if exact format is not used
                     var dateTime = DateTime.ParseExact(fieldData.Value, "HH:mm:ss", CultureInfo.InvariantCulture);
-                    Assert.IsNotNull(dateTime);
+                    Assert.That(dateTime, Is.Not.Null);
                 }
 
-                Assert.AreEqual(fieldData.Value, result[fieldData.Key]);
+                Assert.That(result[fieldData.Key], Is.EqualTo(fieldData.Value));
             }
         }
 
@@ -322,9 +322,9 @@ namespace Blaise.Api.Tests.Unit.Services
             _sut.AddCatiManaCallItems(newFieldData, existingFieldData, outcomeCode);
 
             // assert
-            Assert.IsNotNull(newFieldData);
-            Assert.IsNotEmpty(newFieldData);
-            Assert.AreEqual(expectedFieldData.Count, newFieldData.Count);
+            Assert.That(newFieldData, Is.Not.Null);
+            Assert.That(newFieldData, Is.Not.Empty);
+            Assert.That(newFieldData.Count, Is.EqualTo(expectedFieldData.Count));
 
             foreach (var fieldData in expectedFieldData)
             {
@@ -332,10 +332,10 @@ namespace Blaise.Api.Tests.Unit.Services
                 {
                     // throws error if exact format is not used
                     var dateTime = DateTime.ParseExact(fieldData.Value, "HH:mm:ss", CultureInfo.InvariantCulture);
-                    Assert.IsNotNull(dateTime);
+                    Assert.That(dateTime, Is.Not.Null);
                 }
 
-                Assert.AreEqual(fieldData.Value, newFieldData[fieldData.Key]);
+                Assert.That(newFieldData[fieldData.Key], Is.EqualTo(fieldData.Value));
             }
         }
 
@@ -425,9 +425,9 @@ namespace Blaise.Api.Tests.Unit.Services
             _sut.AddCatiManaCallItems(newFieldData, existingFieldData, outcomeCode);
 
             // assert
-            Assert.IsNotNull(newFieldData);
-            Assert.IsNotEmpty(newFieldData);
-            Assert.AreEqual(expectedFieldData.Count, newFieldData.Count);
+            Assert.That(newFieldData, Is.Not.Null);
+            Assert.That(newFieldData, Is.Not.Empty);
+            Assert.That(newFieldData.Count, Is.EqualTo(expectedFieldData.Count));
 
             foreach (var fieldData in expectedFieldData)
             {
@@ -435,10 +435,10 @@ namespace Blaise.Api.Tests.Unit.Services
                 {
                     // throws error if exact format is not used
                     var dateTime = DateTime.ParseExact(fieldData.Value, "HH:mm:ss", CultureInfo.InvariantCulture);
-                    Assert.IsNotNull(dateTime);
+                    Assert.That(dateTime, Is.Not.Null);
                 }
 
-                Assert.AreEqual(fieldData.Value, newFieldData[fieldData.Key]);
+                Assert.That(newFieldData[fieldData.Key], Is.EqualTo(fieldData.Value));
             }
         }
     }

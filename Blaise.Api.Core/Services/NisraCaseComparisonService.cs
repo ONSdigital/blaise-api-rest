@@ -44,7 +44,7 @@ namespace Blaise.Api.Core.Services
             if (nisraCaseStatusModel.Outcome == 580 && existingCaseStatusModel.Outcome != 0 && existingCaseStatusModel.Outcome <= 210)
             {
                 _loggingService.LogInfo(
-                    $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (Existing HOut = '{existingCaseStatusModel.Outcome}' < '{nisraCaseStatusModel.Outcome}')  for questionnaire '{questionnaireName}'");
+                    $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (Existing HOut = '{existingCaseStatusModel.Outcome}' < '{nisraCaseStatusModel.Outcome}') for questionnaire '{questionnaireName}'");
 
                 return false;
             }
@@ -52,7 +52,7 @@ namespace Blaise.Api.Core.Services
             if (nisraCaseStatusModel.Outcome != 580 && existingCaseStatusModel.Outcome > 0 && existingCaseStatusModel.Outcome < nisraCaseStatusModel.Outcome)
             {
                 _loggingService.LogInfo(
-                    $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (Existing HOut = '{existingCaseStatusModel.Outcome}' < '{nisraCaseStatusModel.Outcome}')  for questionnaire '{questionnaireName}'");
+                    $"Not processed: NISRA case '{nisraCaseStatusModel.PrimaryKey}' (Existing HOut = '{existingCaseStatusModel.Outcome}' < '{nisraCaseStatusModel.Outcome}') for questionnaire '{questionnaireName}'");
 
                 return false;
             }

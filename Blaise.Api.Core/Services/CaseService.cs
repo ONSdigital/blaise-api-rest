@@ -121,14 +121,14 @@ namespace Blaise.Api.Core.Services
             _blaiseCaseApi.RemoveCases(questionnaireName, serverParkName);
 
             // calculate how many batches are needed to process all cases
-            var batchSize = 500;
+            const int BatchSize = 500;
             var totalItems = fieldData.Count;
-            var numBatches = (int)Math.Ceiling((double)totalItems / batchSize);
+            var numBatches = (int)Math.Ceiling((double)totalItems / BatchSize);
 
             for (var batchIndex = 0; batchIndex < numBatches; batchIndex++)
             {
                 // get subset (batch) of cases to process in this iteration
-                var caseDtoBatch = fieldData.Skip(batchIndex * batchSize).Take(batchSize).ToList();
+                var caseDtoBatch = fieldData.Skip(batchIndex * BatchSize).Take(BatchSize).ToList();
                 var caseModelList = new List<CaseModel>();
 
                 foreach (var caseDto in caseDtoBatch)

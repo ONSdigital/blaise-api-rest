@@ -39,25 +39,27 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCaseStatusDtoList(caseStatusModelList);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsNotEmpty(result);
-            Assert.IsInstanceOf<IEnumerable<CaseStatusDto>>(result);
-            Assert.AreEqual(2, result.Count);
-            Assert.IsTrue(result.Any(r => r.PrimaryKey == "0000007" && r.Outcome == 110));
-            Assert.IsTrue(result.Any(r => r.PrimaryKey == "0000008" && r.Outcome == 210));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result, Is.InstanceOf<IEnumerable<CaseStatusDto>>());
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result.Any(r => r.PrimaryKey == "0000007" && r.Outcome == 110), Is.True);
+            Assert.That(result.Any(r => r.PrimaryKey == "0000008" && r.Outcome == 210), Is.True);
         }
 
         [Test]
         public void Given_An_Empty_List_Of_CaseStatusModels_When_I_Call_GetCaseStatusList_Then_I_Get_An_Empty_List_Back()
         {
             // arrange
+            var emptyList = new List<CaseStatusModel>();
+
             // act
-            var result = _sut.MapToCaseStatusDtoList(new List<CaseStatusModel>());
+            var result = _sut.MapToCaseStatusDtoList(emptyList);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsEmpty(result);
-            Assert.IsInstanceOf<IEnumerable<CaseStatusDto>>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Empty);
+            Assert.That(result, Is.InstanceOf<IEnumerable<CaseStatusDto>>());
         }
 
         [Test]
@@ -66,19 +68,19 @@ namespace Blaise.Api.Tests.Unit.Mappers
             // arrange
             var dataRecordMock = new Mock<IDataRecord>();
 
-            const string caseId = "1000001";
+            const string CaseId = "1000001";
             var fieldData = new Dictionary<string, string> { { "yo", "man" } };
 
             _blaiseCaseApiMock.Setup(c => c.GetRecordDataFields(dataRecordMock.Object)).Returns(fieldData);
 
             // act
-            var result = _sut.MapToCaseDto(caseId, dataRecordMock.Object);
+            var result = _sut.MapToCaseDto(CaseId, dataRecordMock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CaseDto>(result);
-            Assert.AreEqual(caseId, result.CaseId);
-            Assert.AreEqual(fieldData, result.FieldData);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CaseDto>());
+            Assert.That(result.CaseId, Is.EqualTo(CaseId));
+            Assert.That(result.FieldData, Is.EqualTo(fieldData));
         }
 
         [Test]
@@ -100,53 +102,56 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCaseMultikeyDto(primaryKeyValues, dataRecordMock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CaseMultikeyDto>(result);
-            Assert.AreEqual(primaryKeyValues, result.PrimaryKeyValues);
-            Assert.AreEqual(fieldData, result.FieldData);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CaseMultikeyDto>());
+            Assert.That(result.PrimaryKeyValues, Is.EqualTo(primaryKeyValues));
+            Assert.That(result.FieldData, Is.EqualTo(fieldData));
         }
 
         [Test]
         public void Given_A_Valid_CaseRecord_When_I_Call_MapToCaseEditInformationDto_Then_A_Correct_CaseEditInformationDto_Is_Returned()
         {
             // arrange
-            var primaryKey = "10001011";
-            var outcome = 110;
-            var assignedTo = "Dr Doom";
-            var interviewer = "Mr fantastic";
-            var editedStatus = 2;
-            var organisation = 1;
+            const string PrimaryKey = "10001011";
+            const int Outcome = 110;
+            const string AssignedTo = "Dr Doom";
+            const string Interviewer = "Mr Fantastic";
+            const int EditedStatus = 2;
+            const int Organisation = 1;
 
             var dataRecordMock = new Mock<IDataRecord>();
 
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QID.Serial_Number").ValueAsText).Returns(primaryKey);
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QHAdmin.HOut").IntegerValue).Returns(outcome);
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.AssignedTo").ValueAsText).Returns(assignedTo);
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QHAdmin.Interviewer[1]").ValueAsText).Returns(interviewer);
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.EditedStatus").EnumerationValue).Returns((int)editedStatus);
-            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "orgID").EnumerationValue).Returns((int)organisation);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QID.Serial_Number").ValueAsText).Returns(PrimaryKey);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QHAdmin.HOut").IntegerValue).Returns(Outcome);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.AssignedTo").ValueAsText).Returns(AssignedTo);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QHAdmin.Interviewer[1]").ValueAsText).Returns(Interviewer);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "QEdit.EditedStatus").EnumerationValue).Returns(EditedStatus);
+            _blaiseCaseApiMock.Setup(c => c.GetFieldValue(dataRecordMock.Object, "orgID").EnumerationValue).Returns(Organisation);
 
             // act
             var result = _sut.MapToCaseEditInformationDto(dataRecordMock.Object);
 
-            // assertt
-            Assert.AreEqual(primaryKey, result.PrimaryKey);
-            Assert.AreEqual(outcome, result.Outcome);
-            Assert.AreEqual(assignedTo, result.AssignedTo);
-            Assert.AreEqual(interviewer, result.Interviewer);
-            Assert.AreEqual(editedStatus, result.EditedStatus);
-            Assert.AreEqual(organisation, result.Organisation);
+            // assert
+            Assert.That(result.PrimaryKey, Is.EqualTo(PrimaryKey));
+            Assert.That(result.Outcome, Is.EqualTo(Outcome));
+            Assert.That(result.AssignedTo, Is.EqualTo(AssignedTo));
+            Assert.That(result.Interviewer, Is.EqualTo(Interviewer));
+            Assert.That(result.EditedStatus, Is.EqualTo(EditedStatus));
+            Assert.That(result.Organisation, Is.EqualTo(Organisation));
         }
 
         [Test]
         public void Given_A_Null_CaseRecord_When_I_Call_MapToCaseEditInformationDto_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
+            IDataRecord caseRecord = null;
+
             // act
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.MapToCaseEditInformationDto(null));
+            TestDelegate act = () => _sut.MapToCaseEditInformationDto(caseRecord);
 
             // assert
-            Assert.AreEqual("The argument 'caseRecord' must be supplied", exception?.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(act);
+            Assert.That("The argument 'caseRecord' must be supplied", Is.EqualTo(exception?.ParamName));
         }
     }
 }
