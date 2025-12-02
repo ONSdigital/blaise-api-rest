@@ -31,14 +31,14 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public void GivenThereIsAQuestionnaireInstalledOnABlaiseEnvironment()
         {
             QuestionnaireHelper.GetInstance().InstallQuestionnaire();
-            Assert.IsTrue(QuestionnaireHelper.GetInstance().QuestionnaireHasInstalled(60));
+            Assert.That(QuestionnaireHelper.GetInstance().QuestionnaireHasInstalled(60), Is.True);
         }
 
         [Given("the questionnaire is active")]
         public void GivenTheQuestionnaireIsActive()
         {
             var surveyIsActive = QuestionnaireHelper.GetInstance().SetQuestionnaireAsActive(60);
-            Assert.IsTrue(surveyIsActive);
+            Assert.That(surveyIsActive, Is.True);
         }
 
         [When("the API is queried to return all active questionnaires")]
@@ -52,7 +52,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public void ThenDetailsOfQuestionnaireAIsReturned()
         {
             var listOfActiveQuestionnaires = _scenarioContext.Get<List<QuestionnaireModel>>(ApiResponse);
-            Assert.IsTrue(listOfActiveQuestionnaires.Any(q => q.Name == BlaiseConfigurationHelper.QuestionnaireName));
+            Assert.That(listOfActiveQuestionnaires.Any(q => q.Name == BlaiseConfigurationHelper.QuestionnaireName), Is.True);
         }
     }
 }

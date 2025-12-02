@@ -1,5 +1,6 @@
 namespace Blaise.Api.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Web.Http;
@@ -82,7 +83,7 @@ namespace Blaise.Api.Controllers
 
             _loggingService.LogInfo($"Successfully added user role '{roleDto.Name}'");
 
-            return Created($"{Request.RequestUri}/{roleDto.Name}", roleDto);
+            return Created($"{Request.RequestUri}/{Uri.EscapeDataString(roleDto.Name)}", roleDto);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]

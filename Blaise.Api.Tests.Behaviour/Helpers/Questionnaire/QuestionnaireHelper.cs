@@ -72,14 +72,14 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
         private bool QuestionnaireIsActive(string questionnaireName, int timeoutInSeconds)
         {
             var counter = 0;
-            const int maxCount = 10;
+            const int MaxCount = 10;
 
             while (GetQuestionnaireStatus(questionnaireName) == QuestionnaireStatusType.Installing)
             {
-                Thread.Sleep((timeoutInSeconds * 1000) % maxCount);
+                Thread.Sleep((timeoutInSeconds * 1000) % MaxCount);
 
                 counter++;
-                if (counter == maxCount)
+                if (counter == MaxCount)
                 {
                     return false;
                 }
@@ -91,14 +91,14 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
         private bool QuestionnaireExists(string questionnaireName, int timeoutInSeconds)
         {
             var counter = 0;
-            const int maxCount = 10;
+            const int MaxCount = 10;
 
             while (!_blaiseQuestionnaireApi.QuestionnaireExists(questionnaireName, BlaiseConfigurationHelper.ServerParkName))
             {
-                Thread.Sleep(timeoutInSeconds * 1000 / maxCount);
+                Thread.Sleep(timeoutInSeconds * 1000 / MaxCount);
 
                 counter++;
-                if (counter == maxCount)
+                if (counter == MaxCount)
                 {
                     return false;
                 }
@@ -110,14 +110,14 @@ namespace Blaise.Api.Tests.Behaviour.Helpers.Questionnaire
         private bool QuestionnaireHasBeenUninstalled(string questionnaireName, int timeoutInSeconds)
         {
             var counter = 0;
-            const int maxCount = 10;
+            const int MaxCount = 10;
 
             while (_blaiseQuestionnaireApi.QuestionnaireExists(questionnaireName, BlaiseConfigurationHelper.ServerParkName))
             {
-                Thread.Sleep(timeoutInSeconds * 1000 / maxCount);
+                Thread.Sleep(timeoutInSeconds * 1000 / MaxCount);
 
                 counter++;
-                if (counter == maxCount)
+                if (counter == MaxCount)
                 {
                     return false;
                 }

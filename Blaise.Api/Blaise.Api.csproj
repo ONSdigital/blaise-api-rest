@@ -5,11 +5,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ServiceProcess.ServiceController" version="9.0.8" />
-    <PackageReference Include="Blaise.Nuget.Api" version="2025.11.12.7" />
-    <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.11.12.7" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" version="10.0.0" />
+    <PackageReference Include="Blaise.Nuget.Api" version="2025.12.2.1" />
+    <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.12.2.1" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
-    <PackageReference Include="MySql.Data" Version="9.4.0" />
+    <PackageReference Include="MySql.Data" Version="9.5.0" />
     <PackageReference Include="Swashbuckle" Version="5.6.0" />
     <PackageReference Include="WebActivatorEx" Version="2.2.0" />
     <PackageReference Include="Unity.WebAPI" Version="5.4.0" />
@@ -22,7 +22,7 @@
     <PackageReference Include="Microsoft.Owin" Version="4.2.3" />
     <PackageReference Include="Microsoft.Owin.Hosting" Version="4.2.3" />
     <PackageReference Include="Microsoft.Owin.Host.HttpListener" Version="4.2.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
   <ItemGroup>
