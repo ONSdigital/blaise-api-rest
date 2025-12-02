@@ -58,8 +58,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, new List<DateTime>());
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
         }
 
         [TestCase(20, true)]
@@ -88,16 +88,16 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, new List<DateTime>());
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.AreEqual(_questionnaireName, result.Name);
-            Assert.AreEqual(_questionnaireId, result.Id);
-            Assert.AreEqual(_serverParkName, result.ServerParkName);
-            Assert.AreEqual(_installDate, result.InstallDate);
-            Assert.AreEqual(numberOfRecords, result.DataRecordCount);
-            Assert.AreEqual(QuestionnaireStatusType.Active.ToString(), result.Status);
-            Assert.AreEqual(hasData, result.HasData);
-            Assert.AreSame(nodeList, result.Nodes);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.Name, Is.EqualTo(_questionnaireName));
+            Assert.That(result.Id, Is.EqualTo(_questionnaireId));
+            Assert.That(result.ServerParkName, Is.EqualTo(_serverParkName));
+            Assert.That(result.InstallDate, Is.EqualTo(_installDate));
+            Assert.That(result.DataRecordCount, Is.EqualTo(numberOfRecords));
+            Assert.That(result.Status, Is.EqualTo(QuestionnaireStatusType.Active.ToString()));
+            Assert.That(result.HasData, Is.EqualTo(hasData));
+            Assert.That(result.Nodes, Is.SameAs(nodeList));
         }
 
         [Test]
@@ -110,9 +110,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsFalse(result.Active);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.Active, Is.False);
         }
 
         [Test]
@@ -130,9 +130,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsFalse(result.Active);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.Active, Is.False);
         }
 
         [Test]
@@ -150,9 +150,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsFalse(result.Active);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.Active, Is.False);
         }
 
         [Test]
@@ -171,9 +171,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsTrue(result.Active);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.Active, Is.True);
         }
 
         [Test]
@@ -189,9 +189,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsTrue(result.Active);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.Active, Is.True);
         }
 
         [Test]
@@ -207,9 +207,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsTrue(result.Active);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.Active, Is.True);
         }
 
         [Test]
@@ -227,9 +227,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsFalse(result.ActiveToday);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.ActiveToday, Is.False);
         }
 
         [Test]
@@ -248,9 +248,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsTrue(result.ActiveToday);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.ActiveToday, Is.True);
         }
 
         [Test]
@@ -266,9 +266,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsTrue(result.ActiveToday);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.ActiveToday, Is.True);
         }
 
         [Test]
@@ -281,9 +281,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsFalse(result.DeliverData);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.DeliverData, Is.False);
         }
 
         [Test]
@@ -301,9 +301,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsFalse(result.DeliverData);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.DeliverData, Is.False);
         }
 
         [Test]
@@ -322,9 +322,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsTrue(result.DeliverData);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.DeliverData, Is.True);
         }
 
         [Test]
@@ -340,9 +340,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsTrue(result.DeliverData);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.DeliverData, Is.True);
         }
 
         [Test]
@@ -358,9 +358,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsTrue(result.DeliverData);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.DeliverData, Is.True);
         }
 
         [Test]
@@ -376,9 +376,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsTrue(result.DeliverData);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.DeliverData, Is.True);
         }
 
         [Test]
@@ -395,9 +395,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToCatiQuestionnaireDto(_surveyMock.Object, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.IsFalse(result.DeliverData);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result.DeliverData, Is.False);
         }
 
         [Test]
@@ -410,8 +410,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToDayBatchDto(dayBatchModel);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<DayBatchDto>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<DayBatchDto>());
         }
 
         [Test]
@@ -426,10 +426,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapToDayBatchDto(dayBatchModel);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<DayBatchDto>(result);
-            Assert.AreEqual(dayBatchDate, result.DayBatchDate);
-            Assert.AreEqual(caseIds, result.CaseIds);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<DayBatchDto>());
+            Assert.That(result.DayBatchDate, Is.EqualTo(dayBatchDate));
+            Assert.That(result.CaseIds, Is.EqualTo(caseIds));
         }
     }
 }

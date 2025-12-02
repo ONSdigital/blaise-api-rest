@@ -25,13 +25,13 @@ namespace Blaise.Api.Tests.Unit.Mappers
             // arrange
 
             // node 1
-            const string node1Name = "data-management";
+            const string Node1Name = "data-management";
             var node1Status = QuestionnaireStatusType.Active.ToString();
             var iConfiguration1Mock = new Mock<IConfiguration>();
             iConfiguration1Mock.Setup(c => c.Status).Returns(node1Status);
 
             // node 2
-            const string node2Name = "data-entry1";
+            const string Node2Name = "data-entry1";
             var node2Status = QuestionnaireStatusType.Installing.ToString();
             var iConfiguration2Mock = new Mock<IConfiguration>();
             iConfiguration2Mock.Setup(c => c.Status).Returns(node2Status);
@@ -40,8 +40,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var machineConfigurationMock = new Mock<IMachineConfigurationCollection>();
             var machineConfigurations = new List<KeyValuePair<string, IConfiguration>>
             {
-                new KeyValuePair<string, IConfiguration>(node1Name, iConfiguration1Mock.Object),
-                new KeyValuePair<string, IConfiguration>(node2Name, iConfiguration2Mock.Object),
+                new KeyValuePair<string, IConfiguration>(Node1Name, iConfiguration1Mock.Object),
+                new KeyValuePair<string, IConfiguration>(Node2Name, iConfiguration2Mock.Object),
             };
 
             machineConfigurationMock.Setup(m => m.GetEnumerator())
@@ -52,13 +52,12 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 .ToList();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<IEnumerable<QuestionnaireNodeDto>>(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(2, result.Count);
-
-            Assert.True(result.Any(n => n.NodeName == node1Name && n.NodeStatus == node1Status));
-            Assert.True(result.Any(n => n.NodeName == node2Name && n.NodeStatus == node2Status));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<IEnumerable<QuestionnaireNodeDto>>());
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result.Any(n => n.NodeName == Node1Name && n.NodeStatus == node1Status), Is.True);
+            Assert.That(result.Any(n => n.NodeName == Node2Name && n.NodeStatus == node2Status), Is.True);
         }
     }
 }
