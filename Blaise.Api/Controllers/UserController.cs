@@ -24,7 +24,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("")]
+        [Route("{userName}", Name = "GetUser")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<UserDto>))]
         public IHttpActionResult GetUsers()
         {
@@ -82,7 +82,7 @@ namespace Blaise.Api.Controllers
 
             _loggingService.LogInfo($"Successfully added role '{userDto.Name}'");
 
-            return Created($"{Request.RequestUri}/{userDto.Name}", userDto);
+            return CreatedAtRoute("GetUser", new { userName = userDto.Name }, userDto);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
