@@ -75,12 +75,35 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var casesExpected = cases.ToList();
             
-            // poll until we have the expected number of cases or timeout
+            // poll until we have the expected number of cases AND they match the expected data
             await PollUntilConditionMet(
                 () =>
                 {
                     var count = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
-                    return count == casesExpected.Count;
+                    if (count != casesExpected.Count)
+                    {
+                        return false;
+                    }
+
+                    // also verify that all cases have the expected data
+                    var casesInDb = CaseHelper.GetInstance().GetCasesInDatabase();
+                    
+                    foreach (var expectedCase in casesExpected)
+                    {
+                        var actualCase = casesInDb.FirstOrDefault(c => c.PrimaryKey == expectedCase.PrimaryKey);
+                        if (actualCase == null)
+                        {
+                            return false;
+                        }
+                        
+                        // check if the case data matches expectations
+                        if (actualCase.Outcome != expectedCase.Outcome || actualCase.Mode != expectedCase.Mode)
+                        {
+                            return false;
+                        }
+                    }
+                    
+                    return true;
                 },
                 maxWaitSeconds: 30,
                 pollingIntervalMs: 500
