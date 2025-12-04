@@ -73,34 +73,15 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [Then("blaise will contain the following cases")]
         public void ThenBlaiseWillContainTheFollowingCases(IEnumerable<CaseModel> cases)
         {
-            var numberOfCasesInDatabase = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
             var casesExpected = cases.ToList();
-
-            if (casesExpected.Count != numberOfCasesInDatabase)
-            {
-                Assert.Fail($"Expected '{casesExpected.Count}' cases in the database, but {numberOfCasesInDatabase} cases were found");
-            }
-
+            PollForCountMatch(casesExpected.Count);
             var casesInDatabase = CaseHelper.GetInstance().GetCasesInDatabase();
-
             foreach (var caseModel in casesInDatabase)
             {
                 var caseRecordExpected = casesExpected.FirstOrDefault(c => c.PrimaryKey == caseModel.PrimaryKey);
-
-                if (caseRecordExpected == null)
-                {
-                    Assert.Fail($"Case {caseModel.PrimaryKey} was in the database but not found in expected cases");
-                }
-
-                Assert.That(
-                    caseModel.Outcome,
-                    Is.EqualTo(caseRecordExpected.Outcome),
-                    $"expected an outcome of '{caseRecordExpected.Outcome}' for case '{caseModel.PrimaryKey}', but was '{caseModel.Outcome}'");
-
-                Assert.That(
-                    caseRecordExpected.Mode,
-                    Is.EqualTo(caseModel.Mode),
-                    $"expected an version of '{caseRecordExpected.Mode}' for case '{caseModel.PrimaryKey}', but was '{caseModel.Mode}'");
+                if (caseRecordExpected == null) Assert.Fail($"Unexpected case {caseModel.PrimaryKey}");
+                Assert.That(caseModel.Outcome, Is.EqualTo(caseRecordExpected.Outcome));
+                Assert.That(caseModel.Mode, Is.EqualTo(caseRecordExpected.Mode));
             }
         }
 
@@ -178,6 +159,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public void ThenTheExistingBlaiseCaseIsOverwrittenWithTheOnlineCase()
         {
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
+            PollForModeMatch(primaryKey, ModeType.Web);
             var modeType = CaseHelper.GetInstance().GetMode(primaryKey);
             Assert.That(ModeType.Web, Is.EqualTo(modeType));
         }
@@ -186,6 +168,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public void ThenTheExistingBlaiseCaseIsKept()
         {
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
+            Task.Delay(20000).Wait();
             var modeType = CaseHelper.GetInstance().GetMode(primaryKey);
             Assert.That(ModeType.Tel, Is.EqualTo(modeType));
         }
@@ -194,6 +177,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public void ThenTheOnlineCaseIsNotImportedAgain()
         {
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
+            Task.Delay(20000).Wait();
             var modeType = CaseHelper.GetInstance().GetMode(primaryKey);
             Assert.That(ModeType.Web, Is.EqualTo(modeType));
         }
@@ -225,9 +209,33 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [Then("blaise will contain '(.*)' cases")]
         public void ThenCasesWillBeImportedIntoBlaise(int numberOfCases)
         {
+            PollForCountMatch(numberOfCases);
             var numberOfCasesInBlaise = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
-
             Assert.That(numberOfCases, Is.EqualTo(numberOfCasesInBlaise));
+        }
+
+        private void PollForModeMatch(string primaryKey, ModeType expectedMode)
+        {
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            while (stopwatch.ElapsedMilliseconds < 60000)
+            {
+                var currentMode = CaseHelper.GetInstance().GetMode(primaryKey);
+                if (currentMode == expectedMode) return;
+                Task.Delay(500).Wait();
+            }
+            Assert.Fail($"Timeout: Case '{primaryKey}' did not change to '{expectedMode}' within 60s.");
+        }
+
+        private void PollForCountMatch(int expectedCount)
+        {
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            while (stopwatch.ElapsedMilliseconds < 60000)
+            {
+                var count = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
+                if (count == expectedCount) return;
+                Task.Delay(500).Wait();
+            }
+            Assert.Fail($"Timeout: Database did not reach {expectedCount} cases within 60s.");
         }
     }
 }
