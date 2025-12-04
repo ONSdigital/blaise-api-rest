@@ -67,7 +67,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                 RestApiConfigurationHelper.QuestionnaireDataUrl,
                 BlaiseConfigurationHelper.QuestionnaireName);
 
-            Assert.That(statusCode, Is.EqualTo(HttpStatusCode.Created));
+            Assert.That(statusCode, Is.EqualTo(HttpStatusCode.Accepted));
         }
 
         [Then("blaise will contain the following cases")]
