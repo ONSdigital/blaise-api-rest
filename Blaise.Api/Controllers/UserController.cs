@@ -24,7 +24,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{userName}", Name = "GetUser")]
+        [Route("")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<UserDto>))]
         public IHttpActionResult GetUsers()
         {
@@ -38,7 +38,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{userName}")]
+        [Route("{userName}", Name = "GetUser")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(UserDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
@@ -80,7 +80,7 @@ namespace Blaise.Api.Controllers
 
             _userService.AddUser(userDto);
 
-            _loggingService.LogInfo($"Successfully added role '{userDto.Name}'");
+            _loggingService.LogInfo($"Successfully added user '{userDto.Name}'");
 
             return CreatedAtRoute("GetUser", new { userName = userDto.Name }, userDto);
         }
