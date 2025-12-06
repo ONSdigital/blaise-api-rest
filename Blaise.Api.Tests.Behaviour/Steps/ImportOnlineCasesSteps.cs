@@ -67,14 +67,49 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                 RestApiConfigurationHelper.QuestionnaireDataUrl,
                 BlaiseConfigurationHelper.QuestionnaireName);
 
-            Assert.That(statusCode, Is.EqualTo(HttpStatusCode.Created));
+            Assert.That(statusCode, Is.EqualTo(HttpStatusCode.Accepted));
         }
 
         [Then("blaise will contain the following cases")]
-        public void ThenBlaiseWillContainTheFollowingCases(IEnumerable<CaseModel> cases)
+        public async Task ThenBlaiseWillContainTheFollowingCases(IEnumerable<CaseModel> cases)
         {
-            var numberOfCasesInDatabase = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
             var casesExpected = cases.ToList();
+            
+            // poll until we have the expected number of cases AND they match the expected data
+            await PollUntilConditionMet(
+                () =>
+                {
+                    var count = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
+                    if (count != casesExpected.Count)
+                    {
+                        return false;
+                    }
+
+                    // also verify that all cases have the expected data
+                    var casesInDb = CaseHelper.GetInstance().GetCasesInDatabase();
+                    
+                    foreach (var expectedCase in casesExpected)
+                    {
+                        var actualCase = casesInDb.FirstOrDefault(c => c.PrimaryKey == expectedCase.PrimaryKey);
+                        if (actualCase == null)
+                        {
+                            return false;
+                        }
+                        
+                        // check if the case data matches expectations
+                        if (actualCase.Outcome != expectedCase.Outcome || actualCase.Mode != expectedCase.Mode)
+                        {
+                            return false;
+                        }
+                    }
+                    
+                    return true;
+                },
+                maxWaitSeconds: 30,
+                pollingIntervalMs: 500
+            );
+
+            var numberOfCasesInDatabase = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
 
             if (casesExpected.Count != numberOfCasesInDatabase)
             {
@@ -175,24 +210,42 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         }
 
         [Then("the existing blaise case is overwritten with the online case")]
-        public void ThenTheExistingBlaiseCaseIsOverwrittenWithTheOnlineCase()
+        public async Task ThenTheExistingBlaiseCaseIsOverwrittenWithTheOnlineCase()
         {
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
+            
+            // poll until the case mode changes to web or timeout
+            await PollUntilConditionMet(
+                () =>
+                {
+                    var mode = CaseHelper.GetInstance().GetMode(primaryKey);
+                    return mode == ModeType.Web;
+                },
+                maxWaitSeconds: 30,
+                pollingIntervalMs: 500
+            );
+
             var modeType = CaseHelper.GetInstance().GetMode(primaryKey);
             Assert.That(ModeType.Web, Is.EqualTo(modeType));
         }
 
         [Then("the existing blaise case is kept")]
-        public void ThenTheExistingBlaiseCaseIsKept()
+        public async Task ThenTheExistingBlaiseCaseIsKept()
         {
+            // wait 30 seconds to ensure background processing completesvand verify the case was NOT changed
+            await Task.Delay(TimeSpan.FromSeconds(30));
+
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
             var modeType = CaseHelper.GetInstance().GetMode(primaryKey);
             Assert.That(ModeType.Tel, Is.EqualTo(modeType));
         }
 
         [Then("the online case is not imported again")]
-        public void ThenTheOnlineCaseIsNotImportedAgain()
+        public async Task ThenTheOnlineCaseIsNotImportedAgain()
         {
+            // wait 30 seconds to ensure background processing completesand verify the case was NOT changed
+            await Task.Delay(TimeSpan.FromSeconds(30));
+
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
             var modeType = CaseHelper.GetInstance().GetMode(primaryKey);
             Assert.That(ModeType.Web, Is.EqualTo(modeType));
@@ -217,17 +270,57 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         }
 
         [Then("blaise will contain no cases")]
-        public void ThenBlaiseWillContainNoCases()
+        public async Task ThenBlaiseWillContainNoCases()
         {
-            ThenCasesWillBeImportedIntoBlaise(0);
+            await ThenCasesWillBeImportedIntoBlaise(0);
         }
 
         [Then("blaise will contain '(.*)' cases")]
-        public void ThenCasesWillBeImportedIntoBlaise(int numberOfCases)
+        public async Task ThenCasesWillBeImportedIntoBlaise(int numberOfCases)
         {
-            var numberOfCasesInBlaise = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
+            // poll until we have the expected number of cases or timeout
+            await PollUntilConditionMet(
+                () =>
+                {
+                    var count = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
+                    return count == numberOfCases;
+                },
+                maxWaitSeconds: 30,
+                pollingIntervalMs: 500
+            );
 
+            var numberOfCasesInBlaise = CaseHelper.GetInstance().NumberOfCasesInQuestionnaire();
             Assert.That(numberOfCases, Is.EqualTo(numberOfCasesInBlaise));
+        }
+
+        private async Task PollUntilConditionMet(
+            Func<bool> condition, 
+            int maxWaitSeconds = 30, 
+            int pollingIntervalMs = 500)
+        {
+            var startTime = DateTime.Now;
+            var pollingInterval = TimeSpan.FromMilliseconds(pollingIntervalMs);
+            
+            while ((DateTime.Now - startTime).TotalSeconds < maxWaitSeconds)
+            {
+                try
+                {
+                    if (condition())
+                    {
+                        await Task.Delay(TimeSpan.FromMilliseconds(500));
+                        return;
+                    }
+                }
+                catch
+                {
+                    // continue polling if there's an error checking the condition
+                }
+                
+                await Task.Delay(pollingInterval);
+            }
+            
+            throw new TimeoutException(
+                $"Condition was not met within {maxWaitSeconds} seconds");
         }
     }
 }
