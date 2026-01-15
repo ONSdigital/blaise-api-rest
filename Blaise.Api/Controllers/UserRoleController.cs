@@ -1,5 +1,6 @@
 namespace Blaise.Api.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Web.Http;
@@ -38,7 +39,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{name}")]
+        [Route("{name}", Name = "GetUserRole")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(UserRoleDto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
@@ -82,7 +83,7 @@ namespace Blaise.Api.Controllers
 
             _loggingService.LogInfo($"Successfully added user role '{roleDto.Name}'");
 
-            return Created($"{Request.RequestUri}/{roleDto.Name}", roleDto);
+            return CreatedAtRoute("GetUserRole", new { name = roleDto.Name }, roleDto);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]

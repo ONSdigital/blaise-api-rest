@@ -9,7 +9,7 @@
     <PackageReference Include="Blaise.Nuget.Api" version="2025.11.15.1-516" />
     <PackageReference Include="Blaise.Nuget.Api.Contracts" version="2025.11.15.1-516" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
-    <PackageReference Include="MySql.Data" Version="9.4.0" />
+    <PackageReference Include="MySql.Data" Version="9.5.0" />
     <PackageReference Include="Swashbuckle" Version="5.6.0" />
     <PackageReference Include="WebActivatorEx" Version="2.2.0" />
     <PackageReference Include="Unity.WebAPI" Version="5.4.0" />

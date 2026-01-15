@@ -62,8 +62,8 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetUserRoles();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.AreSame(roleDtos, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.SameAs(roleDtos));
         }
 
         [Test]
@@ -82,8 +82,8 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetUserRole(_name);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.AreSame(_roleDto, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.SameAs(_roleDto));
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetUserRole(string.Empty));
-            Assert.AreEqual("A value for the argument 'name' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'name' must be supplied"));
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetUserRole(null));
-            Assert.AreEqual("name", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("name"));
         }
 
         [TestCase(true)]
@@ -113,7 +113,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.UserRoleExists(_name);
 
             // assert
-            Assert.AreEqual(exists, result);
+            Assert.That(result, Is.EqualTo(exists));
         }
 
         [Test]
@@ -121,7 +121,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UserRoleExists(string.Empty));
-            Assert.AreEqual("A value for the argument 'name' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'name' must be supplied"));
         }
 
         [Test]
@@ -129,7 +129,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UserRoleExists(null));
-            Assert.AreEqual("name", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("name"));
         }
 
         [Test]
@@ -150,7 +150,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.AddUserRole(_roleDto));
-            Assert.AreEqual("A value for the argument 'UserRoleDto.Name' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'UserRoleDto.Name' must be supplied"));
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddUserRole(_roleDto));
-            Assert.AreEqual("UserRoleDto.Name", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("UserRoleDto.Name"));
         }
 
         [Test]
@@ -179,7 +179,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.RemoveUserRole(string.Empty));
-            Assert.AreEqual("A value for the argument 'name' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'name' must be supplied"));
         }
 
         [Test]
@@ -187,7 +187,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.RemoveUserRole(null));
-            Assert.AreEqual("name", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("name"));
         }
 
         [Test]
@@ -205,7 +205,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateUserRolePermissions(string.Empty, _permissions));
-            Assert.AreEqual("A value for the argument 'name' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'name' must be supplied"));
         }
 
         [Test]
@@ -213,7 +213,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateUserRolePermissions(null, _permissions));
-            Assert.AreEqual("name", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("name"));
         }
     }
 }

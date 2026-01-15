@@ -211,8 +211,8 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.RecordHasBeenUpdated(_primaryKey, _nisraDataRecordMock.Object, _questionnaireName, _serverParkName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.True(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -232,8 +232,8 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.RecordHasBeenUpdated(_primaryKey, _nisraDataRecordMock.Object, _questionnaireName, _serverParkName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.False(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.False);
         }
     }
 }

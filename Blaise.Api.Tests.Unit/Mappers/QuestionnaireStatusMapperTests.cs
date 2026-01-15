@@ -52,9 +52,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.GetQuestionnaireStatus(_surveyMock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<QuestionnaireStatusType>(result);
-            Assert.AreEqual(QuestionnaireStatusType.Active, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<QuestionnaireStatusType>());
+            Assert.That(result, Is.EqualTo(QuestionnaireStatusType.Active));
         }
 
         [Test]
@@ -69,9 +69,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.GetQuestionnaireStatus(_surveyMock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<QuestionnaireStatusType>(result);
-            Assert.AreEqual(QuestionnaireStatusType.Inactive, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<QuestionnaireStatusType>());
+            Assert.That(result, Is.EqualTo(QuestionnaireStatusType.Inactive));
         }
 
         [Test]
@@ -86,9 +86,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.GetQuestionnaireStatus(_surveyMock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<QuestionnaireStatusType>(result);
-            Assert.AreEqual(QuestionnaireStatusType.Installing, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<QuestionnaireStatusType>());
+            Assert.That(result, Is.EqualTo(QuestionnaireStatusType.Installing));
         }
 
         [TestCase(11)]
@@ -107,9 +107,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.GetQuestionnaireStatus(_surveyMock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<QuestionnaireStatusType>(result);
-            Assert.AreEqual(QuestionnaireStatusType.Failed, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<QuestionnaireStatusType>());
+            Assert.That(result, Is.EqualTo(QuestionnaireStatusType.Failed));
         }
 
         [TestCase(10)]
@@ -129,9 +129,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.GetQuestionnaireStatus(_surveyMock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<QuestionnaireStatusType>(result);
-            Assert.AreEqual(QuestionnaireStatusType.Active, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<QuestionnaireStatusType>());
+            Assert.That(result, Is.EqualTo(QuestionnaireStatusType.Active));
         }
 
         [TestCase(QuestionnaireStatusType.Erroneous)]
@@ -150,9 +150,9 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.GetQuestionnaireStatus(_surveyMock.Object);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<QuestionnaireStatusType>(result);
-            Assert.AreEqual(QuestionnaireStatusType.Failed, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<QuestionnaireStatusType>());
+            Assert.That(result, Is.EqualTo(QuestionnaireStatusType.Failed));
         }
     }
 }

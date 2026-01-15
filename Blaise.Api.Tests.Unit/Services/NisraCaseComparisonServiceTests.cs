@@ -43,7 +43,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         // Scenario 2
@@ -59,7 +59,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         // Scenario 3
@@ -75,7 +75,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         // Scenario 4
@@ -97,7 +97,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         // Scenario 5 & 8
@@ -114,7 +114,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         // Scenario 6
@@ -130,7 +130,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         // Scenario 7
@@ -152,7 +152,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         // Scenario 8
@@ -171,7 +171,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         // Scenario 9
@@ -179,17 +179,17 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_The_Nisra_Case_Has_An_Outcome_Of_Partial_And_Existing_Case_Has_An_Outcome_Of_Delete_When_I_Call_CaseNeedsToBeUpdated_Then_False_Is_Returned()
         {
             // arrange
-            const int outcomeCode = 562; // respondent request for data to be deleted
+            const int OutcomeCode = 562; // respondent request for data to be deleted
 
             var primaryKeyValues = PrimaryKeyHelper.CreatePrimaryKeys(_primaryKey);
             var nisraCaseStatusModel = new CaseStatusModel(primaryKeyValues, _hOutPartial, _date1);
-            var existingCaseStatusModel = new CaseStatusModel(primaryKeyValues, outcomeCode, _date2);
+            var existingCaseStatusModel = new CaseStatusModel(primaryKeyValues, OutcomeCode, _date2);
 
             // act
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         // Scenario 10
@@ -197,17 +197,17 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_The_Nisra_Case_Has_An_Outcome_Of_Complete_And_Existing_Case_Has_An_Outcome_Of_Delete_When_I_Call_CaseNeedsToBeUpdated_Then_False_Is_Returned()
         {
             // arrange
-            const int outcomeCode = 561; // respondent request for data to be deleted
+            const int OutcomeCode = 561; // respondent request for data to be deleted
 
             var primaryKeyValues = PrimaryKeyHelper.CreatePrimaryKeys(_primaryKey);
             var nisraCaseStatusModel = new CaseStatusModel(primaryKeyValues, _hOutPartial, _date1);
-            var existingCaseStatusModel = new CaseStatusModel(primaryKeyValues, outcomeCode, _date2);
+            var existingCaseStatusModel = new CaseStatusModel(primaryKeyValues, OutcomeCode, _date2);
 
             // act
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         // Scenario 11 - See case service tests
@@ -225,7 +225,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         // Scenario 13
@@ -241,7 +241,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         // Scenario 14
@@ -263,7 +263,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         // Scenario 15
@@ -282,7 +282,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         // Scenario 16
@@ -298,7 +298,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         // Scenario 17
@@ -314,7 +314,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -332,8 +332,8 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.True(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -351,8 +351,8 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.False(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.False);
         }
 
         // Scenario 18
@@ -368,7 +368,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.CaseNeedsToBeUpdated(nisraCaseStatusModel, existingCaseStatusModel, _questionnaireName);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -386,8 +386,8 @@ namespace Blaise.Api.Tests.Unit.Services
                 _questionnaireName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.False(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.False);
         }
     }
 }

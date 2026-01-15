@@ -12,7 +12,7 @@ namespace Blaise.Api
 #else
             var servicesToRun = new ServiceBase[]
             {
-                new ApiService()
+                new ApiService(),
             };
             ServiceBase.Run(servicesToRun);
 #endif

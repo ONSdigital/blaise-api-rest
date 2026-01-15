@@ -4,3 +4,4 @@ obj/
 packages/
 *.user
 StyleCopReport.xml
+/Blaise.Api/Properties/launchSettings.json

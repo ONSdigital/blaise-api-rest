@@ -52,6 +52,7 @@ namespace Blaise.Api.Core.Services
         private void IngestQuestionnaireData(string databaseFile, string questionnaireName, string serverParkName)
         {
             var dataRecords = _blaiseApi.GetCases(databaseFile);
+            const int BatchSize = 50;
             var caseModels = new List<CaseModel>();
 
             while (!dataRecords.EndOfSet)
@@ -59,7 +60,7 @@ namespace Blaise.Api.Core.Services
                 caseModels.Add(BuildCaseModel(dataRecords.ActiveRecord));
                 dataRecords.MoveNext();
 
-                if (caseModels.Count == 50 || dataRecords.EndOfSet)
+                if (caseModels.Count == BatchSize || dataRecords.EndOfSet)
                 {
                     _blaiseApi.CreateCases(caseModels, questionnaireName, serverParkName);
                     caseModels.Clear();

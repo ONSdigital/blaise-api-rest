@@ -24,8 +24,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapDataEntrySettingsDtos(new List<DataEntrySettingsModel>());
 
             // assert
-            Assert.NotNull(result);
-            Assert.IsInstanceOf<List<DataEntrySettingsDto>>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<List<DataEntrySettingsDto>>());
         }
 
         [Test]
@@ -60,27 +60,27 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var result = _sut.MapDataEntrySettingsDtos(dataEntrySettingsModelList).ToList();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(2, result.Count);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(2));
 
             var dataEntrySettings1 = result.FirstOrDefault(de => de.Type == "StrictInterviewing");
-            Assert.IsNotNull(dataEntrySettings1);
-            Assert.IsTrue(dataEntrySettings1.SaveSessionOnTimeout);
-            Assert.IsFalse(dataEntrySettings1.SaveSessionOnQuit);
-            Assert.IsTrue(dataEntrySettings1.DeleteSessionOnTimeout);
-            Assert.IsFalse(dataEntrySettings1.DeleteSessionOnQuit);
-            Assert.AreEqual(30, dataEntrySettings1.SessionTimeout);
-            Assert.IsTrue(dataEntrySettings1.ApplyRecordLocking);
+            Assert.That(dataEntrySettings1, Is.Not.Null);
+            Assert.That(dataEntrySettings1.SaveSessionOnTimeout, Is.True);
+            Assert.That(dataEntrySettings1.SaveSessionOnQuit, Is.False);
+            Assert.That(dataEntrySettings1.DeleteSessionOnTimeout, Is.True);
+            Assert.That(dataEntrySettings1.DeleteSessionOnQuit, Is.False);
+            Assert.That(dataEntrySettings1.SessionTimeout, Is.EqualTo(30));
+            Assert.That(dataEntrySettings1.ApplyRecordLocking, Is.True);
 
             var dataEntrySettings2 = result.FirstOrDefault(de => de.Type == "StrictCati");
-            Assert.IsNotNull(dataEntrySettings2);
-            Assert.IsFalse(dataEntrySettings2.SaveSessionOnTimeout);
-            Assert.IsTrue(dataEntrySettings2.SaveSessionOnQuit);
-            Assert.IsFalse(dataEntrySettings2.DeleteSessionOnTimeout);
-            Assert.IsTrue(dataEntrySettings2.DeleteSessionOnQuit);
-            Assert.AreEqual(15, dataEntrySettings2.SessionTimeout);
-            Assert.IsFalse(dataEntrySettings2.ApplyRecordLocking);
+            Assert.That(dataEntrySettings2, Is.Not.Null);
+            Assert.That(dataEntrySettings2.SaveSessionOnTimeout, Is.False);
+            Assert.That(dataEntrySettings2.SaveSessionOnQuit, Is.True);
+            Assert.That(dataEntrySettings2.DeleteSessionOnTimeout, Is.False);
+            Assert.That(dataEntrySettings2.DeleteSessionOnQuit, Is.True);
+            Assert.That(dataEntrySettings2.SessionTimeout, Is.EqualTo(15));
+            Assert.That(dataEntrySettings2.ApplyRecordLocking, Is.False);
         }
     }
 }

@@ -45,39 +45,39 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetCatiQuestionnaires();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<CatiQuestionnaireDto>>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<List<CatiQuestionnaireDto>>());
         }
 
         [Test]
         public void Given_I_Call_GetCatiQuestionnaires_Then_I_Get_A_Correct_List_Of_CatiQuestionnaireDto_Returned()
         {
             // arrange
-            const string serverPark1 = "ServerParkA";
-            const string serverPark2 = "ServerParkB";
-            var serverParkList = new List<string> { serverPark1, serverPark2 };
+            const string ServerPark1 = "ServerParkA";
+            const string ServerPark2 = "ServerParkB";
+            var serverParkList = new List<string> { ServerPark1, ServerPark2 };
 
-            const string questionnaire1 = "OPN2010A";
+            const string Questionnaire1 = "OPN2010A";
             var survey1Mock = new Mock<ISurvey>();
-            survey1Mock.Setup(s => s.Name).Returns(questionnaire1);
-            survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1);
+            survey1Mock.Setup(s => s.Name).Returns(Questionnaire1);
+            survey1Mock.Setup(s => s.ServerPark).Returns(ServerPark1);
 
-            const string questionnaire2 = "OPN2010B";
+            const string Questionnaire2 = "OPN2010B";
             var survey2Mock = new Mock<ISurvey>();
-            survey2Mock.Setup(s => s.Name).Returns(questionnaire2);
-            survey2Mock.Setup(s => s.ServerPark).Returns(serverPark2);
+            survey2Mock.Setup(s => s.Name).Returns(Questionnaire2);
+            survey2Mock.Setup(s => s.ServerPark).Returns(ServerPark2);
 
             _blaiseServerParkApiMock.Setup(b => b.GetNamesOfServerParks()).Returns(serverParkList);
 
-            _blaiseCatiApiMock.Setup(bc => bc.GetInstalledQuestionnaires(serverPark1)).Returns(new List<ISurvey> { survey1Mock.Object });
-            _blaiseCatiApiMock.Setup(bc => bc.GetInstalledQuestionnaires(serverPark2)).Returns(new List<ISurvey> { survey2Mock.Object });
+            _blaiseCatiApiMock.Setup(bc => bc.GetInstalledQuestionnaires(ServerPark1)).Returns(new List<ISurvey> { survey1Mock.Object });
+            _blaiseCatiApiMock.Setup(bc => bc.GetInstalledQuestionnaires(ServerPark2)).Returns(new List<ISurvey> { survey2Mock.Object });
 
             var surveyDays1 = new List<DateTime> { DateTime.Today.AddDays(-1) };
-            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(questionnaire1, serverPark1))
+            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(Questionnaire1, ServerPark1))
                 .Returns(surveyDays1);
 
             var surveyDays2 = new List<DateTime> { DateTime.Today };
-            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(questionnaire2, serverPark2))
+            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(Questionnaire2, ServerPark2))
                 .Returns(surveyDays2);
 
             var catiQuestionnaire1 = new CatiQuestionnaireDto { Name = "OPN2010A", SurveyDays = surveyDays1 };
@@ -92,21 +92,21 @@ namespace Blaise.Api.Tests.Unit.Services
             var result = _sut.GetCatiQuestionnaires().ToList();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<CatiQuestionnaireDto>>(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(2, result.Count);
-            Assert.True(result.Any(c => c.Name == questionnaire1 && c.SurveyDays.Any(s => s == surveyDays1.First())));
-            Assert.True(result.Any(c => c.Name == questionnaire2 && c.SurveyDays.Any(s => s == surveyDays2.First())));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<List<CatiQuestionnaireDto>>());
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result.Any(c => c.Name == Questionnaire1 && c.SurveyDays.Any(s => s == surveyDays1.First())), Is.True);
+            Assert.That(result.Any(c => c.Name == Questionnaire2 && c.SurveyDays.Any(s => s == surveyDays2.First())), Is.True);
         }
 
         [Test]
         public void Given_A_ServerPark_When_I_Call_GetCatiQuestionnaires_Then_I_Get_A_List_Of_CatiQuestionnaireDto_Back()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
-            _blaiseCatiApiMock.Setup(i => i.GetInstalledQuestionnaires(serverParkName)).Returns(new List<ISurvey>());
+            _blaiseCatiApiMock.Setup(i => i.GetInstalledQuestionnaires(ServerParkName)).Returns(new List<ISurvey>());
 
             _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new List<DateTime>());
@@ -115,28 +115,28 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(new CatiQuestionnaireDto());
 
             // act
-            var result = _sut.GetCatiQuestionnaires(serverParkName);
+            var result = _sut.GetCatiQuestionnaires(ServerParkName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<CatiQuestionnaireDto>>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<List<CatiQuestionnaireDto>>());
         }
 
         [Test]
         public void Given_A_ServerPark_When_I_Call_GetCatiQuestionnaires_Then_I_Get_A_Correct_List_Of_CatiQuestionnaireDto_Returned()
         {
             // arrange
-            const string serverPark = "ServerParkA";
+            const string ServerPark = "ServerParkA";
 
-            const string questionnaire1 = "OPN2010A";
+            const string Questionnaire1 = "OPN2010A";
             var survey1Mock = new Mock<ISurvey>();
-            survey1Mock.Setup(s => s.Name).Returns(questionnaire1);
-            survey1Mock.Setup(s => s.ServerPark).Returns(serverPark);
+            survey1Mock.Setup(s => s.Name).Returns(Questionnaire1);
+            survey1Mock.Setup(s => s.ServerPark).Returns(ServerPark);
 
-            const string questionnaire2 = "OPN2010B";
+            const string Questionnaire2 = "OPN2010B";
             var survey2Mock = new Mock<ISurvey>();
-            survey2Mock.Setup(s => s.Name).Returns(questionnaire2);
-            survey2Mock.Setup(s => s.ServerPark).Returns(serverPark);
+            survey2Mock.Setup(s => s.Name).Returns(Questionnaire2);
+            survey2Mock.Setup(s => s.ServerPark).Returns(ServerPark);
 
             var surveyList = new List<ISurvey>
             {
@@ -144,15 +144,15 @@ namespace Blaise.Api.Tests.Unit.Services
                 survey2Mock.Object,
             };
 
-            _blaiseCatiApiMock.Setup(b => b.GetInstalledQuestionnaires(serverPark)).Returns(surveyList);
+            _blaiseCatiApiMock.Setup(b => b.GetInstalledQuestionnaires(ServerPark)).Returns(surveyList);
 
             var surveyDays1 = new List<DateTime> { DateTime.Today.AddDays(-1) };
             var surveyDays2 = new List<DateTime> { DateTime.Today };
 
-            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(questionnaire1, serverPark))
+            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(Questionnaire1, ServerPark))
                 .Returns(surveyDays1);
 
-            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(questionnaire2, serverPark))
+            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(Questionnaire2, ServerPark))
                 .Returns(surveyDays2);
 
             var catiQuestionnaire1 = new CatiQuestionnaireDto { Name = "OPN2010A", SurveyDays = surveyDays1 };
@@ -164,15 +164,15 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(catiQuestionnaire2);
 
             // act
-            var result = _sut.GetCatiQuestionnaires(serverPark).ToList();
+            var result = _sut.GetCatiQuestionnaires(ServerPark).ToList();
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<CatiQuestionnaireDto>>(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(2, result.Count);
-            Assert.True(result.Any(c => c.Name == questionnaire1 && c.SurveyDays.Any(s => s == surveyDays1.First())));
-            Assert.True(result.Any(c => c.Name == questionnaire2 && c.SurveyDays.Any(s => s == surveyDays2.First())));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<List<CatiQuestionnaireDto>>());
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result.Any(c => c.Name == Questionnaire1 && c.SurveyDays.Any(s => s == surveyDays1.First())), Is.True);
+            Assert.That(result.Any(c => c.Name == Questionnaire2 && c.SurveyDays.Any(s => s == surveyDays2.First())), Is.True);
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetCatiQuestionnaires(string.Empty));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
@@ -188,21 +188,21 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCatiQuestionnaires(null));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
         public void Given_Correct_Arguments_When_I_Call_GetCatiQuestionnaire_Then_I_Get_A_CatiQuestionnaireDto_Back()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             var survey1Mock = new Mock<ISurvey>();
-            survey1Mock.Setup(s => s.Name).Returns(questionnaireName);
-            survey1Mock.Setup(s => s.ServerPark).Returns(serverParkName);
+            survey1Mock.Setup(s => s.Name).Returns(QuestionnaireName);
+            survey1Mock.Setup(s => s.ServerPark).Returns(ServerParkName);
 
-            _blaiseCatiApiMock.Setup(i => i.GetInstalledQuestionnaire(questionnaireName, serverParkName))
+            _blaiseCatiApiMock.Setup(i => i.GetInstalledQuestionnaire(QuestionnaireName, ServerParkName))
                 .Returns(survey1Mock.Object);
 
             _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(It.IsAny<string>(), It.IsAny<string>()))
@@ -212,30 +212,30 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(new CatiQuestionnaireDto());
 
             // act
-            var result = _sut.GetCatiQuestionnaire(serverParkName, questionnaireName);
+            var result = _sut.GetCatiQuestionnaire(ServerParkName, QuestionnaireName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
         }
 
         [Test]
         public void Given_A_ServerPark_When_I_Call_GetCatiQuestionnaire_Then_I_Get_A_Correct_CatiQuestionnaireDto_Returned()
         {
             // arrange
-            const string questionnaireName = "OPN2010A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2010A";
+            const string ServerParkName = "ServerParkA";
 
             var survey1Mock = new Mock<ISurvey>();
-            survey1Mock.Setup(s => s.Name).Returns(questionnaireName);
-            survey1Mock.Setup(s => s.ServerPark).Returns(serverParkName);
+            survey1Mock.Setup(s => s.Name).Returns(QuestionnaireName);
+            survey1Mock.Setup(s => s.ServerPark).Returns(ServerParkName);
 
             var surveyDays1 = new List<DateTime> { DateTime.Today.AddDays(-1) };
 
-            _blaiseCatiApiMock.Setup(i => i.GetInstalledQuestionnaire(questionnaireName, serverParkName))
+            _blaiseCatiApiMock.Setup(i => i.GetInstalledQuestionnaire(QuestionnaireName, ServerParkName))
                 .Returns(survey1Mock.Object);
 
-            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(questionnaireName, serverParkName))
+            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(QuestionnaireName, ServerParkName))
                 .Returns(surveyDays1);
 
             var catiQuestionnaire1 = new CatiQuestionnaireDto { Name = "OPN2010A", SurveyDays = surveyDays1 };
@@ -244,58 +244,58 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(catiQuestionnaire1);
 
             // act
-            var result = _sut.GetCatiQuestionnaire(serverParkName, questionnaireName);
+            var result = _sut.GetCatiQuestionnaire(ServerParkName, QuestionnaireName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<CatiQuestionnaireDto>(result);
-            Assert.AreSame(catiQuestionnaire1, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<CatiQuestionnaireDto>());
+            Assert.That(result, Is.SameAs(catiQuestionnaire1));
         }
 
         [Test]
         public void Given_An_Empty_QuestionnaireName_When_I_Call_GetCatiQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.GetCatiQuestionnaire(serverParkName, string.Empty));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetCatiQuestionnaire(ServerParkName, string.Empty));
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_QuestionnaireName_When_I_Call_GetCatiQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCatiQuestionnaire(serverParkName, null));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCatiQuestionnaire(ServerParkName, null));
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_GetCatiQuestionnaire_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            var questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.GetCatiQuestionnaire(
                 string.Empty,
-                questionnaireName));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+                QuestionnaireName));
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_GetCatiQuestionnaire_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            var questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCatiQuestionnaire(null, questionnaireName));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCatiQuestionnaire(null, QuestionnaireName));
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [TestCase(true)]
@@ -303,25 +303,25 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_SurveyDay_Exists_When_I_Call_CreateDayBatch_Then_The_Correct_Service_Is_Called(bool checkForTreatedCases)
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             _createDayBatchDto.CheckForTreatedCases = checkForTreatedCases;
 
             _blaiseCatiApiMock.Setup(b =>
-                b.CreateDayBatch(questionnaireName, serverParkName, (DateTime)_createDayBatchDto.DayBatchDate, checkForTreatedCases));
+                b.CreateDayBatch(QuestionnaireName, ServerParkName, (DateTime)_createDayBatchDto.DayBatchDate, checkForTreatedCases));
 
             _mapperMock.Setup(m => m.MapToDayBatchDto(It.IsAny<DayBatchModel>()))
                 .Returns(new DayBatchDto());
 
             // act
-            _sut.CreateDayBatch(questionnaireName, serverParkName, _createDayBatchDto);
+            _sut.CreateDayBatch(QuestionnaireName, ServerParkName, _createDayBatchDto);
 
             // assert
             _blaiseCatiApiMock.Verify(
                 v => v.CreateDayBatch(
-                    questionnaireName,
-                    serverParkName,
+                    QuestionnaireName,
+                    ServerParkName,
                     (DateTime)_createDayBatchDto.DayBatchDate,
                     (bool)_createDayBatchDto.CheckForTreatedCases),
                 Times.Once);
@@ -332,327 +332,327 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_SurveyDay_Exists_When_I_Call_CreateDayBatch_Then_A_DayBatchDto_Is_Returned(bool checkForTreatedCases)
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             _createDayBatchDto.CheckForTreatedCases = checkForTreatedCases;
 
             _blaiseCatiApiMock.Setup(b =>
-                b.CreateDayBatch(questionnaireName, serverParkName, (DateTime)_createDayBatchDto.DayBatchDate, checkForTreatedCases));
+                b.CreateDayBatch(QuestionnaireName, ServerParkName, (DateTime)_createDayBatchDto.DayBatchDate, checkForTreatedCases));
 
             _mapperMock.Setup(m => m.MapToDayBatchDto(It.IsAny<DayBatchModel>()))
                 .Returns(new DayBatchDto());
 
             // act
-            var result = _sut.CreateDayBatch(questionnaireName, serverParkName, _createDayBatchDto);
+            var result = _sut.CreateDayBatch(QuestionnaireName, ServerParkName, _createDayBatchDto);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<DayBatchDto>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<DayBatchDto>());
         }
 
         [Test]
         public void Given_An_Empty_QuestionnaireName_When_I_Call_CreateDayBatch_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateDayBatch(
                 string.Empty,
-                serverParkName,
+                ServerParkName,
                 _createDayBatchDto));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_QuestionnaireName_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(
                 null,
-                serverParkName,
+                ServerParkName,
                 _createDayBatchDto));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_CreateDayBatch_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateDayBatch(
-                questionnaireName,
+                QuestionnaireName,
                 string.Empty,
                 _createDayBatchDto));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(
-                questionnaireName,
+                QuestionnaireName,
                 null,
                 _createDayBatchDto));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
         public void Given_A_Null_CreateDayBatchDto_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(
-                questionnaireName,
-                serverParkName,
+                QuestionnaireName,
+                ServerParkName,
                 null));
-            Assert.AreEqual("The argument 'createDayBatchDto' must be supplied", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("The argument 'createDayBatchDto' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_DayBatchDate_In_CreateDayBatchDto_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
             var createDayBatchDto = new CreateDayBatchDto { CheckForTreatedCases = true };
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(
-                questionnaireName,
-                serverParkName,
+                QuestionnaireName,
+                ServerParkName,
                 createDayBatchDto));
-            Assert.AreEqual("The argument 'createDayBatchDto.DayBatchDate' must be supplied", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("The argument 'createDayBatchDto.DayBatchDate' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_CheckForTreatedCases_In_CreateDayBatchDto_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
             var createDayBatchDto = new CreateDayBatchDto { DayBatchDate = DateTime.Today };
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(
-                questionnaireName,
-                serverParkName,
+                QuestionnaireName,
+                ServerParkName,
                 createDayBatchDto));
-            Assert.AreEqual("The argument 'createDayBatchDto.CheckForTreatedCases' must be supplied", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("The argument 'createDayBatchDto.CheckForTreatedCases' must be supplied"));
         }
 
         [Test]
         public void Given_A_DayBatch_Exists_When_I_Call_GetDayBatch_Then_The_Correct_Service_Is_Called()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
-            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(questionnaireName, serverParkName)).Returns(new DayBatchModel());
+            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(QuestionnaireName, ServerParkName)).Returns(new DayBatchModel());
 
             _mapperMock.Setup(m => m.MapToDayBatchDto(It.IsAny<DayBatchModel>()))
                 .Returns(new DayBatchDto());
 
             // act
-            _sut.GetDayBatch(questionnaireName, serverParkName);
+            _sut.GetDayBatch(QuestionnaireName, ServerParkName);
 
             // assert
-            _blaiseCatiApiMock.Verify(v => v.GetDayBatch(questionnaireName, serverParkName), Times.Once);
+            _blaiseCatiApiMock.Verify(v => v.GetDayBatch(QuestionnaireName, ServerParkName), Times.Once);
         }
 
         [Test]
         public void Given_A_DayBatch_Exists_When_I_Call_GetDayBatch_Then_A_DayBatchDto_Is_Returned()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
-            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(questionnaireName, serverParkName)).Returns(new DayBatchModel());
+            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(QuestionnaireName, ServerParkName)).Returns(new DayBatchModel());
 
             _mapperMock.Setup(m => m.MapToDayBatchDto(It.IsAny<DayBatchModel>()))
                 .Returns(new DayBatchDto());
 
             // act
-            var result = _sut.GetDayBatch(questionnaireName, serverParkName);
+            var result = _sut.GetDayBatch(QuestionnaireName, ServerParkName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<DayBatchDto>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<DayBatchDto>());
         }
 
         [Test]
         public void Given_A_DayBatch_Does_Not_Exist_When_I_Call_GetDayBatch_Then_A_DataNotFoundException_Is_Returned()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
-            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(questionnaireName, serverParkName)).Returns((DayBatchModel)null);
+            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(QuestionnaireName, ServerParkName)).Returns((DayBatchModel)null);
 
             // act and assert
-            Assert.Throws<DataNotFoundException>(() => _sut.GetDayBatch(questionnaireName, serverParkName));
+            Assert.Throws<DataNotFoundException>(() => _sut.GetDayBatch(QuestionnaireName, ServerParkName));
         }
 
         [Test]
         public void Given_An_Empty_questionnaireName_When_I_Call_GetDayBatch_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.GetDayBatch(string.Empty, serverParkName));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetDayBatch(string.Empty, ServerParkName));
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_questionnaireName_When_I_Call_GetDayBatch_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetDayBatch(null, serverParkName));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetDayBatch(null, ServerParkName));
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_GetDayBatch_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.GetDayBatch(questionnaireName, string.Empty));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetDayBatch(QuestionnaireName, string.Empty));
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_GetDayBatch_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetDayBatch(questionnaireName, null));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetDayBatch(QuestionnaireName, null));
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
         public void Given_A_DayBatch_Exists_Today_When_I_Call_QuestionnaireHasADayBatchForToday_Then_True_Is_Returned()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
             var dayBatchModel = new DayBatchModel { DayBatchDate = DateTime.Today };
 
-            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(questionnaireName, serverParkName)).Returns(dayBatchModel);
+            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(QuestionnaireName, ServerParkName)).Returns(dayBatchModel);
 
             // act
-            var result = _sut.QuestionnaireHasADayBatchForToday(questionnaireName, serverParkName);
+            var result = _sut.QuestionnaireHasADayBatchForToday(QuestionnaireName, ServerParkName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.True);
         }
 
         [Test]
         public void Given_A_DayBatch_Does_Not_Exist_Today_When_I_Call_QuestionnaireHasADayBatchForToday_Then_False_Is_Returned()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
             var dayBatchModel = new DayBatchModel { DayBatchDate = DateTime.Today.AddDays(-1) };
 
-            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(questionnaireName, serverParkName)).Returns(dayBatchModel);
+            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(QuestionnaireName, ServerParkName)).Returns(dayBatchModel);
 
             // act
-            var result = _sut.QuestionnaireHasADayBatchForToday(questionnaireName, serverParkName);
+            var result = _sut.QuestionnaireHasADayBatchForToday(QuestionnaireName, ServerParkName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsFalse(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.False);
         }
 
         [Test]
         public void Given_An_Questionnaire_Has_No_DayBatch_When_I_Call_QuestionnaireHasADayBatchForToday_Then_False_Is_Returned()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
-            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(questionnaireName, serverParkName)).Returns((DayBatchModel)null);
+            _blaiseCatiApiMock.Setup(b => b.GetDayBatch(QuestionnaireName, ServerParkName)).Returns((DayBatchModel)null);
 
             // act
-            var result = _sut.QuestionnaireHasADayBatchForToday(questionnaireName, serverParkName);
+            var result = _sut.QuestionnaireHasADayBatchForToday(QuestionnaireName, ServerParkName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsFalse(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.False);
         }
 
         [Test]
         public void Given_An_Empty_QuestionnaireName_When_I_Call_QuestionnaireHasADayBatchForToday_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.QuestionnaireHasADayBatchForToday(string.Empty, serverParkName));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.QuestionnaireHasADayBatchForToday(string.Empty, ServerParkName));
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_QuestionnaireName_When_I_Call_QuestionnaireHasADayBatchForToday_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.QuestionnaireHasADayBatchForToday(null, serverParkName));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.QuestionnaireHasADayBatchForToday(null, ServerParkName));
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_QuestionnaireHasADayBatchForToday_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.QuestionnaireHasADayBatchForToday(questionnaireName, string.Empty));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.QuestionnaireHasADayBatchForToday(QuestionnaireName, string.Empty));
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_QuestionnaireHasADayBatchForToday_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.QuestionnaireHasADayBatchForToday(questionnaireName, null));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.QuestionnaireHasADayBatchForToday(QuestionnaireName, null));
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
         public void Given_A_DayBatch_Exists_When_I_Call_AddCasesToDayBatch_Then_The_Correct_Service_Is_Called()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
             var caseIds = new List<string>
             {
                 "1000001",
@@ -660,18 +660,18 @@ namespace Blaise.Api.Tests.Unit.Services
             };
 
             // act
-            _sut.AddCasesToDayBatch(questionnaireName, serverParkName, caseIds);
+            _sut.AddCasesToDayBatch(QuestionnaireName, ServerParkName, caseIds);
 
             // assert
-            _blaiseCatiApiMock.Verify(v => v.AddToDayBatch(questionnaireName, serverParkName, "1000001"), Times.Once);
-            _blaiseCatiApiMock.Verify(v => v.AddToDayBatch(questionnaireName, serverParkName, "1000002"), Times.Once);
+            _blaiseCatiApiMock.Verify(v => v.AddToDayBatch(QuestionnaireName, ServerParkName, "1000001"), Times.Once);
+            _blaiseCatiApiMock.Verify(v => v.AddToDayBatch(QuestionnaireName, ServerParkName, "1000002"), Times.Once);
         }
 
         [Test]
         public void Given_An_Empty_questionnaireName_When_I_Call_AddCasesToDayBatch_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
             var caseIds = new List<string>
             {
                 "1000001",
@@ -679,15 +679,15 @@ namespace Blaise.Api.Tests.Unit.Services
             };
 
             // act and assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.AddCasesToDayBatch(string.Empty, serverParkName, caseIds));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.AddCasesToDayBatch(string.Empty, ServerParkName, caseIds));
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_questionnaireName_When_I_Call_AddCasesToDayBatch_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
             var caseIds = new List<string>
             {
                 "1000001",
@@ -695,15 +695,15 @@ namespace Blaise.Api.Tests.Unit.Services
             };
 
             // act and assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddCasesToDayBatch(null, serverParkName, caseIds));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddCasesToDayBatch(null, ServerParkName, caseIds));
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_AddCasesToDayBatch_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
             var caseIds = new List<string>
             {
                 "1000001",
@@ -711,15 +711,15 @@ namespace Blaise.Api.Tests.Unit.Services
             };
 
             // act and assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.AddCasesToDayBatch(questionnaireName, string.Empty, caseIds));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.AddCasesToDayBatch(QuestionnaireName, string.Empty, caseIds));
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_AddCasesToDayBatch_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
             var caseIds = new List<string>
             {
                 "1000001",
@@ -727,56 +727,56 @@ namespace Blaise.Api.Tests.Unit.Services
             };
 
             // act and assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddCasesToDayBatch(questionnaireName, null, caseIds));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddCasesToDayBatch(QuestionnaireName, null, caseIds));
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
         public void Given_An_Empty_List_Of_CaseIds_When_I_Call_AddCasesToDayBatch_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.AddCasesToDayBatch(questionnaireName, serverParkName, new List<string>()));
-            Assert.AreEqual("A value for the argument 'caseIds' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.AddCasesToDayBatch(QuestionnaireName, ServerParkName, new List<string>()));
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'caseIds' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_CaseId_When_I_Call_AddCaseToDayBatch_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddCasesToDayBatch(questionnaireName, serverParkName, null));
-            Assert.AreEqual("caseIds", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddCasesToDayBatch(QuestionnaireName, ServerParkName, null));
+            Assert.That(exception.ParamName, Is.EqualTo("caseIds"));
         }
 
         [Test]
         public void Given_SurveyDays_Exist_When_I_Call_GetSurveyDays_Then_The_Correct_Service_Is_Called()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
-            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(questionnaireName, serverParkName)).Returns(It.IsAny<List<DateTime>>());
+            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(QuestionnaireName, ServerParkName)).Returns(It.IsAny<List<DateTime>>());
 
             // act
-            _sut.GetSurveyDays(questionnaireName, serverParkName);
+            _sut.GetSurveyDays(QuestionnaireName, ServerParkName);
 
             // assert
-            _blaiseCatiApiMock.Verify(v => v.GetSurveyDays(questionnaireName, serverParkName), Times.Once);
+            _blaiseCatiApiMock.Verify(v => v.GetSurveyDays(QuestionnaireName, ServerParkName), Times.Once);
         }
 
         [Test]
         public void Given_SurveyDays_Exist_When_I_Call_GetSurveyDays_Then_A_Correct_SurveyDaysDto_Is_Returned()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             var surveyDays = new List<DateTime>
             {
@@ -784,68 +784,68 @@ namespace Blaise.Api.Tests.Unit.Services
                 DateTime.Today.AddDays(1),
             };
 
-            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(questionnaireName, serverParkName)).Returns(surveyDays);
+            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(QuestionnaireName, ServerParkName)).Returns(surveyDays);
 
             // act
-            var result = _sut.GetSurveyDays(questionnaireName, serverParkName);
+            var result = _sut.GetSurveyDays(QuestionnaireName, ServerParkName);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<DateTime>>(result);
-            Assert.IsTrue(result.Contains(DateTime.Today));
-            Assert.IsTrue(result.Contains(DateTime.Today.AddDays(1)));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<List<DateTime>>());
+            Assert.That(result, Has.Member(DateTime.Today));
+            Assert.That(result, Has.Member(DateTime.Today.AddDays(1)));
         }
 
         [Test]
         public void Given_An_Empty_questionnaireName_When_I_Call_GetSurveyDays_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.GetSurveyDays(string.Empty, serverParkName));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetSurveyDays(string.Empty, ServerParkName));
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_questionnaireName_When_I_Call_GetSurveyDays_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetSurveyDays(null, serverParkName));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetSurveyDays(null, ServerParkName));
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_GetSurveyDays_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.GetSurveyDays(questionnaireName, string.Empty));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetSurveyDays(QuestionnaireName, string.Empty));
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_GetSurveyDays_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetSurveyDays(questionnaireName, null));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetSurveyDays(QuestionnaireName, null));
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
         public void Given_Valid_Arguments_When_I_Call_AddSurveyDays_Then_The_Correct_Service_Is_Called()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             var surveyDays = new List<DateTime>
             {
@@ -854,30 +854,30 @@ namespace Blaise.Api.Tests.Unit.Services
             };
 
             _blaiseCatiApiMock.Setup(b =>
-                b.SetSurveyDays(questionnaireName, serverParkName, surveyDays));
+                b.SetSurveyDays(QuestionnaireName, ServerParkName, surveyDays));
 
-            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(questionnaireName, serverParkName)).Returns(surveyDays);
+            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(QuestionnaireName, ServerParkName)).Returns(surveyDays);
 
             // act
-            _sut.AddSurveyDays(questionnaireName, serverParkName, surveyDays);
+            _sut.AddSurveyDays(QuestionnaireName, ServerParkName, surveyDays);
 
             // assert
             _blaiseCatiApiMock.Verify(
                 v => v.SetSurveyDays(
-                    questionnaireName,
-                    serverParkName,
+                    QuestionnaireName,
+                    ServerParkName,
                     surveyDays),
                 Times.Once);
 
-            _blaiseCatiApiMock.Verify(v => v.GetSurveyDays(questionnaireName, serverParkName), Times.Once);
+            _blaiseCatiApiMock.Verify(v => v.GetSurveyDays(QuestionnaireName, ServerParkName), Times.Once);
         }
 
         [Test]
         public void Given_Valid_Arguments_When_I_Call_AddSurveyDays_Then_A_Correct_SurveyDaysDto_Is_Returned()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             var surveyDays = new List<DateTime>
             {
@@ -886,113 +886,113 @@ namespace Blaise.Api.Tests.Unit.Services
             };
 
             _blaiseCatiApiMock.Setup(b =>
-                b.SetSurveyDays(questionnaireName, serverParkName, surveyDays));
+                b.SetSurveyDays(QuestionnaireName, ServerParkName, surveyDays));
 
-            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(questionnaireName, serverParkName)).Returns(surveyDays);
+            _blaiseCatiApiMock.Setup(b => b.GetSurveyDays(QuestionnaireName, ServerParkName)).Returns(surveyDays);
 
             // act
-            var result = _sut.AddSurveyDays(questionnaireName, serverParkName, surveyDays);
+            var result = _sut.AddSurveyDays(QuestionnaireName, ServerParkName, surveyDays);
 
             // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<DateTime>>(result);
-            Assert.IsTrue(result.Contains(DateTime.Today));
-            Assert.IsTrue(result.Contains(DateTime.Today.AddDays(1)));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<List<DateTime>>());
+            Assert.That(result, Has.Member(DateTime.Today));
+            Assert.That(result, Has.Member(DateTime.Today.AddDays(1)));
         }
 
         [Test]
         public void Given_An_Empty_questionnaireName_When_I_Call_AddSurveyDays_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.AddSurveyDays(
                 string.Empty,
-                serverParkName,
+                ServerParkName,
                 It.IsAny<List<DateTime>>()));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_questionnaireName_When_I_Call_AddSurveyDays_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddSurveyDays(
                 null,
-                serverParkName,
+                ServerParkName,
                 It.IsAny<List<DateTime>>()));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_AddSurveyDays_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.AddSurveyDays(
-                questionnaireName,
+                QuestionnaireName,
                 string.Empty,
                 It.IsAny<List<DateTime>>()));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_AddSurveyDays_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddSurveyDays(
-                questionnaireName,
+                QuestionnaireName,
                 null,
                 It.IsAny<List<DateTime>>()));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
         public void Given_A_Null_List_Of_SurveyDays_When_I_Call_AddSurveyDays_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddSurveyDays(
-                questionnaireName,
-                serverParkName,
+                QuestionnaireName,
+                ServerParkName,
                 null));
-            Assert.AreEqual("surveyDays", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("surveyDays"));
         }
 
         [Test]
         public void Given_An_Empty_SurveyDays_List_In_AddSurveyDaysDto_When_I_Call_AddSurveyDays_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
             var surveyDays = new List<DateTime>();
 
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.AddSurveyDays(
-                questionnaireName,
-                serverParkName,
+                QuestionnaireName,
+                ServerParkName,
                 surveyDays));
-            Assert.AreEqual("A value for the argument 'surveyDays' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'surveyDays' must be supplied"));
         }
 
         [Test]
         public void Given_Valid_Arguments_When_I_Call_RemoveSurveyDays_Then_The_Correct_Service_Is_Called()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             var surveyDays = new List<DateTime>
             {
@@ -1001,13 +1001,13 @@ namespace Blaise.Api.Tests.Unit.Services
             };
 
             // act
-            _sut.RemoveSurveyDays(questionnaireName, serverParkName, surveyDays);
+            _sut.RemoveSurveyDays(QuestionnaireName, ServerParkName, surveyDays);
 
             // assert
             _blaiseCatiApiMock.Verify(
                 v => v.RemoveSurveyDays(
-                    questionnaireName,
-                    serverParkName,
+                    QuestionnaireName,
+                    ServerParkName,
                     surveyDays),
                 Times.Once);
         }
@@ -1016,87 +1016,87 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Empty_questionnaireName_When_I_Call_RemoveSurveyDays_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.RemoveSurveyDays(
                 string.Empty,
-                serverParkName,
+                ServerParkName,
                 It.IsAny<List<DateTime>>()));
-            Assert.AreEqual("A value for the argument 'questionnaireName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'questionnaireName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_questionnaireName_When_I_Call_RemoveSurveyDays_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string serverParkName = "ServerParkA";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.RemoveSurveyDays(
                 null,
-                serverParkName,
+                ServerParkName,
                 It.IsAny<List<DateTime>>()));
-            Assert.AreEqual("questionnaireName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("questionnaireName"));
         }
 
         [Test]
         public void Given_An_Empty_ServerParkName_When_I_Call_RemoveSurveyDays_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.RemoveSurveyDays(
-                questionnaireName,
+                QuestionnaireName,
                 string.Empty,
                 It.IsAny<List<DateTime>>()));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'serverParkName' must be supplied"));
         }
 
         [Test]
         public void Given_A_Null_ServerParkName_When_I_Call_RemoveSurveyDays_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
+            const string QuestionnaireName = "OPN2101A";
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.RemoveSurveyDays(
-                questionnaireName,
+                QuestionnaireName,
                 null,
                 It.IsAny<List<DateTime>>()));
-            Assert.AreEqual("serverParkName", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("serverParkName"));
         }
 
         [Test]
         public void Given_A_Null_List_Of_SurveyDays_When_I_Call_RemoveSurveyDays_Then_An_ArgumentNullException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
 
             // act and assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.RemoveSurveyDays(
-                questionnaireName,
-                serverParkName,
+                QuestionnaireName,
+                ServerParkName,
                 null));
-            Assert.AreEqual("surveyDays", exception.ParamName);
+            Assert.That(exception.ParamName, Is.EqualTo("surveyDays"));
         }
 
         [Test]
         public void Given_An_Empty_SurveyDays_List_In_AddSurveyDaysDto_When_I_Call_RemoveSurveyDays_Then_An_ArgumentException_Is_Thrown()
         {
             // arrange
-            const string questionnaireName = "OPN2101A";
-            const string serverParkName = "ServerParkA";
+            const string QuestionnaireName = "OPN2101A";
+            const string ServerParkName = "ServerParkA";
             var surveyDays = new List<DateTime>();
 
             // act and assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.RemoveSurveyDays(
-                questionnaireName,
-                serverParkName,
+                QuestionnaireName,
+                ServerParkName,
                 surveyDays));
-            Assert.AreEqual("A value for the argument 'surveyDays' must be supplied", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("A value for the argument 'surveyDays' must be supplied"));
         }
     }
 }
